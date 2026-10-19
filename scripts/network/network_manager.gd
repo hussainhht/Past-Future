@@ -2,15 +2,17 @@ extends Node
 ## Two-player LAN lobby. The host owns role assignment and ready state.
 
 signal state_changed
+signal game_started
 
 const PORT: int = 7000
-const PROTOCOL_VERSION: int = 1
+const PROTOCOL_VERSION: int = 2
 enum State { IDLE, HOSTING, CONNECTING, CONNECTED }
 
 var state: State = State.IDLE
 var role: String = ""
 var guest_id: int = 0
 var guest_ready: bool = false
+var in_game: bool = false
 var status: String = ""
 var connect_timeout_seconds: float = 10.0
 var _connection_deadline: float = 0.0
@@ -77,6 +79,7 @@ func leave_game(message: String = "") -> void:
 	role = ""
 	guest_id = 0
 	guest_ready = false
+	in_game = false
 	status = message
 	state_changed.emit()
 
@@ -92,8 +95,29 @@ func local_addresses() -> PackedStringArray:
 
 
 func set_ready(ready: bool) -> void:
-	if state == State.CONNECTED and role == "future":
+	if state == State.CONNECTED and role == "future" and not in_game:
 		_request_ready.rpc_id(1, ready)
+
+
+func start_game() -> bool:
+	if state != State.CONNECTED or role != "past" or not guest_ready or in_game:
+		return false
+	_begin_game.rpc()
+	return true
+
+
+@rpc("authority", "call_local", "reliable")
+func _begin_game() -> void:
+	var sender := multiplayer.get_remote_sender_id()
+	if not ((sender in [0, 1] and role == "past" and multiplayer.is_server()) or (sender == 1 and role == "future")):
+		return
+	if state != State.CONNECTED or in_game:
+		return
+	in_game = true
+	if multiplayer.is_server():
+		multiplayer.multiplayer_peer.refuse_new_connections = true
+	game_started.emit()
+	state_changed.emit()
 
 
 func _process(_delta: float) -> void:
@@ -139,7 +163,7 @@ func _reject_client(message: String) -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func _request_ready(ready: bool) -> void:
-	if not multiplayer.is_server() or role != "past" or state != State.CONNECTED:
+	if not multiplayer.is_server() or role != "past" or state != State.CONNECTED or in_game:
 		return
 	if multiplayer.get_remote_sender_id() != guest_id:
 		return
@@ -167,8 +191,10 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	if role == "past" and peer_id == guest_id:
 		guest_id = 0
 		guest_ready = false
+		var was_in_game := in_game
+		in_game = false
 		state = State.HOSTING
-		status = "The Professor left. Waiting for another connection…"
+		status = "The Professor left. Return to the menu to reconnect." if was_in_game else "The Professor left. Waiting for another connection…"
 		state_changed.emit()
 
 
