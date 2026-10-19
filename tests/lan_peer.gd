@@ -47,6 +47,7 @@ func _run() -> void:
 func _host() -> void:
 	check(network.host_game(port) == OK, "Host should bind a UDP port")
 	check(network.role == "past", "Host must be assigned Past")
+	check(not network.start_game(), "Host cannot start without a guest")
 	print("HOST_LISTENING")
 	if not await wait_for(func() -> bool: return network.state == network.State.CONNECTED, "Guest never connected", 15.0):
 		return
@@ -64,6 +65,15 @@ func _host() -> void:
 	if not await wait_for(func() -> bool: return network.state == network.State.CONNECTED, "Guest could not rejoin"):
 		return
 	check(not network.guest_ready, "Rejoining must reset ready state")
+	check(not network.start_game(), "Host cannot start before the guest is ready")
+	_load_menu()
+	if not await wait_for(func() -> bool: return network.guest_ready, "Rejoined guest never became ready"):
+		return
+	check(network.start_game(), "Ready host should start both timeline scenes")
+	if not await wait_for(_is_in_spawn_area, "Host did not enter the spawn scene"):
+		return
+	check(current_scene.timeline == "Past", "Host must spawn in the Past")
+	check(not current_scene.get_node("%TimelineButton").visible, "LAN role must not be switchable locally")
 	await create_timer(0.4).timeout
 	network.leave_game()
 	await create_timer(0.2).timeout
@@ -92,10 +102,33 @@ func _client() -> void:
 	if not await wait_for(func() -> bool: return network.state == network.State.CONNECTED, "Client could not rejoin"):
 		return
 	check(not network.guest_ready, "Client should receive a clean snapshot after reconnecting")
+	check(not network.start_game(), "Client must not be able to start the session")
+	_load_menu()
+	network.set_ready(true)
+	if not await wait_for(_is_in_spawn_area, "Client did not enter the spawn scene"):
+		return
+	check(network.in_game, "Client must receive the host's start confirmation")
+	check(current_scene.timeline == "Future", "Client must spawn in the Future")
 	if not await wait_for(func() -> bool: return network.state == network.State.IDLE, "Client did not handle host leaving"):
 		return
 	check("host closed" in network.status, "Host departure should have a useful message")
+	check(current_scene.get_node("%PausePanel").visible, "Disconnect should block gameplay and offer recovery")
+	check(not current_scene.player.controls_enabled, "Player must not keep moving after disconnect")
+	current_scene._return_to_menu()
+	if not await wait_for(func() -> bool: return current_scene.scene_file_path == "res://scenes/menu/main_menu.tscn", "Could not return to menu after disconnect"):
+		return
 	network.connect_timeout_seconds = 0.5
 	network.join_game("127.0.0.1", port)
 	if await wait_for(func() -> bool: return network.state == network.State.IDLE, "Failed connection did not time out", 3.0):
 		check("timed out" in network.status, "Timeout should give recovery instructions")
+
+
+func _load_menu() -> void:
+	var menu = load("res://scenes/menu/main_menu.tscn").instantiate()
+	menu.settings_path = "/tmp/past-future-lan-test-%d.cfg" % OS.get_process_id()
+	root.add_child(menu)
+	current_scene = menu
+
+
+func _is_in_spawn_area() -> bool:
+	return is_instance_valid(current_scene) and current_scene.scene_file_path == "res://scenes/world/spawn_area.tscn"

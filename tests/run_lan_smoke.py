@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exercise LAN join, host authority, disconnects, and reconnects on loopback.
+"""Exercise LAN join, game spawning, host authority, and reconnects on loopback.
 
 Run from any directory: python3 tests/run_lan_smoke.py
 Requires Godot on PATH. This does not replace two-computer Wi-Fi testing.
@@ -54,6 +54,9 @@ def main() -> None:
             if client_result or host_result:
                 raise RuntimeError("LAN peer checks failed")
             for role in ["busy", "host", "client"]:
+                output = output_paths[role].read_text()
+                if "SCRIPT ERROR:" in output or f"LAN {role}: PASS" not in output:
+                    raise RuntimeError(f"{role} did not finish its checks cleanly")
                 print(f"{role}: PASS")
             print("LAN smoke check passed. Test on two Wi-Fi computers before release.")
         except Exception:
