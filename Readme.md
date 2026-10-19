@@ -1,449 +1,825 @@
-
 # PAST & FUTURE
+## Game Design Document — Version 0.3
 
-## Game Design Document — Version 0.2
-
-**Project:** CHECKPOINT — Reboot Game Jam 2026
-**Status:** Core Narrative Approved / Level Design Proposed
-**Engine:** Godot 4
-**Platform:** Windows PC
-**Genre:** Mystery, Cooperative Puzzle Adventure
-**Presentation:** 2.5D, side-view movement with 3D environments
-**Players:** Exactly 2 — Online Co-op
-**Target Demo Length:** 5–10 minutes
+**Project:** CHECKPOINT — Reboot Game Jam 2026  
+**Status:** Visual Direction Approved / Production Design Updated  
+**Engine:** Godot 4.x  
+**Genre:** Cooperative Mystery / Puzzle Adventure  
+**Visual Style:** Stylized 2D Art with 2.5D Depth — Inspired by Don't Starve  
+**Perspective:** Fixed 3/4 Top-Down View  
+**Platform:** Windows PC  
+**Multiplayer:** Online Co-op, Exactly 2 Players  
+**Demo Duration:** 5–10 minutes  
 **Demo Chapter:** Chapter 0 — The First Fracture
 
 ---
 
 ## 1. High Concept
 
-Two players control different versions of the same individual, separated by 31 years.
+Two players control different versions of the same person, separated by 31 years.
 
-The first is an ambitious 18-year-old university student, passionate about research and scientific discovery.
+One player controls an ambitious 18-year-old university student living in the past. The other controls his 49-year-old future self, a successful professor surrounded by the ruins of the same university.
 
-The second is his 49-year-old future self, now a successful and experienced professor.
+An experimental device has caused a catastrophic fracture in time.
 
-An experimental device is deliberately activated by the professor in the future, triggering a catastrophic temporal fracture that reaches into the past. The university, once full of life and scientific activity, becomes a devastated landscape.
+The professor deliberately activated this device, despite knowing its risks. His reasons remain a mystery.
 
-The two versions establish contact and must work together across time to repair the fracture.
+The two characters must cooperate across different time periods to stabilize reality.
 
-However, the professor knows more than he is willing to explain.
+**Core Hook:** Change the past, reshape the future, and discover why your future self caused the catastrophe.
 
-**Core Hook:** Two versions of one person must collaborate across time, changing the past to repair the future, while one of them hides a dangerous truth.
+### Game Jam Theme — TWO
 
-## 2. Narrative Rules
+The game is built around two playable characters, two timelines, two perspectives, and two people who must cooperate despite being the same individual.
 
-### Confirmed Decisions
+Neither player can complete the game alone.
 
-- The professor deliberately activated the experimental device.
-- He understood that the experiment involved serious risks.
-- His true motive is unknown.
-- The student is unaware of the professor's responsibility.
-- The professor's involvement is revealed at the end of the demo.
-- The full mystery remains unresolved for the complete game.
+---
 
-### Temporal Rules — Proposed
+## 2. Visual Direction — NEW
 
-- The two characters are 31 years apart.
-- The fracture connects corresponding locations inside the university.
-- Selected actions in the past cause predefined changes in the future.
-- Some effects occur immediately; others require explicit synchronization.
-- Both characters retain their memories when their local environment changes.
-- Temporal fractures occasionally allow the characters to see each other.
-- Neither character physically travels to the other's era during the demo.
+### 2.1 Art Style
 
-These rules keep the experience understandable and technically manageable.
+The game uses a stylized 2D visual approach presented with simulated depth, inspired by the presentation techniques of Don't Starve.
 
-## 3. Characters
+**Characteristics:**
+
+- Hand-drawn-looking 2D characters.
+- Stylized 2D environment assets.
+- Angled top-down perspective.
+- Layered foreground and background objects.
+- Depth sorting so characters can walk behind and in front of furniture.
+- Soft shadows and atmospheric lighting.
+- Limited character animations.
+- Environmental distortion around temporal fractures.
+
+The aesthetic should be mysterious, atmospheric, readable, and distinctive.
+
+The game does not require fully modeled 3D characters, complex 3D environments, or 3D character rigging.
+
+### 2.2 Artistic Identity
+
+The game should have its own visual identity instead of directly copying another game's artwork.
+
+**Suggested identity:**
+- Hand-painted, slightly textured surfaces.
+- Stylized academic architecture.
+- Exaggerated but readable scientific equipment.
+- Muted colors combined with glowing energy accents.
+- Subtle outlines around important characters and interactive objects.
+- A contrast between scientific curiosity and catastrophic consequences.
+
+### 2.3 Past Timeline
+
+**Visual Mood:** Peaceful, curious, academic.
+
+**Color Palette:**
+- Warm cream
+- Soft green
+- Muted teal
+- Warm yellow
+- Natural brown
+
+**Environment:**
+- Functional university laboratories.
+- Clean desks and active monitors.
+- Books, posters, and research documents.
+- Plants and normal campus details.
+- Daylight through windows.
+- Functional laboratory machinery.
+
+The environment should feel occupied and maintained without requiring active student NPCs in the prototype.
+
+### 2.4 Future Timeline
+
+**Visual Mood:** Dark, mysterious, abandoned.
+
+**Color Palette:**
+- Deep blue
+- Dark purple
+- Desaturated grey
+- Cold cyan
+- Muted black
+
+**Environment:**
+- Cracked floors and walls.
+- Broken furniture and monitors.
+- Fallen equipment and scattered research papers.
+- Damaged support structures.
+- Temporal cracks glowing with violet energy.
+- Environmental fog, subtle particles, and flickering lights.
+
+The future should still be recognizable as the same university.
+
+### 2.5 Past/Future Asset Reuse
+
+Both timelines share a common underlying floor plan.
+
+Assets are organized into:
+
+1. Shared objects used in both timelines.
+2. Past-specific variants.
+3. Future-specific damaged variants.
+4. Temporal objects linked to puzzle events.
+
+For example, a clean desk in the past becomes a damaged desk in the future. The desk retains approximately the same position, allowing players to recognize corresponding locations.
+
+### 2.6 Perspective and Depth
+
+The world is implemented with Godot's 2D rendering system.
+
+- The camera views an illustrated three-quarter perspective.
+- Movement occurs on a flat 2D gameplay plane.
+- Characters can move around tables and machinery.
+- The player is drawn in front of or behind objects based on their vertical screen position.
+- Important equipment receives clearly defined collision shapes.
+
+This produces visual depth without requiring true 3D geometry.
+
+---
+
+## 3. Character Design
 
 ### Character A — The Student
 
-**Age:** 18
-**Era:** Past
-**Occupation:** University student and research assistant
-**Personality:** Curious, intelligent, optimistic, ambitious.
+**Age:** 18  
+**Timeline:** Past  
+**Role:** University student  
+**Personality:** Curious, optimistic, intelligent, ambitious.
 
-**Gameplay Responsibilities:**
+**Appearance:**
+- Young adult male.
+- Short, dark hair.
+- Casual university clothing.
+- Backpack or student identification.
+- Expressive but stylized face.
+- Recognizable features shared with the professor.
 
-- Calibrate working equipment.
-- Manipulate mechanical components.
-- Change selected historical object states.
-- Activate prototype systems.
-- Use information obtained from the future.
+**Animation Requirements:**
+- Idle.
+- Walk.
+- Interact.
+
+The minimum version uses a small directional sprite set and horizontal flipping where appropriate.
 
 ### Character B — The Professor
 
-**Age:** 49
-**Era:** Future
-**Occupation:** University professor and researcher
+**Age:** 49  
+**Timeline:** Future  
+**Role:** University professor and researcher  
 **Personality:** Serious, mature, experienced, guarded.
 
-**Gameplay Responsibilities:**
+**Appearance:**
+- Older version of the student.
+- Similar facial structure.
+- Darker, more formal clothing.
+- Visible signs of age.
+- Optional glasses, beard, or research coat.
 
-- Explore damaged research facilities.
-- Restore surviving technology.
-- Recover information from old records.
-- Interpret technical clues.
-- Operate the temporal stabilizer.
+**Animation Requirements:**
+- Idle.
+- Walk.
+- Interact.
 
-The professor knows the truth about his role in the catastrophe, but the game does not reveal that information to his player until the ending. Private clues can suggest that something is being concealed.
+Both characters should have recognizable silhouettes and related facial characteristics.
 
-## 4. World and Setting
+### Character Production
 
-**Location:** A fictional university research campus.
+Characters will be created using AI-assisted 2D artwork and prepared as transparent PNG sprites.
 
-### Past Environment
+Complex skeletal animation is not required for the prototype.
 
-- Modern laboratories and classrooms.
-- Clean study spaces.
-- Functional research equipment.
-- Natural daylight and ordinary campus lighting.
-- Evidence of active student life.
-- A functioning prototype experimental facility.
+---
 
-### Future Environment
+## 4. Camera and Movement — UPDATED
 
-- Abandoned and destroyed laboratory buildings.
-- Collapsed corridors and damaged equipment.
-- Dark skies and unstable lighting.
-- Temporal energy leaking through fractures.
-- Research logs and physical evidence of the catastrophe.
-- A damaged version of the same experimental facility.
+### Camera
 
-**Visual Rule:** Corresponding rooms should retain recognizable structural landmarks across both eras.
+Use `Camera2D` with a fixed viewing angle represented directly in the artwork.
 
-## 5. Design Pillars
+The camera follows the local player inside each research area.
 
-1. **Asymmetric Cooperation:** Both players contribute unique information and actions.
-2. **Temporal Cause and Effect:** Player actions have visible consequences across timelines.
-3. **Environmental Mystery:** The university communicates the story through its changing condition.
-4. **Accessible Puzzle Design:** The game prioritizes reasoning, observation, and communication.
-5. **Narrative Suspense:** The demo ends with a meaningful revelation and a larger unanswered question.
+### Movement
 
-## 6. Player Controls
+The player moves in eight directions using the WASD keys.
 
-**Movement Model:** Side-view 2.5D using 3D assets and constrained horizontal movement.
+| Key | Action |
+|---|---|
+| W | Move upward |
+| A | Move left |
+| S | Move downward |
+| D | Move right |
+| E | Interact with nearby object |
+| Tab | Show available clues, if implemented |
+| Esc | Open pause menu |
 
-| Input | Action                       |
-| ----- | ---------------------------- |
-| A / D | Move left and right          |
-| E     | Interact                     |
-| Tab   | Open journal / current clues |
-| Esc   | Pause menu                   |
+Diagonal movement should be normalized to prevent faster diagonal travel.
 
-No combat, advanced movement, or precision platforming is required in the MVP.
+### Interactions
 
-The camera follows the local character and uses scripted framing for major environmental changes.
+Interactive equipment uses `Area2D` detection.
 
-## 7. Core Gameplay Loop
-
-1. Explore the active section of the university.
-2. Encounter an environmental or technical obstacle.
-3. Investigate clues unique to the current timeline.
-4. Communicate with the other player.
-5. Coordinate interactions across the two worlds.
-6. Trigger a temporal consequence.
-7. Advance to the next university section.
-8. Uncover more information about the catastrophe.
-
-## 8. Level 01 — University Research Wing
-
-**Total Area:** One connected research wing, represented in two eras.
-
-### Area A — Signal Lab
-
-**Past State:** Clean laboratory with functional transmitter and three calibration dials.
-
-**Future State:** Destroyed laboratory containing a damaged receiver and surviving records.
-
-**Puzzle:** Lost Frequency
-
-- Future player restores receiver power.
-- Future player discovers the required signal sequence.
-- Past player enters the sequence into the transmitter.
-- Future player confirms the signal.
-- The connection stabilizes and access to Area B is unlocked.
-
-**Success State:** `puzzle_01_complete`
-
-### Area B — Maintenance Corridor
-
-**Past State:** Functional corridor with three adjustable structural supports.
-
-**Future State:** Collapsed corridor with inaccessible passage.
-
-**Puzzle:** Broken Corridor
-
-- Future player retrieves structural maintenance information.
-- Past player positions three supports correctly.
-- Past player confirms the maintenance configuration.
-- The future corridor updates into a repaired state.
-- Future player crosses and finds a laboratory access code.
-- Past player uses the code to open the corresponding laboratory entrance.
-
-**Success State:** `puzzle_02_complete`
-
-**Temporal Update:** Deferred until maintenance confirmation.
-
-### Area C — Research Core
-
-**Past State:** Working experimental prototype with adjustable power controls.
-
-**Future State:** Damaged temporal reactor and unstable containment equipment.
-
-**Puzzle:** Temporal Anchor
-
-- Both players enter their corresponding research rooms.
-- Future player initiates stabilization.
-- A shared 90-second countdown begins.
-- Past player configures the prototype's energy sequence.
-- Future player restores the damaged receiver connections.
-- Both players trigger synchronized activation within a short coordination window.
-- Temporal instability stops.
-
-**Success State:** `puzzle_03_complete`
-
-**Failure State:** Reset the final puzzle only.
-
-## 9. Temporal Interaction System
-
-Each linked object has explicitly authored states in the relevant timeline.
+When a player approaches an object, an interaction prompt appears.
 
 Examples:
+- E — Use Terminal
+- E — Read Document
+- E — Activate Machine
+- E — Adjust Support
 
-| Linked Element         | Past Interaction                      | Future Consequence               |
-| ---------------------- | ------------------------------------- | -------------------------------- |
-| Transmitter            | Correctly calibrate signal            | Future receiver reconnects       |
-| Structural supports    | Set correct configuration and confirm | Collapsed passage becomes stable |
-| Prototype power supply | Configure energy output               | Stabilizer becomes ready         |
-| Temporal Anchor        | Complete synchronized activation      | Fracture stabilizes              |
+Character sprites and props use depth sorting, while walls, blocked passages, and machines use 2D collision.
 
-There will be no generalized time simulation, destructible world system, or arbitrary object-history generation in the Game Jam version.
+No jumping, combat, or precision platforming is required.
 
-## 10. Multiplayer Design
+---
 
-### Session Structure
+## 5. Setting
 
-- Main Menu → Host Game / Join Game.
-- Exactly two connected players.
-- One player receives the Past role.
-- The other receives the Future role.
-- Both players confirm readiness.
-- Each player loads their timeline version of the Research Wing.
+### Main Location
 
-### Proposed Technical Architecture
+A fictional university with advanced research laboratories and an experimental temporal-energy project.
 
-**Godot Networking:** `ENetMultiplayerPeer` with Godot's high-level multiplayer API and RPCs.
+The complete game may include classrooms, libraries, lecture halls, research facilities, student areas, and surrounding locations.
 
-**Authority:** The host maintains authoritative puzzle states, role assignments, timer state, and level progression.
+The Game Jam demo focuses on a single research wing.
 
-**Synchronization:**
+### Research Wing Layout
 
-- Reliable network messages for puzzle interactions and state changes.
-- Independent local camera and character movement.
-- Shared puzzle progression controlled by the host.
-- Late or repeated event messages must not trigger duplicate puzzle completion.
+**Area A — Signal Laboratory**
 
-**Connectivity:** Cross-network internet testing must occur early. A reachable host, suitable tunnel, or relay solution is required when direct peer connectivity is unavailable.
+A small research room containing communication equipment.
 
-**Disconnect Handling:** The MVP may pause gameplay and return both players to the lobby if either player disconnects. Full reconnection is outside scope.
+**Area B — Maintenance Corridor**
 
-**Communication:** Players communicate through an external voice call. Built-in voice chat is not part of the MVP.
+A connecting university passage containing structural supports and technical equipment.
 
-## 11. Narrative Events
+**Area C — Temporal Research Core**
 
-### Opening — First Contact
+The experimental laboratory where the temporal device is located.
 
-The student is conducting research when the university's equipment receives an impossible signal.
+Each area has a past and future visual state.
 
-The professor, in the ruined future laboratory, establishes contact with his younger self.
+The prototype uses compact connected rooms rather than a large open world.
 
-A brief temporal fracture allows them to see each other.
+---
 
-### Investigation
+## 6. Core Gameplay Loop
 
-The players restore their connection, reconstruct a destroyed path, and reach the experimental core.
+1. Enter a new university area.
+2. Explore the surroundings.
+3. Discover a puzzle or inaccessible passage.
+4. Identify clues available only in one timeline.
+5. Share information with the other player.
+6. Coordinate actions.
+7. Change an object or event in the past.
+8. Observe the consequences in the future.
+9. Advance and discover more about the catastrophe.
 
-Each solved puzzle provides evidence that the two environments are linked.
+The two players should regularly have different information and different responsibilities.
 
-### Climax
+---
 
-The players stabilize the first Temporal Anchor moments before the surrounding reality collapses.
+## 7. Temporal Causality System
 
-### Ending — Confirmed Narrative Reveal
+### Main Principle
 
-After stabilization, a hidden research record becomes accessible.
+Selected actions in the past change explicitly defined objects in the future.
 
-It identifies the professor as the authorized researcher who deliberately initiated the experiment.
+The game does not simulate an entire changing universe.
 
-The record confirms intentional activation, but the motive section is missing or encrypted.
+Instead, linked objects have predetermined states.
 
-The student realizes that his future self has withheld the truth.
+### Temporal Interaction Types
 
-The professor refuses to reveal his reason.
+**Instant Change**
 
-The connection begins to distort.
+An event in the past immediately changes a corresponding object in the future.
 
-A final display indicates that additional temporal fractures remain.
+**Delayed Change**
 
-**End of Demo.**
+A past action updates the future only after a confirmation or activation sequence.
 
-## 12. Visual Direction
+**Information Transfer**
 
-### Past
+The future contains information required for solving a problem in the past.
 
-- Warm natural lighting.
-- Green environmental accents.
-- Clean surfaces and recognizable campus materials.
-- Subtle scientific instrumentation.
-- Peaceful research-campus ambience.
+### Visual Feedback
 
-### Future
+A timeline change can trigger:
+- A short energy flash.
+- Distortion particles.
+- An object fading into its updated state.
+- A distinct sound effect.
+- A brief camera emphasis.
 
-- Desaturated colors with blue and violet highlights.
-- Darkened interiors.
-- Damaged materials and abandoned equipment.
-- Fractured light and distortion effects.
-- Low-frequency electrical and environmental ambience.
+These effects should be short and should not interrupt player control unnecessarily.
 
-### Shared Visual Language
+---
 
-Linked objects should have recognizable shapes in both timelines. Successful time changes should include a clear animation or sound cue.
+## 8. Puzzle Design
 
-## 13. Audio Direction
+### Puzzle 01 — Lost Frequency
 
-- Ambient university sounds in the past.
-- Environmental silence, mechanical hum, and temporal interference in the future.
-- Unique interaction sounds for clues and terminals.
-- Increasing audio tension in the final timed puzzle.
-- A distinct sound when temporal changes are synchronized.
-- Audio distortion during the final revelation.
+**Location:** Signal Laboratory  
+**Estimated Duration:** 1–2 minutes
 
-## 14. Technical Scene Structure — Proposed
+**Past Player:**
+- Finds a functional communication transmitter.
+- Examines its calibration controls.
+- Inputs a sequence received from the future.
+
+**Future Player:**
+- Restores power to a damaged receiver.
+- Reads a surviving transmission log.
+- Finds the required sequence.
+- Confirms the connection.
+
+**Result:**
+The communication system stabilizes and the next area unlocks.
+
+**Purpose:**
+Teach asymmetric cooperation and information exchange.
+
+### Puzzle 02 — Broken Corridor
+
+**Location:** Maintenance Corridor  
+**Estimated Duration:** 2–3 minutes
+
+**Past Player:**
+- Finds three adjustable support mechanisms.
+- Changes their configuration.
+- Confirms the maintenance setup.
+
+**Future Player:**
+- Finds a structural diagram showing the correct configuration.
+- Communicates the sequence to the past.
+- Watches the collapsed corridor change.
+- Crosses the restored passage.
+- Finds an access code required by the past player.
+
+**Result:**
+Both players gain access to the Temporal Research Core.
+
+**Purpose:**
+Introduce delayed environmental changes with a visible consequence.
+
+### Puzzle 03 — Temporal Anchor
+
+**Location:** Temporal Research Core  
+**Estimated Duration:** 2–3 minutes
+
+**Past Player:**
+- Configures energy output.
+- Activates the experimental prototype.
+
+**Future Player:**
+- Repairs the temporal stabilizer.
+- Reads the correct activation sequence.
+- Coordinates final synchronization.
+
+**Challenge:**
+A proposed 90-second countdown begins when the final stabilization attempt starts.
+
+Both players must coordinate their actions before time expires.
+
+**Result:**
+The temporal fracture stabilizes.
+
+**Failure:**
+Reset only the final puzzle.
+
+**Scope Classification:**
+Optional for the Game Jam if the first two puzzles and the ending are not fully stable.
+
+---
+
+## 9. Multiplayer Architecture
+
+### Network Structure
+
+- Two-player Host/Join system.
+- Exactly one player is assigned to the Past.
+- Exactly one player is assigned to the Future.
+- Each device displays its own timeline.
+- The host manages authoritative puzzle state.
+
+### Engine Technology
+
+Godot 4 high-level multiplayer with `ENetMultiplayerPeer` and RPC communication.
+
+### Synchronized Information
+
+- Player role assignment.
+- Puzzle input events.
+- Puzzle completion.
+- Linked environmental states.
+- Shared progression.
+- Temporal Anchor timer, if implemented.
+- Ending trigger.
+
+The players do not need to see each other's regular movement in their respective worlds.
+
+Each device can handle local character movement and rendering independently.
+
+The host validates puzzle actions and broadcasts accepted state changes.
+
+### Internet Connectivity
+
+Host/Join must be tested between the intended computers.
+
+Internet play across different networks requires a reachable host, suitable network configuration, or relay/tunnel solution.
+
+Use an external voice call for cooperative communication.
+
+---
+
+## 10. Godot 2D Architecture — UPDATED
+
+The project uses native 2D nodes rather than a 3D scene hierarchy.
+
+### Main Nodes
+
+- `Node2D` — World organization.
+- `CharacterBody2D` — Player movement.
+- `AnimatedSprite2D` — Character animation.
+- `CollisionShape2D` — Character and object collisions.
+- `Camera2D` — Camera following.
+- `TileMapLayer` — Floors and structural layouts.
+- `Sprite2D` — Furniture and decorations.
+- `Area2D` — Interactive objects.
+- `PointLight2D` — Local atmospheric lighting.
+- `CanvasModulate` — Global timeline tint.
+- `GPUParticles2D` — Temporal effects.
+- `CanvasLayer` — UI and dialogue.
+
+### Recommended Project Structure
 
 ```text
 res://
 ├── scenes/
-│   ├── main_menu.tscn
-│   ├── lobby.tscn
-│   ├── player.tscn
-│   ├── past_research_wing.tscn
-│   ├── future_research_wing.tscn
-│   ├── puzzle_01_ui.tscn
-│   ├── puzzle_02_ui.tscn
-│   ├── puzzle_03_ui.tscn
-│   └── ending.tscn
+│   ├── menu/
+│   │   └── main_menu.tscn
+│   ├── multiplayer/
+│   │   └── lobby.tscn
+│   ├── characters/
+│   │   ├── student.tscn
+│   │   └── professor.tscn
+│   ├── world/
+│   │   ├── past_world.tscn
+│   │   └── future_world.tscn
+│   ├── rooms/
+│   │   ├── signal_lab.tscn
+│   │   ├── corridor.tscn
+│   │   └── research_core.tscn
+│   ├── puzzles/
+│   │   ├── frequency_puzzle.tscn
+│   │   ├── corridor_puzzle.tscn
+│   │   └── temporal_anchor.tscn
+│   └── ui/
+│       └── dialogue_box.tscn
+│
 ├── scripts/
-│   ├── network_manager.gd
-│   ├── game_state.gd
 │   ├── player_controller.gd
-│   ├── interaction_component.gd
+│   ├── network_manager.gd
+│   ├── game_manager.gd
 │   ├── puzzle_manager.gd
 │   └── temporal_event_manager.gd
+│
 ├── assets/
-│   ├── models/
-│   ├── materials/
-│   ├── audio/
-│   └── ui/
+│   ├── characters/
+│   │   ├── student/
+│   │   └── professor/
+│   ├── environments/
+│   │   ├── shared/
+│   │   ├── past/
+│   │   └── future/
+│   ├── effects/
+│   ├── ui/
+│   └── audio/
+│
 └── project.godot
 ```
 
-The shared game state should track:
+The project should use scene instances and reusable scripts to avoid duplicating core gameplay logic between the two timelines.
 
-- Connected players and assigned roles.
-- Puzzle progression.
-- Individual linked-object states.
-- Final puzzle timer.
-- Temporal fracture stability.
-- Demo completion.
+---
 
-## 15. MVP Scope
+## 11. Art Production Pipeline — UPDATED
 
-### Must Have
+### Production Goal
 
-- Two-player host/join functionality.
-- Separate past and future environments.
-- Basic movement and interaction.
-- Three complete cooperative puzzles.
-- State synchronization across players.
-- At least one clearly visible past-to-future environment change.
-- Final timed sequence.
-- Short opening and ending presentation.
+Produce the necessary assets without requiring the team to learn traditional 3D modeling.
 
-### Should Have
+### Recommended Workflow
 
-- Brief fracture visual effects.
-- Character dialogue and subtitle text.
-- Basic journal or clue display.
-- Music and interaction sounds.
-- Visual distinctions between the eras.
+**Step 1 — Visual References**
 
-### Outside MVP
+Use AI image generation to establish:
+- Character appearance.
+- Art style.
+- Laboratory furniture.
+- Research equipment.
+- Past and future environments.
 
-- Full university campus.
-- NPCs and dialogue trees.
-- Combat systems.
-- Dynamic timeline simulation.
-- Multiple branching endings.
-- Full voice acting.
+**Step 2 — Sprite Production**
+
+Generate individual objects with clean silhouettes and transparent backgrounds.
+
+Examples:
+- Laboratory desk.
+- Computer.
+- Bookshelf.
+- Radio transmitter.
+- Electrical console.
+- Door.
+- Structural support.
+- Temporal machine.
+
+**Step 3 — Past/Future Variations**
+
+Produce two variants of selected objects.
+
+Maintain matching proportions and silhouettes.
+
+The future variant may contain cracks, damage, broken screens, and missing components.
+
+**Step 4 — Godot Integration**
+
+Import PNG sprites into Godot.
+
+Arrange objects using `Sprite2D`, `TileMapLayer`, and scene instances.
+
+Add collision shapes only where necessary.
+
+**Step 5 — Atmosphere**
+
+Use lighting, overlays, particles, and sound to differentiate the timelines.
+
+### Asset Guidelines
+
+- Maintain a consistent viewing angle.
+- Maintain consistent proportions and pixel density.
+- Use transparency for standalone props.
+- Avoid inconsistent realistic and cartoon styles.
+- Keep interaction targets visually recognizable.
+- Prefer reusable sprite variations over generating every room as a single flat image.
+
+### Minimum Sprite Requirements
+
+**Characters:**
+- Young student.
+- Older professor.
+- Basic idle and walk animations.
+
+**Environment:**
+- Floor and wall tiles.
+- Laboratory desk.
+- Chairs.
+- Computers.
+- Door.
+- Research equipment.
+- Maintenance supports.
+- Reactor or temporal device.
+
+**Future Variants:**
+- Damaged wall.
+- Broken furniture.
+- Ruined machinery.
+- Rubble.
+- Temporal cracks.
+
+**UI:**
+- Interaction prompt.
+- Puzzle interface.
+- Dialogue box.
+- Main menu.
+- Timeline indicators.
+
+---
+
+## 12. Narrative Structure
+
+### Opening — The Signal
+
+The student is studying in the university research wing when an unusual signal appears on a nearby instrument.
+
+The professor receives the same signal from the destroyed future laboratory.
+
+The characters begin communicating.
+
+A temporal fracture briefly allows them to see one another.
+
+### Discovery
+
+The players discover that they are the same individual at different points in time.
+
+They begin using information from the future and objects in the past to move through the university.
+
+### Escalation
+
+The environment becomes increasingly unstable.
+
+The professor insists that restoring the temporal system is necessary.
+
+He avoids revealing the full history of the experiment.
+
+### Climax
+
+The players stabilize the first temporal fracture.
+
+### Cliffhanger
+
+A recovered research record identifies the professor as the person who deliberately activated the original device.
+
+The record indicates that he understood the risks.
+
+However, the section explaining his motive is missing or encrypted.
+
+The young student confronts his future self.
+
+The professor does not explain.
+
+Additional fractures appear on the remaining monitoring system.
+
+**End of Demo.**
+
+The professor's reason for activating the device remains a mystery for the full game.
+
+---
+
+## 13. Audio Direction
+
+### Past
+
+- Quiet university ambience.
+- Electrical equipment hum.
+- Distant campus sounds.
+- Calm ambient music.
+
+### Future
+
+- Environmental silence.
+- Damaged electrical systems.
+- Distant structural sounds.
+- Intermittent temporal interference.
+- Dark ambient music.
+
+### Shared Events
+
+- Radio connection sound.
+- Puzzle interaction cues.
+- Temporal synchronization effect.
+- Countdown warning.
+- Final revelation sound cue.
+
+Audio should provide clear feedback without overpowering player-to-player communication.
+
+---
+
+## 14. MVP Scope
+
+### Required
+
+- 2D sprites with a 2.5D visual presentation.
+- Two controllable characters.
+- Eight-direction movement.
+- Simple interaction system.
+- Separate past and future visuals.
+- Two-player Host/Join multiplayer.
+- Two complete cooperative puzzles.
+- A visible change between timelines.
+- Short opening and cliffhanger ending.
+- Windows export.
+
+### Optional
+
+- Third timed puzzle.
+- Advanced sprite animations.
+- Additional fracture particles.
+- Dynamic lighting transitions.
+- Animated cutscene elements.
+- Interactive journal.
+
+### Excluded from the Game Jam
+
+- Full 3D models and environments.
+- Large open-world campus.
+- Complex skeletal animations.
+- Combat.
+- Full timeline simulation.
 - In-game voice chat.
-- Advanced cinematics.
-- Matchmaking and persistent servers.
+- Multiple endings.
+- Extensive dialogue trees.
 
-## 16. Development Plan — Three-Day Game Jam
+---
 
-### Day 1 — Playable Foundation
+## 15. Development Team — Two People
 
-- Initialize Godot project and Git repository.
-- Create prototype player movement.
-- Set up Host/Join networking.
-- Verify connection between two separate devices.
-- Create greybox versions of the three university areas.
-- Implement a simple synchronized interaction.
-- Complete the first puzzle's functional logic.
+### Developer A — Systems and Gameplay
 
-### Day 2 — Core Experience
+**Responsibilities:**
+- Multiplayer.
+- Player controller.
+- Interaction mechanics.
+- Puzzle logic.
+- Timeline event synchronization.
+- Game progression and ending logic.
 
-- Implement the second puzzle and environmental state change.
-- Implement the third puzzle and synchronized countdown.
-- Add scene progression and basic narrative events.
-- Integrate the announced Game Jam modifier if required.
-- Run a complete gameplay test with placeholders.
+### Developer B — Visuals and World
 
-### Day 3 — Presentation and Stability
+**Responsibilities:**
+- AI-assisted asset generation.
+- Sprite preparation.
+- Past/future room layouts.
+- Lighting and visual effects.
+- UI and dialogue presentation.
+- Audio integration.
 
-- Apply the two eras' visual styles.
-- Add essential sound and interface feedback.
-- Add the opening and cliffhanger ending.
-- Test multiplayer failure cases.
-- Fix progression blockers and softlocks.
-- Package and test the final build on two computers.
+**Both Developers:**
+- Review asset consistency.
+- Integrate systems.
+- Test online connectivity.
+- Fix critical bugs.
+- Package the final demo.
+
+---
+
+## 16. Three-Day Development Plan
+
+### Day 1 — Technical Foundation
+
+- Create a clean Godot 2D project.
+- Implement basic player movement.
+- Build the main Host/Join menu.
+- Test connection between two clients.
+- Create two placeholder rooms.
+- Synchronize one past-to-future state change.
+
+**Milestone:** Both players connect and observe the first temporal interaction.
+
+### Day 2 — Playable Experience
+
+- Finish the first cooperative puzzle.
+- Build the maintenance corridor.
+- Implement the second cooperative puzzle.
+- Replace critical placeholders with generated sprites.
+- Integrate the required Game Jam modifier.
+- Create a basic complete start-to-finish gameplay path.
+
+**Milestone:** Playable demo with two functional cooperative puzzles.
+
+### Day 3 — Visual Polish and Release
+
+- Complete remaining art integration.
+- Add timeline-specific lighting.
+- Add basic visual and audio effects.
+- Implement the narrative ending.
+- Add optional third puzzle only if time permits.
+- Test failure cases and network synchronization.
+- Export and validate the Windows build.
+
+**Milestone:** Stable demo playable from start to finish.
+
+---
 
 ## 17. Acceptance Criteria
 
 The demo is complete when:
 
-1. Two users can host and join a session on separate computers.
-2. Each player receives and controls the correct timeline character.
-3. Both players can complete the three puzzles through cooperation.
-4. Past-to-future changes occur reliably on the correct clients.
-5. The final countdown is consistent between both players.
-6. Failure in the last puzzle does not erase earlier progression.
-7. Both players can reach and view the ending.
-8. The ending communicates the professor's deliberate involvement without revealing his motive.
-9. A complete run takes approximately 5–10 minutes for players familiar with the controls.
-
-## 18. Post-Jam Expansion
-
-The full game can expand into additional campus locations and eventually the surrounding world.
-
-Possible features include more complex historical consequences, additional temporal fractures, the professor's full backstory, new environmental puzzles, and the investigation into why he deliberately activated the device.
-
-The prototype should establish the core experience without attempting to resolve the entire mystery.
+1. Exactly two players can connect on separate computers.
+2. Each player controls the correct character.
+3. Characters move smoothly in the 2D world.
+4. The past and future clearly look different.
+5. Interactive objects provide understandable feedback.
+6. Both players are required to solve the puzzles.
+7. Changes in the past visibly affect the future.
+8. Puzzle states remain synchronized.
+9. Both players reach the ending.
+10. The ending reveals the professor's intentional role while keeping his motive mysterious.
+11. The game can be completed in approximately 5–10 minutes.
 
 ---
 
-**Document Version:** 0.2
-**Narrative Decisions:** Approved
-**Level Mechanics and Technical Design:** Proposed — Pending Playtesting
-**Next Milestone:** Godot Greybox Level and First Networked Puzzle
+## 18. Future Expansion
+
+The full release may include:
+
+- More university buildings.
+- Additional historical periods.
+- New temporal interaction mechanics.
+- Character-specific abilities.
+- More complex environmental changes.
+- Larger research mysteries.
+- Additional cinematic story sequences.
+- The professor's complete backstory.
+- A final explanation of the catastrophe.
+
+The Game Jam prototype is the opening chapter of a larger story.
+
+---
+
+**Document Version:** 0.3  
+**Narrative:** Approved  
+**Visual Direction:** 2D Art with 2.5D Depth — Approved  
+**Gameplay and Level Scope:** Updated for Two Developers  
+**Next Milestone:** Build the Godot 2D Prototype and Establish the AI Art Pipeline
