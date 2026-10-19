@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="night"><stop stop-color="#171c21"/><stop offset=".43" stop-color="#10191e"/><stop offset="1" stop-color="#07151e"/></linearGradient>
+    <radialGradient id="amber"><stop stop-color="#aa7541" stop-opacity=".23"/><stop offset="1" stop-color="#aa7541" stop-opacity="0"/></radialGradient>
+    <radialGradient id="blue"><stop stop-color="#3e9ea5" stop-opacity=".18"/><stop offset="1" stop-color="#3e9ea5" stop-opacity="0"/></radialGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3b5559" stop-opacity=".12"/><stop offset="1" stop-color="#121d24" stop-opacity="0"/></linearGradient>
+    <linearGradient id="rift" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d9b47a"/><stop offset=".48" stop-color="#c1c7ad"/><stop offset="1" stop-color="#78d8d8"/></linearGradient>
+  </defs>
+  <path fill="url(#night)" d="M0 0h1600v900H0z"/>
+  <ellipse cx="280" cy="370" rx="670" ry="650" fill="url(#amber)"/>
+  <ellipse cx="1170" cy="416" rx="610" ry="600" fill="url(#blue)"/>
+  <!-- The same research wing, intact on the left and fractured on the right. -->
+  <g fill="none" stroke="#aa9474" stroke-opacity=".09" stroke-width="2">
+    <path d="M70 700V223Q70 130 163 130h390q93 0 93 93v477M107 700V233q0-65 65-65h370q65 0 65 65v467"/>
+    <path d="M155 688V271h115v417m-57-417v417M328 688V271h115v417m-57-417v417M501 688V271h63v417"/>
+    <path d="M0 699h700M0 714h700M32 748h610M68 748v80m531-80v80"/>
+  </g>
+  <g fill="none" stroke="#79c2c8" stroke-opacity=".10" stroke-width="2">
+    <path d="M743 704V206Q743 121 828 121h549q85 0 85 85v91m0 68v329M780 700V218q0-60 60-60h525q60 0 60 60v184m0 97v201"/>
+    <path d="M850 690V255h121v204m0 74v157M1235 690V255h121v435M850 365h121m264 0h121m-60-110v435"/>
+    <path d="M729 702h871M736 717h864M967 740l49-21 83 27 55-15 89 29 76-12 84 39 197 18"/>
+  </g>
+  <path fill="url(#floor)" d="M0 716h1600v184H0z"/>
+  <g fill="none" stroke="#8ca7a5" stroke-opacity=".055">
+    <path d="M0 780h1600M0 858h1600M1050 716L200 900m900-184L660 900m490-184 33 184m17-184 490 184"/>
+  </g>
+  <!-- Ghosted technical diagram and interrupted concentric rings. -->
+  <g fill="none" stroke="#8eb9ba">
+    <circle cx="1120" cy="420" r="278" stroke-opacity=".065"/>
+    <circle cx="1120" cy="420" r="253" stroke-opacity=".11"/>
+    <circle cx="1120" cy="420" r="223" stroke-opacity=".09" stroke-dasharray="2 12"/>
+    <path d="M1120 115v34m0 542v34M815 420h34m542 0h34" stroke-opacity=".23"/>
+    <path d="M864 273l-32-20h-55m584 315 36 24h63M901 625l-28 32h-74" stroke-opacity=".17"/>
+  </g>
+  <g fill="none" stroke="url(#rift)" stroke-linecap="round">
+    <path d="M964 276a212 212 0 0 1 307-5" stroke-width="4" opacity=".69"/>
+    <path d="M1296 302a212 212 0 0 1-14 256" stroke-width="3" opacity=".57"/>
+    <path d="M1257 583a212 212 0 0 1-293-19" stroke-width="4" opacity=".48"/>
+    <path d="M941 534a212 212 0 0 1-3-220" stroke-width="3" opacity=".46"/>
+    <circle cx="1120" cy="420" r="198" stroke-width="1" opacity=".17"/>
+  </g>
+  <!-- A crack through the clock separates the two timelines. -->
+  <path d="M1150 167l-35 92 27 57-41 73 29 57-47 74 20 49-43 106" fill="none" stroke="#6ac7ce" stroke-width="18" opacity=".035"/>
+  <path d="M1150 167l-35 92 27 57-41 73 29 57-47 74 20 49-43 106" fill="none" stroke="url(#rift)" stroke-width="1.6" opacity=".75"/>
+  <path d="M1142 316l38-25 23-2m-102 100-44-26-12-31m38 188-31 1-26 32" fill="none" stroke="#91c8c7" opacity=".28"/>
+  <g fill="#64868a" opacity=".13">
+    <path d="M1395 754l-32-26 26-9 41 33zM1467 777l18-36 33 45zM936 742l18-14 31 21z"/>
+  </g>
+  <path d="M800 70v760" stroke="#9bad9d" opacity=".035"/>
+</svg>
