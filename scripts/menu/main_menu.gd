@@ -31,7 +31,10 @@ func _ready() -> void:
 	%HostAddress.text_submitted.connect(func(_text: String) -> void: _join_lan())
 	%CopyAddress.pressed.connect(_copy_host_address)
 	%ReadyButton.pressed.connect(func() -> void: NetworkManager.set_ready(not NetworkManager.guest_ready))
+	%StartGameButton.pressed.connect(func() -> void: NetworkManager.start_game())
+	%PreviewButton.pressed.connect(_preview_spawn_area)
 	NetworkManager.state_changed.connect(_refresh_lan)
+	NetworkManager.game_started.connect(_enter_spawn_area)
 	fullscreen_toggle.toggled.connect(_set_fullscreen)
 	motion_toggle.toggled.connect(_set_motion)
 	_load_settings()
@@ -200,12 +203,23 @@ func _refresh_lan() -> void:
 	%PastRole.text = "STUDENT · PAST\nHost connected" if not idle else "STUDENT · PAST\nWaiting for host"
 	%FutureRole.text = "PROFESSOR · FUTURE\n" + ("Ready" if NetworkManager.guest_ready else "Connected") if connected else "PROFESSOR · FUTURE\nWaiting to join"
 	%ReadyButton.visible = connected and _lan_mode == "join"
+	%StartGameButton.visible = connected and _lan_mode == "host"
+	%StartGameButton.disabled = not NetworkManager.guest_ready
 	%ReadyButton.text = "READY ✓" if NetworkManager.guest_ready else "I'M READY"
 	if focus_ready and pages.get_node("LanPage").visible:
 		%ReadyButton.grab_focus.call_deferred()
 	%SessionHint.visible = connected
 	if pages.get_node("LanPage").visible:
 		%BackButton.text = "BACK" if idle else "LEAVE SESSION"
+
+
+func _preview_spawn_area() -> void:
+	if NetworkManager.state == NetworkManager.State.IDLE:
+		_enter_spawn_area()
+
+
+func _enter_spawn_area() -> void:
+	get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
 
 
 func _set_fullscreen(enabled: bool) -> void:

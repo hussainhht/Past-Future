@@ -271,6 +271,12 @@ layout_mode = 2
 disabled = true
 text = "SAME-PC SPLIT-SCREEN     /     COMING SOON"
 
+[node name="PreviewButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "EXPLORE THE LAB     /     SOLO PREVIEW"
+
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -387,7 +393,14 @@ visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.53, 0.64, 0.64, 1)
 theme_override_font_sizes/font_size = 15
-text = "Co-op lobby connected. Chapter 0 is coming soon."
+text = "Professor: mark ready. Student: start the game."
+
+[node name="StartGameButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "START GAME"
 
 [node name="SettingsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
 visible = false

@@ -1,0 +1,125 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://shaders/painted_prop.gdshader" id="1"]
+
+[sub_resource type="ShaderMaterial" id="Paint_top"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.733, 0.714, 0.576, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_frame"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.294, 0.357, 0.333, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_body"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.533, 0.569, 0.506, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_paper"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.890, 0.859, 0.714, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_0"]
+material = SubResource("Paint_top")
+size = Vector3(4.32, 0.18, 0.8)
+
+[sub_resource type="BoxMesh" id="Mesh_1"]
+material = SubResource("Paint_frame")
+size = Vector3(0.18, 1.32, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_2"]
+material = SubResource("Paint_frame")
+size = Vector3(0.18, 1.32, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_3"]
+material = SubResource("Paint_frame")
+size = Vector3(0.18, 1.32, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_4"]
+material = SubResource("Paint_frame")
+size = Vector3(0.18, 1.32, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_5"]
+material = SubResource("Paint_body")
+size = Vector3(4.0, 0.24, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_6"]
+material = SubResource("Paint_body")
+size = Vector3(4.0, 0.24, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_7"]
+material = SubResource("Paint_frame")
+size = Vector3(0.65, 0.08, 0.4)
+
+[sub_resource type="BoxMesh" id="Mesh_8"]
+material = SubResource("Paint_paper")
+size = Vector3(0.4, 0.012, 0.22)
+
+[sub_resource type="BoxMesh" id="Mesh_9"]
+material = SubResource("Paint_paper")
+size = Vector3(0.62, 0.015, 0.4)
+
+[node name="Table" type="Node3D"]
+
+[node name="Top" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.41, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_0")
+metadata/palette_slot = "top"
+
+[node name="LeftBackLeg" type="MeshInstance3D" parent="."]
+position = Vector3(-1.94, 0.66, -0.26)
+cast_shadow = 0
+mesh = SubResource("Mesh_1")
+metadata/palette_slot = "frame"
+
+[node name="LeftFrontLeg" type="MeshInstance3D" parent="."]
+position = Vector3(-1.94, 0.66, 0.26)
+cast_shadow = 0
+mesh = SubResource("Mesh_2")
+metadata/palette_slot = "frame"
+
+[node name="RightBackLeg" type="MeshInstance3D" parent="."]
+position = Vector3(1.94, 0.66, -0.26)
+cast_shadow = 0
+mesh = SubResource("Mesh_3")
+metadata/palette_slot = "frame"
+
+[node name="RightFrontLeg" type="MeshInstance3D" parent="."]
+position = Vector3(1.94, 0.66, 0.26)
+cast_shadow = 0
+mesh = SubResource("Mesh_4")
+metadata/palette_slot = "frame"
+
+[node name="FrontApron" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.2, 0.3)
+cast_shadow = 0
+mesh = SubResource("Mesh_5")
+metadata/palette_slot = "body"
+
+[node name="BackApron" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.2, -0.3)
+cast_shadow = 0
+mesh = SubResource("Mesh_6")
+metadata/palette_slot = "body"
+
+[node name="Notebook" type="MeshInstance3D" parent="."]
+position = Vector3(-1.05, 1.54, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_7")
+metadata/palette_slot = "frame"
+
+[node name="NotebookLabel" type="MeshInstance3D" parent="."]
+position = Vector3(-1.05, 1.586, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_8")
+metadata/palette_slot = "paper"
+
+[node name="Paper" type="MeshInstance3D" parent="."]
+position = Vector3(0.85, 1.51, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_9")
+metadata/palette_slot = "paper"

@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" path="res://shaders/painted_prop.gdshader" id="1"]
+
+[sub_resource type="ShaderMaterial" id="Paint_body"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.533, 0.569, 0.506, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_frame"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.294, 0.357, 0.333, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_top"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.733, 0.714, 0.576, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_drawer"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.455, 0.518, 0.459, 1)
+
+[sub_resource type="ShaderMaterial" id="Paint_handle"]
+resource_local_to_scene = true
+shader = ExtResource("1")
+shader_parameter/paint_color = Color(0.839, 0.812, 0.667, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_0"]
+material = SubResource("Paint_body")
+size = Vector3(1.65, 3.04, 0.8)
+
+[sub_resource type="BoxMesh" id="Mesh_1"]
+material = SubResource("Paint_frame")
+size = Vector3(1.65, 0.16, 0.8)
+
+[sub_resource type="BoxMesh" id="Mesh_2"]
+material = SubResource("Paint_top")
+size = Vector3(1.72, 0.1, 0.86)
+
+[sub_resource type="BoxMesh" id="Mesh_3"]
+material = SubResource("Paint_drawer")
+size = Vector3(1.4, 0.6, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_4"]
+material = SubResource("Paint_handle")
+size = Vector3(0.34, 0.055, 0.07)
+
+[sub_resource type="BoxMesh" id="Mesh_5"]
+material = SubResource("Paint_drawer")
+size = Vector3(1.4, 0.6, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_6"]
+material = SubResource("Paint_handle")
+size = Vector3(0.34, 0.055, 0.07)
+
+[sub_resource type="BoxMesh" id="Mesh_7"]
+material = SubResource("Paint_drawer")
+size = Vector3(1.4, 0.6, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_8"]
+material = SubResource("Paint_handle")
+size = Vector3(0.34, 0.055, 0.07)
+
+[sub_resource type="BoxMesh" id="Mesh_9"]
+material = SubResource("Paint_drawer")
+size = Vector3(1.4, 0.6, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_10"]
+material = SubResource("Paint_handle")
+size = Vector3(0.34, 0.055, 0.07)
+
+[node name="Cabinet" type="Node3D"]
+
+[node name="Body" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.6, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_0")
+metadata/palette_slot = "body"
+
+[node name="Plinth" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.08, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_1")
+metadata/palette_slot = "frame"
+
+[node name="Cap" type="MeshInstance3D" parent="."]
+position = Vector3(0, 3.15, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_2")
+metadata/palette_slot = "top"
+
+[node name="Drawer1" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.5, 0.414)
+cast_shadow = 0
+mesh = SubResource("Mesh_3")
+metadata/palette_slot = "drawer"
+
+[node name="Handle1" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.56, 0.47)
+cast_shadow = 0
+mesh = SubResource("Mesh_4")
+metadata/palette_slot = "handle"
+
+[node name="Drawer2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.19, 0.414)
+cast_shadow = 0
+mesh = SubResource("Mesh_5")
+metadata/palette_slot = "drawer"
+
+[node name="Handle2" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.25, 0.47)
+cast_shadow = 0
+mesh = SubResource("Mesh_6")
+metadata/palette_slot = "handle"
+
+[node name="Drawer3" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.88, 0.414)
+cast_shadow = 0
+mesh = SubResource("Mesh_7")
+metadata/palette_slot = "drawer"
+
+[node name="Handle3" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1.94, 0.47)
+cast_shadow = 0
+mesh = SubResource("Mesh_8")
+metadata/palette_slot = "handle"
+
+[node name="Drawer4" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.57, 0.414)
+cast_shadow = 0
+mesh = SubResource("Mesh_9")
+metadata/palette_slot = "drawer"
+
+[node name="Handle4" type="MeshInstance3D" parent="."]
+position = Vector3(0, 2.63, 0.47)
+cast_shadow = 0
+mesh = SubResource("Mesh_10")
+metadata/palette_slot = "handle"
