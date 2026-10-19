@@ -1,0 +1,7 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+*.translation
+
+# Export presets (optional, ignore if you want custom build keys hidden)
+export_presets.cfg
