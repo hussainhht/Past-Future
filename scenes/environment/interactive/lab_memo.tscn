@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/interactive/lab_document.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/documents/lab_paper_memo.glb" id="2"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable_3d.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/environment/interactive/highlight_rim.gd" id="4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(1, 2.2, 1.6)
+
+[node name="LabMemo" type="Node3D"]
+script = ExtResource("1")
+asset_id = "A09"
+title = "Memo: North Security Door"
+future_title = "Memo (yellowed)"
+past_text = "To: Signal Array staff
+Re: Security door, north wall
+
+From this term the north door is wired to the array's containment lock. While a calibration runs the door stays sealed and the keypad refuses every code, the master code included.
+
+The seal releases automatically when the array reports a stable temporal link. Do not prop the door, do not pry the keypad panel, and please stop leaving mugs on the oscilloscope.
+
+Facilities Office"
+future_text = "The memo is yellowed and spotted with mould. Someone circled one line in red:
+
+\"The seal releases automatically when the array reports a stable temporal link.\"
+
+Underneath, in pencil: Nobody got out that night. The link never held."
+prompt = "Read memo"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="Interactable" type="Area3D" parent="." node_paths=PackedStringArray("interaction_anchor", "highlight_target")]
+script = ExtResource("3")
+interaction_name = "Read memo"
+interaction_distance = 1.5
+interaction_priority = 0
+allowed_timeline = 0
+play_interaction_animation = false
+animation_action_name = "interact"
+timing = 0
+interaction_anchor = NodePath("Anchor")
+highlight_target = NodePath("Highlight")
+
+[node name="Shape" type="CollisionShape3D" parent="Interactable"]
+position = Vector3(0, -0.4, 0.5)
+shape = SubResource("BoxShape3D_1")
+
+[node name="Anchor" type="Marker3D" parent="Interactable"]
+position = Vector3(0, -1.5, 0.85)
+
+[node name="Highlight" type="Node3D" parent="Interactable"]
+script = ExtResource("4")

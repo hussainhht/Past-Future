@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/lab_coat_stand.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/decorations/lab_coat.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/decorations/lab_coat_fallen.glb" id="4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(0.5, 2.4, 0.5)
+
+[node name="CoatStand" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A25"
+
+[node name="Stand" parent="." instance=ExtResource("2")]
+
+[node name="PastOnly" type="Node3D" parent="."]
+
+[node name="Coat" parent="PastOnly" instance=ExtResource("3")]
+position = Vector3(0.2, 2.32, 0)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="FutureOnly" type="Node3D" parent="."]
+
+[node name="Coat" parent="FutureOnly" instance=ExtResource("4")]
+position = Vector3(0.55, 0, 0.35)
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.2, 0)
+shape = SubResource("BoxShape3D_1")

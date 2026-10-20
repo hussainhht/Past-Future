@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/laboratory/lab_flask_set.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/laboratory/lab_glass_broken.glb" id="3"]
+
+[node name="FlaskSet" type="Node3D"]
+script = ExtResource("1")
+asset_id = "A17"
+
+[node name="PastOnly" type="Node3D" parent="."]
+
+[node name="Model" parent="PastOnly" instance=ExtResource("2")]
+
+[node name="FutureOnly" type="Node3D" parent="."]
+
+[node name="Model" parent="FutureOnly" instance=ExtResource("3")]

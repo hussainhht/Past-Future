@@ -1,5 +1,6 @@
 extends Node3D
-## A replaceable greybox room. SpawnPoint and prop instances are editable in Godot.
+## The playable room: the Signal Laboratory (SignalLab) around the original greybox furniture.
+## SpawnPoint and prop instances are editable in Godot.
 
 @export_enum("Past", "Future") var timeline: String = "Past"
 @export var pause_when_unfocused: bool = true
@@ -8,10 +9,14 @@ var _networked: bool = false
 var _paused: bool = false
 var _disconnected: bool = false
 var _character_studio: Control
+var _modal_open: bool = false
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
 @onready var pause_panel: ColorRect = %PausePanel
+@onready var lab: SignalLab = $SignalLab
+@onready var interaction: InteractionController = $Actors/Player/InteractionRig/InteractionController
+@onready var radio: TemporalRadio = $Actors/Player/TemporalRadio
 
 
 func _ready() -> void:
@@ -27,6 +32,15 @@ func _ready() -> void:
 	%CharacterButton.pressed.connect(_open_character_studio)
 	%TimelineButton.visible = not _networked
 	player.view_camera = camera
+	interaction.prompt_ui = $InteractionPrompt
+	# Sit the interaction prompt above the footer hint bar instead of on top of it.
+	var prompt_panel: Control = $InteractionPrompt/Root/PromptPanel
+	prompt_panel.offset_top -= 56.0
+	prompt_panel.offset_bottom -= 56.0
+	lab.ui.modal_changed.connect(_on_modal_changed)
+	lab.attach_radio(radio)
+	for screen in [lab.terminal, lab.reader]:
+		screen.modal_changed.connect(_on_modal_changed)
 	_apply_timeline()
 	respawn()
 	get_tree().auto_accept_quit = false
@@ -41,6 +55,8 @@ func _input(event: InputEvent) -> void:
 			_character_studio.request_close()
 			get_viewport().set_input_as_handled()
 		return
+	if _modal_open:
+		return  # A LabUI or frequency screen owns the keyboard while it is open.
 	if event.is_action_pressed("ui_cancel"):
 		if not _disconnected:
 			_set_paused(not _paused)
@@ -91,6 +107,15 @@ func _apply_timeline() -> void:
 		if prop != player:
 			prop.future = future
 	player.body_color = accent
+	lab.future = future
+	var role := "future" if future else "past"
+	if not _networked:
+		# Solo preview: actions taken here act for the timeline on screen.
+		PuzzleManager.offline_role = role
+	interaction.detector.set_current_role(role)
+	interaction.detector.refresh_target()
+	radio.set_player_role(role)
+	$Actors/Player/Visual/RadioSocket/RadioModel.future = future
 	%TimelineLabel.text = "II  /  FUTURE" if future else "I  /  PAST"
 	%TimelineLabel.add_theme_color_override("font_color", accent)
 	%RoleLabel.text = "THE PROFESSOR" if future else "THE STUDENT"
@@ -109,7 +134,7 @@ func _set_paused(paused: bool) -> void:
 	if _disconnected and not paused:
 		return
 	_paused = paused
-	player.controls_enabled = not paused
+	_update_controls()
 	player.velocity = Vector3.ZERO
 	pause_panel.visible = paused
 	%PauseTitle.text = "A moment between years"
@@ -117,6 +142,16 @@ func _set_paused(paused: bool) -> void:
 	%QuitGameButton.hide()
 	if paused:
 		%ResumeButton.grab_focus()
+
+
+func _on_modal_changed(_open: bool) -> void:
+	_modal_open = lab.ui.is_modal_open() or lab.terminal.visible or lab.reader.visible
+	_update_controls()
+
+
+func _update_controls() -> void:
+	player.controls_enabled = not _paused and not _modal_open
+	interaction.set_interaction_blocked(_paused or _modal_open)
 
 
 func _on_network_changed() -> void:

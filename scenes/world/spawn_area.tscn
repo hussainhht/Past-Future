@@ -7,9 +7,23 @@
 [ext_resource type="Script" path="res://scripts/world/follow_camera.gd" id="5"]
 [ext_resource type="Shader" path="res://shaders/lab_floor.gdshader" id="6"]
 [ext_resource type="Texture2D" path="res://assets/world/spawn_ring.svg" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/environment/rooms/signal_lab.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/interaction_rig.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/radio/temporal_radio.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/radio/radio_hud.tscn" id="12"]
+[ext_resource type="Script" path="res://scripts/gameplay/radio/radio_model_presenter.gd" id="13"]
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="14"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/electronics/lab_radio_handheld.glb" id="15"]
 
 [sub_resource type="BoxShape3D" id="HorizontalWall"]
 size = Vector3(25.44, 1, 0.32)
+
+[sub_resource type="BoxShape3D" id="NorthWestWall"]
+size = Vector3(17.92, 1, 0.32)
+
+[sub_resource type="BoxShape3D" id="NorthEastWall"]
+size = Vector3(5.52, 1, 0.32)
 
 [sub_resource type="BoxShape3D" id="VerticalWall"]
 size = Vector3(0.32, 1, 16.24)
@@ -25,6 +39,12 @@ shader = ExtResource("6")
 
 [sub_resource type="BoxMesh" id="HorizontalRim"]
 size = Vector3(25.44, 0.32, 0.32)
+
+[sub_resource type="BoxMesh" id="NorthWestRim"]
+size = Vector3(17.92, 0.32, 0.32)
+
+[sub_resource type="BoxMesh" id="NorthEastRim"]
+size = Vector3(5.52, 0.32, 0.32)
 
 [sub_resource type="BoxMesh" id="VerticalRim"]
 size = Vector3(0.32, 0.32, 15.6)
@@ -75,9 +95,13 @@ mesh = SubResource("FloorMesh")
 
 [node name="Rim" type="Node3D" parent="Floor"]
 
-[node name="North" type="MeshInstance3D" parent="Floor/Rim"]
-position = Vector3(0, 0.16, -7.96)
-mesh = SubResource("HorizontalRim")
+[node name="NorthWest" type="MeshInstance3D" parent="Floor/Rim"]
+position = Vector3(-3.76, 0.16, -7.96)
+mesh = SubResource("NorthWestRim")
+
+[node name="NorthEast" type="MeshInstance3D" parent="Floor/Rim"]
+position = Vector3(9.96, 0.16, -7.96)
+mesh = SubResource("NorthEastRim")
 
 [node name="South" type="MeshInstance3D" parent="Floor/Rim"]
 position = Vector3(0, 0.16, 7.96)
@@ -106,9 +130,13 @@ texture = ExtResource("7")
 position = Vector3(0, -0.1, 0)
 shape = SubResource("FloorShape")
 
-[node name="North" type="CollisionShape3D" parent="Bounds"]
-position = Vector3(0, 0.5, -7.96)
-shape = SubResource("HorizontalWall")
+[node name="NorthWest" type="CollisionShape3D" parent="Bounds"]
+position = Vector3(-3.76, 0.5, -7.96)
+shape = SubResource("NorthWestWall")
+
+[node name="NorthEast" type="CollisionShape3D" parent="Bounds"]
+position = Vector3(9.96, 0.5, -7.96)
+shape = SubResource("NorthEastWall")
 
 [node name="South" type="CollisionShape3D" parent="Bounds"]
 position = Vector3(0, 0.5, 7.96)
@@ -134,19 +162,45 @@ position = Vector3(-5.4, 0, 0.6)
 position = Vector3(5.4, 0, 0.6)
 
 [node name="LeftCabinet" parent="Actors" instance=ExtResource("4")]
-position = Vector3(-9.9, 0, -4.4)
+position = Vector3(-9.6, 0, -7.3)
 kind = 1
 
 [node name="RightCabinet" parent="Actors" instance=ExtResource("4")]
-position = Vector3(10, 0, -4.4)
+position = Vector3(10.4, 0, -7.3)
 kind = 1
 
 [node name="Console" parent="Actors" instance=ExtResource("4")]
-position = Vector3(0, 0, -4.6)
+position = Vector3(0, 0, -6.6)
 kind = 2
 
 [node name="Player" parent="Actors" instance=ExtResource("3")]
 position = Vector3(0, 0, 3.7)
+
+[node name="InteractionRig" parent="Actors/Player" instance=ExtResource("9")]
+
+[node name="TemporalRadio" parent="Actors/Player" instance=ExtResource("11")]
+
+[node name="RadioSocket" type="Node3D" parent="Actors/Player/Visual"]
+position = Vector3(0.35, 1.1, 0.18)
+
+[node name="RadioModel" type="Node3D" parent="Actors/Player/Visual/RadioSocket"]
+script = ExtResource("14")
+asset_id = "P01"
+
+[node name="Mesh" parent="Actors/Player/Visual/RadioSocket/RadioModel" instance=ExtResource("15")]
+position = Vector3(0, -0.2, 0)
+scale = Vector3(1.2, 1.2, 1.2)
+
+[node name="RadioPresenter" type="Node3D" parent="Actors/Player/Visual/RadioSocket" node_paths=PackedStringArray("radio", "model")]
+script = ExtResource("13")
+radio = NodePath("../../../TemporalRadio")
+model = NodePath("../RadioModel/Mesh")
+
+[node name="SignalLab" parent="." node_paths=PackedStringArray("world_environment", "key_light") instance=ExtResource("8")]
+world_environment = NodePath("../WorldEnvironment")
+key_light = NodePath("../CharacterKeyLight")
+
+[node name="InteractionPrompt" parent="." instance=ExtResource("10")]
 
 [node name="CameraRig" type="Node3D" parent="."]
 position = Vector3(0, 0.7, 1.7)
@@ -254,6 +308,11 @@ size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "PAUSE"
+
+[node name="RadioHUD" parent="HUD/Interface" node_paths=PackedStringArray("radio") instance=ExtResource("12")]
+offset_top = 108.0
+offset_bottom = 194.0
+radio = NodePath("../../../Actors/Player/TemporalRadio")
 
 [node name="Footer" type="ColorRect" parent="HUD/Interface"]
 layout_mode = 1

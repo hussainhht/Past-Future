@@ -45,3 +45,4 @@ func _apply_tint() -> void:
 			material.shader = PAINT
 			piece.material_override = material
 		material.set_shader_parameter("paint_color", palette[piece.get_meta("palette_slot", "body")])
+		material.set_shader_parameter("age", 0.6 if future else 0.0)

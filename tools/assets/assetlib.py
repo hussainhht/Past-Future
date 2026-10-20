@@ -27,7 +27,8 @@ MODEL_SUFFIXES = {".glb", ".gltf", ".fbx", ".obj", ".dae", ".blend", ".3ds", ".p
 TEXTURE_SUFFIXES = {".png", ".jpg", ".jpeg", ".tga", ".webp", ".bmp", ".tif", ".tiff", ".dds", ".exr", ".hdr"}
 # Godot 4.3+ imports these without an external converter; GLB is still preferred for single-file portability.
 GODOT_DIRECT = {".glb", ".gltf", ".fbx", ".obj", ".dae"}
-ALLOWED_LICENSES = {"CC0-1.0", "CC-BY-4.0"}
+# PROJECT-ORIGINAL marks assets the project generated itself (tools/assets/build_lab_props.py).
+ALLOWED_LICENSES = {"CC0-1.0", "CC-BY-4.0", "PROJECT-ORIGINAL"}
 LIMITS = {"archive_bytes": 600 << 20, "unpacked_bytes": 2 << 30, "entries": 20000, "ratio": 200}
 VERIFIED_STATES = ("VERIFIED", "SEARCH_CORROBORATED", "LICENSE_UNVERIFIED")
 
