@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 REVIEW = ROOT / "assets/characters/student_3d/review"
-REFERENCES = ROOT / "assets/characters/references"
+REFERENCES = ROOT / "assets/characters/references/18"
 BACKGROUND = (19, 23, 30)
 TEXT = (225, 226, 230)
 MUTED = (158, 167, 180)

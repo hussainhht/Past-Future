@@ -257,7 +257,7 @@ class MeshAuthor:
                   "ground_clearance": ground_clearance,
                   "palette_hex_srgb": PALETTE,
                   "editable_source": "source/student.blend",
-                  "reference_sha256": {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (OUTPUT.parent/"references").glob("*view*.png")},
+                  "reference_sha256": {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (OUTPUT.parent/"references/18").glob("*view*.png")},
                   "height":float(np.ptp(all_vertices[:,1])),"triangles":sum(g["triangles"] for g in stats.values()),
                   "vertices":sum(g["vertices"] for g in stats.values()),"joint_count":len(skin["joints"]),
                   "parts":self.parts,"animation_sources":animation_sources,"source_sha256":files}

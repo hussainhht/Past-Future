@@ -68,7 +68,7 @@ def create():
     refs=bpy.data.collections.new('Packed reference images (toggle to inspect)');bpy.context.scene.collection.children.link(refs)
     refs.hide_render=True;refs.hide_viewport=True
     for filename in ['frontview.png','backview.png','sideview1.png','sideview2.png']:
-        img=bpy.data.images.load(str(ROOT/'assets/characters/references'/filename));img.pack()
+        img=bpy.data.images.load(str(ROOT/'assets/characters/references/18'/filename));img.pack()
         obj=bpy.data.objects.new(filename,None);obj.empty_display_type='IMAGE';obj.data=img
         obj.empty_display_size=4.0;obj.location=(0,.6,1.15);obj.rotation_euler=(math.pi/2,0,0);refs.objects.link(obj)
     for name in ['build_student_kaykit.py','student_mesh.py','student_rig.py','ground_student_clips.py','gltf_tools.py','student_blender.py']:

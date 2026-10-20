@@ -1,18 +1,14 @@
-﻿# Student character references
+# Character reference views
 
-The active character is reconstructed from these four unchanged source images:
+Original reference images are organized by character age:
 
-- `frontview.png`
-- `backview.png`
-- `sideview1.png` (anatomical right)
-- `sideview2.png` (anatomical left, with satchel and watch)
+- `18/`: the student — front, back, anatomical right (`sideview1.png`), and anatomical left (`sideview2.png`, with satchel and watch).
+- `49/`: the professor — front, back, and both side views.
 
-The study and approximate image landmarks are documented in
-`../student_3d/REFERENCE_STUDY.md`. Reference-to-render comparisons are in
-`../student_3d/review/`. The source camera is not known, so matching uses a
-near-horizontal orthographic view with approximate full-body framing.
+The studies and reference-to-render comparisons are in `../student_3d/` and
+`../professor_3d/`. The source cameras are unknown; comparisons use approximately
+matched full-body framing.
 
-This directory remains excluded from Godot imports. Reference pixels are not
-used as textures or altered by the build; source hashes are recorded in the
-character manifest. Packed copies are also available in the editable Blender
-file's hidden reference collection.
+This directory is excluded from Godot imports. Reference pixels are unchanged
+and are not used as character textures. Their hashes are recorded in each model's
+manifest, and packed copies are retained in its editable Blender source.
