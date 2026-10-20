@@ -7,8 +7,9 @@ Credits for third-party assets the game ships. `validate_assets.py` only counts 
 | Asset | Creator | License | Where | Credit line |
 |---|---|---|---|---|
 | KayKit Character Animations 1.1 | Kay Lousberg (www.kaylousberg.com) | CC0 | Animation source for the student character, `assets/third_party/kaykit_character_animations/` | "Kay Lousberg, www.kaylousberg.com" (optional, per the pack's License.txt) |
+| KayKit Furniture Bits 1.0 | Kay Lousberg (www.kaylousberg.com) | CC0 | 12 Signal Laboratory props, `assets/environment/models/*/kaykit_*.glb`; license at `assets/third_party/kaykit_furniture_bits/LICENSE.txt` | "KayKit Furniture Bits by Kay Lousberg, www.kaylousberg.com" (optional, per the pack's LICENSE.txt) |
 
-No environment asset is in use yet.
+Every other environment model and texture is original project work (`past_future_original` in `sources.json`) and needs no credit.
 
 ## Prepared for later
 
@@ -24,7 +25,6 @@ Move a row under **In use** in the same change that ships its first model.
 
 - Lab Assets by MilkAndBanana ("jamesdev" in itch.io metadata)
 - Modular Space Kit by Kenney (www.kenney.nl)
-- KayKit Furniture Bits by Kay Lousberg (www.kaylousberg.com)
 - Security Keypad by LeeZH
 - Any poly.pizza model that turns out to be CC0, with its creator named on its page
 
