@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 NetworkManager="*res://scripts/network/network_manager.gd"
 PuzzleManager="*res://scripts/puzzles/puzzle_manager.gd"
+GameFlowManager="*res://scripts/game_flow/game_flow_manager.gd"
 
 [display]
 

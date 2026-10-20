@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RoomDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/game_flow/room_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+room_id = "room_01"
+display_name = "Signal Laboratory"
+shared_scene = "res://scenes/world/spawn_area.tscn"
+past_spawn_id = &"SpawnPoint"
+future_spawn_id = &"SpawnPoint"
+next_room_id = "room_02"
+allowed_exits = PackedStringArray()
+required_puzzles = PackedStringArray("puzzle_01_frequency")
+locked_message = "The security door is sealed. Establish the temporal radio link first."
+require_both_ready = true

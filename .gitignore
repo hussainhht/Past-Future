@@ -9,3 +9,6 @@ __pycache__/
 
 # Export presets (optional, ignore if you want custom build keys hidden)
 export_presets.cfg
+
+# Scratch scene written (and removed) by tests/game_flow_system.gd
+.game_flow_test/

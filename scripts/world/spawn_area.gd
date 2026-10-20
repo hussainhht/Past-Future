@@ -48,6 +48,9 @@ func _ready() -> void:
 	_apply_timeline()
 	gameplay.initialize(self)
 	respawn()
+	# Level flow: this scene is Room 01, and its controls follow the transition lock.
+	GameFlowManager.attach_room("room_01", self)
+	GameFlowManager.input_lock_changed.connect(func(_locked: bool) -> void: gameplay.sync_controls())
 	get_tree().auto_accept_quit = false
 	# The scene can also run directly with F6, without a network session.
 	if _networked:
@@ -179,7 +182,12 @@ func _set_paused(paused: bool) -> void:
 
 
 func is_gameplay_paused() -> bool:
-	return _paused or _disconnected or is_instance_valid(_character_studio)
+	return _paused or _disconnected or is_instance_valid(_character_studio) or GameFlowManager.is_input_locked()
+
+
+## Level-flow hook: a transition is starting, so close whatever is open.
+func game_flow_suspend() -> void:
+	gameplay.close_overlays()
 
 
 func is_character_studio_open() -> bool:
