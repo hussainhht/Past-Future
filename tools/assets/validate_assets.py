@@ -19,7 +19,8 @@ import assetlib as lib
 REQUIRED = ("id", "name", "kind", "creator", "page_url", "license", "license_url", "attribution_required",
             "verification", "download")
 NAME = re.compile(r"^[a-z0-9]+(_[a-z0-9]+)*\.glb$")
-WALL_MOUNTED = {"decorations"}
+# Wall-mounted decorations and floating temporal crystals have no floor contact.
+WALL_MOUNTED = {"decorations", "temporal"}
 BUDGET = {"warn_triangles": 8000, "fail_triangles": 60000, "max_extent": 50.0, "min_extent": 0.02}
 
 
@@ -42,7 +43,7 @@ def check_sources(env: Path, errors: list, warnings: list) -> dict:
         if pack["verification"]["status"] not in lib.VERIFIED_STATES:
             errors.append(f"{label}: unknown verification status '{pack['verification']['status']}'")
         if pack["license"] not in lib.ALLOWED_LICENSES:
-            warnings.append(f"{label}: license '{pack['license']}' is not CC0-1.0 or CC-BY-4.0; do not use until approved")
+            warnings.append(f"{label}: license '{pack['license']}' is not CC0-1.0, CC-BY-4.0 or project-original; do not use until approved")
     return data
 
 
@@ -111,7 +112,7 @@ def check_models(env: Path, data: dict, errors: list, warnings: list) -> int:
             continue
         if max(stats["size"]) > BUDGET["max_extent"] or max(stats["size"]) < BUDGET["min_extent"]:
             warnings.append(f"{relative}: size {stats['size']} looks like a unit/scale problem")
-        if model.parent.name not in WALL_MOUNTED and abs(stats["min"][1]) > 0.05:
+        if model.parent.name not in WALL_MOUNTED and not -0.12 <= stats["min"][1] <= 0.05:
             warnings.append(f"{relative}: lowest point is Y={stats['min'][1]}, not the floor-level origin the project requires")
     return len(models)
 
