@@ -1,6 +1,8 @@
 extends SceneTree
 ## Run through run_lan_smoke.py: real ENet peers in separate processes.
 
+const Fixtures := preload("res://tests/puzzle_fixtures.gd")
+
 var network: Node
 var failures: int = 0
 var port: int = 0
@@ -28,6 +30,7 @@ func wait_for(predicate: Callable, message: String, timeout: float = 8.0) -> boo
 
 func _run() -> void:
 	network = root.get_node("NetworkManager")
+	root.get_node("PuzzleManager").register_puzzle("lan_scene_ready", Fixtures.CheckpointPuzzle.new())
 	var arguments := OS.get_cmdline_user_args()
 	port = int(arguments[1])
 	match arguments[0]:
@@ -74,7 +77,10 @@ func _host() -> void:
 		return
 	check(current_scene.timeline == "Past", "Host must spawn in the Past")
 	check(not current_scene.get_node("%TimelineButton").visible, "LAN role must not be switchable locally")
-	await create_timer(0.4).timeout
+	# The finished Professor model can load later than the Student. Wait for the
+	# guest's real scene acknowledgement rather than racing a fixed loading delay.
+	if not await wait_for(func() -> bool: return root.get_node("PuzzleManager").get_state("lan_scene_ready").get("step", 0) == 1, "Guest did not finish loading its gameplay scene"):
+		return
 	network.leave_game()
 	await create_timer(0.2).timeout
 
@@ -109,6 +115,9 @@ func _client() -> void:
 		return
 	check(network.in_game, "Client must receive the host's start confirmation")
 	check(current_scene.timeline == "Future", "Client must spawn in the Future")
+	if not await wait_for(func() -> bool: return root.get_node("PuzzleManager").is_session_active(), "Guest did not receive initial puzzle snapshot"):
+		return
+	root.get_node("PuzzleManager").submit_action("lan_scene_ready", "reached", {"step": 1})
 	if not await wait_for(func() -> bool: return network.state == network.State.IDLE, "Client did not handle host leaving"):
 		return
 	check("host closed" in network.status, "Host departure should have a useful message")

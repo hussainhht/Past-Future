@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="DialogueSequence" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Student"]
+script = ExtResource("2")
+speaker_id = "student"
+speaker_name = "The Student"
+text = "The receiver relay is online."
+
+[sub_resource type="Resource" id="Professor"]
+script = ExtResource("2")
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "I see its indicator here too. We can investigate together now."
+timeline = 1
+
+[resource]
+script = ExtResource("1")
+sequence_id = "laboratory.receiver_online"
+lines = Array[ExtResource("2")]([SubResource("Student"), SubResource("Professor")])
+play_once = true

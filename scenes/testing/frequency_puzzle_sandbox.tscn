@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://b5qvrlkgpmfi4"]
 
-[ext_resource type="Script" path="res://scripts/testing/frequency_puzzle_sandbox.gd" id="1"]
+[ext_resource type="Script" uid="uid://3wmu7mbkuwnn" path="res://scripts/testing/frequency_puzzle_sandbox.gd" id="1"]
 
-[node name="FrequencyPuzzleSandbox" type="Node3D"]
+[node name="FrequencyPuzzleSandbox" type="Node3D" unique_id=487682862]
 script = ExtResource("1")

@@ -4,7 +4,7 @@ The playable implementation establishes persistent **scripted, text-based radio 
 
 Success displays **TEMPORAL RADIO LINK ESTABLISHED**. The puzzle has no door dependency. There is no microphone, VoIP, WebRTC, player text chat, or additional networking manager.
 
-The real Dialogue System is being developed separately and has no confirmed API in this checkout. Its integration is **pending**, deliberately isolated behind the ID-based adapter below. The sandbox's temporary dialogue driver is a test fixture, not a replacement DialogueDirector.
+The real Dialogue System is now integrated into the playable laboratory through `radio_director_binding.gd`, using its confirmed `DialogueDirector.play_dialogue(DialogueSequence, context)` API. The ID-based adapter below remains reusable. The original sandbox retains its isolated temporary dialogue fixture. See **GAMEPLAY_INTEGRATION.md** for the actual Main Menu → laboratory flow and current tests.
 
 ## Mechanics and authoritative state
 
@@ -94,9 +94,9 @@ Instance `frequency_clue.tscn` only in the Future timeline. Add `frequency_log_r
 
 Instance `temporal_link_indicator.tscn`, or attach `temporal_link_presenter.gd` and set `indicator` / optional `light` references. The presenter switches purple/cyan from confirmed state and applies it immediately on scene entry. `link_applied(connected)` is an appearance hook, not a one-shot story event. No door or final rift shader is required.
 
-## Radio Dialogue Presentation Adapter — integration pending
+## Radio Dialogue Presentation Adapter and actual director binding
 
-`radio_dialogue_adapter.gd` is the stable boundary for the future DialogueDirector. It does not assume a director method name or define a DialogueSequence class. The eventual integrator resolves sequence IDs to the real DialogueSequence resources through the actual public API.
+`radio_dialogue_adapter.gd` remains the sequence-ID boundary. The production `radio_director_binding.gd` resolves IDs to actual DialogueSequence resources and calls the existing director's public API. Its `RadioDialogueBox` extends the real DialogueBox; it uses the existing typewriter and speaker presentation. No dialogue core files were changed.
 
 Assign `radio`, the `radio_dialogue_presenter.tscn` instance as `presenter`, and optionally `link_sequence_id`. Set `event_sequence_ids` to map narrative event IDs or confirmed puzzle IDs to sequence IDs. `event_audience` selects `shared`, `past` or `future`. Completion triggers are derived from existing confirmed `puzzle_completed` signals; snapshots/room entry never replay them.
 
@@ -114,20 +114,17 @@ Assign `radio`, the `radio_dialogue_presenter.tscn` instance as `presenter`, and
 
 Choose the callback or request-signal delivery route when binding playback; do not start the same sequence twice from both. A second conversation is refused while an active ID exists. Finish/cancel it with `end_conversation()` before requesting another. The adapter intentionally owns no queue, branching or narrative progression; those belong to DialogueDirector. Failed event requests can be retried by that narrative owner.
 
-The presenter exposes `show_line(speaker_name, dialogue_text)`, `reveal_line()`, `request_advance()`, `end_transmission()`, and `advance_requested` / `line_revealed`. Connect the director's actual line/finish signals through the adapter and the presenter's advance signal back to the director. These are radio APIs, **not claims about the unmerged director's API**. Names are literal text, not BBCode. The view handles typewriter reveal, a 67 MHz indicator, connection status and subtle transmission animation. Interference pauses reveal/advance and resumes after recovery; it never changes the puzzle record. Session reset clears the presentation and active sequence ID.
+The original standalone presenter exposes `show_line(speaker_name, dialogue_text)`, `reveal_line()`, `request_advance()`, `end_transmission()`, and `advance_requested` / `line_revealed`; its names/text are literal. Production gameplay instead uses `radio_dialogue_box.tscn`, extending the existing DialogueBox and supporting its authored BBCode text. The director still owns line advancement, typewriting, queueing and play-once history. The radio binding adds channel status and suspends this local presentation during interference or modals; it never changes canonical puzzle state.
 
-Example using only the implemented boundary:
+Production binding uses the confirmed interface:
 
 ```gdscript
-$RadioDialogueAdapter.conversation_requested.connect(_on_radio_request)
-
-func _on_radio_request(sequence_id: StringName, metadata: Dictionary) -> void:
-	# Pending: map this ID to a real DialogueSequence and call the confirmed director API.
-	# Forward its line/finished signals to present_line() / end_conversation().
-	pass
-
-func on_corridor_narrative_event() -> void:
-	$RadioDialogueAdapter.request_conversation(&"corridor.arrival", "shared")
+# radio_director_binding.gd binds this callback via bind_sequence_player().
+func play_sequence(sequence_id: StringName) -> bool:
+	for sequence in sequences:
+		if sequence.sequence_id == String(sequence_id):
+			return director.play_dialogue(sequence, {"timeline": radio.player_role, "channel": "radio"})
+	return false
 ```
 
 `scripts/testing/radio_dialogue_preview.gd` is the replaceable sandbox fixture. It binds the adapter to four diagnostic Student/Professor lines under `sandbox.radio_check`. This checks alternating speakers, typewriter behavior and completion independently. These lines are not approved story content and never reside in puzzle or radio logic. Confirmed establishment starts this diagnostic sequence on both peers. Each peer advances its text locally; no new dialogue-advance network protocol is claimed. The actual director can later coordinate presentation through its own public integration.
@@ -197,7 +194,7 @@ $env:RADIO_REVIEW_DIR = Join-Path $env:TEMP 'past-future-radio-review'
 Remove-Item Env:RADIO_REVIEW_DIR
 ```
 
-Current executed results and limitations are recorded in `FREQUENCY_PUZZLE_TEST_RESULTS.md`. The two-peer tests use loopback ENet; testing across two physical PCs remains a deployment check. Real DialogueDirector integration awaits the other agent's confirmed API. A live microphone or voice service is outside this task; the presentation/action boundary remains independent should a future design explicitly request one.
+The original isolated verification is recorded in `FREQUENCY_PUZZLE_TEST_RESULTS.md`; current integrated gameplay results are in `GAMEPLAY_INTEGRATION_TEST_RESULTS.md`. Both use loopback ENet; two-physical-PC Wi-Fi testing remains a deployment check. Actual DialogueDirector integration is implemented. A live microphone or voice service remains outside scope.
 
 ## File manifest and protected systems
 
@@ -240,4 +237,4 @@ docs/FREQUENCY_PUZZLE.md
 docs/FREQUENCY_PUZZLE_TEST_RESULTS.md
 ```
 
-Existing files modified: **none**. NetworkManager, PuzzleManager, PuzzleBase, interaction, character, dialogue, audio, assets, shaders, active world scene and project.godot are preserved. No branches are switched or merged and no commits are created. All changes are independent additions in this working tree.
+This manifest records the original standalone radio addition, which modified no existing files. The later Main Menu and real laboratory integration, including its focused existing-file changes, is documented in `GAMEPLAY_INTEGRATION.md`. NetworkManager, PuzzleManager, PuzzleBase and the interaction/dialogue cores remain unchanged. No branches were switched or merged and no commits were created.

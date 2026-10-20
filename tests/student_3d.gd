@@ -46,6 +46,7 @@ func _run() -> void:
 		check(not player.play_action("interact"), "Overlapping actions must be rejected")
 		ap.advance(ap.current_animation_length + 0.1)
 		check(player._action.is_empty(), "One-shot clip must release the action lock: " + action)
+		check(ap.current_animation == ("Holding_A" if player.carrying else "Idle_A"), "Completed action must select a resting pose before dialogue can freeze it")
 		if action in ["pick_up", "put_down"]:
 			check(player.carrying == (action == "pick_up") and player._held_document.visible == player.carrying, "Pickup/drop completion must update the demonstration prop")
 	player._play("Walking_A")

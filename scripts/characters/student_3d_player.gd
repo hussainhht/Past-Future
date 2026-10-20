@@ -12,6 +12,8 @@ const LOOP_CLIPS: Array[String] = ["Idle_A", "Idle_B", "Walking_A", "Walking_B",
 @export var acceleration: float = 20.0
 @export var deceleration: float = 28.0
 @export var turn_speed: float = 12.0
+## Studios keep the demonstration paper/actions. Integrated gameplay supplies real items.
+@export var demonstration_items_enabled: bool = true
 @export var visual_height: float = 2.15:
 	set(value):
 		visual_height = value
@@ -102,6 +104,10 @@ func play_action(action: String) -> bool:
 	_play(ACTIONS[action], 0.1, true)
 	return true
 
+
+func is_action_active() -> bool:
+	return not _action.is_empty()
+
 func _on_animation_finished(_clip: StringName) -> void:
 	if _action.is_empty():
 		return
@@ -110,8 +116,12 @@ func _on_animation_finished(_clip: StringName) -> void:
 		carrying = true
 	elif finished == "put_down":
 		carrying = false
-	_held_document.visible = carrying
+	_held_document.visible = carrying and demonstration_items_enabled
 	_action = ""
+	# A confirmed interaction can start blocking dialogue inside action_finished.
+	# Select the resting/holding pose first so it cannot freeze the final pickup frame.
+	_play("Holding_A" if carrying else "Idle_A", 0.0)
+	animator.advance(0.0)
 	action_finished.emit(finished)
 
 func _get_interaction_controller() -> Node:
@@ -129,6 +139,8 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			if controller.try_interact():
 				get_viewport().set_input_as_handled()
 				return
+	if not demonstration_items_enabled:
+		return
 	var action := ""
 	match event.physical_keycode:
 		KEY_F: action = "interact"

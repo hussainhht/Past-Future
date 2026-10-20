@@ -399,3 +399,8 @@ func test_menu_starts_fresh_solo_session() -> void:
 	await create_timer(0.5).timeout
 	check(is_instance_valid(current_scene) and current_scene.scene_file_path == "res://scenes/world/spawn_area.tscn", "The laboratory must still open from the menu")
 	manager.unregister_puzzle("menu_test_power")
+	# The menu now launches an audio-enabled playable lab. End that owned session
+	# through its normal lifecycle instead of quitting with live ambience.
+	current_scene._return_to_menu()
+	await scene_changed
+	await create_timer(0.15).timeout

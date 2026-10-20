@@ -1,5 +1,7 @@
 # Temporal Radio verification — 20 October 2026
 
+This is the original isolated radio verification record. Actual Main Menu / laboratory / DialogueDirector integration is now implemented; see `GAMEPLAY_INTEGRATION.md` and `GAMEPLAY_INTEGRATION_TEST_RESULTS.md` for its current results. The pending director/Professor placement notes below describe the earlier standalone stage.
+
 Executed in this Windows checkout using Godot **4.7.2 stable official ed1daf0bf**, GL Compatibility. Tests use the repository's existing autoloads and ENet implementation. No protected source files or project settings were modified.
 
 ## Final results

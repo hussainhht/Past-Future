@@ -175,7 +175,9 @@ func _run() -> void:
 	var past_tint: Color = player._materials.jacket.material.albedo_color
 	var past_color: Color = player.body_color
 	area.get_node("%TimelineButton").pressed.emit()
+	player = area.player
 	check(area.timeline == "Future" and player.body_color != past_color, "Preview toggle must switch timeline and character appearance")
+	check(player.scene_file_path == "res://scenes/characters/professor_3d_player.tscn", "Future gameplay must use the finished Professor character")
 	await tick()
 	check(player._materials.jacket.material.albedo_color != past_tint, "Timeline switching must tint the 3D jacket")
 	check(left_top.material_override.get_shader_parameter("paint_color") != past_paint, "Future timeline must recolor the solid furniture")
@@ -185,6 +187,7 @@ func _run() -> void:
 	area.get_node("Actors/LeftTable").future = true
 	await capture("past-future-student-3d-lab-future.png")
 	area.get_node("%TimelineButton").pressed.emit()
+	player = area.player
 	var camera_basis := camera.global_basis
 	var camera_position := camera.global_position
 	for key in [KEY_Q, KEY_P]:
@@ -221,5 +224,8 @@ func _run() -> void:
 	await tick()
 	send_key(KEY_R, false)
 	check(area.player.position.distance_to(area.get_node("SpawnPoint").position) < 0.04, "Physical R key must respawn the student")
+	area._return_to_menu()
+	await scene_changed
+	await create_timer(0.15).timeout
 	print("SPAWN AREA: ", "PASS" if failures == 0 else "FAIL", " (", failures, " failures)")
 	quit(0 if failures == 0 else 1)

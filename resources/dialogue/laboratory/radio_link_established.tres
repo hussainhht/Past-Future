@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="DialogueSequence" load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Student1"]
+script = ExtResource("2")
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Hello? Can you hear me clearly now?"
+
+[sub_resource type="Resource" id="Professor1"]
+script = ExtResource("2")
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "Yes. The signal is stable. Keep your radio with you."
+timeline = 1
+
+[sub_resource type="Resource" id="Student2"]
+script = ExtResource("2")
+speaker_id = "student"
+speaker_name = "The Student"
+text = "The computer says sixty-seven megahertz. Who are you?"
+
+[sub_resource type="Resource" id="Professor2"]
+script = ExtResource("2")
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "Someone who remembers this laboratory. Bring the receiver relay online; we'll need this channel."
+timeline = 1
+
+[resource]
+script = ExtResource("1")
+sequence_id = "laboratory.radio_link_established"
+lines = Array[ExtResource("2")]([SubResource("Student1"), SubResource("Professor1"), SubResource("Student2"), SubResource("Professor2")])
+play_once = true
+finish_event_id = "laboratory.radio_conversation_finished"

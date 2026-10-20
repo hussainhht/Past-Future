@@ -178,6 +178,9 @@ func _test_ambience_controller() -> void:
 	ambient.start_ambience(&"lab_ambience_past")
 	check(ambient.get_current_ambience_id() == &"lab_ambience_past", "Current ambience ID must be 'lab_ambience_past'")
 	check(ambient.is_playing(), "Ambient controller must be active and playing")
+	var loop_stream: AudioStreamWAV = ambient.get_node("AmbiencePlayerB").stream
+	check(loop_stream.loop_end > loop_stream.loop_begin, "Imported ambience must have a nonempty sample loop range")
+	check(loop_stream != load("res://assets/audio/ambience/lab_ambience_past.wav"), "Ambient loop settings must not mutate shared imported resources")
 	
 	# Duplicate call must be idempotent
 	ambient.start_ambience(&"lab_ambience_past")
@@ -192,6 +195,14 @@ func _test_ambience_controller() -> void:
 	await create_timer(0.05).timeout
 	check(ambient.get_current_ambience_id() == &"", "Ambience ID must be empty after stop")
 	check(not ambient.is_playing(), "Ambience players must be stopped")
+	# Integrated room teardown uses a zero fade and may unload in this same frame.
+	ambient.start_ambience(&"lab_ambience_past")
+	ambient.stop_ambience(0.0)
+	check(not ambient.is_playing(), "Zero-fade stop must stop playback synchronously")
+	check(ambient.get_node("AmbiencePlayerA").stream == null and ambient.get_node("AmbiencePlayerB").stream == null, "Zero-fade stop must release both player stream references")
+	ambient.start_ambience(&"lab_ambience_future")
+	check(ambient.is_playing() and ambient.get_current_ambience_id() == &"lab_ambience_future", "Ambience can restart after immediate teardown")
+	ambient.stop_ambience(0.0)
 	
 	ambient.queue_free()
 	await tick()
@@ -322,6 +333,7 @@ func _test_footstep_emitter() -> void:
 	check(step_data.count == 0, "Teleportation / respawn position jump must NOT trigger footstep burst")
 	
 	# Cleanup test nodes
+	emitter.player.stop()
 	mock_body.queue_free()
 	floor_body.queue_free()
 	await tick(2)
@@ -362,7 +374,11 @@ func _test_sandbox_scene() -> void:
 	instance._on_btn_ambience_past_pressed()
 	await tick(2)
 	instance._on_btn_ambience_stop_pressed()
+	audio_sys.stop_all_sfx()
+	audio_sys.stop_ambience(0.0)
+	emitter_node.player.stop()
 	
 	instance.queue_free()
 	await tick(2)
-	check(true, "Sandbox unloaded and cleaned up safely with no orphaned nodes")
+	await create_timer(0.15).timeout
+	check(not is_instance_valid(instance), "Sandbox unloaded and cleaned up safely with no orphaned nodes")

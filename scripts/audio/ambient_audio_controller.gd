@@ -51,8 +51,15 @@ func _load_streams() -> void:
 		if ResourceLoader.exists(path):
 			var res: AudioStream = load(path)
 			if res is AudioStreamWAV:
-				res.loop_mode = AudioStreamWAV.LOOP_FORWARD
-			_streams[id] = res
+				# Imported WAV/QOA resources may have zero loop bounds. Looping that
+				# empty range ends playback immediately; use the full sample range.
+				# Keep loop configuration local, especially for the shared rift SFX.
+				var loop_stream: AudioStreamWAV = res.duplicate()
+				loop_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+				if loop_stream.loop_end <= loop_stream.loop_begin:
+					loop_stream.loop_begin = 0
+					loop_stream.loop_end = roundi(loop_stream.get_length() * loop_stream.mix_rate)
+				_streams[id] = loop_stream
 
 func start_ambience(ambience_id: StringName, fade_time: float = -1.0) -> void:
 	if fade_time < 0.0:
@@ -93,6 +100,11 @@ func stop_ambience(fade_time: float = -1.0) -> void:
 	_current_id = &""
 	if _tween and _tween.is_valid():
 		_tween.kill()
+	# Room/menu teardown may free this node in the same frame. A zero-duration
+	# Tween would never run, leaving the looping playback alive at shutdown.
+	if fade_time <= 0.0:
+		_on_stop_complete()
+		return
 	_tween = create_tween().set_parallel(true)
 	if _player_a.playing:
 		_tween.tween_property(_player_a, "volume_db", -80.0, fade_time)
@@ -101,11 +113,20 @@ func stop_ambience(fade_time: float = -1.0) -> void:
 	_tween.chain().tween_callback(_on_stop_complete)
 
 func _on_stop_complete() -> void:
-	if _player_a.playing:
-		_player_a.stop()
-	if _player_b.playing:
-		_player_b.stop()
+	for player in [_player_a, _player_b]:
+		player.stop()
+		player.stream = null
 	ambience_stopped.emit()
+
+
+func _exit_tree() -> void:
+	if _tween and _tween.is_valid():
+		_tween.kill()
+	for player in [_player_a, _player_b]:
+		if is_instance_valid(player):
+			player.stop()
+			player.stream = null
+	_streams.clear()
 
 func switch_timeline(timeline: StringName, fade_time: float = -1.0) -> void:
 	var tl_str := str(timeline).to_lower()

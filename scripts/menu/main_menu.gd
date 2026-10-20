@@ -8,6 +8,9 @@ var settings_path: String = "user://menu_settings.cfg"
 var _last_focus: Control
 var _lan_mode: String = ""
 var _quit_return_page: String = ""
+var _entering_game: bool = false
+## Kept configurable for automated loopback tests and occupied-port diagnostics.
+var lan_port: int = 7000
 
 @onready var backdrop: Control = $Atmosphere
 @onready var overlay: ColorRect = $Overlay
@@ -133,7 +136,7 @@ func _open_page(page_name: String) -> void:
 	overlay.show()
 	%BackButton.text = "STAY" if page_name == "QuitPage" else "BACK"
 	if page_name == "PlayPage":
-		%HostButton.grab_focus()
+		%PreviewButton.grab_focus()
 	else:
 		%BackButton.grab_focus()
 
@@ -160,7 +163,7 @@ func _open_host() -> void:
 		%HostAddresses.add_item(address)
 	%HostAddresses.disabled = %HostAddresses.item_count == 0
 	%CopyAddress.disabled = %HostAddresses.item_count == 0
-	NetworkManager.host_game()
+	NetworkManager.host_game(lan_port)
 	_open_page("LanPage")
 	_refresh_lan()
 
@@ -176,7 +179,7 @@ func _open_join() -> void:
 func _join_lan() -> void:
 	if NetworkManager.state != NetworkManager.State.IDLE or _lan_mode != "join":
 		return
-	NetworkManager.join_game(%HostAddress.text)
+	NetworkManager.join_game(%HostAddress.text, lan_port)
 
 
 func _copy_host_address() -> void:
@@ -215,11 +218,15 @@ func _refresh_lan() -> void:
 
 func _preview_spawn_area() -> void:
 	if NetworkManager.state == NetworkManager.State.IDLE:
+		PuzzleManager.offline_role = "past"
 		PuzzleManager.begin_session()  # a new solo run starts with fresh puzzles
 		_enter_spawn_area()
 
 
 func _enter_spawn_area() -> void:
+	if _entering_game:
+		return
+	_entering_game = true
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
 
 

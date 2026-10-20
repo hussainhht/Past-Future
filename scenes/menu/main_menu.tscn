@@ -274,8 +274,8 @@ text = "Two lives. One connection."
 
 [node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1223210088]
 layout_mode = 2
-text = "Two computers. One Wi-Fi network.
-Host a session, or join your partner's game."
+text = "Explore both timelines in Solo Test,
+or host and join together on the same LAN."
 
 [node name="LocalButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=134157205]
 layout_mode = 2
@@ -286,7 +286,7 @@ text = "SAME-PC SPLIT-SCREEN     /     COMING SOON"
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
-text = "EXPLORE THE LAB     /     SOLO PREVIEW"
+text = "PLAY THE LAB     /     SOLO TEST"
 
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
 unique_name_in_owner = true

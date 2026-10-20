@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="DialogueSequence" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Student"]
+script = ExtResource("2")
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Are you still receiving me?"
+
+[sub_resource type="Resource" id="Professor"]
+script = ExtResource("2")
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "Loud and clear. The carrier is holding at sixty-seven megahertz."
+timeline = 1
+
+[resource]
+script = ExtResource("1")
+sequence_id = "laboratory.radio_check"
+lines = Array[ExtResource("2")]([SubResource("Student"), SubResource("Professor")])
