@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "future_recovered_notebook_page"
+title = "Recovered Notebook Page"
+subtitle = "Handwriting match: the Student's, 31 years old"
+body = "Water has ruined most of the page, but one passage survives:
+
+[i]\"...with both radios on, and the array calibrated on the right carrier, the rift carries a voice across the fracture. The carrier changes with every calibration, so it goes in the receiver log the moment we set it.\"[/i]
+
+This is a page from my own notebook, written when I was eighteen. I do not remember writing the last line."
+category = 1
+timeline = 2
+sort_order = 2

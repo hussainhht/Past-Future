@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "future_incident_record"
+title = "Laboratory Incident Record"
+subtitle = "Facilities  ·  Recovered memo"
+body = "Re: North security door.
+
+The seal was slaved to the array's containment lock. While a calibration ran, the door stayed shut and the keypad refused every code, the master code included.
+
+One line has been circled in red: [i]\"The seal releases automatically when the array reports a stable temporal link.\"[/i]
+
+A note in pencil underneath: nobody got out that night. The link never held."
+category = 1
+timeline = 2
+sort_order = 1

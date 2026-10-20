@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://scripts/environment/interactive/highlight_rim.gd" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/gameplay/frequency/frequency_clue.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/puzzles/puzzle_listener.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/journal/journal_unlock.gd" id="journal"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_1"]
 size = Vector2(1.16, 0.84)
@@ -87,6 +88,10 @@ highlight_target = NodePath("Highlight")
 [node name="Highlight" type="Node3D" parent="Computer"]
 script = ExtResource("3")
 
+[node name="JournalUnlock" type="Node" parent="Computer"]
+script = ExtResource("journal")
+entry_ids = PackedStringArray("past_research_observations")
+
 [node name="RecoveredLog" parent="." instance=ExtResource("4") node_paths=PackedStringArray("highlight_target")]
 position = Vector3(0, 0.95, 0.75)
 interaction_priority = 1
@@ -104,6 +109,10 @@ highlight_target = NodePath("Highlight")
 
 [node name="Highlight" type="Node3D" parent="RecoveredLog"]
 script = ExtResource("3")
+
+[node name="JournalUnlock" type="Node" parent="RecoveredLog"]
+script = ExtResource("journal")
+entry_ids = PackedStringArray("future_frequency_log")
 
 [node name="PuzzleListener" type="Node" parent="."]
 script = ExtResource("5")

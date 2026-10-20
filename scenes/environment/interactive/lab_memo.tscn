@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://assets/environment/models/documents/lab_paper_memo.glb" id="2"]
 [ext_resource type="Script" path="res://scripts/interaction/interactable_3d.gd" id="3"]
 [ext_resource type="Script" path="res://scripts/environment/interactive/highlight_rim.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/journal/journal_unlock.gd" id="journal"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(1, 2.2, 1.6)
@@ -51,3 +52,7 @@ position = Vector3(0, -1.5, 0.85)
 
 [node name="Highlight" type="Node3D" parent="Interactable"]
 script = ExtResource("4")
+
+[node name="JournalUnlock" type="Node" parent="Interactable"]
+script = ExtResource("journal")
+entry_ids = PackedStringArray("future_incident_record")

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "future_frequency_log"
+title = "Recovered Frequency Log"
+subtitle = "Calibration Record #01"
+body = "[b]TEMPORAL COMMUNICATION ARRAY[/b]
+Receiver bank B  ·  recovered calibration record #01
+
+23:38  Array calibration started. Door seal engaged.
+23:41  Primary synchronization frequency: [b][color=#3fd6e6]67 MHz[/color][/b]
+23:43  Both handheld radios must be on the carrier.
+23:44  [color=#e08a6a]CORE CONTAINMENT FAILURE.[/color]
+
+Margin, handwritten: [i]\"Tell him 67. He calibrates it from the Past.\"[/i]"
+category = 1
+timeline = 2
+sort_order = 0

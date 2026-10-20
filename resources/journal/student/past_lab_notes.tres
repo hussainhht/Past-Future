@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "past_lab_notes"
+title = "Lab Experiment Notes"
+subtitle = "Signal Array  ·  Day 214"
+body = "The array held a carrier for more than a second today. When it locks, the crystal answers with an echo: the same signal, arriving [i]before[/i] we sent it.
+
+Both handheld radios have to be on, and the array has to sit on the right carrier. The carrier changes with every calibration, so it goes in the receiver log the moment we set it.
+
+[b]To do:[/b] find out who is on the other end. Check the door seal before the next run."
+category = 0
+timeline = 1
+sort_order = 0

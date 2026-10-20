@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "past_research_observations"
+title = "Research Observations"
+subtitle = "Signal Laboratory  ·  Terminal log"
+body = "Initial observations from the main computer:
+
+- The receiver drifts a little whenever the crystal warms up.
+- Static falls off sharply near the rear console, as if something there is absorbing it.
+- A faint second signal rides under the carrier. Too regular to be noise.
+
+I need the right carrier before it will resolve into anything. Someone else must already know it."
+category = 2
+timeline = 1
+sort_order = 0
