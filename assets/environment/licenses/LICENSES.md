@@ -1,0 +1,76 @@
+# Licenses for the environment asset library
+
+This is a working record for the team, not legal advice. The machine-readable version is `sources.json`;
+`python tools/assets/validate_assets.py` enforces the rules below.
+
+## What the accepted licenses allow
+
+| License | Commercial game use | Modify | Credit required | Text |
+|---|---|---|---|---|
+| CC0 1.0 | Yes | Yes | No (courtesy credit welcome) | https://creativecommons.org/publicdomain/zero/1.0/ |
+| CC BY 4.0 | Yes | Yes, indicate the changes | **Yes**: creator, license link, note of changes, no implied endorsement | https://creativecommons.org/licenses/by/4.0/ |
+
+Anything else (CC BY-NC, CC BY-ND, custom terms, "free for personal use", paid or unclear ownership) is not
+used without your approval. Paid tiers are never downloaded: VNB Set #3, Quaternius Pro and Source, KayKit EXTRA and SOURCE.
+
+## How sure are we? Evidence grades
+
+| Grade | Meaning | Models may ship? |
+|---|---|---|
+| `VERIFIED` | Read on the live source page, or in the license file inside the downloaded archive, on a recorded date | Yes |
+| `SEARCH_CORROBORATED` | A search-engine result for the official page or listing states it; the live page was not read | **No**, re-check first |
+| `LICENSE_UNVERIFIED` | Only the original brief claims it | **No** |
+
+**Current state: 0 of 23 sources are `VERIFIED`.** On 2026-10-20 the build container's network policy refused
+every asset host (HTTP 403 on CONNECT for itch.io, kenney.nl, opengameart.org, poly.pizza, quaternius.com and their
+CDNs), and the page-fetch tool could not resolve them either. Evidence below comes from search-result summaries only.
+
+## Sources and what is known
+
+| Source | License claimed | Grade | Attribution | Main caveat |
+|---|---|---|---|---|
+| Low Poly 3D Office Set [VNB] | CC BY 4.0 | SEARCH_CORROBORATED | **Required** | Author's sibling pack forbids reselling the models as a pack; see hazard 1 |
+| Lab Assets (MilkAndBanana / "jamesdev") | CC0 | SEARCH_CORROBORATED | No | Author name differs between itch.io metadata and page; lab coat unconfirmed |
+| Kenney Modular Space Kit | CC0 | SEARCH_CORROBORATED | No | Sci-fi style; needs repainting for an academic lab |
+| KayKit Furniture Bits | CC0 | SEARCH_CORROBORATED | No | License seen on the Godot Asset Library listing, not on itch.io |
+| Quaternius Modular Sci-Fi MegaKit (Standard) | CC0 | SEARCH_CORROBORATED | No | Standard only; Pro and Source are paid |
+| Kenney Space Station Kit | CC0 | SEARCH_CORROBORATED | No | Optional |
+| Kenney Factory Kit | CC0 (expected) | LICENSE_UNVERIFIED | Unknown | Page not seen; only a news repost found |
+| Quaternius Sci-Fi Essentials Kit (Standard) | CC0 | SEARCH_CORROBORATED | No | About 167 MB; optional |
+| Security Keypad (LeeZH) | CC0 | SEARCH_CORROBORATED | No | Format unknown until downloaded |
+| 3D Keycard (codeinfernogames) | CC0 | SEARCH_CORROBORATED | No | Later puzzle |
+| 3D Dungeon debris: paper | CC0 | SEARCH_CORROBORATED | No | Textures derived from another pack; see hazard 2 |
+| 3D House Construction Site (Majadroid) | CC0 | SEARCH_CORROBORATED | No | Optional |
+| Low Poly Portal (HippoDevelopment) | CC0 (brief) | LICENSE_UNVERIFIED | Unknown | Page not located |
+| Open Books (AnyRPG) | CC0 (brief) | LICENSE_UNVERIFIED | Unknown | Page not located |
+| nine poly.pizza models (door, open book, crystal, computer, book, two mugs, plant, rock) | CC0 (brief) | LICENSE_UNVERIFIED | Unknown | poly.pizza licenses each model separately (CC0 or CC BY) |
+
+## Hazards found
+
+1. **VNB resale wording.** The itch.io license field for the office set reads CC BY 4.0, but the same author's Gaming
+   Set page also says the models may not be re-sold as part of an asset pack or on their own. CC BY 4.0 permits
+   redistribution, so the two statements conflict. Handling: ship converted models inside the game with the credit
+   line, never publish the raw pack, keep raw archives out of git, and read the office set page's description when
+   you can.
+2. **Paper debris textures.** "3D Dungeon debris: paper" says its textures were derived from the "Old Paper Pack"
+   on OpenGameArt. That pack's license is unchecked. Plan: use the project's own paper colour instead of the bundled texture.
+3. **poly.pizza is per-model.** Its site lists both CC0 and CC BY models. The brief's CC0 claims for the nine
+   models cannot be trusted until each model page's license badge is read. If one turns out to be CC BY it needs a credit line.
+4. **Previews are not contents.** The brief warns that screenshots can show more than the free download holds;
+   confirm with `inspect_assets.py` before counting a pack toward the checklist.
+5. **Author names differ.** Lab Assets is credited to "jamesdev" in itch.io metadata and "MilkAndBanana" on the page. Credit both until clarified.
+6. **Blender sources.** Several packs ship `.blend` files. The tools refuse to open them (they can carry scripts); export to FBX/OBJ/glTF first.
+
+## To raise a source to VERIFIED (needs a browser or open network access)
+
+1. Open the page. Copy the license field text exactly and note today's date.
+2. Download only the free file. Record the SHA-256 (`download_assets.py --adopt` does this).
+3. Find the license file inside the archive (`inspect_assets.py` lists it) and confirm it matches the page.
+4. In `sources.json`, set `verification.status` to `VERIFIED`, add the page URL and archive file under `evidence`,
+   and clear the `unverified` list.
+5. If the license is CC BY, move the credit line in `THIRD_PARTY_ATTRIBUTION.md` under **In use** when a model ships.
+
+## Third-party assets already in the project
+
+- KayKit Character Animations 1.1 by Kay Lousberg, CC0. The unchanged license file is at
+  `assets/third_party/kaykit_character_animations/License.txt`. This one is `VERIFIED` by that file.
