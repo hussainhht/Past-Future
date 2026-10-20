@@ -2,6 +2,8 @@ extends Node3D
 ## Playable Signal Laboratory, entered by Solo Test or the existing LAN lobby.
 ## SpawnPoint and prop instances are editable in Godot.
 
+const InputManager := preload("res://scripts/input/input_manager.gd")
+
 @export_enum("Past", "Future") var timeline: String = "Past"
 @export var pause_when_unfocused: bool = true
 
@@ -52,9 +54,27 @@ func _ready() -> void:
 	GameFlowManager.attach_room("room_01", self)
 	GameFlowManager.input_lock_changed.connect(func(_locked: bool) -> void: gameplay.sync_controls())
 	get_tree().auto_accept_quit = false
+	_update_footer_hint()
+	InputManager.get_instance().device_changed_signal.connect(func(_d: int, _c: int) -> void: _update_footer_hint())
 	# The scene can also run directly with F6, without a network session.
 	if _networked:
 		_on_network_changed()
+
+
+func _update_footer_hint() -> void:
+	var hint: Label = get_node_or_null("HUD/Interface/Footer/Hint")
+	if not is_instance_valid(hint):
+		return
+	var is_controller := InputManager.active_device_type == InputManager.DeviceType.CONTROLLER
+	var is_dualsense := InputManager.active_controller_type == InputManager.ControllerType.DUALSENSE
+	if is_controller:
+		var interact_btn := "✕" if is_dualsense else "A"
+		var sprint_btn := "L3" if is_dualsense else "LS"
+		var cancel_btn := "○" if is_dualsense else "B"
+		var pause_btn := "OPTIONS" if is_dualsense else "MENU"
+		hint.text = "LEFT STICK  ·  MOVE     %s  ·  RUN     %s  ·  INTERACT / ADVANCE DIALOGUE\n%s  ·  PAUSE / RESUME     %s  ·  CANCEL / BACK" % [sprint_btn, interact_btn, pause_btn, cancel_btn]
+	else:
+		hint.text = "WASD / ARROWS  ·  MOVE     SHIFT  ·  RUN     F  ·  INTERACT     ENTER / CLICK DIALOGUE  ·  CONTINUE\nT  ·  SWITCH SOLO ROLE     F2  ·  CHARACTER STUDIO     R  ·  RESPAWN     ESC  ·  PAUSE"
 
 
 func _input(event: InputEvent) -> void:
@@ -65,7 +85,11 @@ func _input(event: InputEvent) -> void:
 			_character_studio.request_close()
 			get_viewport().set_input_as_handled()
 		return
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
+		if not _paused and GameFlowManager.is_local_ready():
+			GameFlowManager.cancel_transition_request()
+			get_viewport().set_input_as_handled()
+			return
 		if not _disconnected:
 			_set_paused(not _paused)
 		get_viewport().set_input_as_handled()

@@ -15,6 +15,7 @@ extends Node
 
 const RoomDef := preload("res://scripts/game_flow/room_definition.gd")
 const OverlayScene := preload("res://scenes/game_flow/transition_overlay.tscn")
+const InputManager := preload("res://scripts/input/input_manager.gd")
 
 const PAST := RoomDef.PAST
 const FUTURE := RoomDef.FUTURE
@@ -129,6 +130,7 @@ func _ready() -> void:
 	NetworkManager.state_changed.connect(_on_network_changed)
 	PuzzleManager.session_ended.connect(_on_session_ended)
 	load_room_directory()
+	InputManager.ensure_initialized(self)
 
 
 func _exit_tree() -> void:

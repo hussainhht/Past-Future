@@ -43,7 +43,7 @@ func open_for(actor: Node, _role: String = "") -> bool:
 		return false
 	_actor = actor
 	if is_instance_valid(_actor):
-		_was_controls_enabled = bool(_actor.get("controls_enabled"))
+		_was_controls_enabled = bool(_actor.get("controls_enabled")) if _actor.get("controls_enabled") != null else true
 		_actor.set("controls_enabled", false)
 		_controller = _actor.find_child("InteractionController", true, false)
 		if is_instance_valid(_controller):

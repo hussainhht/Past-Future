@@ -1,0 +1,210 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://scripts/testing/controller_sandbox.gd" id="1_sandbox"]
+[ext_resource type="PackedScene" path="res://scenes/characters/student_3d_player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/interaction/interaction_rig.tscn" id="3_rig"]
+[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="4_prompt"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/frequency/frequency_terminal_ui.tscn" id="5_terminal"]
+[ext_resource type="PackedScene" path="res://scenes/dialogue/dialogue_box.tscn" id="6_dialogue_box"]
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_director.gd" id="7_dialogue_director"]
+[ext_resource type="Script" path="res://scripts/world/follow_camera.gd" id="8_camera"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable_3d.gd" id="9_interactable"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.08, 0.1, 0.14, 1)
+ambient_light_color = Color(0.7, 0.75, 0.85, 1)
+ambient_light_energy = 0.85
+
+[sub_resource type="BoxShape3D" id="FloorShape"]
+size = Vector3(30, 0.4, 30)
+
+[sub_resource type="StandardMaterial3D" id="FloorMaterial"]
+albedo_color = Color(0.15, 0.18, 0.22, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="FloorMesh"]
+material = SubResource("FloorMaterial")
+size = Vector3(30, 0.4, 30)
+
+[sub_resource type="SphereShape3D" id="InteractTrigger"]
+radius = 1.5
+
+[sub_resource type="BoxMesh" id="TerminalPropMesh"]
+size = Vector3(1, 1.2, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="TerminalPropMat"]
+albedo_color = Color(0.2, 0.5, 0.7, 1)
+
+[node name="ControllerSandbox" type="Node3D"]
+script = ExtResource("1_sandbox")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 8, 0)
+light_color = Color(1, 0.96, 0.9, 1)
+light_energy = 1.1
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("FloorMesh")
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("8_camera")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(1, 0, 0, 0, 0.819152, 0.573576, 0, -0.573576, 0.819152, 0, 6.5, 8.5)
+current = true
+fov = 45.0
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Player" parent="Actors" instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+
+[node name="InteractionRig" parent="Actors/Player" instance=ExtResource("3_rig")]
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="TerminalConsole" type="Area3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -3.5)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("9_interactable")
+interaction_name = "Use Frequency Terminal"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/TerminalConsole"]
+shape = SubResource("InteractTrigger")
+
+[node name="Visual" type="MeshInstance3D" parent="Interactables/TerminalConsole"]
+mesh = SubResource("TerminalPropMesh")
+surface_material_override/0 = SubResource("TerminalPropMat")
+
+[node name="DialogueDirector" type="Node" parent="."]
+script = ExtResource("7_dialogue_director")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="InteractionPrompt" parent="HUD" instance=ExtResource("4_prompt")]
+
+[node name="FrequencyTerminalUI" parent="HUD" instance=ExtResource("5_terminal")]
+visible = false
+
+[node name="DialogueBox" parent="HUD" instance=ExtResource("6_dialogue_box")]
+
+[node name="Diagnostics" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="HUD/Diagnostics"]
+layout_mode = 1
+offset_right = 420.0
+offset_bottom = 260.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+
+[node name="Panel" type="PanelContainer" parent="HUD/Diagnostics/Margin"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Diagnostics/Margin/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "PS5 DUALSENSE TEST SANDBOX"
+
+[node name="DeviceLabel" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Active Device: KEYBOARD"
+
+[node name="ControllerLabel" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Controller Type: NONE"
+
+[node name="StickLabel" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Left Stick: (0.00, 0.00)"
+
+[node name="SprintLabel" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Sprint Active (L3): NO"
+
+[node name="LastActionLabel" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Last Action: None"
+
+[node name="ConnectionBanner" type="Label" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.9, 0.8, 1)
+text = "Ready"
+
+[node name="TestButtons" type="HBoxContainer" parent="HUD/Diagnostics/Margin/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TriggerDialogueBtn" type="Button" parent="HUD/Diagnostics/Margin/Panel/VBox/TestButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test Dialogue"
+
+[node name="OpenTerminalBtn" type="Button" parent="HUD/Diagnostics/Margin/Panel/VBox/TestButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Open Terminal"
+
+[node name="TestHapticBtn" type="Button" parent="HUD/Diagnostics/Margin/Panel/VBox/TestButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Test Haptic"
+
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="PausePanel" type="ColorRect" parent="PauseLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.015, 0.035, 0.05, 0.85)
+
+[node name="Center" type="CenterContainer" parent="PauseLayer/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBox" type="VBoxContainer" parent="PauseLayer/PausePanel/Center"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="PauseLayer/PausePanel/Center/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="PauseLayer/PausePanel/Center/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 48)
+layout_mode = 2
+text = "RESUME"
+

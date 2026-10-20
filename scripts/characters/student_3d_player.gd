@@ -6,6 +6,7 @@ signal action_finished(action: String)
 
 const ACTIONS: Dictionary = {"interact": "Interact", "inspect": "Use_Item", "pick_up": "PickUp", "put_down": "PickUp", "wave": "Waving"}
 const LOOP_CLIPS: Array[String] = ["Idle_A", "Idle_B", "Walking_A", "Walking_B", "Walking_C", "Running_A", "Running_B", "Holding_A", "Holding_B", "Holding_C", "Working_A", "Working_B", "Working_C", "Crouching", "Sneaking", "Crawling"]
+const InputManager := preload("res://scripts/input/input_manager.gd")
 
 @export var speed: float = 2.8
 @export var run_multiplier: float = 1.55
@@ -130,22 +131,25 @@ func _get_interaction_controller() -> Node:
 		controller = find_child("InteractionController", true, false)
 	return controller
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if Engine.is_editor_hint() or not controls_enabled or not event is InputEventKey or not event.pressed or event.echo:
+func _unhandled_input(event: InputEvent) -> void:
+	if Engine.is_editor_hint() or not controls_enabled or not event.is_pressed() or event.is_echo():
 		return
-	if event.is_action_pressed("interact") or event.physical_keycode == KEY_F:
+	if event.is_action_pressed("interact") or (event is InputEventKey and event.physical_keycode == KEY_F):
 		var controller := _get_interaction_controller()
 		if controller != null and controller.has_method("is_interaction_available") and controller.is_interaction_available():
 			if controller.try_interact():
 				get_viewport().set_input_as_handled()
+				InputManager.trigger_haptic(&"interaction")
 				return
 	if not demonstration_items_enabled:
 		return
 	var action := ""
-	match event.physical_keycode:
-		KEY_F: action = "interact"
-		KEY_I: action = "inspect"
-		KEY_E: action = "put_down" if carrying else "pick_up"
+	if event.is_action_pressed("interact") or (event is InputEventKey and event.physical_keycode == KEY_F):
+		action = "interact"
+	elif event.is_action_pressed("inspect") or (event is InputEventKey and event.physical_keycode == KEY_I):
+		action = "inspect"
+	elif event.is_action_pressed("use_item") or (event is InputEventKey and event.physical_keycode == KEY_E):
+		action = "put_down" if carrying else "pick_up"
 	if not action.is_empty() and play_action(action):
 		get_viewport().set_input_as_handled()
 
@@ -155,7 +159,12 @@ func _physics_process(delta: float) -> void:
 	var direction := Vector2.ZERO
 	var can_move := controls_enabled and _action.is_empty()
 	if can_move:
-		direction = (Input.get_vector("move_left", "move_right", "move_up", "move_down") + Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")).limit_length(1.0)
+		var move_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		var ui_vec := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		if move_vec.length_squared() > 0.0:
+			direction = move_vec.limit_length(1.0)
+		else:
+			direction = ui_vec.limit_length(1.0)
 	var right := Vector3.RIGHT
 	var down := Vector3.BACK
 	if is_instance_valid(view_camera):
@@ -165,7 +174,7 @@ func _physics_process(delta: float) -> void:
 		down = view_camera.global_basis.z
 		down.y = 0.0
 		down = down.normalized()
-	var running := controls_enabled and not carrying and Input.is_physical_key_pressed(KEY_SHIFT)
+	var running := controls_enabled and not carrying and (Input.is_physical_key_pressed(KEY_SHIFT) or Input.is_action_pressed("sprint"))
 	var ground_direction := right * direction.x + down * direction.y
 	var movement_speed := speed * (run_multiplier if running else 1.0)
 	var ground_velocity := Vector2(velocity.x, velocity.z)

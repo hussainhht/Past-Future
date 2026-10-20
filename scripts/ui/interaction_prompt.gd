@@ -8,6 +8,7 @@ extends CanvasLayer
 const COLOR_PAST := Color("#e4bf7f")
 const COLOR_FUTURE := Color("#86c9d1")
 const COLOR_NEUTRAL := Color("#ffffff")
+const InputManager := preload("res://scripts/input/input_manager.gd")
 
 @onready var root_control: Control = $Root
 @onready var panel: PanelContainer = $Root/PromptPanel
@@ -26,6 +27,19 @@ func _ready() -> void:
 	root_control.modulate.a = 0.0
 	root_control.visible = false
 	_apply_timeline_style("past")
+	_update_key_badge()
+	InputManager.get_instance().device_changed_signal.connect(_on_device_changed)
+
+
+func _on_device_changed(_device_type: int, _controller_type: int) -> void:
+	_update_key_badge()
+
+
+func _update_key_badge() -> void:
+	if not is_instance_valid(key_label):
+		return
+	var label: String = InputManager.get_action_label(&"interact")
+	key_label.text = " %s " % label
 
 
 func _apply_timeline_style(timeline: String) -> void:
@@ -119,4 +133,3 @@ func set_interaction_blocked(blocked: bool) -> void:
 func set_interaction_available(available: bool) -> void:
 	if not available:
 		hide_prompt()
-

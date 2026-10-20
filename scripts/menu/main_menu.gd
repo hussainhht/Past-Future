@@ -3,6 +3,7 @@ extends Control
 const WARM := Color("d8ba89")
 const COOL := Color("86c6cd")
 const INK := Color("101c24")
+const InputManager := preload("res://scripts/input/input_manager.gd")
 
 var audio: AudioDirector
 
@@ -48,8 +49,24 @@ func _ready() -> void:
 	motion_toggle.toggled.connect(_set_motion)
 	_load_settings()
 	%PlayButton.grab_focus()
+	_update_coop_hint()
+	InputManager.get_instance().device_changed_signal.connect(func(_d: int, _c: int) -> void: _update_coop_hint())
 	# Let the menu handle closing so an accidental window close can be cancelled.
 	get_tree().auto_accept_quit = false
+
+
+func _update_coop_hint() -> void:
+	var hint: Label = get_node_or_null("Layout/CoopHint")
+	if not is_instance_valid(hint):
+		return
+	var is_controller := InputManager.active_device_type == InputManager.DeviceType.CONTROLLER
+	var is_dualsense := InputManager.active_controller_type == InputManager.ControllerType.DUALSENSE
+	if is_controller:
+		var confirm_btn := "✕" if is_dualsense else "A"
+		var back_btn := "○" if is_dualsense else "B"
+		hint.text = "A MYSTERY FOR TWO     ·     D-PAD / STICK + %s CONFIRM     ·     %s BACK" % [confirm_btn, back_btn]
+	else:
+		hint.text = "A MYSTERY FOR TWO     ·     MOUSE OR ↑ ↓ + ENTER     ·     ESC BACK"
 
 
 func _notification(what: int) -> void:
@@ -62,7 +79,7 @@ func _notification(what: int) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("cancel"):
 		if overlay.visible:
 			_close_page()
 		else:
@@ -144,6 +161,10 @@ func _open_page(page_name: String) -> void:
 	%BackButton.text = "STAY" if page_name == "QuitPage" else "BACK"
 	if page_name == "PlayPage":
 		%PreviewButton.grab_focus()
+	elif page_name == "SettingsPage":
+		fullscreen_toggle.grab_focus()
+	elif page_name == "QuitPage":
+		%ConfirmQuit.grab_focus()
 	else:
 		%BackButton.grab_focus()
 
@@ -268,6 +289,7 @@ func _load_settings() -> void:
 	motion_toggle.set_pressed_no_signal(motion)
 	backdrop.motion_enabled = motion
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
+
 
 func _build_audio_settings() -> void:
 	var settings := pages.get_node("SettingsPage")

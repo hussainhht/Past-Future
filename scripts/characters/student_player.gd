@@ -80,7 +80,12 @@ func _physics_process(delta: float) -> void:
 		return
 	var direction := Vector2.ZERO
 	if controls_enabled:
-		direction = (Input.get_vector("move_left", "move_right", "move_up", "move_down") + Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")).limit_length(1.0)
+		var move_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")
+		var ui_vec := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		if move_vec.length_squared() > 0.0:
+			direction = move_vec.limit_length(1.0)
+		else:
+			direction = ui_vec.limit_length(1.0)
 	var right := Vector3.RIGHT
 	var down := Vector3.BACK
 	if is_instance_valid(view_camera):
