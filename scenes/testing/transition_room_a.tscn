@@ -1,0 +1,229 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/testing/transition_room.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/game_flow/level_exit_interactable.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/gameplay/frequency/frequency_puzzle_coordinator.gd" id="3"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.035, 0.06, 0.075, 1.0)
+ambient_light_source = 2
+ambient_light_color = Color(0.55, 0.68, 0.78, 1.0)
+ambient_light_energy = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2"]
+albedo_color = Color(0.13, 0.19, 0.22, 1.0)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+albedo_color = Color(0.2, 0.29, 0.33, 1.0)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4"]
+albedo_color = Color(0.25, 0.36, 0.4, 1.0)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5"]
+albedo_color = Color(0.2, 0.45, 0.5, 1.0)
+roughness = 0.9
+emission_enabled = true
+emission = Color(0.25, 0.7, 0.75, 1.0)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_6"]
+material = SubResource("StandardMaterial3D_2")
+size = Vector3(14, 0.2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7"]
+size = Vector3(14, 0.2, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8"]
+material = SubResource("StandardMaterial3D_3")
+size = Vector3(14.3, 1.2, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_9"]
+size = Vector3(14.3, 1.2, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_10"]
+material = SubResource("StandardMaterial3D_3")
+size = Vector3(14.3, 1.2, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_11"]
+size = Vector3(14.3, 1.2, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_12"]
+material = SubResource("StandardMaterial3D_3")
+size = Vector3(0.3, 1.2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_13"]
+size = Vector3(0.3, 1.2, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_14"]
+material = SubResource("StandardMaterial3D_3")
+size = Vector3(0.3, 1.2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_15"]
+size = Vector3(0.3, 1.2, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_16"]
+material = SubResource("StandardMaterial3D_4")
+size = Vector3(2.4, 0.8, 1.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17"]
+size = Vector3(2.4, 0.8, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_18"]
+material = SubResource("StandardMaterial3D_4")
+size = Vector3(3.0, 0.8, 1.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_19"]
+size = Vector3(3.0, 0.8, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_20"]
+material = SubResource("StandardMaterial3D_4")
+size = Vector3(1.2, 0.5, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_21"]
+size = Vector3(1.2, 0.5, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_22"]
+size = Vector3(2.8, 2.0, 2.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_23"]
+material = SubResource("StandardMaterial3D_5")
+size = Vector3(2.2, 0.04, 2.2)
+
+[node name="TransitionRoomA" type="Node3D"]
+script = ExtResource("1")
+room_id = "test_room_a"
+room_title = "TEST ROOM A  /  SIGNAL LABORATORY"
+accent = Color(0.53, 0.79, 0.83, 1.0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.95, -0.55, 0)
+light_energy = 1.0
+
+[node name="PuzzleCoordinator" type="Node" parent="."]
+script = ExtResource("3")
+
+[node name="Shell" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, -0.1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/Floor"]
+mesh = SubResource("BoxMesh_6")
+
+[node name="Shape" type="CollisionShape3D" parent="Shell/Floor"]
+shape = SubResource("BoxShape3D_7")
+
+[node name="WallNorth" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, 0.6, -5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/WallNorth"]
+mesh = SubResource("BoxMesh_8")
+
+[node name="Shape" type="CollisionShape3D" parent="Shell/WallNorth"]
+shape = SubResource("BoxShape3D_9")
+
+[node name="WallSouth" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, 0.6, 5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/WallSouth"]
+mesh = SubResource("BoxMesh_10")
+
+[node name="Shape" type="CollisionShape3D" parent="Shell/WallSouth"]
+shape = SubResource("BoxShape3D_11")
+
+[node name="WallWest" type="StaticBody3D" parent="Shell"]
+position = Vector3(-7, 0.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/WallWest"]
+mesh = SubResource("BoxMesh_12")
+
+[node name="Shape" type="CollisionShape3D" parent="Shell/WallWest"]
+shape = SubResource("BoxShape3D_13")
+
+[node name="WallEast" type="StaticBody3D" parent="Shell"]
+position = Vector3(7, 0.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/WallEast"]
+mesh = SubResource("BoxMesh_14")
+
+[node name="Shape" type="CollisionShape3D" parent="Shell/WallEast"]
+shape = SubResource("BoxShape3D_15")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Block1" type="StaticBody3D" parent="Props"]
+position = Vector3(-4.5, 0.4, -3.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Props/Block1"]
+mesh = SubResource("BoxMesh_16")
+
+[node name="Shape" type="CollisionShape3D" parent="Props/Block1"]
+shape = SubResource("BoxShape3D_17")
+
+[node name="Block2" type="StaticBody3D" parent="Props"]
+position = Vector3(3.2, 0.4, -3.4)
+
+[node name="Mesh" type="MeshInstance3D" parent="Props/Block2"]
+mesh = SubResource("BoxMesh_18")
+
+[node name="Shape" type="CollisionShape3D" parent="Props/Block2"]
+shape = SubResource("BoxShape3D_19")
+
+[node name="Block3" type="StaticBody3D" parent="Props"]
+position = Vector3(-1.0, 0.25, 1.0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Props/Block3"]
+mesh = SubResource("BoxMesh_20")
+
+[node name="Shape" type="CollisionShape3D" parent="Props/Block3"]
+shape = SubResource("BoxShape3D_21")
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="past_entry" type="Marker3D" parent="Spawns" groups=["spawn_point"]]
+position = Vector3(-4.5, 0, 2.6)
+
+[node name="future_entry" type="Marker3D" parent="Spawns" groups=["spawn_point"]]
+position = Vector3(-3.2, 0, 2.6)
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="Exits" type="Node3D" parent="."]
+
+[node name="Exit" type="Area3D" parent="Exits"]
+position = Vector3(5.0, 0, 0.0)
+script = ExtResource("2")
+interaction_distance = 1.9
+destination_room_id = "test_room_b"
+ready_prompt = "Proceed to Next Area"
+
+[node name="Zone" type="CollisionShape3D" parent="Exits/Exit"]
+position = Vector3(0, 1, 0)
+shape = SubResource("BoxShape3D_22")
+
+[node name="Pad" type="MeshInstance3D" parent="Exits/Exit"]
+position = Vector3(0, 0.02, 0)
+mesh = SubResource("BoxMesh_23")
+
+[node name="Label" type="Label3D" parent="Exits/Exit"]
+position = Vector3(0, 1.9, 0)
+billboard = 1
+modulate = Color(0.53, 0.79, 0.83, 1.0)
+font_size = 36
+pixel_size = 0.007
+text = "EXIT  >  ROOM B"
+
+[node name="RoomLabel" type="Label3D" parent="."]
+position = Vector3(0, 2.6, -4.4)
+billboard = 1
+modulate = Color(0.53, 0.79, 0.83, 1.0)
+font_size = 48
+pixel_size = 0.007
+text = "ROOM A  -  SIGNAL LABORATORY"

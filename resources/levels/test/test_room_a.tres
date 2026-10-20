@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="RoomDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/game_flow/room_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+room_id = "test_room_a"
+display_name = "Signal Laboratory (sandbox)"
+shared_scene = "res://scenes/testing/transition_room_a.tscn"
+past_spawn_id = &"past_entry"
+future_spawn_id = &"future_entry"
+next_room_id = "test_room_b"
+allowed_exits = PackedStringArray()
+required_puzzles = PackedStringArray("puzzle_01_frequency")
+locked_message = "Establish the temporal radio link first (F9 in this sandbox)."
+require_both_ready = true
