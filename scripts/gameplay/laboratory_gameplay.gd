@@ -67,6 +67,11 @@ func initialize(laboratory: Node3D) -> void:
 	PuzzleManager.action_rejected.connect(_on_action_rejected)
 	PuzzleManager.session_started.connect(_on_session_started)
 	PuzzleManager.session_ended.connect(_on_session_ended)
+	director.dialogue_line_finished.connect(_on_audio_dialogue_advance)
+	PuzzleManager.puzzle_completed.connect(_on_audio_puzzle_completed)
+	for button_path in ["%PauseButton", "%ResumeButton"]:
+		room.get_node(button_path).set_meta("audio_event", &"")
+	audio.bind_ui(room)
 	bind_player()
 	apply_timeline()
 	_refresh_state()
@@ -94,6 +99,14 @@ func bind_player() -> void:
 		radio.reparent(player)
 	if not player.has_node("FootstepEmitter3D"):
 		player.add_child(load("res://scenes/audio/footstep_emitter_3d.tscn").instantiate())
+	var emitter := player.get_node("FootstepEmitter3D") as FootstepEmitter3D
+	emitter.set_timeline(StringName(room.timeline))
+	# Listen at the local character, independent of the high-angle camera.
+	var listener := AudioListener3D.new()
+	listener.name = "LocalAudioListener"
+	listener.position.y = 1.4
+	player.add_child(listener)
+	listener.make_current()
 	var socket := BoneAttachment3D.new()
 	socket.name = "HeldRadioSocket"
 	socket.bone_name = "handslot.r"
@@ -113,6 +126,7 @@ func apply_timeline() -> void:
 		return
 	var role: String = "future" if room.timeline == "Future" else "past"
 	_current_role = role
+	(room.player.get_node("FootstepEmitter3D") as FootstepEmitter3D).set_timeline(StringName(role))
 	radio.set_player_role(role)
 	controller.detector.set_current_role(role)
 	director.set_local_timeline(role)
@@ -144,20 +158,21 @@ func close_overlays() -> void:
 	adapter.end_conversation()
 
 
-func shutdown() -> void:
+func shutdown(fade_time: float = 0.0) -> void:
 	if _shutting_down:
 		return
 	_shutting_down = true
 	close_overlays()
-	stop_audio()
+	stop_audio(fade_time)
 	if configured and is_instance_valid(room.player):
 		room.player.controls_enabled = false
 
 
-func stop_audio() -> void:
+func stop_audio(fade_time: float = 0.0) -> void:
 	if is_instance_valid(audio):
 		audio.stop_all_sfx()
-		audio.stop_ambience(0.0)
+		audio.stop_ambience(fade_time)
+		audio.stop_music(fade_time)
 	if is_instance_valid(radio_audio):
 		radio_audio.stop_static()
 	if configured and is_instance_valid(room.player):
@@ -180,6 +195,7 @@ func _sync_controls() -> void:
 	prompt.set_interaction_blocked(blocked)
 	controller.set_interaction_blocked(blocked)
 	binding.set_suspended(overlay)
+	radio_audio.set_suspended(overlay)
 	room.get_node("%TimelineButton").disabled = not can_switch_role()
 	room.get_node("%CharacterButton").disabled = not can_switch_role()
 	room.get_node("%InterferenceButton").disabled = not radio.has_established_link()
@@ -280,3 +296,10 @@ func _process(delta: float) -> void:
 
 func _exit_tree() -> void:
 	stop_audio()
+
+func _on_audio_dialogue_advance(_sequence_id: String, _line_index: int) -> void:
+	audio.play_ui(&"dialogue_advance")
+
+func _on_audio_puzzle_completed(puzzle_id: String) -> void:
+	if puzzle_id == Relay.ID:
+		audio.play_sfx(&"mechanism_activated")

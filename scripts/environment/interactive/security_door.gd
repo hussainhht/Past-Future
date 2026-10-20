@@ -80,6 +80,8 @@ func open(animate: bool) -> void:
 
 ## Back to sealed, for puzzle resets.
 func close() -> void:
+	if is_open or opening:
+		sfx(&"door_close", Vector3(0, 1.5, 0.3))
 	if _tween:
 		_tween.kill()
 	leaf.position = _leaf_closed

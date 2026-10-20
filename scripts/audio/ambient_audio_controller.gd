@@ -3,6 +3,10 @@ extends Node
 ## Manages atmospheric background audio loops for Past and Future timelines.
 ## Features smooth crossfading, duplicate-trigger prevention, and safe bus routing.
 
+const Catalog := preload("res://scripts/audio/sound_catalog.gd")
+
+var _volumes: Dictionary = {}
+
 signal ambience_started(ambience_id: StringName)
 signal ambience_stopped()
 
@@ -41,25 +45,16 @@ func _setup_players() -> void:
 	_active_player = _player_a
 
 func _load_streams() -> void:
-	var catalog := {
-		&"lab_ambience_past": "res://assets/audio/ambience/lab_ambience_past.wav",
-		&"lab_ambience_future": "res://assets/audio/ambience/lab_ambience_future.wav",
-		&"rift_hum": "res://assets/audio/environment/rift_hum.wav"
-	}
-	for id in catalog:
-		var path: String = catalog[id]
-		if ResourceLoader.exists(path):
-			var res: AudioStream = load(path)
-			if res is AudioStreamWAV:
-				# Imported WAV/QOA resources may have zero loop bounds. Looping that
-				# empty range ends playback immediately; use the full sample range.
-				# Keep loop configuration local, especially for the shared rift SFX.
-				var loop_stream: AudioStreamWAV = res.duplicate()
-				loop_stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
-				if loop_stream.loop_end <= loop_stream.loop_begin:
-					loop_stream.loop_begin = 0
-					loop_stream.loop_end = roundi(loop_stream.get_length() * loop_stream.mix_rate)
-				_streams[id] = loop_stream
+	var definitions := Catalog.definitions()
+	for id: String in definitions:
+		var definition: Dictionary = definitions[id]
+		if not definition.get("loop", false) or definition.get("bus", "") != String(audio_bus):
+			continue
+		var entry := Catalog.load_entry(definition)
+		var stream := Catalog.loop_stream(entry["stream"])
+		if stream != null:
+			_streams[StringName(id)] = stream
+			_volumes[StringName(id)] = float(definition.get("volume_db", base_volume_db))
 
 func start_ambience(ambience_id: StringName, fade_time: float = -1.0) -> void:
 	if fade_time < 0.0:
@@ -78,6 +73,8 @@ func start_ambience(ambience_id: StringName, fade_time: float = -1.0) -> void:
 	var incoming := _player_b if _active_player == _player_a else _player_a
 	var outgoing := _active_player
 	
+	incoming.stop()
+	incoming.bus = audio_bus if AudioServer.get_bus_index(audio_bus) >= 0 else &"Master"
 	incoming.stream = stream
 	incoming.volume_db = -80.0
 	incoming.play()
@@ -86,7 +83,7 @@ func start_ambience(ambience_id: StringName, fade_time: float = -1.0) -> void:
 		_tween.kill()
 	_tween = create_tween().set_parallel(true)
 	
-	_tween.tween_property(incoming, "volume_db", base_volume_db, fade_time)
+	_tween.tween_property(incoming, "volume_db", float(_volumes.get(ambience_id, base_volume_db)), fade_time)
 	if outgoing.playing:
 		_tween.tween_property(outgoing, "volume_db", -80.0, fade_time)
 		_tween.chain().tween_callback(outgoing.stop)
@@ -110,6 +107,7 @@ func stop_ambience(fade_time: float = -1.0) -> void:
 		_tween.tween_property(_player_a, "volume_db", -80.0, fade_time)
 	if _player_b.playing:
 		_tween.tween_property(_player_b, "volume_db", -80.0, fade_time)
+	_tween.tween_interval(fade_time)
 	_tween.chain().tween_callback(_on_stop_complete)
 
 func _on_stop_complete() -> void:

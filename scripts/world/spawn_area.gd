@@ -163,6 +163,8 @@ func _switch_preview_timeline() -> void:
 func _set_paused(paused: bool) -> void:
 	if _disconnected and not paused:
 		return
+	if _paused != paused and gameplay.configured:
+		gameplay.audio.play_ui(&"ui_pause" if paused else &"ui_unpause")
 	_paused = paused
 	player.controls_enabled = not paused
 	player.velocity = Vector3.ZERO
@@ -203,6 +205,7 @@ func _test_interference() -> void:
 func _on_network_changed() -> void:
 	if _leaving or not _networked or (NetworkManager.state == NetworkManager.State.CONNECTED and NetworkManager.in_game):
 		return
+	gameplay.audio.play_sfx(&"radio_disconnect")
 	_disconnected = true
 	gameplay.close_overlays()
 	_set_paused(true)
@@ -216,7 +219,8 @@ func _return_to_menu() -> void:
 	if _leaving:
 		return
 	_leaving = true
-	gameplay.shutdown()
+	gameplay.shutdown(0.18)
+	await get_tree().create_timer(0.2).timeout
 	NetworkManager.leave_game()
 	PuzzleManager.reset_all()
 	get_tree().change_scene_to_file.call_deferred("res://scenes/menu/main_menu.tscn")

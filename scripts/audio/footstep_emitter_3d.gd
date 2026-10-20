@@ -3,6 +3,10 @@ extends Node3D
 ## Responsive, physically grounded 3D footstep emitter for CharacterBody3D.
 ## Reads actual resolved velocity and grounded state to schedule cadence.
 
+const Catalog := preload("res://scripts/audio/sound_catalog.gd")
+
+@export var surface_event: StringName = &"footstep_past_tile"
+
 signal footstep_played(variant_index: int, world_position: Vector3)
 
 @export var character: CharacterBody3D
@@ -11,7 +15,7 @@ signal footstep_played(variant_index: int, world_position: Vector3)
 @export var movement_threshold: float = 0.15
 @export var run_speed_threshold: float = 3.6
 @export var pitch_variation_range: float = 0.04
-@export var base_volume_db: float = -6.0
+@export var base_volume_db: float = -12.0
 @export var run_volume_boost_db: float = 1.0
 @export var audio_bus: StringName = &"SFX"
 @export var footstep_streams: Array[AudioStream] = []
@@ -37,12 +41,21 @@ func _ready() -> void:
 		_has_last_position = true
 
 func _load_default_footsteps() -> void:
-	for i in range(1, 6):
-		var path := "res://assets/audio/footsteps/footstep_0%d.wav" % i
-		if ResourceLoader.exists(path):
-			var stream: AudioStream = load(path)
-			if stream:
-				footstep_streams.append(stream)
+	var definition: Dictionary = Catalog.definitions().get(String(surface_event), {})
+	var entry := Catalog.load_entry(definition)
+	footstep_streams.assign(entry["streams"])
+	base_volume_db = float(entry.get("volume_db", -12.0))
+
+func set_surface(event_id: StringName) -> void:
+	if event_id == surface_event and not footstep_streams.is_empty():
+		return
+	surface_event = event_id
+	_last_sample_index = -1
+	_load_default_footsteps()
+	reset()
+
+func set_timeline(timeline: StringName) -> void:
+	set_surface(&"footstep_future_concrete" if String(timeline).to_lower() == "future" else &"footstep_past_tile")
 
 func _configure_player() -> void:
 	if player == null:
@@ -59,8 +72,8 @@ func _configure_player() -> void:
 		player.bus = &"Master"
 	
 	# Tune 3D attenuation for the game's ~20m camera distance
-	player.unit_size = 18.0
-	player.max_distance = 60.0
+	player.unit_size = 5.0
+	player.max_distance = 20.0
 	player.attenuation_model = AudioStreamPlayer3D.ATTENUATION_INVERSE_DISTANCE
 	player.volume_db = base_volume_db
 
@@ -70,29 +83,17 @@ func _physics_process(delta: float) -> void:
 		_distance_accumulated = 0.0
 		return
 	
-	# Detect if character was teleported (distance jump too large for a single physics tick)
 	var current_pos := character.global_position
-	if _has_last_position:
-		var frame_displacement := (current_pos - _last_valid_position).length()
-		# If moved more than 2.5m in a single frame, treat as teleport / respawn
-		if frame_displacement > 2.5:
-			_last_valid_position = current_pos
-			_distance_accumulated = 0.0
-			_is_moving = false
-			return
+	var displacement := current_pos - _last_valid_position if _has_last_position else Vector3.ZERO
 	_last_valid_position = current_pos
 	_has_last_position = true
-	
-	# Read real resolved horizontal velocity
-	var real_vel: Vector3 = character.get_real_velocity()
-	var horizontal_speed: float = Vector2(real_vel.x, real_vel.z).length()
-	
-	# Fallback to nominal horizontal velocity if real_velocity magnitude is tiny
-	# (e.g. before move_and_slide tick completes or on static ground)
-	var nominal_speed := Vector2(character.velocity.x, character.velocity.z).length()
-	if horizontal_speed < 0.01:
-		horizontal_speed = nominal_speed
-	
+	# Actual displacement after physics: pushing against a wall cannot produce footsteps.
+	if displacement.length() > 2.5 or ("controls_enabled" in character and not character.get("controls_enabled")):
+		reset()
+		return
+	var distance := Vector2(displacement.x, displacement.z).length()
+	var horizontal_speed := distance / maxf(delta, 0.0001)
+
 	var is_grounded: bool = character.is_on_floor()
 	
 	# Stationary, airborne, or moving below threshold
@@ -112,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		_is_moving = true
 		_distance_accumulated = target_stride * 0.40
 	
-	_distance_accumulated += horizontal_speed * delta
+	_distance_accumulated += distance
 	
 	if _distance_accumulated >= target_stride:
 		_distance_accumulated -= target_stride
@@ -142,13 +143,10 @@ func _play_footstep(is_running: bool = false) -> void:
 	player.stream = stream
 	# Pitch variation +/- range
 	var pitch := 1.0 + randf_range(-pitch_variation_range, pitch_variation_range)
-	# Running has slightly higher pitch/energy
-	if is_running:
-		pitch *= 1.03
 	player.pitch_scale = pitch
 	
 	# Volume
-	player.volume_db = base_volume_db + (run_volume_boost_db if is_running else 0.0)
+	player.volume_db = base_volume_db + randf_range(-0.6, 0.6) + (run_volume_boost_db if is_running else 0.0)
 	
 	# Keep player anchored to character's foot level
 	if is_instance_valid(character):
@@ -161,5 +159,13 @@ func trigger_manual_step(is_running: bool = false) -> void:
 	_play_footstep(is_running)
 
 func reset() -> void:
+	if is_instance_valid(player):
+		player.stop()
 	_distance_accumulated = 0.0
 	_is_moving = false
+
+func _exit_tree() -> void:
+	if is_instance_valid(player):
+		player.stop()
+		player.stream = null
+	footstep_streams.clear()

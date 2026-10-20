@@ -1,0 +1,1055 @@
+[gd_resource type="Resource" load_steps=45 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/sound_event_library.gd" id="1_library"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/future/air_leak.ogg" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/future/metal_detail.wav" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/ambience/past/ventilation.ogg" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/computer/calibrate.wav" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/computer/equipment.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/computer/invalid.wav" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/computer/lock.wav" id="8"]
+[ext_resource type="AudioStream" path="res://assets/audio/computer/tune.wav" id="9"]
+[ext_resource type="AudioStream" path="res://assets/audio/documents/paper.wav" id="10"]
+[ext_resource type="AudioStream" path="res://assets/audio/doors/close.wav" id="11"]
+[ext_resource type="AudioStream" path="res://assets/audio/doors/open.wav" id="12"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/future_concrete/step_01.wav" id="13"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/future_concrete/step_02.wav" id="14"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/future_concrete/step_03.wav" id="15"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/future_concrete/step_04.wav" id="16"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/future_concrete/step_05.wav" id="17"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_01.wav" id="18"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_02.wav" id="19"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_03.wav" id="20"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_04.wav" id="21"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_05.wav" id="22"]
+[ext_resource type="AudioStream" path="res://assets/audio/footsteps/past_tile/step_06.wav" id="23"]
+[ext_resource type="AudioStream" path="res://assets/audio/interactions/switch.wav" id="24"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/future/galactic_temple.ogg" id="25"]
+[ext_resource type="AudioStream" path="res://assets/audio/music/past/observing_the_star.ogg" id="26"]
+[ext_resource type="AudioStream" path="res://assets/audio/puzzles/progress.wav" id="27"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/activate.wav" id="28"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/connect.wav" id="29"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/deactivate.wav" id="30"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/disconnect.wav" id="31"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/incoming.wav" id="32"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/outgoing.wav" id="33"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/pickup.wav" id="34"]
+[ext_resource type="AudioStream" path="res://assets/audio/radio/static.wav" id="35"]
+[ext_resource type="AudioStream" path="res://assets/audio/rift/energy_loop.ogg" id="36"]
+[ext_resource type="AudioStream" path="res://assets/audio/rift/stabilize.wav" id="37"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/back.wav" id="38"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/click.wav" id="39"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/close.wav" id="40"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/confirm.wav" id="41"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/error.wav" id="42"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/hover.wav" id="43"]
+[ext_resource type="AudioStream" path="res://assets/audio/ui/open.wav" id="44"]
+
+[resource]
+script = ExtResource("1_library")
+events = {
+  "footstep_past_tile": {
+    "files": [
+      "res://assets/audio/footsteps/past_tile/step_01.wav",
+      "res://assets/audio/footsteps/past_tile/step_02.wav",
+      "res://assets/audio/footsteps/past_tile/step_03.wav",
+      "res://assets/audio/footsteps/past_tile/step_04.wav",
+      "res://assets/audio/footsteps/past_tile/step_05.wav",
+      "res://assets/audio/footsteps/past_tile/step_06.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -12,
+    "pitch_variance": 0.035,
+    "volume_variance_db": 0.6,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "footstep_future_concrete": {
+    "files": [
+      "res://assets/audio/footsteps/future_concrete/step_01.wav",
+      "res://assets/audio/footsteps/future_concrete/step_02.wav",
+      "res://assets/audio/footsteps/future_concrete/step_03.wav",
+      "res://assets/audio/footsteps/future_concrete/step_04.wav",
+      "res://assets/audio/footsteps/future_concrete/step_05.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -12,
+    "pitch_variance": 0.035,
+    "volume_variance_db": 0.6,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "ui_click": {
+    "files": [
+      "res://assets/audio/ui/click.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -16,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "computer_button": {
+    "files": [
+      "res://assets/audio/ui/click.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -16,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "keypad_button": {
+    "files": [
+      "res://assets/audio/ui/click.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -16,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_hover": {
+    "files": [
+      "res://assets/audio/ui/hover.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -24,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 10,
+    "loop": false
+  },
+  "ui_focus": {
+    "files": [
+      "res://assets/audio/ui/hover.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -24,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 10,
+    "loop": false
+  },
+  "ui_confirm": {
+    "files": [
+      "res://assets/audio/ui/confirm.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -17,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.4,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_notification": {
+    "files": [
+      "res://assets/audio/ui/confirm.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -17,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.4,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_cancel": {
+    "files": [
+      "res://assets/audio/ui/back.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -17,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_back": {
+    "files": [
+      "res://assets/audio/ui/back.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -17,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_error": {
+    "files": [
+      "res://assets/audio/ui/error.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -17,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.5,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "menu_open": {
+    "files": [
+      "res://assets/audio/ui/open.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_pause": {
+    "files": [
+      "res://assets/audio/ui/open.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "menu_close": {
+    "files": [
+      "res://assets/audio/ui/close.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "ui_unpause": {
+    "files": [
+      "res://assets/audio/ui/close.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "dialogue_advance": {
+    "files": [
+      "res://assets/audio/ui/click.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -25,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.2,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false
+  },
+  "computer_open": {
+    "files": [
+      "res://assets/audio/ui/open.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -16,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_close": {
+    "files": [
+      "res://assets/audio/ui/close.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_tune": {
+    "files": [
+      "res://assets/audio/computer/tune.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -23,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.18,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_calibrate": {
+    "files": [
+      "res://assets/audio/computer/calibrate.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.65,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "puzzle_submit": {
+    "files": [
+      "res://assets/audio/computer/calibrate.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.65,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_invalid": {
+    "files": [
+      "res://assets/audio/computer/invalid.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "puzzle_failure": {
+    "files": [
+      "res://assets/audio/computer/invalid.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "interaction_denied": {
+    "files": [
+      "res://assets/audio/computer/invalid.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "door_locked": {
+    "files": [
+      "res://assets/audio/computer/invalid.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_success": {
+    "files": [
+      "res://assets/audio/computer/lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_beep": {
+    "files": [
+      "res://assets/audio/computer/lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "computer_connected": {
+    "files": [
+      "res://assets/audio/computer/lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "radio_pickup": {
+    "files": [
+      "res://assets/audio/radio/pickup.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -12,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.5,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_activate": {
+    "files": [
+      "res://assets/audio/radio/activate.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_deactivate": {
+    "files": [
+      "res://assets/audio/radio/deactivate.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -18,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.6,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_incoming": {
+    "files": [
+      "res://assets/audio/radio/incoming.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 2.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_dialogue_incoming": {
+    "files": [
+      "res://assets/audio/radio/incoming.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 2.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_outgoing": {
+    "files": [
+      "res://assets/audio/radio/outgoing.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.2,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_connect": {
+    "files": [
+      "res://assets/audio/radio/connect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "puzzle_success": {
+    "files": [
+      "res://assets/audio/radio/connect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "interaction_success": {
+    "files": [
+      "res://assets/audio/radio/connect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "objective_completed": {
+    "files": [
+      "res://assets/audio/radio/connect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "radio_disconnect": {
+    "files": [
+      "res://assets/audio/radio/disconnect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -20,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_static": {
+    "files": [
+      "res://assets/audio/radio/static.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -25,
+    "pitch_variance": 0.015,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_interference": {
+    "files": [
+      "res://assets/audio/radio/static.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -25,
+    "pitch_variance": 0.015,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "radio_search": {
+    "files": [
+      "res://assets/audio/radio/static.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -25,
+    "pitch_variance": 0.015,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 1.5,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "rift_hum": {
+    "files": [
+      "res://assets/audio/rift/energy_loop.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -27,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": true
+  },
+  "rift_activate": {
+    "files": [
+      "res://assets/audio/rift/stabilize.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 2,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "rift_stabilize": {
+    "files": [
+      "res://assets/audio/rift/stabilize.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 2,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "door_open": {
+    "files": [
+      "res://assets/audio/doors/open.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -14,
+    "pitch_variance": 0.01,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.8,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "door_close": {
+    "files": [
+      "res://assets/audio/doors/close.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0.01,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.8,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": false
+  },
+  "switch_toggle": {
+    "files": [
+      "res://assets/audio/interactions/switch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.025,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "switch_mechanical": {
+    "files": [
+      "res://assets/audio/interactions/switch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.025,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "switch_electrical": {
+    "files": [
+      "res://assets/audio/interactions/switch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.025,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "interaction_click": {
+    "files": [
+      "res://assets/audio/interactions/switch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.025,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "puzzle_interact": {
+    "files": [
+      "res://assets/audio/interactions/switch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.025,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "document_open": {
+    "files": [
+      "res://assets/audio/documents/paper.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.2,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "document_close": {
+    "files": [
+      "res://assets/audio/documents/paper.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.2,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "equipment_activate": {
+    "files": [
+      "res://assets/audio/computer/equipment.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -30,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 3,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "equipment_deactivate": {
+    "files": [
+      "res://assets/audio/computer/equipment.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -30,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 3,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "past_equipment": {
+    "files": [
+      "res://assets/audio/computer/equipment.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -30,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 3,
+    "concurrency": 2,
+    "priority": 10,
+    "loop": false
+  },
+  "future_creak": {
+    "files": [
+      "res://assets/audio/ambience/future/metal_detail.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -32,
+    "pitch_variance": 0.04,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 10,
+    "concurrency": 2,
+    "priority": 10,
+    "loop": false
+  },
+  "puzzle_progress": {
+    "files": [
+      "res://assets/audio/puzzles/progress.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.8,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "mechanism_activated": {
+    "files": [
+      "res://assets/audio/puzzles/progress.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.8,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "system_unlocked": {
+    "files": [
+      "res://assets/audio/puzzles/progress.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.8,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "objective_progression": {
+    "files": [
+      "res://assets/audio/puzzles/progress.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -19,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.8,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "cabinet_open": {
+    "files": [
+      "res://assets/audio/doors/open.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.7,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "cabinet_close": {
+    "files": [
+      "res://assets/audio/doors/close.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -22,
+    "pitch_variance": 0.02,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.7,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "lab_ambience_past": {
+    "files": [
+      "res://assets/audio/ambience/past/ventilation.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -23,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "ambience_past": {
+    "files": [
+      "res://assets/audio/ambience/past/ventilation.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -23,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "lab_ambience_future": {
+    "files": [
+      "res://assets/audio/ambience/future/air_leak.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -23,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "ambience_future": {
+    "files": [
+      "res://assets/audio/ambience/future/air_leak.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -23,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "music_past": {
+    "files": [
+      "res://assets/audio/music/past/observing_the_star.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -28,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "music_future": {
+    "files": [
+      "res://assets/audio/music/future/galactic_temple.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -29,
+    "pitch_variance": 0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.12,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  }
+}
+assets = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("23"), ExtResource("24"), ExtResource("25"), ExtResource("26"), ExtResource("27"), ExtResource("28"), ExtResource("29"), ExtResource("30"), ExtResource("31"), ExtResource("32"), ExtResource("33"), ExtResource("34"), ExtResource("35"), ExtResource("36"), ExtResource("37"), ExtResource("38"), ExtResource("39"), ExtResource("40"), ExtResource("41"), ExtResource("42"), ExtResource("43"), ExtResource("44")])

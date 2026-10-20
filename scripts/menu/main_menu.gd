@@ -4,6 +4,8 @@ const WARM := Color("d8ba89")
 const COOL := Color("86c6cd")
 const INK := Color("101c24")
 
+var audio: AudioDirector
+
 var settings_path: String = "user://menu_settings.cfg"
 var _last_focus: Control
 var _lan_mode: String = ""
@@ -21,6 +23,10 @@ var lan_port: int = 7000
 
 
 func _ready() -> void:
+	audio = load("res://scenes/audio/audio_system.tscn").instantiate()
+	add_child(audio)
+	_build_audio_settings()
+	audio.bind_ui(self)
 	_apply_theme()
 	%PlayButton.pressed.connect(_open_page.bind("PlayPage"))
 	%SettingsButton.pressed.connect(_open_page.bind("SettingsPage"))
@@ -127,6 +133,7 @@ func _apply_theme() -> void:
 
 
 func _open_page(page_name: String) -> void:
+	audio.play_ui(&"menu_open")
 	if not overlay.visible:
 		_last_focus = get_viewport().gui_get_focus_owner()
 	for page in pages.get_children():
@@ -142,6 +149,7 @@ func _open_page(page_name: String) -> void:
 
 
 func _close_page() -> void:
+	audio.play_ui(&"menu_close")
 	if pages.get_node("QuitPage").visible and not _quit_return_page.is_empty():
 		var return_page := _quit_return_page
 		_quit_return_page = ""
@@ -242,6 +250,7 @@ func _set_motion(enabled: bool) -> void:
 
 func _save_settings() -> void:
 	var config := ConfigFile.new()
+	config.load(settings_path)
 	config.set_value("display", "fullscreen", fullscreen_toggle.button_pressed)
 	config.set_value("display", "ambient_motion", motion_toggle.button_pressed)
 	var error := config.save(settings_path)
@@ -259,3 +268,37 @@ func _load_settings() -> void:
 	motion_toggle.set_pressed_no_signal(motion)
 	backdrop.motion_enabled = motion
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED)
+
+func _build_audio_settings() -> void:
+	var settings := pages.get_node("SettingsPage")
+	for category: StringName in AudioDirector.CATEGORIES:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		var label := Label.new()
+		label.text = String(category)
+		label.custom_minimum_size.x = 95
+		label.add_theme_font_size_override("font_size", 18)
+		row.add_child(label)
+		var slider := HSlider.new()
+		slider.name = String(category) + "Volume"
+		slider.min_value = 0.0
+		slider.max_value = 1.0
+		slider.step = 0.01
+		slider.custom_minimum_size = Vector2(185, 30)
+		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var bus_index := AudioServer.get_bus_index(category)
+		slider.value = db_to_linear(AudioServer.get_bus_volume_db(bus_index))
+		slider.tooltip_text = String(category) + " volume"
+		row.add_child(slider)
+		var mute := CheckButton.new()
+		mute.text = "Mute"
+		mute.add_theme_font_size_override("font_size", 16)
+		mute.set_pressed_no_signal(audio.is_category_muted(category))
+		mute.toggled.connect(func(value: bool) -> void: audio.set_category_muted(category, value))
+		slider.value_changed.connect(func(value: float) -> void:
+			audio.set_category_volume_linear(category, value)
+			mute.set_pressed_no_signal(value <= 0.0001)
+		)
+		row.add_child(mute)
+		settings.add_child(row)
+	settings.move_child(settings.get_node("Hint"), settings.get_child_count() - 1)

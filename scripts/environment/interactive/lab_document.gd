@@ -17,7 +17,6 @@ func _on_interacted(_actor: Node, _role: String, _interactable: Node) -> void:
 	var lab_ui := ui()
 	if lab_ui == null:
 		return
-	sfx(&"ui_hover", Vector3(0, 0.1, 0))
 	if future:
 		lab_ui.open_document(future_title if not future_title.is_empty() else title, future_text if not future_text.is_empty() else past_text)
 	else:

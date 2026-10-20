@@ -13,6 +13,7 @@ var game: Node3D
 var menu: Control
 var failures: int = 0
 var checks: int = 0
+var link_cues: int = 0
 var completions: int = 0
 var changes: int = 0
 var refused: Array = []
@@ -82,7 +83,14 @@ func enter_lab() -> bool:
 	room.pause_when_unfocused = false
 	room._set_paused(false)
 	game = room.gameplay
+	game.audio.sound_played.connect(func(id: StringName, _spatial: bool, _position: Vector3) -> void:
+		if id == &"radio_connect":
+			link_cues += 1)
 	await tick()
+	var expected: String = "past" if network.role == "past" else "future"
+	check(game.audio.ambient_controller.get_current_ambience_id() == StringName("lab_ambience_" + expected), "Room ambience belongs to local network timeline")
+	check(game.audio.music_controller.get_current_ambience_id() == StringName("music_" + expected), "Music belongs to local network timeline")
+	check(room.player.get_node("FootstepEmitter3D").surface_event == (&"footstep_past_tile" if expected == "past" else &"footstep_future_concrete"), "Local character uses timeline footsteps")
 	check(room.get_node("Actors").find_children("*", "CharacterBody3D", false, false).size() == 1, "Each process has exactly one independent local input character")
 	check(not room.get_node("%TimelineButton").visible, "LAN roles cannot be switched locally")
 	check(not room.get_node("%ResetSoloButton").visible, "LAN client/host do not expose a solo reset")
@@ -154,6 +162,7 @@ func host_game() -> void:
 	game.terminal.frequency_input.text = "67"
 	game.terminal._validate_text("67")
 	check(game.terminal.submit_frequency().status == 3, "Host validates actual terminal calibration")
+	check(link_cues == 1, "Host hears one confirmed radio connection cue")
 	check(game.terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and completions == 1, "Actual terminal displays confirmed outcome exactly once")
 	game.terminal.close()
 	check(game.director.get_current_sequence_id() == "laboratory.radio_link_established", "Host receives real radio DialogueSequence")
@@ -221,6 +230,7 @@ func client_game() -> void:
 	puzzles.request_sync()
 	if not await wait_for(func() -> bool: return changes > before, "Full gameplay snapshot missing"):
 		return
+	check(link_cues == 1, "Client snapshot does not replay connection audio")
 	check(puzzles.get_revision(FREQUENCY) == revision and completions == 1 and not game.director.is_dialogue_active(), "Full snapshot retains revision without replaying radio dialogue")
 	reach(2)
 	if not await wait_for(func() -> bool: return puzzles.is_solved(RELAY), "Shared receiver relay completion missing"):
@@ -235,6 +245,7 @@ func client_game() -> void:
 		return
 	check(game.radio.owns_radio and game.radio.can_receive() and puzzles.get_session_id() == session, "Guest actual-room reload retains radio and link")
 	check(not game.director.is_dialogue_active(), "Guest room reload does not replay first conversation")
+	check(link_cues == 1, "Room reload does not replay connection audio")
 	reach(3)
 	if not await wait_for(func() -> bool: return room._disconnected, "Partner departure did not reach actual gameplay"):
 		return

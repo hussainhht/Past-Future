@@ -472,7 +472,10 @@ Theme: TWO
 
 Two versions of one person.
 Thirty-one years apart.
-A future only you can change."
+A future only you can change.
+
+Audio (CC0): Kenney, SpliceSound, Kinoton,
+BenjaminNelan, thegoose09, SketchMan3, yd."
 
 [node name="QuitPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=591125676]
 visible = false

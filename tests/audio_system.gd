@@ -48,19 +48,12 @@ func _run() -> void:
 func _test_asset_and_catalog() -> void:
 	print("\n--- 1. Asset and Catalog Verification ---")
 	var director := AudioDirector.new()
+	director.persist_preferences = false
 	root.add_child(director)
 	
-	var required_ids: Array[StringName] = [
-		# UI
-		&"ui_click", &"ui_hover", &"ui_confirm", &"ui_back",
-		# Interaction
-		&"interaction_click", &"interaction_success", &"interaction_denied",
-		# Environment
-		&"door_open", &"door_locked", &"computer_beep", &"switch_toggle",
-		# Ambience & Optional
-		&"rift_hum"
-	]
-	
+	var required_ids: Array[StringName] = []
+	required_ids.assign(SoundCatalog.definitions().keys())
+
 	for sound_id in required_ids:
 		check(director.has_sound(sound_id), "Catalog must contain required sound ID: '%s'" % sound_id)
 		var entry: Dictionary = director._catalog.get(sound_id, {})
@@ -69,8 +62,8 @@ func _test_asset_and_catalog() -> void:
 		check(stream.get_length() > 0.0, "Stream must have non-zero duration for ID: '%s'" % sound_id)
 	
 	# Ambience files on disk
-	check(ResourceLoader.exists("res://assets/audio/ambience/lab_ambience_past.wav"), "Past ambience file must exist")
-	check(ResourceLoader.exists("res://assets/audio/ambience/lab_ambience_future.wav"), "Future ambience file must exist")
+	check(ResourceLoader.exists("res://assets/audio/ambience/past/ventilation.ogg"), "Past ambience file must exist")
+	check(ResourceLoader.exists("res://assets/audio/ambience/future/air_leak.ogg"), "Future ambience file must exist")
 	
 	# Missing sound ID graceful failure
 	var missing_result := director.play_sfx(&"non_existent_sound_xyz")
@@ -79,6 +72,15 @@ func _test_asset_and_catalog() -> void:
 	var missing_world := director.play_world_sfx(&"non_existent_sound_xyz", Vector3.ZERO)
 	check(missing_world == false, "Playing non-existent world sound must safely return false")
 	
+	check(director.play_ui(&"ui_hover"), "First hover cue plays")
+	check(not director.play_ui(&"ui_hover"), "Hover cooldown suppresses immediate duplicate")
+	check(director._catalog[&"footstep_past_tile"]["streams"].size() >= 4, "Past has at least four recorded tile steps")
+	check(director._catalog[&"footstep_future_concrete"]["streams"].size() >= 4, "Future has at least four concrete steps")
+	director.start_music(&"past", 0.01)
+	check(director.music_controller.get_current_ambience_id() == &"music_past", "Past music selected locally")
+	director.start_music(&"future", 0.01)
+	check(director.music_controller.get_current_ambience_id() == &"music_future", "Future music selected locally")
+	director.stop_music(0.0)
 	director.queue_free()
 	await tick()
 
@@ -88,6 +90,7 @@ func _test_asset_and_catalog() -> void:
 func _test_audio_director_and_pools() -> void:
 	print("\n--- 2. AudioDirector Playback & Pool Management ---")
 	var director := AudioDirector.new()
+	director.persist_preferences = false
 	root.add_child(director)
 	
 	# Test UI playback
@@ -136,6 +139,7 @@ func _test_audio_director_and_pools() -> void:
 func _test_buses_and_volumes() -> void:
 	print("\n--- 3. Audio Buses and Volume Controls ---")
 	var director := AudioDirector.new()
+	director.persist_preferences = false
 	root.add_child(director)
 	
 	var expected_buses: Array[StringName] = [&"Master", &"SFX", &"UI", &"Ambience", &"Music"]
@@ -178,9 +182,9 @@ func _test_ambience_controller() -> void:
 	ambient.start_ambience(&"lab_ambience_past")
 	check(ambient.get_current_ambience_id() == &"lab_ambience_past", "Current ambience ID must be 'lab_ambience_past'")
 	check(ambient.is_playing(), "Ambient controller must be active and playing")
-	var loop_stream: AudioStreamWAV = ambient.get_node("AmbiencePlayerB").stream
-	check(loop_stream.loop_end > loop_stream.loop_begin, "Imported ambience must have a nonempty sample loop range")
-	check(loop_stream != load("res://assets/audio/ambience/lab_ambience_past.wav"), "Ambient loop settings must not mutate shared imported resources")
+	var loop_stream: AudioStreamOggVorbis = ambient.get_node("AmbiencePlayerB").stream
+	check(loop_stream.loop and loop_stream.get_length() > 1.0, "Imported OGG ambience must loop a nonempty stream")
+	check(loop_stream != load("res://assets/audio/ambience/past/ventilation.ogg"), "Ambient loop settings must not mutate shared imported resources")
 	
 	# Duplicate call must be idempotent
 	ambient.start_ambience(&"lab_ambience_past")
@@ -192,7 +196,7 @@ func _test_ambience_controller() -> void:
 	
 	# Stop Ambience
 	ambient.stop_ambience(0.01)
-	await create_timer(0.05).timeout
+	await ambient.ambience_stopped
 	check(ambient.get_current_ambience_id() == &"", "Ambience ID must be empty after stop")
 	check(not ambient.is_playing(), "Ambience players must be stopped")
 	# Integrated room teardown uses a zero fade and may unload in this same frame.
@@ -284,6 +288,7 @@ func _test_footstep_emitter() -> void:
 	var dt: float = 0.01666
 	var walk_ticks := int(3.0 / dt)
 	for i in range(walk_ticks):
+		await physics_frame
 		mock_body.velocity.x = 2.8
 		mock_body.velocity.y = -0.5
 		mock_body.move_and_slide()
@@ -299,6 +304,7 @@ func _test_footstep_emitter() -> void:
 	mock_body.velocity = Vector3(4.34, -0.5, 0)
 	var run_ticks := int(3.0 / dt)
 	for i in range(run_ticks):
+		await physics_frame
 		mock_body.velocity.x = 4.34
 		mock_body.velocity.y = -0.5
 		mock_body.move_and_slide()
@@ -326,6 +332,16 @@ func _test_footstep_emitter() -> void:
 			break
 	check(not has_consecutive_dup, "Footstep variations must avoid playing the exact same sample consecutively")
 	
+	emitter.set_timeline(&"future")
+	check(emitter.surface_event == &"footstep_future_concrete" and emitter.footstep_streams.size() == 5, "Future selects its concrete surface")
+	emitter.set_timeline(&"past")
+	check(emitter.surface_event == &"footstep_past_tile" and emitter.footstep_streams.size() == 6, "Past selects its recorded tile surface")
+	# Moving nominal velocity with no actual displacement (pushing a wall) is silent.
+	step_data.count = 0
+	mock_body.velocity = Vector3(4.0, 0, 0)
+	for i in 20:
+		emitter._physics_process(dt)
+	check(step_data.count == 0, "Blocked nominal movement without displacement is silent")
 	# Check 8: Teleportation detection (large displacement doesn't burst steps)
 	step_data.count = 0
 	mock_body.global_position = Vector3(50.0, 0.5, 50.0) # Instant 50m jump

@@ -12,6 +12,7 @@ var status_label: Label
 var feedback_label: Label
 var _role: String = "past"
 var _feedback_tween: Tween
+var _last_tune_text: String = ""
 
 
 func _ready() -> void:
@@ -37,6 +38,7 @@ func _ready() -> void:
 	row.add_child(frequency_input)
 	row.add_child(UI.label("MHz", 24))
 	calibrate_button = UI.button("CALIBRATE SIGNAL")
+	calibrate_button.set_meta("audio_event", &"")
 	calibrate_button.pressed.connect(submit_frequency)
 	content.add_child(calibrate_button)
 	feedback_label = UI.label("Awaiting frequency calibration...", 17, Color("c5d1da"))
@@ -44,6 +46,7 @@ func _ready() -> void:
 	feedback_label.custom_minimum_size = Vector2(510, 58)
 	content.add_child(feedback_label)
 	var close_button := UI.button("CLOSE  [ESC]")
+	close_button.set_meta("audio_event", &"")
 	close_button.pressed.connect(close)
 	content.add_child(close_button)
 	PuzzleManager.puzzle_state_changed.connect(_on_state_changed)
@@ -70,6 +73,9 @@ func _valid_frequency() -> bool:
 
 
 func _validate_text(_text: String) -> void:
+	if visible and frequency_input.editable and frequency_input.text != _last_tune_text:
+		_last_tune_text = frequency_input.text
+		audio_cue_requested.emit(&"tune")
 	# Keep invalid pasted input visible for correction; it can never be submitted.
 	calibrate_button.disabled = not _valid_frequency() or PuzzleManager.get_state(Rules.ID).get("frequency_calibrated", false)
 
@@ -77,6 +83,7 @@ func _validate_text(_text: String) -> void:
 func submit_frequency() -> Dictionary:
 	if not _valid_frequency():
 		feedback_label.text = "Enter a whole-number frequency from 1 to 999 MHz."
+		audio_cue_requested.emit(&"failed")
 		return {"status": Status.REJECTED, "reason": "invalid_frequency"}
 	audio_cue_requested.emit(&"attempt")
 	var result := PuzzleManager.submit_action(Rules.ID, "tune_frequency", {"frequency": frequency_input.text.to_int()}, _role)
@@ -84,7 +91,7 @@ func submit_frequency() -> Dictionary:
 		feedback_label.text = "Acquire your handheld radio first." if result.reason == "student_radio_required" else "Calibration unavailable: " + str(result.reason)
 	elif result.status == Status.NO_CHANGE and result.get("message") == "SIGNAL NOT FOUND":
 		feedback_label.text = "SIGNAL NOT FOUND - Check the research log and retry."
-		audio_cue_requested.emit(&"static")
+		audio_cue_requested.emit(&"failed")
 		if _feedback_tween != null:
 			_feedback_tween.kill()
 		feedback_label.modulate = Color("ed9a80")

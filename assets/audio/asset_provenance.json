@@ -1,0 +1,1504 @@
+[
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_01.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "cf4f4b787da84a598bed38bef7008ce29f3bb18a60a557f79f45712e0cb12bc5",
+    "duration_seconds": 0.58,
+    "processing": {
+      "start_seconds": 2.97,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_02.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "99be32d25d5249b885ae29a81bb3fe76e78d8d58e3c6a9334a448b39efc28310",
+    "duration_seconds": 0.3646,
+    "processing": {
+      "start_seconds": 4.96,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_03.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "9649f2f8d8308fe9d91dbb786ecde71100543d86668879acb088cd5afaa85554",
+    "duration_seconds": 0.3156,
+    "processing": {
+      "start_seconds": 8.83,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_04.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "f06eaef5cff3ef52396dcc935bd40b91d5f27e9e2de1474cb01bc45ac94d26c3",
+    "duration_seconds": 0.58,
+    "processing": {
+      "start_seconds": 10.02,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_05.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "8e7f376056db32790866e9876a8f823fb87922ae0339970ee7d59cc9df7735df",
+    "duration_seconds": 0.58,
+    "processing": {
+      "start_seconds": 11.26,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Footsteps, Tile, Male Sneakers, Slow Pace.wav",
+    "creator": "SpliceSound",
+    "source_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "direct_asset_page_url": "https://freesound.org/people/SpliceSound/sounds/170506/",
+    "download_url": "https://cdn.freesound.org/previews/170/170506_1480854-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "170506_1480854-hq.mp3",
+    "downloaded_filename": "170506_1480854-hq.mp3",
+    "imported_filename": "assets/audio/footsteps/past_tile/step_06.wav",
+    "source_sha256": "9e48387265b254793e09f8c24fcbb11191b16a0d554ca9cff40c5afb1dd396a2",
+    "sha256": "be3be4eb43f2b9fac3b961389ac3e80120e9a6bed7aff475526a7deda024d1f0",
+    "duration_seconds": 0.58,
+    "processing": {
+      "start_seconds": 13.9,
+      "duration_limit_seconds": 0.58,
+      "filters": "highpass=f=85,lowpass=f=11000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_past_tile"
+    ],
+    "intended_game_usage": [
+      "footstep_past_tile"
+    ],
+    "cached_source": "tile.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "footstep_concrete_000.ogg",
+    "downloaded_filename": "footstep_concrete_000.ogg",
+    "imported_filename": "assets/audio/footsteps/future_concrete/step_01.wav",
+    "source_sha256": "d7267e183067757c92c169de2a379abea592cfca6b39bb2e8feea15221ad79fe",
+    "sha256": "14371da6a5a9e2dc6eb8f364d8946970e9dd5ccf8704818280637f5a28811038",
+    "duration_seconds": 0.0924,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=65,lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_future_concrete"
+    ],
+    "intended_game_usage": [
+      "footstep_future_concrete"
+    ],
+    "cached_source": "impact-sounds/Audio/footstep_concrete_000.ogg"
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "footstep_concrete_001.ogg",
+    "downloaded_filename": "footstep_concrete_001.ogg",
+    "imported_filename": "assets/audio/footsteps/future_concrete/step_02.wav",
+    "source_sha256": "507a75eb19b897087855a3be3cf11a12d7fa37d143ad535eeebe0b8031c7325d",
+    "sha256": "6b691c51007925edbebbba4861d7bc4aa7f33baf7a57804919fc18f2e231dc86",
+    "duration_seconds": 0.1047,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=65,lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_future_concrete"
+    ],
+    "intended_game_usage": [
+      "footstep_future_concrete"
+    ],
+    "cached_source": "impact-sounds/Audio/footstep_concrete_001.ogg"
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "footstep_concrete_002.ogg",
+    "downloaded_filename": "footstep_concrete_002.ogg",
+    "imported_filename": "assets/audio/footsteps/future_concrete/step_03.wav",
+    "source_sha256": "b21fa546d74941196b25da8a20b7010abd8c05c4fcf93545d1f344e66a664e13",
+    "sha256": "11ce586840953b90e880607c48b214ac6cc9df9a56048a1a967bcacb10150b7a",
+    "duration_seconds": 0.1099,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=65,lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_future_concrete"
+    ],
+    "intended_game_usage": [
+      "footstep_future_concrete"
+    ],
+    "cached_source": "impact-sounds/Audio/footstep_concrete_002.ogg"
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "footstep_concrete_003.ogg",
+    "downloaded_filename": "footstep_concrete_003.ogg",
+    "imported_filename": "assets/audio/footsteps/future_concrete/step_04.wav",
+    "source_sha256": "8b513c2f0316324060b9174b8f28df6c2147418c506e6a53b77f18e149a5547b",
+    "sha256": "f0fe6168d15ba101476b80af91de9107b66af59330dca25b6c8eb9e02d669744",
+    "duration_seconds": 0.0991,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=65,lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_future_concrete"
+    ],
+    "intended_game_usage": [
+      "footstep_future_concrete"
+    ],
+    "cached_source": "impact-sounds/Audio/footstep_concrete_003.ogg"
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "footstep_concrete_004.ogg",
+    "downloaded_filename": "footstep_concrete_004.ogg",
+    "imported_filename": "assets/audio/footsteps/future_concrete/step_05.wav",
+    "source_sha256": "24dd8db2413e5b81ad181e1205c12a1c7801da5f85715d471b92a4b2f632e45e",
+    "sha256": "927c84cead1f9f77bf2977ab6601daa7260d93ceef26a53742445abe1b75a2bd",
+    "duration_seconds": 0.1004,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=65,lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "footstep_future_concrete"
+    ],
+    "intended_game_usage": [
+      "footstep_future_concrete"
+    ],
+    "cached_source": "impact-sounds/Audio/footstep_concrete_004.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "click_001.ogg",
+    "downloaded_filename": "click_001.ogg",
+    "imported_filename": "assets/audio/ui/click.wav",
+    "source_sha256": "ccfb7fa0cccdd9faec0eb16033c732b1e308d139d80f799161495d58f7adcdb9",
+    "sha256": "ad3e4debe2d6cc1de8f85a363e2d2889b712943f0b75da762ad082db14870d69",
+    "duration_seconds": 0.0695,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "ui_click",
+      "computer_button",
+      "keypad_button",
+      "dialogue_advance"
+    ],
+    "intended_game_usage": [
+      "ui_click",
+      "computer_button",
+      "keypad_button",
+      "dialogue_advance"
+    ],
+    "cached_source": "interface-sounds/Audio/click_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "select_001.ogg",
+    "downloaded_filename": "select_001.ogg",
+    "imported_filename": "assets/audio/ui/hover.wav",
+    "source_sha256": "aec0c31ea934a35936ae0d2ab8fac8123c93aa5647f935853a58dbaf90278b7a",
+    "sha256": "1e954e2c88f109540757c719c59474c234fdfb4be212ce8d991c8b82dacf5313",
+    "duration_seconds": 0.0404,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "ui_hover",
+      "ui_focus"
+    ],
+    "intended_game_usage": [
+      "ui_hover",
+      "ui_focus"
+    ],
+    "cached_source": "interface-sounds/Audio/select_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "confirmation_002.ogg",
+    "downloaded_filename": "confirmation_002.ogg",
+    "imported_filename": "assets/audio/ui/confirm.wav",
+    "source_sha256": "33b17a9a9a2397c62b285c52c33a907fdffb476909c99e42dde603f6a7a8b12c",
+    "sha256": "fa1e0f9c147bc319ff85011fd00bfadc2802acb06c868e71965ec1ec210fc70a",
+    "duration_seconds": 0.539,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "ui_confirm",
+      "ui_notification"
+    ],
+    "intended_game_usage": [
+      "ui_confirm",
+      "ui_notification"
+    ],
+    "cached_source": "interface-sounds/Audio/confirmation_002.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "back_001.ogg",
+    "downloaded_filename": "back_001.ogg",
+    "imported_filename": "assets/audio/ui/back.wav",
+    "source_sha256": "07db973f79f6ae0f2edc34561e7592e24d0577455919fb602cb8ecc0da991dcf",
+    "sha256": "3243735abbd93fb597d50e126e87f47a60a6c76eb418cd8b3937832061600ba7",
+    "duration_seconds": 0.061,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "ui_cancel",
+      "ui_back"
+    ],
+    "intended_game_usage": [
+      "ui_cancel",
+      "ui_back"
+    ],
+    "cached_source": "interface-sounds/Audio/back_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "open_001.ogg",
+    "downloaded_filename": "open_001.ogg",
+    "imported_filename": "assets/audio/ui/open.wav",
+    "source_sha256": "a27c6bb0df7da1e6af5dd5937593c98bc58b6e513f42fe6a3254cd6a6949c648",
+    "sha256": "ac5077d627cbb8ed09d3847379e2407edaef3a68d63572ef8292d241430a3c81",
+    "duration_seconds": 0.1478,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "menu_open",
+      "ui_pause",
+      "computer_open"
+    ],
+    "intended_game_usage": [
+      "menu_open",
+      "ui_pause",
+      "computer_open"
+    ],
+    "cached_source": "interface-sounds/Audio/open_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "close_001.ogg",
+    "downloaded_filename": "close_001.ogg",
+    "imported_filename": "assets/audio/ui/close.wav",
+    "source_sha256": "44af8249b933e0fd35ec957a638bb1a0b01f85b53fbe9674bf77bd3ca3168ef4",
+    "sha256": "fff02343cad67838ddb6094458a1d61b28b810538e4cf66a1ef94733498f1283",
+    "duration_seconds": 0.1478,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "menu_close",
+      "ui_unpause",
+      "computer_close"
+    ],
+    "intended_game_usage": [
+      "menu_close",
+      "ui_unpause",
+      "computer_close"
+    ],
+    "cached_source": "interface-sounds/Audio/close_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "error_003.ogg",
+    "downloaded_filename": "error_003.ogg",
+    "imported_filename": "assets/audio/ui/error.wav",
+    "source_sha256": "885b28175c7b511118bcffab95675b48bbac9005cf6514656ebdad979276b3ab",
+    "sha256": "cf49a3eac79a3d388f0b2e36e2de6bbceeba4d3a60fbad3d5707a8b5cfcb2a42",
+    "duration_seconds": 0.3826,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "ui_error"
+    ],
+    "intended_game_usage": [
+      "ui_error"
+    ],
+    "cached_source": "interface-sounds/Audio/error_003.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "switch_002.ogg",
+    "downloaded_filename": "switch_002.ogg",
+    "imported_filename": "assets/audio/interactions/switch.wav",
+    "source_sha256": "6fc395be2ad1f99ce318a5d28f98fb76dbeb676d83a0b28239d8c1fb90736180",
+    "sha256": "4dbc06233cf39721b9d47f6da055d3d6340b0f6ff41611610daba9cc8b94bd53",
+    "duration_seconds": 0.1854,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "switch_toggle",
+      "switch_mechanical",
+      "switch_electrical",
+      "interaction_click",
+      "puzzle_interact"
+    ],
+    "intended_game_usage": [
+      "switch_toggle",
+      "switch_mechanical",
+      "switch_electrical",
+      "interaction_click",
+      "puzzle_interact"
+    ],
+    "cached_source": "interface-sounds/Audio/switch_002.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "scroll_001.ogg",
+    "downloaded_filename": "scroll_001.ogg",
+    "imported_filename": "assets/audio/computer/tune.wav",
+    "source_sha256": "320c6aafb2c7a503eae508dc443b72d7f7c0a317bfd16813157ed400cd04cf16",
+    "sha256": "a0223c7ea2ef1e2184e4ee0a2d638a67b39f672c5809b3079e941938daff547f",
+    "duration_seconds": 1.0,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "computer_tune"
+    ],
+    "intended_game_usage": [
+      "computer_tune"
+    ],
+    "cached_source": "interface-sounds/Audio/scroll_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "confirmation_001.ogg",
+    "downloaded_filename": "confirmation_001.ogg",
+    "imported_filename": "assets/audio/computer/lock.wav",
+    "source_sha256": "063564703b6094d70718a3e787a55cc9141611e4ecd6b6637f8828f79b4a8c3a",
+    "sha256": "fc873cfe75c3ed537548dbb2642551224593e7103f051e01be0f9e5edea78c63",
+    "duration_seconds": 0.2899,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "computer_success",
+      "computer_beep",
+      "computer_connected"
+    ],
+    "intended_game_usage": [
+      "computer_success",
+      "computer_beep",
+      "computer_connected"
+    ],
+    "cached_source": "interface-sounds/Audio/confirmation_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "maximize_001.ogg",
+    "downloaded_filename": "maximize_001.ogg",
+    "imported_filename": "assets/audio/computer/calibrate.wav",
+    "source_sha256": "fd3e75e1de2f2fda90aceeacaeb0427ac8bddd3b07a6ce2a8f9ba923df3771f9",
+    "sha256": "7796b0204a14fc46ad5cfd1dc9f360ad06bc21630bf7da6ce08424ddeb881caa",
+    "duration_seconds": 0.2584,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "computer_calibrate",
+      "puzzle_submit"
+    ],
+    "intended_game_usage": [
+      "computer_calibrate",
+      "puzzle_submit"
+    ],
+    "cached_source": "interface-sounds/Audio/maximize_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "glitch_001.ogg",
+    "downloaded_filename": "glitch_001.ogg",
+    "imported_filename": "assets/audio/computer/invalid.wav",
+    "source_sha256": "da78c642bbd95da2c364ed0e991ebbfc5a4c0d281165d932b5819e0dd31a39d2",
+    "sha256": "a50aeb15fb81ae32fd2791df94cfcb03bb2e9607a8c6422d2a39296f7b06d869",
+    "duration_seconds": 0.0171,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "computer_invalid",
+      "puzzle_failure",
+      "interaction_denied",
+      "door_locked"
+    ],
+    "intended_game_usage": [
+      "computer_invalid",
+      "puzzle_failure",
+      "interaction_denied",
+      "door_locked"
+    ],
+    "cached_source": "interface-sounds/Audio/glitch_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "question_001.ogg",
+    "downloaded_filename": "question_001.ogg",
+    "imported_filename": "assets/audio/radio/incoming.wav",
+    "source_sha256": "abb8f9e4eb2071491b0b15f84ee302386b1847609310c1b000ae174639a6cc5a",
+    "sha256": "36297d990ad9205c484d76d70d2af55869152e0a1672dc3bbf7efb063fbde1a2",
+    "duration_seconds": 0.4907,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_incoming",
+      "radio_dialogue_incoming"
+    ],
+    "intended_game_usage": [
+      "radio_incoming",
+      "radio_dialogue_incoming"
+    ],
+    "cached_source": "interface-sounds/Audio/question_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "select_003.ogg",
+    "downloaded_filename": "select_003.ogg",
+    "imported_filename": "assets/audio/radio/outgoing.wav",
+    "source_sha256": "9a612fd2f513d52a296906b41071c990f75defe56be3bee60d2d4e2423b51b8b",
+    "sha256": "6dd807074964f517415f3bd7eb69abd8dc7ef3e22409de72177a6fb11a819e6e",
+    "duration_seconds": 0.2532,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_outgoing"
+    ],
+    "intended_game_usage": [
+      "radio_outgoing"
+    ],
+    "cached_source": "interface-sounds/Audio/select_003.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "confirmation_004.ogg",
+    "downloaded_filename": "confirmation_004.ogg",
+    "imported_filename": "assets/audio/radio/connect.wav",
+    "source_sha256": "568967a3d9f8a8f6af54ea01729c4882284308f2a27d78c07ffd7ee0d6951661",
+    "sha256": "2035c83eb88a8abff820f02c64fbb64ba5d2a0817a08df186575fb971594554d",
+    "duration_seconds": 0.4904,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_connect",
+      "puzzle_success",
+      "interaction_success",
+      "objective_completed"
+    ],
+    "intended_game_usage": [
+      "radio_connect",
+      "puzzle_success",
+      "interaction_success",
+      "objective_completed"
+    ],
+    "cached_source": "interface-sounds/Audio/confirmation_004.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "minimize_001.ogg",
+    "downloaded_filename": "minimize_001.ogg",
+    "imported_filename": "assets/audio/radio/disconnect.wav",
+    "source_sha256": "8481912bc7fa5828924a00ef15b6cd613b994956e0817bd3122065c9b2896d2d",
+    "sha256": "8ac1cee3fbdc812cf02558d2f3f1b2495e5831c127724924dbed163628be236d",
+    "duration_seconds": 0.2584,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_disconnect"
+    ],
+    "intended_game_usage": [
+      "radio_disconnect"
+    ],
+    "cached_source": "interface-sounds/Audio/minimize_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "toggle_001.ogg",
+    "downloaded_filename": "toggle_001.ogg",
+    "imported_filename": "assets/audio/radio/activate.wav",
+    "source_sha256": "ca1d2dde5f0b286abac4f070e23edab8f30927c8a533665cdf2ac6492a415e49",
+    "sha256": "ca77aa6f11a0ed3e864ccc18b4e352abc469bf274b38319e307faa25a1c98177",
+    "duration_seconds": 0.1364,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_activate"
+    ],
+    "intended_game_usage": [
+      "radio_activate"
+    ],
+    "cached_source": "interface-sounds/Audio/toggle_001.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "toggle_002.ogg",
+    "downloaded_filename": "toggle_002.ogg",
+    "imported_filename": "assets/audio/radio/deactivate.wav",
+    "source_sha256": "1f564f5520cfa0764028ce245ad97599d3ece8f0ab504554c403af92ac72b900",
+    "sha256": "d4aa63de5fd25fbaf0c5dab5afc67fa10098991e216b114969069d2dcf44b210",
+    "duration_seconds": 0.1364,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_deactivate"
+    ],
+    "intended_game_usage": [
+      "radio_deactivate"
+    ],
+    "cached_source": "interface-sounds/Audio/toggle_002.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "pluck_001.ogg",
+    "downloaded_filename": "pluck_001.ogg",
+    "imported_filename": "assets/audio/puzzles/progress.wav",
+    "source_sha256": "be97ec4893a02d6eccfb678daa76c83e34cb2583b834ec2593d2641def739fa4",
+    "sha256": "19dc9c7044cabdcddf11da4dd986e639b78a666d43c9543337407e8d69f9d883",
+    "duration_seconds": 0.0995,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=9500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "puzzle_progress",
+      "mechanism_activated",
+      "system_unlocked",
+      "objective_progression"
+    ],
+    "intended_game_usage": [
+      "puzzle_progress",
+      "mechanism_activated",
+      "system_unlocked",
+      "objective_progression"
+    ],
+    "cached_source": "interface-sounds/Audio/pluck_001.ogg"
+  },
+  {
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "doorOpen_000.ogg",
+    "downloaded_filename": "doorOpen_000.ogg",
+    "imported_filename": "assets/audio/doors/open.wav",
+    "source_sha256": "5b7e07eccd4413ad9ef3720c2d14f9cc699f4c50111e9b2f48bd60e6f1a164c3",
+    "sha256": "471ca61c580773b2597cab2c63a3bb85307bff27cd59c77b81218d73e6bf6fe9",
+    "duration_seconds": 0.5316,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=110,lowpass=f=6000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "door_open",
+      "cabinet_open"
+    ],
+    "intended_game_usage": [
+      "door_open",
+      "cabinet_open"
+    ],
+    "cached_source": "sci-fi-sounds/Audio/doorOpen_000.ogg"
+  },
+  {
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "doorClose_000.ogg",
+    "downloaded_filename": "doorClose_000.ogg",
+    "imported_filename": "assets/audio/doors/close.wav",
+    "source_sha256": "c9134651ebbd7c016f90393aee495ff8120bd343bb7569b689a7506987ebd6c2",
+    "sha256": "609d8ad7162e4ee96d594f16f016985e5dd3dc752c95b00778f4a48b7e71a92a",
+    "duration_seconds": 0.5256,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=110,lowpass=f=6000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "door_close",
+      "cabinet_close"
+    ],
+    "intended_game_usage": [
+      "door_close",
+      "cabinet_close"
+    ],
+    "cached_source": "sci-fi-sounds/Audio/doorClose_000.ogg"
+  },
+  {
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "computerNoise_000.ogg",
+    "downloaded_filename": "computerNoise_000.ogg",
+    "imported_filename": "assets/audio/computer/equipment.wav",
+    "source_sha256": "1527944e16eb14b48ee03fe3e7ce6aae94262833a4e1f83928d451a7414fe4e1",
+    "sha256": "b6580d4ecdc6c5284022eccf4c3a273629845949a00c13fe054ff544560375bd",
+    "duration_seconds": 5.0,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=110,lowpass=f=6000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "equipment_activate",
+      "equipment_deactivate",
+      "past_equipment"
+    ],
+    "intended_game_usage": [
+      "equipment_activate",
+      "equipment_deactivate",
+      "past_equipment"
+    ],
+    "cached_source": "sci-fi-sounds/Audio/computerNoise_000.ogg"
+  },
+  {
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "impactMetal_000.ogg",
+    "downloaded_filename": "impactMetal_000.ogg",
+    "imported_filename": "assets/audio/ambience/future/metal_detail.wav",
+    "source_sha256": "956c6612a256aa1a67a2327fffe2454f6b1d82e4c1c2be28fd66916335d5b1d6",
+    "sha256": "9efe02688417cbb70a201f4950087c22903c7ac90abc812dc9bc8fe64a6d0060",
+    "duration_seconds": 0.3676,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=110,lowpass=f=6000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "future_creak"
+    ],
+    "intended_game_usage": [
+      "future_creak"
+    ],
+    "cached_source": "sci-fi-sounds/Audio/impactMetal_000.ogg"
+  },
+  {
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/impact-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "impactGeneric_light_000.ogg",
+    "downloaded_filename": "impactGeneric_light_000.ogg",
+    "imported_filename": "assets/audio/radio/pickup.wav",
+    "source_sha256": "f0e982611e97512fee5f777986b67e8b435434b601f94992ec044f7e89fb5acb",
+    "sha256": "6d4eb714270f1baddb9798e2193da88160db6899386057ae3a52b8a69da09c6c",
+    "duration_seconds": 0.1611,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "lowpass=f=8000",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_pickup"
+    ],
+    "intended_game_usage": [
+      "radio_pickup"
+    ],
+    "cached_source": "impact-sounds/Audio/impactGeneric_light_000.ogg"
+  },
+  {
+    "original_asset_title": "Paper Rustle",
+    "creator": "BenjaminNelan",
+    "source_url": "https://freesound.org/people/BenjaminNelan/sounds/353125/",
+    "direct_asset_page_url": "https://freesound.org/people/BenjaminNelan/sounds/353125/",
+    "download_url": "https://cdn.freesound.org/previews/353/353125_1196020-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "353125_1196020-hq.mp3",
+    "downloaded_filename": "353125_1196020-hq.mp3",
+    "imported_filename": "assets/audio/documents/paper.wav",
+    "source_sha256": "fbf05bd9ba67a9df8eff656e813881c7f1a754d7473388785b228b0ed62dc564",
+    "sha256": "9d59e3a836f2a60da3149dbb2575d0e6614ce2f86dd0c6de8c10b0be2c3a317b",
+    "duration_seconds": 1.0585,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "document_open",
+      "document_close"
+    ],
+    "intended_game_usage": [
+      "document_open",
+      "document_close"
+    ],
+    "cached_source": "paper.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Radio Static.wav",
+    "creator": "thegoose09",
+    "source_url": "https://freesound.org/people/thegoose09/sounds/125392/",
+    "direct_asset_page_url": "https://freesound.org/people/thegoose09/sounds/125392/",
+    "download_url": "https://cdn.freesound.org/previews/125/125392_1819657-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "125392_1819657-hq.mp3",
+    "downloaded_filename": "125392_1819657-hq.mp3",
+    "imported_filename": "assets/audio/radio/static.wav",
+    "source_sha256": "09e0a2aed62b7da54d19476641fbc786c6f18ed5c8a51daa95f2d14129bdd93c",
+    "sha256": "cdfdcbd1680c5dcd363d3e7137c569b55be161a8d561fb9920e41205d5f68635",
+    "duration_seconds": 0.38,
+    "processing": {
+      "start_seconds": 3.0,
+      "duration_limit_seconds": 0.38,
+      "filters": "highpass=f=600,lowpass=f=3300",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "radio_static",
+      "radio_interference",
+      "radio_search"
+    ],
+    "intended_game_usage": [
+      "radio_static",
+      "radio_interference",
+      "radio_search"
+    ],
+    "cached_source": "radio_static.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "Room Tone, Deep Ventilation",
+    "creator": "Kinoton",
+    "source_url": "https://freesound.org/people/Kinoton/sounds/503255/",
+    "direct_asset_page_url": "https://freesound.org/people/Kinoton/sounds/503255/",
+    "download_url": "https://cdn.freesound.org/previews/503/503255_2247456-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "503255_2247456-hq.mp3",
+    "downloaded_filename": "503255_2247456-hq.mp3",
+    "imported_filename": "assets/audio/ambience/past/ventilation.ogg",
+    "source_sha256": "db2dff0746a90178be31e751b64d4f5ec368b177d852129ca5149d17d7c90420",
+    "sha256": "361e8acfda85594ff0c2653c93e40dd3f4f2d1e99e5843a9ac636e4502238c52",
+    "duration_seconds": 53.0,
+    "processing": {
+      "start_seconds": 8,
+      "duration_limit_seconds": 55,
+      "filters": "highpass=f=55,lowpass=f=5000",
+      "seam_overlap": true,
+      "peak_dbfs": -6,
+      "channels": 2,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "lab_ambience_past",
+      "ambience_past"
+    ],
+    "intended_game_usage": [
+      "lab_ambience_past",
+      "ambience_past"
+    ],
+    "cached_source": "ventilation.mp3",
+    "original_upload_filename": "Not retrieved: original requires login. Published HQ MP3 preview used under the same CC0 license."
+  },
+  {
+    "original_asset_title": "wind whoosh loop",
+    "creator": "SketchMan3",
+    "source_url": "https://opengameart.org/content/wind-whoosh-loop",
+    "direct_asset_page_url": "https://opengameart.org/content/wind-whoosh-loop",
+    "download_url": "https://opengameart.org/sites/default/files/wind%20woosh%20loop.ogg",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "wind woosh loop.ogg",
+    "downloaded_filename": "wind.ogg",
+    "imported_filename": "assets/audio/ambience/future/air_leak.ogg",
+    "source_sha256": "0cfdbd3f21ed449689a9024264edf267d0037a6495813a7010827672ec191dac",
+    "sha256": "b9075a311dc34fb1c985c7eb578719f53a6ea57f56193e0ec24e5368d41d6aea",
+    "duration_seconds": 5.2144,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=100,lowpass=f=4200",
+      "seam_overlap": true,
+      "peak_dbfs": -6,
+      "channels": 2,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "lab_ambience_future",
+      "ambience_future"
+    ],
+    "intended_game_usage": [
+      "lab_ambience_future",
+      "ambience_future"
+    ],
+    "cached_source": "wind.ogg"
+  },
+  {
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/sci-fi-sounds/6b296f9ecf-1677589334/kenney_sci-fi-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "forceField_000.ogg",
+    "downloaded_filename": "forceField_000.ogg",
+    "imported_filename": "assets/audio/rift/energy_loop.ogg",
+    "source_sha256": "c2916f2a062c8ddd1aca2826d134fe90847037db31342726ffb0f9097afe339c",
+    "sha256": "d6af568848fdf3fdd8395d811271aa74462403b71aae5ac330996c32040b46e0",
+    "duration_seconds": 0.8348,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "highpass=f=90,lowpass=f=1800",
+      "seam_overlap": true,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "rift_hum"
+    ],
+    "intended_game_usage": [
+      "rift_hum"
+    ],
+    "cached_source": "sci-fi-sounds/Audio/forceField_000.ogg"
+  },
+  {
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "direct_asset_page_url": "https://kenney.nl/assets/interface-sounds",
+    "download_url": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "glass_001.ogg",
+    "downloaded_filename": "glass_001.ogg",
+    "imported_filename": "assets/audio/rift/stabilize.wav",
+    "source_sha256": "183eebee20eb0a532b0b85104d139cbf2673eb66d95c3cc733ac9ea98362e7e8",
+    "sha256": "570763443a4cfb42de1d6e0069780c357a6ee423d77e81c72be73c191fdd194d",
+    "duration_seconds": 0.2755,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "lowpass=f=6500",
+      "seam_overlap": false,
+      "peak_dbfs": -6,
+      "channels": 1,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "rift_activate",
+      "rift_stabilize"
+    ],
+    "intended_game_usage": [
+      "rift_activate",
+      "rift_stabilize"
+    ],
+    "cached_source": "interface-sounds/Audio/glass_001.ogg"
+  },
+  {
+    "original_asset_title": "Another space background track (ObservingTheStar)",
+    "creator": "yd",
+    "source_url": "https://opengameart.org/content/another-space-background-track",
+    "direct_asset_page_url": "https://opengameart.org/content/another-space-background-track",
+    "download_url": "https://opengameart.org/sites/default/files/ObservingTheStar.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "ObservingTheStar.ogg",
+    "downloaded_filename": "ObservingTheStar.ogg",
+    "imported_filename": "assets/audio/music/past/observing_the_star.ogg",
+    "source_sha256": "d208059cbe7b21154a9b7844d98ac9ad754617a5a321c5e507d203a907abe665",
+    "sha256": "c309bc3f983b5b91ca38852fdf7496db8cc0948bbfd2455f7f8729c05f2a965f",
+    "duration_seconds": 132.43,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "",
+      "seam_overlap": true,
+      "peak_dbfs": -6,
+      "channels": 2,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "music_past"
+    ],
+    "intended_game_usage": [
+      "music_past"
+    ],
+    "cached_source": "past_music/ObservingTheStar.ogg"
+  },
+  {
+    "original_asset_title": "Galactic Temple",
+    "creator": "yd",
+    "source_url": "https://opengameart.org/content/galactic-temple",
+    "direct_asset_page_url": "https://opengameart.org/content/galactic-temple",
+    "download_url": "https://opengameart.org/sites/default/files/GalacticTemple.zip",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-20",
+    "original_filename": "GalacticTemple.ogg",
+    "downloaded_filename": "GalacticTemple.ogg",
+    "imported_filename": "assets/audio/music/future/galactic_temple.ogg",
+    "source_sha256": "0bc6439621a1ff871f39cb3a670df4f483e4d23427b09bd024571f53ff1c38cb",
+    "sha256": "b696f7459f087025f1e46254504ef0f275799bfba7f40112a494f3056d89100d",
+    "duration_seconds": 171.144,
+    "processing": {
+      "start_seconds": 0.0,
+      "duration_limit_seconds": null,
+      "filters": "",
+      "seam_overlap": true,
+      "peak_dbfs": -6,
+      "channels": 2,
+      "mix_rate": 48000
+    },
+    "sound_event_ids": [
+      "music_future"
+    ],
+    "intended_game_usage": [
+      "music_future"
+    ],
+    "cached_source": "future_music/GalacticTemple.ogg"
+  }
+]

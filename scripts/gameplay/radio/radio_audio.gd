@@ -1,67 +1,53 @@
 extends Node
-## Local audio bridge. Existing AudioDirector plays catalog beeps and confirmations.
-## One bounded static player uses the same SFX bus (and its mute/volume controls).
-## A project-provided radio_static catalog entry takes precedence over synthesized static.
+## Local bridge to the one event catalog. No generated noise or second playback system.
 
 @export var audio_director: Node
 @export var radio: TemporalRadio
 @export var cue_map: Dictionary = {
-	&"incoming": &"ui_hover", &"connected": &"ui_confirm",
-	&"pickup": &"interaction_click", &"attempt": &"ui_click",
-	&"failed": &"interaction_denied"
+	&"incoming": &"radio_incoming", &"outgoing": &"radio_outgoing",
+	&"connected": &"radio_connect", &"disconnected": &"radio_disconnect",
+	&"pickup": &"radio_pickup", &"attempt": &"computer_calibrate",
+	&"failed": &"computer_invalid", &"static": &"radio_static",
+	&"power_on": &"radio_activate", &"power_off": &"radio_deactivate",
+	&"searching": &"radio_search", &"tune": &"computer_tune"
 }
 
-var _static_player: AudioStreamPlayer
-
+var _search_timer: Timer
+var _known_owner: bool = false
 
 func _ready() -> void:
-	_static_player = AudioStreamPlayer.new()
-	_static_player.stream = _make_static()
-	_static_player.volume_db = -31.0
-	_static_player.bus = &"SFX" if AudioServer.get_bus_index(&"SFX") >= 0 else &"Master"
-	add_child(_static_player)
+	_search_timer = Timer.new()
+	_search_timer.one_shot = true
+	_search_timer.wait_time = 1.8
+	add_child(_search_timer)
+	_search_timer.timeout.connect(_on_search)
 	if radio != null:
+		_known_owner = radio.owns_radio
 		radio.audio_cue_requested.connect(play_cue)
-
+		radio.status_changed.connect(_on_status_changed)
 
 func play_cue(cue: StringName) -> void:
 	if not is_instance_valid(audio_director):
 		return
-	if cue == &"static":
-		if audio_director.has_sound(&"radio_static"):
-			audio_director.play_sfx(&"radio_static")
-		else:
-			_static_player.play()
-		return
 	var sound: StringName = cue_map.get(cue, &"")
-	if not sound.is_empty() and audio_director.has_sound(sound):
+	if not sound.is_empty():
 		audio_director.play_sfx(sound)
 
-
 func stop_static() -> void:
-	if is_instance_valid(_static_player):
-		_static_player.stop()
+	# All one-shots are stopped by the owning director during room shutdown.
+	if is_instance_valid(_search_timer):
+		_search_timer.stop()
 
+func set_suspended(suspended: bool) -> void:
+	_search_timer.paused = suspended
 
-func _exit_tree() -> void:
-	stop_static()
+func _on_status_changed(status: int, owned: bool, _active: bool) -> void:
+	if owned and not _known_owner and status == TemporalRadio.SignalState.SEARCHING:
+		_search_timer.start()
+	if not owned or status != TemporalRadio.SignalState.SEARCHING:
+		_search_timer.stop()
+	_known_owner = owned
 
-
-func _make_static() -> AudioStreamWAV:
-	var stream := AudioStreamWAV.new()
-	stream.format = AudioStreamWAV.FORMAT_16_BITS
-	stream.mix_rate = 22050
-	var samples := 3307
-	var bytes := PackedByteArray()
-	bytes.resize(samples * 2)
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 6701
-	var previous := 0.0
-	for i in range(samples):
-		var noise := rng.randf_range(-1.0, 1.0)
-		var envelope := sin(PI * float(i) / float(samples))
-		var sample := int((noise - previous) * 7000.0 * envelope)
-		bytes.encode_s16(i * 2, sample)
-		previous = noise
-	stream.data = bytes
-	return stream
+func _on_search() -> void:
+	if radio != null and radio.owns_radio and radio.presentation_active and radio.signal_state == TemporalRadio.SignalState.SEARCHING:
+		play_cue(&"searching")

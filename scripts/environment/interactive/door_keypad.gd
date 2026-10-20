@@ -46,7 +46,7 @@ func _press_sequence() -> void:
 		if button == null:
 			continue
 		var rest := button.position
-		tween.tween_callback(sfx.bind(&"ui_click", Vector3(0, 0.4, 0.1)))
+		tween.tween_callback(sfx.bind(&"keypad_button", Vector3(0, 0.4, 0.1)))
 		tween.tween_property(button, "position:z", rest.z - 0.018, 0.05)
 		tween.tween_property(button, "position:z", rest.z, 0.07)
 	tween.tween_callback(func() -> void: _pressing = false)

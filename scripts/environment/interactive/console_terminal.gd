@@ -31,12 +31,10 @@ func bind_screens(terminal: Control, reader: Control) -> void:
 
 
 func _state_changed(previous: Dictionary) -> void:
-	if previous.is_empty():
+	if previous.is_empty() or linked():
 		return
-	if linked() and not Rules.link_established(previous):
-		sfx(&"interaction_success", Vector3(0, 1.7, 0.5))
-	elif state.get("frequency_calibrated", false) and not previous.get("frequency_calibrated", false):
-		sfx(&"computer_beep", Vector3(0, 1.7, 0.5))
+	if state.get("frequency_calibrated", false) and not previous.get("frequency_calibrated", false):
+		sfx(&"computer_success", Vector3(0, 1.7, 0.5))
 
 
 func _show_state(_animate: bool) -> void:

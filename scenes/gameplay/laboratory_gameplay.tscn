@@ -50,9 +50,8 @@ director = NodePath("../DialogueDirector")
 radio = NodePath("../TemporalRadio")
 sequences = Array[ExtResource("25")]([ExtResource("9"), ExtResource("10"), ExtResource("11")])
 
-[node name="RadioAudio" type="Node" parent="." node_paths=PackedStringArray("audio_director", "radio")]
+[node name="RadioAudio" type="Node" parent="." node_paths=PackedStringArray("radio")]
 script = ExtResource("12")
-audio_director = NodePath("../../SignalLab/AudioSystem")
 radio = NodePath("../TemporalRadio")
 
 [node name="Props" type="Node3D" parent="."]

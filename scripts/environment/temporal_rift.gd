@@ -9,7 +9,7 @@ extends LabDevice
 
 const LightBehaviour := preload("res://scripts/environment/light_behaviour.gd")
 const FRAGMENT_COUNT := 9
-const HUM := "res://assets/audio/environment/rift_hum.wav"
+const Catalog := preload("res://scripts/audio/sound_catalog.gd")
 
 @onready var core: Node3D = $Core
 @onready var fragments: Node3D = $Fragments
@@ -34,13 +34,17 @@ func _ready() -> void:
 		_seeds.append(Vector4(TAU * index / FRAGMENT_COUNT, rng.randf_range(0.7, 1.75), rng.randf_range(0.7, 3.5), rng.randf_range(0.4, 1.6)))
 	_energy_material = energy.material_override as ShaderMaterial
 	super()
-	# The AudioDirector's rift hum, looped here at the rift. Without an output device (headless runs)
-	# the dummy driver never mixes, so a started playback would only be left behind at exit.
-	if AudioServer.get_driver_name() != "Dummy" and ResourceLoader.exists(HUM):
-		hum.stream = load(HUM)
-		hum.bus = &"Ambience" if AudioServer.get_bus_index(&"Ambience") >= 0 else &"Master"
-		hum.finished.connect(hum.play)
+	PuzzleManager.puzzle_completed.connect(_on_audio_completed)
+	var definition: Dictionary = Catalog.definitions().get("rift_hum", {})
+	var entry := Catalog.load_entry(definition)
+	hum.stream = Catalog.loop_stream(entry["stream"])
+	hum.bus = &"Ambience" if AudioServer.get_bus_index(&"Ambience") >= 0 else &"Master"
+	hum.volume_db = float(entry.get("volume_db", -27.0))
+	hum.unit_size = 3.5
+	hum.max_distance = 17.0
+	if hum.stream != null:
 		hum.play()
+
 
 
 func _exit_tree() -> void:
@@ -108,4 +112,8 @@ func _on_interacted(_actor: Node, _role: String, _interactable: Node) -> void:
 		toast("The containment field is broken. Shards of the core drift through the room, humming on a frequency you can feel.")
 	else:
 		toast("Containment stable. The core sings on a low carrier. A label reads: \"Both handhelds on before calibrating.\"")
-	sfx(&"computer_beep", Vector3(0, 1.0, 1.6))
+	sfx(&"rift_activate", Vector3(0, 1.0, 1.6))
+
+func _on_audio_completed(puzzle_id: String) -> void:
+	if puzzle_id == Rules.ID:
+		sfx(&"rift_stabilize", Vector3(0, 1.5, 0))

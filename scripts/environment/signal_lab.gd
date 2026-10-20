@@ -48,6 +48,10 @@ func _ready() -> void:
 	_state = PuzzleManager.get_state(Rules.ID)
 	door.player_exited.connect(_on_player_exited)
 	_apply()
+	audio.bind_ui(self)
+	terminal.modal_changed.connect(_on_terminal_modal)
+	reader.modal_changed.connect(_on_document_modal)
+	ui.modal_changed.connect(_on_document_modal)
 
 
 ## Give the room the local player's TemporalRadio: radio, terminal and pickup cues then play
@@ -64,6 +68,8 @@ func attach_radio(radio: TemporalRadio, audio_bridge: Node = null) -> void:
 			radio_audio.audio_director = audio
 			radio_audio.radio = radio
 			add_child(radio_audio)
+		# References outside an instanced PackedScene must bind after composition.
+		radio_audio.audio_director = audio
 		terminal.audio_cue_requested.connect(radio_audio.play_cue)
 		for pickup in [$Layout/Interactive/PastRadio/Pickup, $Layout/Interactive/FutureRadio/Pickup]:
 			pickup.radio_acquired.connect(_on_radio_acquired)
@@ -86,9 +92,8 @@ func _apply() -> void:
 	ui.set_timeline(future)
 	terminal.close()
 	reader.close()
-	# Ambience loops forever; without an output device (headless runs) nothing would mix it.
-	if AudioServer.get_driver_name() != "Dummy":
-		audio.ambient_controller.switch_timeline(&"Future" if future else &"Past")
+	# Soundscapes are local presentation, selected from the room timeline.
+	audio.start_soundscape(&"future" if future else &"past")
 	if world_environment != null and world_environment.environment != null:
 		var environment := world_environment.environment
 		environment.ambient_light_color = Color("4a6d7c") if future else Color("f3e3c4")
@@ -131,5 +136,13 @@ func _on_player_exited(body: Node3D) -> void:
 		return
 	exited = true
 	ui.banner("SIGNAL LABORATORY CLEARED", "Both timelines found the way out.", 6.0)
-	audio.play_world_sfx(&"interaction_success", body.global_position)
+	audio.play_sfx(&"objective_completed")
 	player_exited.emit(body)
+
+func _on_terminal_modal(opened: bool) -> void:
+	audio.play_sfx(&"computer_open" if opened else &"computer_close")
+	if opened and Rules.link_established(_state):
+		audio.play_sfx(&"computer_connected")
+
+func _on_document_modal(opened: bool) -> void:
+	audio.play_sfx(&"document_open" if opened else &"document_close")

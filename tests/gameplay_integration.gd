@@ -7,6 +7,7 @@ const RELAY := "laboratory_receiver_relay"
 
 var room: Node3D
 var game: Node3D
+var audio_events: Array[StringName] = []
 var checks: int = 0
 var failures: int = 0
 
@@ -97,6 +98,7 @@ func _run() -> void:
 	room.pause_when_unfocused = false
 	room._set_paused(false)
 	game = room.gameplay
+	game.audio.sound_played.connect(func(id: StringName, _spatial: bool, _position: Vector3) -> void: audio_events.append(id))
 	await tick()
 	check(room.timeline == "Past" and game.configured, "Solo starts as Student in real Past environment")
 	check(room.player.scene_file_path.ends_with("student_3d_player.tscn"), "Student uses the finished animated character")
@@ -147,6 +149,8 @@ func _run() -> void:
 	game.terminal._validate_text("66")
 	check(game.terminal.submit_frequency().status == 1 and "SIGNAL NOT FOUND" in game.terminal.feedback_label.text, "Incorrect frequency produces normal retry feedback in real lab")
 	check(puzzles.get_revision(FREQUENCY) == revision, "Incorrect attempt creates no authoritative revision")
+	check(&"computer_open" in audio_events and &"computer_calibrate" in audio_events and &"computer_invalid" in audio_events, "Actual terminal opening, calibration and failure play catalog cues")
+	check(&"radio_pickup" in audio_events, "Confirmed physical pickup plays tactile audio")
 	await capture("03_terminal_retry")
 	game.terminal.frequency_input.text = "67"
 	game.terminal._validate_text("67")
@@ -198,6 +202,7 @@ func _run() -> void:
 		quit(1)
 		return
 	check("67 MHz" in game.reader.document_label.text and not room.player.controls_enabled, "Research log is readable in actual Future lab with safe modal input")
+	check(&"document_open" in audio_events, "Actual research document plays paper cue")
 	await capture("07_research_log")
 	await press(KEY_ESCAPE)
 	check(not game.reader.visible and game.director.get_current_sequence_id() == "future_discovery", "Future-specific actual dialogue resumes after document closes")

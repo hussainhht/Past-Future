@@ -12,6 +12,7 @@ func _ready() -> void:
 	document_label.custom_minimum_size.x = 510
 	content.add_child(document_label)
 	var close_button := UI.button("CLOSE  [ESC]")
+	close_button.set_meta("audio_event", &"")
 	close_button.pressed.connect(close)
 	content.add_child(close_button)
 

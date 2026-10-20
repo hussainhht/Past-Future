@@ -61,6 +61,8 @@ func set_presentation_active(active: bool) -> void:
 	presentation_active = active
 	if not active:
 		set_transmitting(false)
+	if owns_radio:
+		audio_cue_requested.emit(&"power_on" if active else &"power_off")
 	presentation_active_changed.emit(active)
 	refresh()
 
@@ -75,13 +77,13 @@ func interfere(seconds: float) -> void:
 	refresh()
 
 
-func set_transmitting(value: bool) -> void:
+func set_transmitting(value: bool, incoming: bool = true) -> void:
 	value = value and can_receive()
 	if value != transmitting:
 		transmitting = value
 		transmission_changed.emit(value)
 		if value:
-			audio_cue_requested.emit(&"incoming")
+			audio_cue_requested.emit(&"incoming" if incoming else &"outgoing")
 
 
 func refresh() -> void:

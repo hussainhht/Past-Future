@@ -33,7 +33,7 @@ func set_radio_mode(enabled: bool) -> void:
 func present_line(line: DialogueLine, characters_per_second: float, show_continue: bool = true) -> void:
 	if radio_mode and radio != null:
 		radio.set_transmitting(false)
-		radio.set_transmitting(true)
+		radio.set_transmitting(true, DialogueLine.timeline_name(line.timeline) != radio.player_role)
 	super.present_line(line, characters_per_second, show_continue)
 
 

@@ -1,207 +1,115 @@
-# Past-Future Audio Subsystem Architecture & Integration Guide
+# Past-Future audio implementation
 
-Production-ready, modular audio implementation for **Past-Future** (Reboot CHECKPOINT Game Jam 2026, Godot 4.7.2).
+Implemented 20?21 October 2026 in the real playable Signal Laboratory (`scenes/world/spawn_area.tscn`), on the existing `main` branch. The overhaul replaces 19 generated WAV placeholders and their import files with 43 acquired/prepared CC0 assets (5.86 MiB). The native catalog exposes 71 event IDs. Existing movement, interactions, ENet authority, puzzle rules and written dialogue remain the event sources. No commits were created.
 
----
+## A. Architecture
 
-## 1. Subsystem Overview
+Each loaded menu or laboratory has one AudioDirector. The menu uses the same `scenes/audio/audio_system.tscn` implementation as gameplay. Public methods include `play_sfx(id)`, `play_ui(id)`, `play_world_sfx(id, position)`, `start_ambience(id)`, `start_music(timeline)`, `start_soundscape(timeline)` and corresponding stop methods.
 
-The audio subsystem provides responsive, physically grounded character audio, a centralized sound effects catalog, 3D spatialized environmental playback, and seamless ambient soundscapes for the Past (active laboratory) and Future (abandoned laboratory) timelines.
+`resources/audio/sound_events.tres` is a native Resource with an editable event dictionary and explicit AudioStream export dependencies. Each event defines files, bus, volume, pitch variation, spatial intent, cooldown, priority, concurrency limit and loop behavior. SoundCatalog loads native streams. Missing IDs return false and warn once; missing stream paths warn and are omitted. Gameplay scripts use stable IDs rather than asset paths.
 
-Key principles:
-- **Zero modification of protected files**: The subsystem exists entirely in independent files and attachable components.
-- **Physical movement grounding**: Footstep cadence responds dynamically to resolved character velocity, grounded state, and stride distance rather than raw inputs or fixed timers.
-- **Bounded resource consumption**: Non-positional SFX and 3D world emitters use bounded object pools, preventing node explosion during rapid interactions.
-- **Dynamic safe bus routing**: Audio categories (`Master`, `Music`, `SFX`, `UI`, `Ambience`) are routed dynamically without modifying global `project.godot`.
+One-shots reuse 12 non-positional and 8 positional players. Cooldowns/concurrency prevent rapid repetition, and low-priority hover/detail cues cannot steal important playback. Multiple variants avoid immediate repetition. The headless Dummy driver accepts/emits event hooks without allocating native one-shot playbacks: it cannot output sound and can otherwise retain a playback at shutdown. Real output uses AudioStreamPlayer/AudioStreamPlayer3D.
 
----
+The existing AmbientAudioController is reused for ambience and music, with two players per layer, duplicate-start protection and Tween crossfades. Both layers belong to the same director. The scene-owned rift Hum player and character-owned footstep player are bounded components using the shared catalog. Teardown stops players, releases streams, cancels tweens and cancels delayed radio scans.
 
-## 2. Architecture & Ownership
+To add sounds: import a licensed WAV/OGG, record provenance/credits, add its event to the library Resource, and add its AudioStream to the Resource's `assets` array so selected-scene exports include it. Trigger the stable ID from an actual result or authoritative signal. Add a surface event with multiple samples and use `FootstepEmitter3D.set_surface(event_id)` for later floor types.
 
-```text
-res://
-├── scripts/audio/
-│   ├── footstep_emitter_3d.gd        # Attachable 3D footstep emitter component
-│   ├── audio_director.gd             # Central audio coordinator, catalog & pools
-│   └── ambient_audio_controller.gd   # Crossfading timeline ambient loop controller
-├── scenes/audio/
-│   ├── footstep_emitter_3d.tscn      # Reusable 3D footstep component scene
-│   └── audio_system.tscn             # Composite scene (AudioDirector + AmbientController)
-├── scenes/testing/
-│   └── audio_sandbox.tscn            # Independent standalone testing sandbox
-├── scripts/testing/
-│   └── audio_sandbox.gd              # Controller for sandbox preview UI
-├── assets/audio/
-│   ├── footsteps/                    # Hard-floor footsteps (5 variations)
-│   ├── ui/                           # UI clicks, hovers, confirmations, back cues
-│   ├── interaction/                  # Interaction feedback (click, success, denied)
-│   ├── environment/                  # 3D doors, locks, switches, terminal beeps
-│   └── ambience/                     # Seamless Past and Future laboratory loops
-├── docs/
-│   ├── AUDIO_SYSTEM.md               # This documentation
-│   └── AUDIO_ASSET_CREDITS.md        # Provenance, synthesis algorithms & licensing
-└── tests/
-    └── audio_system.gd               # Headless automated verification suite (80 checks)
-```
+## B. Asset research
 
----
+Selected sources: Kenney Impact Sounds, Interface Sounds and Sci-fi Sounds; SpliceSound tile contacts; Kinoton ventilation; BenjaminNelan paper; thegoose09 recorded radio static; SketchMan3 wind; and two ambient tracks by yd. All ten publication pages identify CC0. Bundled Kenney license files are preserved in `assets/audio/licenses/`.
 
-## 3. Sound Catalog IDs
+[AUDIO_ASSET_CREDITS.md](AUDIO_ASSET_CREDITS.md) lists every selected file, creator, original acquired filename, exact download/page, license, date and use. [AUDIO_RESEARCH_REPORT.md](AUDIO_RESEARCH_REPORT.md) explains alternatives, suitability and limitations. Freesound public HQ MP3 previews were acquired where original WAVs require login; these are explicitly identified as previews.
 
-All sound IDs are identified by `StringName` keys in `AudioDirector`:
+`tools/acquire_audio_sources.py` restores the ignored source cache using pinned URLs and SHA256 checks. `tools/prepare_audio_assets.py` edits actual source material using numpy and ffmpeg: contact/static trimming, filtering, DC removal, anti-click fades, peak normalization to ?6 dBFS and tail-to-head loop overlap. Effects are mono PCM WAV; music and room beds are stereo Vorbis OGG; the positional rift loop is mono. This is not a claim of equal perceived loudness or a completed listening/mastering pass.
 
-| Category | Sound ID | Type | Default Bus | Description |
-|---|---|---|---|---|
-| **UI** | `&"ui_click"` | 2D | UI | Restrained tactile click |
-| **UI** | `&"ui_hover"` | 2D | UI | Micro high-frequency hover blip |
-| **UI** | `&"ui_confirm"` | 2D | UI | Positive ascending two-tone confirmation |
-| **UI** | `&"ui_back"` | 2D | UI | Soft descending cancellation cue |
-| **Interaction** | `&"interaction_click"` | 2D | SFX | Tactile equipment switch engagement |
-| **Interaction** | `&"interaction_success"`| 2D | SFX | Harmonic sci-fi success triad (C-E-G) |
-| **Interaction** | `&"interaction_denied"` | 2D | SFX | Restrained double low pulse rejection |
-| **Environment** | `&"door_open"` | 3D | SFX | Pneumatic sliding door with release transient |
-| **Environment** | `&"door_locked"` | 3D | SFX | Heavy solenoid latch rejection |
-| **Environment** | `&"computer_beep"` | 3D | SFX | Lab terminal telemetry chirp |
-| **Environment** | `&"switch_toggle"` | 3D | SFX | High-precision relay toggle |
-| **Environment** | `&"rift_hum"` | 2D/3D | Ambience | Low 55 Hz drone with 1.0 Hz beating LFO |
-| **Ambience** | `&"lab_ambience_past"` | 2D Loop | Ambience | Operational lab (60 Hz hum, filtered air, servers) |
-| **Ambience** | `&"lab_ambience_future"` | 2D Loop | Ambience | Abandoned lab (cold air, 42 Hz drone, tube resonance) |
+## C. Old versus new
 
----
+The existing director, ambience controller and footstep emitter were refactored, not replaced by parallel systems. `tools/generate_audio_assets.py` and `radio_audio.gd._make_static()` were removed. All old WAVs and `.import` companions were inventoried and checked for active references before removal; Git history can restore them.
 
-## 4. Usage Guidelines
+| Removed placeholder family | Replacement |
+|---|---|
+| `footsteps/footstep_01.wav` through `footstep_05.wav` | Six recorded Past tile contacts and five separate Future concrete contacts |
+| `ambience/lab_ambience_past.wav` | Recorded stereo ventilation, edited to a 53-second OGG loop |
+| `ambience/lab_ambience_future.wav` | Filtered air leakage / wind loop |
+| `environment/rift_hum.wav` | Acquired force-field texture, filtered and positional |
+| `environment/computer_beep.wav` | Terminal activation, tune, calibration, invalid and lock family |
+| `environment/door_open.wav`, `door_locked.wav`, `switch_toggle.wav` | Acquired mechanical/door/interface family |
+| `ui/ui_click.wav`, `ui_hover.wav`, `ui_confirm.wav`, `ui_back.wav` | Consistent Kenney Interface sounds |
+| `interaction/interaction_click.wav`, `interaction_success.wav`, `interaction_denied.wav` | Compatibility IDs mapped to acquired sounds |
+| Synthesized radio noise | Brief selection of a real AM recording; no synthesis fallback |
 
-### 4.1 AudioDirector Usage
+All removed paths above were beneath `assets/audio/`. A previously unresolved cross-PackedScene NodePath left the playable RadioAudio without its director. `SignalLab.attach_radio()` now binds it explicitly after composition. The console's duplicate link-success cue was removed. The local radio and rift stabilization listen to PuzzleManager's completion signal, which snapshots do not replay.
 
-In any level or gameplay controller, obtain a reference to the `AudioDirector` instance (e.g. from `AudioSystem` placed in the scene tree):
+## D. Sound library
 
-```gdscript
-@onready var audio_director: AudioDirector = $AudioSystem
+[AUDIO_EVENT_MANIFEST.md](AUDIO_EVENT_MANIFEST.md) lists all **71** public IDs, exact files, triggering components, buses and integration status. It distinguishes integrated effects, API-only power toggles, compatibility aliases and prepared later-stage sounds. An available event does not imply a new gameplay mechanic exists.
 
-# Playing UI sounds
-func _on_button_pressed() -> void:
-    audio_director.play_ui(&"ui_click")
+## E. Past soundscape
 
-# Playing confirmed interaction feedback
-func _on_interaction_success() -> void:
-    audio_director.play_sfx(&"interaction_success")
+Six clean sneaker-on-tile contacts; quiet stereo ventilation; rare low computer texture; yd's **ObservingTheStar** at ?28 dB catalog gain. The first equipment detail waits 22?38 seconds and later details wait 28?48 seconds. The menu deliberately has no music.
 
-# Playing spatialized 3D world sounds (doors, terminals, levers)
-func _on_terminal_activated(terminal_node: Node3D) -> void:
-    audio_director.play_world_sfx(&"computer_beep", terminal_node.global_position)
+## F. Future soundscape
 
-func _on_door_opened(door_node: Node3D) -> void:
-    audio_director.play_world_sfx(&"door_open", door_node.global_position)
-```
+Five separate worn-concrete contacts; exposed air leakage; rare quiet metallic ticks; yd's **GalacticTemple** at ?29 dB gain. The Future is distinguished by sources and texture, not higher volume. It uses the same sparse detail scheduling.
 
-### 4.2 Attaching FootstepEmitter3D to Characters
+Ambience fades over two seconds and music over 2.5 seconds. Restarting the same playing ID is suppressed. Normal Return to Menu fades beds over 0.18 seconds before scene teardown. Immediate cleanup remains available. Each ENet peer selects its local room timeline; music/mixing has no RPC protocol.
 
-`FootstepEmitter3D` can be attached directly as a child of any `CharacterBody3D` (such as `Student3DPlayer`), or instantiated in code:
+## G. Gameplay integration and controls
 
-#### In Scene Editor:
-1. Open the character or level scene.
-2. Add an instance of `res://scenes/audio/footstep_emitter_3d.tscn` as a child of the `CharacterBody3D`.
-3. If placed as a child, it automatically assigns `character = get_parent() as CharacterBody3D`.
+Actual hooks cover walking/running, button clicks/focus, pause/resume, computer open/close, tuning, attempt, invalid frequency, confirmed calibration, connected-state inspection, confirmed radio pickup, local/remote written transmissions, one pending-link scan, explicit interference, confirmed connection, partner disconnect, documents/log open/close, positional rift hum/inspection/stabilization, actual door open/reset closure/locked inspection, keypad contacts, existing breaker inspection, auxiliary receiver completion and laboratory exit.
 
-#### In Script / Dynamic Instantiation:
-```gdscript
-var emitter := preload("res://scenes/audio/footstep_emitter_3d.tscn").instantiate()
-player.add_child(emitter)
-# Emitter automatically binds to 'player' and tracks real velocity and floor state.
-```
+The Lost Frequency remains **67 MHz**. Audio never grants puzzle success, changes puzzle state, adds microphone input, synthesizes speech or introduces VoIP. Door sounds follow the pre-existing door behavior; no new calibration-to-door rule was introduced.
 
-### 4.3 Cadence and Variation Mechanics
+Footsteps accumulate actual horizontal displacement after movement, require grounded state, and reset for controls locks, stopping and teleports. Nominal velocity alone cannot produce steps against a wall. Running changes physical cadence rather than speeding up samples. A local AudioListener3D at character height makes world attenuation independent of the high-angle camera.
 
-- **Speed Accumulator**: Grounded horizontal velocity ($v_{xz}$) is accumulated over time ($\Delta d = v_{xz} \cdot \Delta t$).
-- **Walking Cadence**: When walking ($v \approx 2.8\text{ m/s}$), stride distance is $1.35\text{ m}$, yielding $\approx 2.07\text{ steps/sec}$ ($0.48\text{ s}$ interval).
-- **Running Cadence**: When running ($v \ge 3.6\text{ m/s}$), stride distance is $1.38\text{ m}$, yielding $\approx 3.14\text{ steps/sec}$ ($0.31\text{ s}$ interval).
-- **Idle / Stopping**: When horizontal speed drops below `movement_threshold` ($0.15\text{ m/s}$), the accumulator immediately resets, preventing trailing steps after movement stops.
-- **Airborne State**: When `is_on_floor()` is false, distance accumulation is paused.
-- **Teleport Protection**: A single-frame position jump $> 2.5\text{ m}$ is identified as a teleport/respawn; the accumulator resets without triggering step bursts.
-- **Repeat Avoidance**: Emitter maintains `_last_sample_index` and randomly selects from remaining variants so the exact same sample is never played consecutively.
-- **Pitch Micro-Variation**: Applies random pitch variation ($\pm 4\%$) per step to eliminate repetitive acoustic fatigue.
+`default_bus_layout.tres` supplies Master ? Music / Ambience / SFX / UI before room children start. The existing Settings page gains five sliders and mute controls. Stable APIs: `set_category_volume_linear`, `get_category_volume_linear`, `set_category_muted`, `is_category_muted`. Preferences merge into `user://menu_settings.cfg`, preserving display settings. Volume zero retains the previous mute-at-zero API behavior. A ?1 dB Master limiter supplies a final ceiling; conservative event gains provide normal headroom beneath it.
 
----
+## H. Files created and modified
 
-## 5. Timeline Ambience Control
+Exact source/config/document paths are listed below. All 43 asset paths are separately listed in the credits, with Godot `.import` companions. Removed files are listed in the replacement table and Git diff. Review images are `docs/assets/audio/past_lab.png`, `docs/assets/audio/future_lab.png` and `docs/assets/audio/audio_settings.png`.
 
-`AmbientAudioController` coordinates crossfading between Past and Future atmospheres:
+- `docs/AUDIO_ASSET_CREDITS.md`
+- `scenes/gameplay/laboratory_gameplay.tscn`
+- `scenes/menu/main_menu.tscn`
+- `scripts/audio/ambient_audio_controller.gd`
+- `scripts/audio/audio_director.gd`
+- `scripts/audio/footstep_emitter_3d.gd`
+- `scripts/environment/interactive/console_terminal.gd`
+- `scripts/environment/interactive/door_keypad.gd`
+- `scripts/environment/interactive/lab_document.gd`
+- `scripts/environment/interactive/security_door.gd`
+- `scripts/environment/signal_lab.gd`
+- `scripts/environment/temporal_rift.gd`
+- `scripts/gameplay/frequency/frequency_log_reader.gd`
+- `scripts/gameplay/frequency/frequency_terminal.gd`
+- `scripts/gameplay/laboratory_gameplay.gd`
+- `scripts/gameplay/radio/radio_audio.gd`
+- `scripts/gameplay/radio/radio_dialogue_box.gd`
+- `scripts/gameplay/radio/temporal_radio.gd`
+- `scripts/menu/main_menu.gd`
+- `scripts/world/spawn_area.gd`
+- `tests/audio_system.gd`
+- `tests/gameplay_integration.gd`
+- `tests/gameplay_peer.gd`
+- `default_bus_layout.tres`
+- `docs/AUDIO_EVENT_MANIFEST.md`
+- `docs/AUDIO_RESEARCH_REPORT.md`
+- `resources/audio/sound_events.tres`
+- `scripts/audio/sound_catalog.gd`
+- `scripts/audio/sound_event_library.gd`
+- `tools/acquire_audio_sources.py`
+- `tools/prepare_audio_assets.py`
 
-```gdscript
-@onready var ambient: AmbientAudioController = $AudioSystem/AmbientAudioController
+- `docs/AUDIO_TEST_RESULTS.md`
 
-# Start Past ambience with a 1.2-second crossfade
-ambient.start_ambience(&"lab_ambience_past", 1.2)
+## I. Verification
 
-# Switch to Future timeline
-ambient.switch_timeline(&"Future", 1.0)
+[AUDIO_TEST_RESULTS.md](AUDIO_TEST_RESULTS.md) records commands, results and limitations. Audio import, catalog/routing/cadence checks, rendered real-menu gameplay, and actual ENet host/client checks passed. No unexpected runtime errors or shutdown leaks remain in final checks. This implementation is used by the real first level, not only a sandbox.
 
-# Stop ambience
-ambient.stop_ambience(1.0)
-```
+## J. Outstanding work
 
-The controller guarantees that:
-- Starting an already active ambience is idempotent (no duplicate overlapping players).
-- Two internal players (`AmbiencePlayerA`, `AmbiencePlayerB`) perform smooth parallel volume tweens.
-- Stopped players are terminated cleanly upon completion of the fade-out.
+Final listening and mix approval remain because audio output could not be monitored. Remote footsteps await replicated remote-character movement; each current peer has only one local character. Cabinet sounds are prepared without inventing cabinet gameplay. No player jump/landing mechanic exists to hook. Radio power cues attach to the existing presentation API, which currently has no player-facing toggle. These distinctions are explicit in the manifest.
 
----
+## K. Manual listening
 
-## 6. Audio Buses and Volume Control
-
-`AudioDirector` automatically provisions category buses (`Master`, `Music`, `SFX`, `UI`, `Ambience`) in `AudioServer` at runtime without altering `project.godot`.
-
-```gdscript
-# Set linear volume between 0.0 (muted) and 1.0 (full)
-audio_director.set_category_volume_linear(&"SFX", 0.8)
-audio_director.set_category_volume_linear(&"UI", 0.6)
-
-# Volume <= 0.0001 automatically mutes the bus
-audio_director.set_category_volume_linear(&"Ambience", 0.0) # Muted
-
-# Query current volume
-var master_vol := audio_director.get_category_volume_linear(&"Master")
-```
-
----
-
-## 7. Future System Integration Hook Points
-
-### 7.1 Modular Interaction System Integration
-When the Interaction System agent finalizes `InteractionController`, connect audio callbacks without modifying core logic:
-- `interactable_focused` -> `audio_director.play_ui(&"ui_hover")`
-- `interaction_started` -> `audio_director.play_sfx(&"interaction_click")`
-- `interaction_completed` -> `audio_director.play_sfx(&"interaction_success")`
-- `interaction_failed` / `locked` -> `audio_director.play_sfx(&"interaction_denied")`
-
-### 7.2 Host-Authoritative Puzzle State Integration
-Under the network architecture:
-1. Client requests action -> **Do not trigger completion audio**.
-2. Host validates action and updates `PuzzleManager`.
-3. Host broadcasts confirmed state via RPC.
-4. Client receives confirmation -> call `audio_director.play_sfx(&"interaction_success")`.
-
-### 7.3 Multiplayer / Split-Screen Considerations
-- UI audio is strictly local.
-- Ambience is selected based on each player's local timeline role (`Past` or `Future`).
-- Footsteps are driven by local character movement. For remote characters in networked sessions, ensure velocity is replicated, or bind `FootstepEmitter3D` to the remote proxy node once position replication is active.
-- For future local split-screen, each viewport requires an active `AudioListener3D` properly configured on its respective camera.
-
----
-
-## 8. Verification and Test Suite Execution
-
-### 8.1 Automated Headless Tests
-Run the complete automated test suite (80 checks covering assets, catalog resolution, bounded player pools, volume attenuation, footstep cadence, and scene loading):
-
-```powershell
-& "C:\Users\hanwd\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --script res://tests/audio_system.gd
-```
-
-### 8.2 Interactive Audio Sandbox
-Launch the standalone testing sandbox to test movement, 3D spatial attenuation, and UI preview controls:
-
-```powershell
-& "C:\Users\hanwd\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --path . res://scenes/testing/audio_sandbox.tscn
-```
-
+Launch the normal game, choose Play ? Solo Test, review the Past, acquire its handheld, enter 66 then 67 on the computer, close it and press T to review the Future and acquire the other handheld. Read documents, approach/leave the rift, review written radio dialogue, pause, return to menu, and test volume persistence. The short checklist and LAN route are in [AUDIO_TEST_RESULTS.md](AUDIO_TEST_RESULTS.md). Listening quality has not been claimed as verified.
