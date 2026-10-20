@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/audio_director.gd" id="1_director"]
+[ext_resource type="Script" path="res://scripts/audio/ambient_audio_controller.gd" id="2_ambient"]
+
+[node name="AudioSystem" type="Node"]
+script = ExtResource("1_director")
+
+[node name="AmbientAudioController" type="Node" parent="."]
+script = ExtResource("2_ambient")
+

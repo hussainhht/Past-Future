@@ -1,0 +1,369 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/testing/audio_sandbox.gd" id="1_sandbox"]
+[ext_resource type="PackedScene" path="res://scenes/characters/student_3d_player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/audio/footstep_emitter_3d.tscn" id="3_footsteps"]
+[ext_resource type="PackedScene" path="res://scenes/audio/audio_system.tscn" id="4_audiosys"]
+[ext_resource type="Script" path="res://scripts/world/follow_camera.gd" id="5_camera"]
+
+[sub_resource type="BoxShape3D" id="FloorShape"]
+size = Vector3(40, 1, 40)
+
+[sub_resource type="StandardMaterial3D" id="FloorMat"]
+albedo_color = Color(0.18, 0.22, 0.25, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="FloorMesh"]
+material = SubResource("FloorMat")
+size = Vector3(40, 1, 40)
+
+[sub_resource type="StandardMaterial3D" id="MarkerMat"]
+albedo_color = Color(0.2, 0.75, 0.85, 1)
+emission_enabled = true
+emission = Color(0.1, 0.5, 0.6, 1)
+
+[sub_resource type="CylinderMesh" id="MarkerMesh"]
+material = SubResource("MarkerMat")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 1.2
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.05, 0.07, 0.09, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.8, 0.85, 0.9, 1)
+ambient_light_energy = 0.8
+
+[node name="AudioSandbox" type="Node3D"]
+script = ExtResource("1_sandbox")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 15, 0)
+light_color = Color(0.95, 0.95, 1, 1)
+light_energy = 1.0
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("FloorShape")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("FloorMesh")
+
+[node name="Student3DPlayer" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="FootstepEmitter3D" parent="Student3DPlayer" instance=ExtResource("3_footsteps")]
+
+[node name="FollowCamera" type="Node3D" parent="."]
+script = ExtResource("5_camera")
+target_path = NodePath("../Student3DPlayer")
+distance = 18.0
+pitch_degrees = 38.0
+
+[node name="Camera3D" type="Camera3D" parent="FollowCamera"]
+current = true
+
+[node name="WorldAudioMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -3)
+
+[node name="MarkerMeshInstance" type="MeshInstance3D" parent="WorldAudioMarker"]
+mesh = SubResource("MarkerMesh")
+
+[node name="AudioSystem" parent="." instance=ExtResource("4_audiosys")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="RootPanel" type="MarginContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Layout" type="VBoxContainer" parent="UI/RootPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="HeaderBox" type="PanelContainer" parent="UI/RootPanel/Layout"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/RootPanel/Layout/HeaderBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "PAST-FUTURE — AUDIO SYSTEM SANDBOX"
+
+[node name="ControlsInfo" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.8, 0.85, 1)
+text = "Locomotion: WASD / Arrows | Sprint: Hold Shift | Actions: F (Interact), I (Inspect), E (PickUp/Drop) | R (Reset)"
+
+[node name="FootstepLabel" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.85, 0.45, 1)
+text = "Player Speed: 0.00 m/s | State: IDLE | On Floor: true"
+
+[node name="StatusLabel" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+text = "Audio System Ready. Click buttons or move player to preview sounds."
+
+[node name="ContentHBox" type="HBoxContainer" parent="UI/RootPanel/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 16
+
+[node name="SoundPanel" type="PanelContainer" parent="UI/RootPanel/Layout/ContentHBox"]
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="UIGroupLabel" type="Label" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ UI Sounds"
+
+[node name="UIButtons" type="HBoxContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="BtnUIClick" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Click"
+
+[node name="BtnUIHover" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Hover"
+
+[node name="BtnUIConfirm" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Confirm"
+
+[node name="BtnUIBack" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Back"
+
+[node name="HSeparator1" type="HSeparator" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="InteractGroupLabel" type="Label" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ Interaction Sounds"
+
+[node name="InteractButtons" type="HBoxContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="BtnInteractClick" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Click"
+
+[node name="BtnInteractSuccess" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Success"
+
+[node name="BtnInteractDenied" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Denied"
+
+[node name="HSeparator2" type="HSeparator" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="EnvGroupLabel" type="Label" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ Environment Sounds (3D Positional at Marker)"
+
+[node name="EnvButtons" type="GridContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+columns = 2
+
+[node name="BtnDoorOpen" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Door Open (3D)"
+
+[node name="BtnDoorLocked" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Door Locked (3D)"
+
+[node name="BtnComputerBeep" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Computer Beep (3D)"
+
+[node name="BtnSwitchToggle" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Switch Toggle (3D)"
+
+[node name="BtnRiftHum" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Rift Hum (2D)"
+
+[node name="HSeparator3" type="HSeparator" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="AmbienceGroupLabel" type="Label" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "▶ Timeline Ambience"
+
+[node name="AmbienceButtons" type="HBoxContainer" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox"]
+layout_mode = 2
+
+[node name="BtnAmbiencePast" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Past (Active Lab)"
+
+[node name="BtnAmbienceFuture" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Future (Abandoned)"
+
+[node name="BtnAmbienceStop" type="Button" parent="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "Stop"
+
+[node name="Spacer" type="Control" parent="UI/RootPanel/Layout/ContentHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="VolumePanel" type="PanelContainer" parent="UI/RootPanel/Layout/ContentHBox"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="VolumeTitle" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Audio Category Volumes"
+
+[node name="LblMaster" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+text = "Master Volume"
+
+[node name="SliderMaster" type="HSlider" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="LblSFX" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+text = "SFX Volume"
+
+[node name="SliderSFX" type="HSlider" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="LblUI" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+text = "UI Volume"
+
+[node name="SliderUI" type="HSlider" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="LblAmbience" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+text = "Ambience Volume"
+
+[node name="SliderAmbience" type="HSlider" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="LblMusic" type="Label" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+layout_mode = 2
+text = "Music Volume"
+
+[node name="SliderMusic" type="HSlider" parent="UI/RootPanel/Layout/ContentHBox/VolumePanel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons/BtnUIClick" to="." method="_on_btn_ui_click_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons/BtnUIHover" to="." method="_on_btn_ui_hover_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons/BtnUIConfirm" to="." method="_on_btn_ui_confirm_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/UIButtons/BtnUIBack" to="." method="_on_btn_ui_back_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons/BtnInteractClick" to="." method="_on_btn_interact_click_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons/BtnInteractSuccess" to="." method="_on_btn_interact_success_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/InteractButtons/BtnInteractDenied" to="." method="_on_btn_interact_denied_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons/BtnDoorOpen" to="." method="_on_btn_door_open_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons/BtnDoorLocked" to="." method="_on_btn_door_locked_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons/BtnComputerBeep" to="." method="_on_btn_computer_beep_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons/BtnSwitchToggle" to="." method="_on_btn_switch_toggle_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/EnvButtons/BtnRiftHum" to="." method="_on_btn_rift_hum_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons/BtnAmbiencePast" to="." method="_on_btn_ambience_past_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons/BtnAmbienceFuture" to="." method="_on_btn_ambience_future_pressed"]
+[connection signal="pressed" from="UI/RootPanel/Layout/ContentHBox/SoundPanel/Scroll/VBox/AmbienceButtons/BtnAmbienceStop" to="." method="_on_btn_ambience_stop_pressed"]
+
