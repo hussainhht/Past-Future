@@ -1,47 +1,70 @@
-# Original 3D student with KayKit animations
+# Reference-led student character
 
-The active player uses an original skinned low-poly mesh, authored in `tools/build_student_kaykit.py`, with the actual KayKit `Rig_Medium` skeleton and CC0 animation tracks. No KayKit character mesh was reused. All visible face, hair, clothing, hands, boots, ID, watch, and satchel geometry is generated from the source in this repository.
+The active Godot player now uses newly authored visible geometry reconstructed from all four images in `../references/`. The original references and all KayKit source GLBs and licenses are retained. No mannequin geometry is used in the finished character.
 
-The design translates the supplied [student reference](../references/student_reference.png) into large rounded forms, a broad head, simple oval eyes, clear eyebrows, compact limbs, chunky boots/hands, and a limited palette. The dark swept hair, ochre rolled-sleeve jacket, cream shirt, charcoal trousers, anatomical-right messenger bag, and anatomical-left watch identify the student.
+Open `review/index.html` for the four side-by-side comparisons, six-view turnaround, animation playback, sampled poses, and actual gameplay/studio captures. Godot comparisons show the game renderer; the expandable Blender comparisons show the same geometry under soft studio lighting. These are actual renders, not repainted reference images.
 
-## Study references
+## Deliverables
 
-Before authoring, we inspected the actual free Rogue, Ranger, Barbarian, and Mage GLBs from [KayKit Adventurers 2.0](https://kaylousberg.itch.io/kaykit-adventurers), rendered them from front/back, and inspected the published [Protagonists design in Series 5](https://kaylousberg.com/patreon-characters/series-5). These informed proportions, simple faces, large accessory shapes, and clothing construction. The Adventurer models and paid Protagonists model are not included or used as our mesh.
+- `student.glb`: the active, standalone skinned character, materials, 23 bones, and all 77 previously available clips.
+- `source/student.blend`: editable named mesh parts, skin groups, armature, 77 animation actions, materials, packed copies of all four references, embedded build scripts, and a studio camera/light setup. The reference collection is hidden initially. NLA tracks are muted for the neutral preview.
+- `manifest.json`: geometry counts, part ranges, palette, bone retarget map, animation provenance, source/reference SHA-256 hashes, and floor-clearance curves.
+- `REFERENCE_STUDY.md`: observed features, proportions, laterality, and conservative interpretation of differences between views.
+- `VALIDATION.md`: checks performed, visual iterations, and remaining limitations.
+- `review/`: front/back/both sides/two three-quarter views; comparisons; 18-frame playback sequences plus three reverse-angle samples for each reviewed clip; lab and studio captures.
 
-## Review
+The materials use solid PBR base colors, roughness, and limited metal response. Hair locks, clothing construction, eyes, watch dial, badge, seams, laces, and buckles are geometry. No external texture files are required by the GLB. Original references are packed in the Blender file for editing convenience, not used as character textures.
 
-Run the game → **Play Together → Explore the Lab → Character / F2**. The 3D studio exposes all 77 imported clips, four view buttons, arbitrary character rotation, playback speed, pause, and pose scrubbing while paused. This rotates the preview character; the gameplay camera stays fixed.
+## Rebuild
 
-- WASD / arrows: move and turn. Shift: run.
-- F: KayKit `Interact`.
-- I: KayKit `Use_Item`.
-- E: KayKit `PickUp`, toggling a small demonstration document on completion; pressing again puts it away using the same reach cycle.
-- R: respawn. Esc: pause. F2: character studio.
+Run from the project root. Python 3.13 is used by the supplied environment. NumPy and Pillow are needed for generation/review; Blender's `bpy` module is needed only for the editable Blender file, Blender export, and studio renders. Exact tested versions are in `tools/requirements-character.txt`.
 
-`preview.png` shows front, three-quarter, and rear views. `lab_preview.png` and `studio_preview.png` show the actual gameplay and review UI. Regenerate them with the preview command below.
+```powershell
+# After creating a Python 3.13 virtual environment at .venv:
+& .venv/Scripts/python.exe -m pip install -r tools/requirements-character.txt
+& .venv/Scripts/python.exe tools/build_student_kaykit.py
+& .venv/Scripts/python.exe tools/student_blender.py --create
+& .venv/Scripts/python.exe tests/student_3d_assets.py
 
-## Files and editing
+$GodotBin = 'C:/path/to/Godot_console.exe'
+& $GodotBin --headless --editor --path . --import --quit
+& $GodotBin --headless --path . --script res://tests/student_3d.gd
+& $GodotBin --headless --path . --script res://tests/spawn_area.gd
+& $GodotBin --path . --script res://tools/render_student_review.gd
+& .venv/Scripts/python.exe tools/student_blender.py --render
+& .venv/Scripts/python.exe tools/assemble_student_review.py
 
-- `student.glb`: standalone original mesh, 23 source joints including hand attachment bones, and 77 genuine KayKit clips. It uses approximately 11,000 triangles and 5,700 vertices. Full counts and part list are in `manifest.json`.
-- `../../../tools/build_student_kaykit.py`: all authored geometry, color palette, and skin-weight functions. NumPy is the only nonstandard Python dependency. Blender is not required to rebuild.
-- `../../../tools/gltf_tools.py`: binary glTF reader/writer.
-- `../../../assets/third_party/kaykit_character_animations/`: unchanged source animation GLBs, reference rig, license, and provenance notes; excluded from runtime imports.
-- `../../../scenes/characters/student_3d_player.tscn`: grounded collision body, shadow, turning visual root, and skinned model.
-- `../../../scripts/characters/student_3d_player.gd`: independent per-player materials/animation resources, locomotion, action recovery, pause, and hand prop.
-- `../../../scenes/characters/student_3d_studio.tscn`: isolated 3D preview with the animation library.
-
-```sh
-python3 tools/build_student_kaykit.py
-godot --headless --editor --path . --import --quit
-python3 tests/student_3d_assets.py
-godot --headless --path . --script res://tests/student_3d.gd
-godot --path . --script res://tools/preview_student_3d.gd
+$env:GODOT_BIN = $GodotBin
+& .venv/Scripts/python.exe tests/run_lan_smoke.py
 ```
 
-The source rig's bone hierarchy, rest transforms, inverse bind matrices, and animation samples are preserved. Weighted mesh regions bend at the elbows, wrists, hips, knees, chest, and spine. Animation clips are copied by bone name into the standalone model. Gameplay loops locomotion clips and blends between them; actions finish once. The studio uses independent animation resources so looping a preview cannot change gameplay behavior.
+The rendered review requires a graphics device; do not run its Godot command with `--headless`. `-- --neutral-only` produces the six neutral views only. `-- --no-game` omits the lab captures. Ground-contact correction is part of the build, not a runtime dependency. The `.blend` and review folders are excluded from Godot imports.
 
-## Scope and remaining polish
+`--create` reconstructs the Blender file from procedural source and replaces any edits in that file. To retain hand edits, save them and use this route instead:
 
-This is a first 3D art pass for review. The deliberately simplified proportions differ from the illustrated reference. Accessories and cloth are skinned, with no cloth simulation; some extreme poses can still intersect the jacket, strap, or bag. Terminal contact, object-specific hand placement, facial animation, and a separate 49-year-old professor are not implemented. Actions and the demonstration document do not modify inventory or host-authoritative puzzle state.
+```powershell
+& .venv/Scripts/python.exe tools/student_blender.py --export
+& .venv/Scripts/python.exe tests/student_3d_assets.py
+# Reimport in Godot and rerun the review commands above.
+```
 
-The original 2D artwork, rig, studio, and tests remain available in `../student_2d/` and their original scenes. Checkpoint commit **244b42a** preserves the complete previous 2D gameplay version. The older articulated 3D model (`../student_v2.glb`) also remains available.
+The Blender exporter reads the `Character meshes` collection, vertex groups, and material assignments. It preserves gameplay node paths and rebuilds the same animation library. Solid material Base Color, Roughness, and Metallic values are exported from the Blender Principled shader. For procedural rebuilds, edit `PALETTE` in `tools/build_student_kaykit.py`. Image texture node graphs are not part of this solid-material exporter. Edit the rig's rest coordinates in `tools/student_rig.py` and rebuild; direct Blender rig/action edits are deliberately not exported by the geometry-only route.
+
+Authoring modules:
+
+- `tools/build_student_kaykit.py`: geometry and palette, including hair/scalp surfaces and continuous forearm/palm forms.
+- `tools/student_mesh.py`: mesh primitives, normals, normalized weights, materials, and GLB packaging.
+- `tools/student_rig.py`: proportion mapping and translation retarget.
+- `tools/ground_student_clips.py`: sampled skinned-surface clearance for lying/death/crawling contact clips.
+- `tools/student_blender.py`: editable source creation, geometry export, and six-view Cycles rendering.
+- `tools/render_student_review.gd` / `tools/assemble_student_review.py`: Godot evidence and comparison assembly.
+
+## Animation and gameplay
+
+The source medium rig was inspected directly: six separate mannequin meshes; rigid head weights; two-influence arm blends; mostly two/three-influence torso/leg blends; named hand slots. The new character follows these useful weighting and material principles while using its own visible geometry and reference proportions. Source mesh statistics are in `review/kaykit_mesh_study.json`.
+
+The rig retains KayKit's hierarchy, bone axes, names, and both hand slots. Rest joint locations are adjusted to the reference-led body. Inverse binds are regenerated. Rotation and scale samples and clip timing remain exact; local translations use `target_rest + (source_sample - source_rest) * length_ratio`. Floor-contact clips additionally receive a minimal vertical root correction sampled from actual skinned vertices at 60 Hz. The original animation files are never modified. The source combat/special packs remain present; the existing runtime library remains 77 clips.
+
+The active scene remains `scenes/characters/student_3d_player.tscn`. Mesh and skeleton paths, material tinting, animation names, hand attachments, action completion, studio isolation, and networking are preserved. Runtime height now comes from the imported mesh bounds, keeping the player at its existing gameplay height when authored proportions change.
+
+WASD/arrows move; Shift runs; F interacts; I inspects; E picks up/puts down the demonstration document; R respawns; F2 opens the character studio. The studio exposes all 77 clips and supports view rotation, playback speed, pause, and scrubbing. All older 2D assets and scenes remain available.

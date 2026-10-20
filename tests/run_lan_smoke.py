@@ -11,13 +11,14 @@ import socket
 import subprocess
 import tempfile
 import time
+import os
 
 
 def main() -> None:
     project = Path(__file__).resolve().parents[1]
-    godot = shutil.which("godot") or shutil.which("godot4")
+    godot = os.environ.get("GODOT_BIN") or shutil.which("godot") or shutil.which("godot4")
     if not godot:
-        raise SystemExit("Put godot or godot4 on PATH before running this check.")
+        raise SystemExit("Set GODOT_BIN to the Godot executable, or put godot/godot4 on PATH.")
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
         probe.bind(("127.0.0.1", 0))
         port = probe.getsockname()[1]

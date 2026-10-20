@@ -13,7 +13,7 @@ const LOOP_CLIPS: Array[String] = ["Idle_A", "Idle_B", "Walking_A", "Walking_B",
 	set(value):
 		visual_height = value
 		if is_node_ready():
-			$Visual.scale = Vector3.ONE * value / 2.265
+			$Visual.scale = Vector3.ONE * value / _model_height()
 @export var body_color: Color = Color("e4bf7f"):
 	set(value):
 		body_color = value
@@ -38,7 +38,7 @@ var _held_document: MeshInstance3D
 @onready var skinned_mesh: MeshInstance3D = skeleton.get_node("Student_SkinnedMesh")
 
 func _ready() -> void:
-	$Visual.scale = Vector3.ONE * visual_height / 2.265
+	$Visual.scale = Vector3.ONE * visual_height / _model_height()
 	# Imported resources are shared. Give each player independent playback flags
 	# and palette materials so the two timelines cannot alter each other.
 	var library: AnimationLibrary = animator.get_animation_library("").duplicate(true)
@@ -62,6 +62,9 @@ func _apply_tint() -> void:
 	for name in _materials:
 		var entry: Dictionary = _materials[name]
 		entry.material.albedo_color = entry.base.lerp(body_color, 0.16) if str(name).begins_with("jacket") else entry.base
+
+func _model_height() -> float:
+	return maxf(skinned_mesh.mesh.get_aabb().size.y, 0.001)
 
 func _create_document() -> void:
 	var attachment := BoneAttachment3D.new()

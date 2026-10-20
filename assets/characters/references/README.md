@@ -1,12 +1,18 @@
-# Student character reference
+﻿# Student character references
 
-`student_reference.png` is the original image supplied by the user, moved unchanged from the project root (`image.png`). It is the visual reference for the detailed 18-year-old student: dark tousled hair, ochre jacket, cream shirt, dark trousers, leather boots and messenger bag, student ID, and analogue watch.
-
-The four additional reference images supplied by the user are preserved unchanged under their original filenames:
+The active character is reconstructed from these four unchanged source images:
 
 - `frontview.png`
 - `backview.png`
-- `sideview1.png`
-- `sideview2.png`
+- `sideview1.png` (anatomical right)
+- `sideview2.png` (anatomical left, with satchel and watch)
 
-All four were moved from the project root into this folder. This folder is excluded from Godot imports. The active 3D character lives in `../student_3d/`; the earlier 2D alternative lives in `../student_2d/`.
+The study and approximate image landmarks are documented in
+`../student_3d/REFERENCE_STUDY.md`. Reference-to-render comparisons are in
+`../student_3d/review/`. The source camera is not known, so matching uses a
+near-horizontal orthographic view with approximate full-body framing.
+
+This directory remains excluded from Godot imports. Reference pixels are not
+used as textures or altered by the build; source hashes are recorded in the
+character manifest. Packed copies are also available in the editable Blender
+file's hidden reference collection.

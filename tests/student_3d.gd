@@ -21,6 +21,7 @@ func _run() -> void:
 	other.set_physics_process(false)
 	var ap: AnimationPlayer = player.animator
 	var sk: Skeleton3D = player.skeleton
+	check(is_equal_approx(player.get_node("Visual").scale.y * player.skinned_mesh.mesh.get_aabb().size.y, player.visual_height), "Reference proportions must normalize to gameplay height")
 	check(sk.get_bone_count() == 23 and player.skinned_mesh.skin.get_bind_count() == 23, "The custom mesh must be bound to the complete KayKit skeleton")
 	check(ap.get_animation_list().size() == 77, "All selected genuine KayKit clips must import")
 	for clip in ap.get_animation_list():

@@ -1,13 +1,31 @@
-# KayKit Character Animations 1.1
+﻿# KayKit Character Animations 1.1
 
-Creator: **Kay Lousberg** — <https://kaylousberg.com>
+Creator: Kay Lousberg - https://kaylousberg.com
+Official download: https://kaylousberg.itch.io/kaykit-character-animations
 
-Official download: <https://kaylousberg.itch.io/kaykit-character-animations>
+Original provenance: downloaded from the creator's Free 1.1 archive on
+2026-10-20. `License.txt` is the unchanged CC0 license from that archive.
+No paid source files are included.
 
-Downloaded from the creator's **Free 1.1** archive on 2026-10-20. `License.txt` is copied unchanged from that archive: CC0, including personal, educational, and commercial use; attribution is optional. No paid source files were downloaded.
+This directory retains all eight original Rig_Medium animation GLBs and the
+medium mannequin reference. It is excluded from Godot imports to avoid duplicate
+runtime libraries and importing the source mannequin into the game.
 
-This folder contains the eight original `Rig_Medium` animation GLBs and the medium mannequin reference, copied unchanged. It is excluded from Godot imports to avoid importing the source mannequin and duplicate animation sets into the game.
+The current builder authors entirely new visible geometry. It uses the source
+23-bone hierarchy, bone axes, hand slots, and the same 77 selected clips from
+General, MovementBasic, MovementAdvanced, Simulation, and Tools. The other packs
+remain available unchanged.
 
-`tools/build_student_kaykit.py` takes the actual 23-joint skeleton, rest transforms, inverse bind matrices, and unmodified animation tracks from these files. It creates entirely new visible geometry and bakes 77 clips from General, MovementBasic, MovementAdvanced, Simulation, and Tools into `assets/characters/student_3d/student.glb`. The combat and special sets are retained for later use, but are not baked into the student yet.
+Reference-led proportions now use adjusted rest translations and newly computed
+inverse binds. Angular animation, scale, and timing remain exact. Local motion
+translations are retargeted by the source-to-target rest-length ratios. Selected
+floor-contact clips also receive a vertical root-clearance curve computed from
+the new skinned geometry. These adaptations affect the generated student GLB
+only; this directory's source GLBs and license are not edited.
 
-`assets/characters/student_3d/manifest.json` records which source file supplied each baked clip and SHA-256 hashes of those files. `tests/student_3d_assets.py` compares every baked animation sampler against the original source. The model uses the source skeleton directly; no engine retargeting or approximate procedural replacement of the animations is involved.
+`assets/characters/student_3d/manifest.json` records source SHA-256 hashes, the
+bone mapping, per-clip provenance, and any clearance curves.
+`tests/student_3d_assets.py` validates bind matrices, weights, original angular
+tracks/timing, and documented translation retargeting.
+
+See `assets/characters/student_3d/README.md` for editable source and rebuild steps.

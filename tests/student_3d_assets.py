@@ -4,11 +4,14 @@ Run: python3 tests/student_3d_assets.py (requires NumPy).
 from pathlib import Path
 import json
 import sys
+import hashlib
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from gltf_tools import GLB, world_matrices
+from student_rig import translate_samples
+from ground_student_clips import sample
 
 
 def main():
@@ -32,6 +35,7 @@ def main():
             w = model.read(attr["WEIGHTS_0"])
             vertices += len(p)
             assert np.isfinite(p).all() and np.isfinite(n).all()
+            assert np.allclose(np.linalg.norm(n, axis=1), 1, atol=1e-4), "Normals must be unit length"
             assert np.allclose(w.sum(axis=1), 1, atol=1e-6)
             assert np.all(w >= 0) and j.max() < len(skin["joints"])
             assert model.read(primitive["indices"]).max() < len(p)
@@ -43,19 +47,39 @@ def main():
         filename = manifest["animation_sources"][animation["name"]]
         if filename not in cache:
             cache[filename] = GLB(ROOT / "assets/third_party/kaykit_character_animations" / filename)
+            assert hashlib.sha256((ROOT / "assets/third_party/kaykit_character_animations" / filename).read_bytes()).hexdigest() == manifest["source_sha256"][filename]
         original = cache[filename]
         source = next(a for a in original.doc["animations"] if a["name"] == animation["name"])
-        assert len(source["channels"]) == len(animation["channels"])
+        assert len(animation["channels"]) in (len(source["channels"]), len(source["channels"])+1)
         for a,b in zip(source["channels"], animation["channels"]):
             source_name = original.doc["nodes"][a["target"]["node"]]["name"]
             target_name = doc["nodes"][b["target"]["node"]]["name"]
             assert source_name == target_name and a["target"]["path"] == b["target"]["path"]
-        for a,b in zip(source["samplers"],animation["samplers"]):
+        channel_by_sampler = {c["sampler"]: c for c in source["channels"]}
+        for sampler_index,(a,b) in enumerate(zip(source["samplers"],animation["samplers"])):
+            channel = channel_by_sampler[sampler_index]
+            bone = original.doc["nodes"][channel["target"]["node"]]["name"]
+            clearance = manifest.get("ground_clearance", {}).get(animation["name"])
+            if clearance and bone == "root" and channel["target"]["path"] == "translation":
+                times=np.asarray(clearance["times"])
+                assert np.array_equal(model.read(b["input"]).ravel(),times.astype(np.float32))
+                expected=np.array([sample(original.read(a["input"]).ravel(),original.read(a["output"]),t,"translation") for t in times])
+                expected=translate_samples(expected,manifest["retarget"]["root"])
+                expected[:,1]+=clearance["vertical_offsets"]
+                assert np.allclose(model.read(b["output"]),expected,atol=1e-6)
+                assert 0 <= clearance["max_vertical_offset"] < .5
+                tracks += 1
+                continue
             for key in ["input","output"]:
-                assert np.array_equal(original.read(a[key]),model.read(b[key])), "KayKit keyframes must remain unchanged"
+                expected = original.read(a[key])
+                if key == "output" and channel["target"]["path"] == "translation":
+                    expected = translate_samples(expected, manifest["retarget"][bone]).astype(np.float32)
+                    assert np.allclose(expected,model.read(b[key]),atol=1e-6), "Translation must use documented proportion retarget"
+                else:
+                    assert np.array_equal(expected,model.read(b[key])), "KayKit times, rotations and scale must remain unchanged"
             assert a.get("interpolation","LINEAR") == b.get("interpolation","LINEAR")
             tracks += 1
-    print(f"STUDENT 3D ASSETS: PASS ({vertices} skinned vertices, 23 bind transforms, 77 clips, {tracks} exact source samplers)")
+    print(f"STUDENT 3D ASSETS: PASS ({vertices} skinned vertices, 23 rebuilt bind transforms, 77 clips, {tracks} source/retargeted samplers)")
 
 
 if __name__ == "__main__":

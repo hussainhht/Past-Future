@@ -1,360 +1,327 @@
-"""Author an original low-poly student mesh on KayKit's real Rig_Medium skeleton.
-
-Run: python3 tools/build_student_kaykit.py (requires NumPy).
-All visible geometry is authored below. KayKit supplies the unchanged skeleton,
-bind transforms and animation clips; no KayKit character mesh is reused.
+﻿"""Original reference-led student, fully procedural editable mesh authoring source.
+Run with .venv/Scripts/python.exe tools/build_student_kaykit.py.
+Coordinates: Y up, +Z face, +X anatomical left. All dimensions are model units.
 """
-from collections import defaultdict
-from copy import deepcopy
-from pathlib import Path
-import hashlib
-import json
 import math
 import numpy as np
-from gltf_tools import GLB, Writer
+import student_mesh as mesh
+from student_mesh import MeshAuthor, normalize, smooth
 
-ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "assets/third_party/kaykit_character_animations"
-OUTPUT = ROOT / "assets/characters/student_3d"
-PALETTE = {
-    "jacket": "b18145", "jacket_light": "c99a5b", "jacket_dark": "886133",
-    "shirt": "f0e2c7", "shirt_shadow": "cdbd9e", "skin": "e1ac7f",
-    "skin_shadow": "bb805c", "hair": "302822", "hair_mid": "3e3026",
-    "hair_light": "4d3a2a", "pants": "343c46", "pants_seam": "444b54",
-    "boots": "60432e", "boot_trim": "815b39", "sole": "302d29",
-    "bag": "795337", "bag_trim": "a17847", "brass": "c6a35a",
-    "eyes": "252425", "eye_glint": "f4e5ce", "badge": "639c9f",
-    "watch": "c7bdae", "watch_face": "eee5ce",
-}
-
-
-def smooth(a, b, value):
-    t = np.clip((value-a)/(b-a), 0, 1)
-    return float(t*t*(3-2*t))
+mesh.PALETTE.clear()
+mesh.PALETTE.update({
+    'jacket':'b98b43', 'jacket_light':'c29852', 'jacket_dark':'a77838',
+    'jacket_seam':'9d7339', 'shirt':'e7dcc0', 'shirt_shadow':'c9bba0',
+    'skin':'d29a71', 'skin_shadow':'b87954', 'mouth':'8b523b',
+    'hair':'302e30', 'hair_mid':'383639', 'hair_light':'403e40',
+    'pants':'303b46', 'pants_seam':'3b4650', 'boots':'70442c',
+    'boot_trim':'875638', 'sole':'392a24', 'laces':'514031',
+    'bag':'80573e', 'bag_trim':'94684a', 'stitch':'b99168',
+    'brass':'ad8d5d', 'steel':'777875', 'eyes':'42271c',
+    'eye_glint':'ad8264', 'badge':'e8dfc9', 'badge_blue':'638a96',
+    'badge_ink':'3c4652', 'watch':'b4b1a3', 'watch_face':'d8d3bd',
+})
 
 
-def normalize(v):
-    a = np.asarray(v, dtype=float)
-    return a / max(np.linalg.norm(a), 1e-9)
+def curve(points, steps=5):
+    """Centrally interpolated sculpting control points (Catmull-Rom)."""
+    p=np.asarray(points,dtype=float); result=[]
+    for i in range(len(p)-1):
+        a,b,c,d=p[max(0,i-1)],p[i],p[i+1],p[min(len(p)-1,i+2)]
+        for t in np.linspace(0,1,steps,endpoint=False):
+            result.append(.5*((2*b)+(-a+c)*t+(2*a-5*b+4*c-d)*t*t+(-a+3*b-3*c+d)*t*t*t))
+    return np.array(result+[p[-1]])
 
+HAIR_Y=[1.36,1.48,1.65,1.85,2.0,2.10,2.18,2.23]
+HAIR_X=[.19,.31,.369,.399,.37,.30,.19,.002]
+HAIR_Z=[.20,.28,.325,.33,.32,.26,.17,.002]
 
-class Student:
-    def __init__(self):
-        # Animation files also include the two animated hand attachment bones.
-        self.reference = GLB(SOURCE / "Rig_Medium_General.glb")
-        self.skin = self.reference.doc["skins"][0]
-        self.joints = {self.reference.doc["nodes"][i]["name"]: slot
-                       for slot, i in enumerate(self.skin["joints"])}
-        self.geometry = defaultdict(lambda: {"vertices": [], "faces": [], "weights": []})
-        self.parts = []
+class Student(MeshAuthor):
+    def body_weights(self,p):
+        upper=smooth(.75,1.10,p[1]); lower=1-smooth(.52,.72,p[1])
+        return {'hips':lower,'spine':(1-lower)*(1-upper),'chest':(1-lower)*upper}
 
-    def rigid(self, bone):
-        return lambda p: {bone: 1.0}
-
-    def body_weights(self, p):
-        x, y, z = p
-        upper = smooth(.70, .99, y)
-        lower = 1-smooth(.45, .69, y)
-        return {"hips": lower, "spine": (1-lower)*(1-upper), "chest": (1-lower)*upper}
-
-    def arm_weights(self, side):
+    def arm_weights(self,side):
         def weights(p):
-            x = abs(p[0])
-            elbow = smooth(.395, .51, x)
-            wrist = smooth(.68, .76, x)
-            palm = smooth(.78, .84, x)
-            return {"upperarm."+side: 1-elbow, "lowerarm."+side: elbow*(1-wrist),
-                    "wrist."+side: elbow*wrist*(1-palm), "hand."+side: elbow*wrist*palm}
+            x=abs(p[0]); elbow=smooth(.47,.61,x); wrist=smooth(.745,.82,x); hand=smooth(.82,.88,x)
+            # A short blended shoulder band avoids a detached sleeve during raises.
+            shoulder=1-smooth(.235,.34,x)
+            return {'chest':shoulder,'upperarm.'+side:(1-shoulder)*(1-elbow),
+                    'lowerarm.'+side:(1-shoulder)*elbow*(1-wrist),
+                    'wrist.'+side:wrist*(1-hand),'hand.'+side:hand}
         return weights
 
-    def leg_weights(self, side):
+    def leg_weights(self,side):
         def weights(p):
-            y = p[1]
-            knee = 1-smooth(.25, .34, y)
-            ankle = 1-smooth(.13, .21, y)
-            return {"upperleg."+side: 1-knee, "lowerleg."+side: knee*(1-ankle), "foot."+side: knee*ankle}
+            knee=1-smooth(.265,.365,p[1]); ankle=1-smooth(.16,.23,p[1])
+            return {'upperleg.'+side:1-knee,'lowerleg.'+side:knee*(1-ankle),'foot.'+side:knee*ankle}
         return weights
 
-    def add(self, name, vertices, faces, color, weights):
-        g = self.geometry[color]
-        start = len(g["vertices"])
-        g["vertices"].extend([list(v) for v in vertices])
-        g["faces"].extend([[a+start,b+start,c+start] for a,b,c in faces])
-        g["weights"].extend([weights(v) for v in vertices])
-        self.parts.append({"name": name, "material": color, "triangles": len(faces)})
+    def loft(self,name,sections,color,weights,segments=32,power=2.5,axis='y'):
+        sections=curve(sections,3)
+        sections[:,1:3]=np.maximum(sections[:,1:3],.00015)
+        super().loft(name,sections,color,weights,segments,power,axis)
 
-    def rings(self, name, rings, color, weights):
-        n = len(rings[0]); vertices = [v for ring in rings for v in ring]; faces = []
-        for r in range(len(rings)-1):
-            for j in range(n):
-                a=r*n+j; b=r*n+(j+1)%n; c=(r+1)*n+(j+1)%n; d=(r+1)*n+j
-                faces += [(a,b,c),(a,c,d)]
-        for r, reverse in [(0,True),(len(rings)-1,False)]:
-            center = np.mean(rings[r], axis=0).tolist(); ci=len(vertices); vertices.append(center)
-            for j in range(n):
-                a=r*n+j; b=r*n+(j+1)%n
-                faces.append((ci,b,a) if reverse else (ci,a,b))
-        self.add(name,vertices,faces,color,weights)
-
-    def loft(self, name, sections, color, weights, segments=16, power=2.8, axis="y"):
-        rings = []
-        for height, rx, rz, cx, cz in sections:
-            ring = []
-            for j in range(segments):
-                angle=j*math.tau/segments; sx=math.sin(angle); sz=math.cos(angle)
-                point=[cx+rx*math.copysign(abs(sx)**(2/power),sx), height,
-                       cz+rz*math.copysign(abs(sz)**(2/power),sz)]
-                if axis == "x": point=[point[1],point[2],point[0]]
-                ring.append(point)
-            rings.append(ring)
+    def tube(self,name,path,radius,color,weights,normal=(0,0,1),sides=10):
+        pts=curve(path,5); rings=[]
+        for i,p in enumerate(pts):
+            tangent=normalize(pts[min(len(pts)-1,i+1)]-pts[max(0,i-1)])
+            across=normalize(np.cross(tangent,normal)); out=normalize(np.cross(across,tangent))
+            rings.append([p+radius*(across*math.sin(a)+out*math.cos(a)) for a in np.linspace(0,math.tau,sides,endpoint=False)])
         self.rings(name,rings,color,weights)
 
-    def box(self, name, center, size, color, weights, bevel=.035):
-        x,y,z=center; w,h,d=size; bevel=min(bevel,w*.3,h*.3,d*.3)
-        self.loft(name,[(y-h/2,w/2-bevel,d/2-bevel,x,z),
-                       (y-h/2+bevel,w/2,d/2,x,z),
-                       (y+h/2-bevel,w/2,d/2,x,z),
-                       (y+h/2,w/2-bevel,d/2-bevel,x,z)],color,weights,segments=16,power=5)
+    def leaf(self,name,path,width,depth,color,normal=(0,0,1)):
+        pts=curve(path,7); rings=[]
+        raised_quiff=any(label in name for label in ('high quiff','crown wave'))
+        def seat(point):
+            p=np.array(point,dtype=float)
+            if not raised_quiff and p[1] < 2.215:
+                y=p[1]
+                rx=np.interp(y,HAIR_Y,HAIR_X)
+                rz=np.interp(y,HAIR_Y,HAIR_Z)
+                radial=np.array([p[0],p[2]+.035])
+                scale=1/max(np.linalg.norm(radial/[rx,rz]),1e-5)
+                p[0]=radial[0]*scale
+                p[2]=radial[1]*scale-.035
+            return p
+        pts=np.array([seat(p) for p in pts])
+        for i,p in enumerate(pts):
+            t=i/(len(pts)-1); taper=max(.006,math.sin(math.pi*t)**.65)*(1-.38*t)
+            tangent=normalize(pts[min(len(pts)-1,i+1)]-pts[max(0,i-1)])
+            normal=normalize([p[0]/.40**2,(p[1]-1.72)/.51**2,(p[2]+.035)/.34**2])
+            across=normalize(np.cross(tangent,normal))
+            ring=[]
+            for a in np.linspace(0,math.tau,16,endpoint=False):
+                q=seat(p+across*math.sin(a)*width*taper)
+                outward=normalize([q[0]/.40**2,(q[1]-1.72)/.51**2,(q[2]+.035)/.34**2])
+                ring.append(q+outward*math.cos(a)*depth*taper)
+            rings.append(ring)
+        self.rings(name,rings,color,self.rigid('head'))
 
-    def open_jacket(self, sections):
-        # A genuine front opening. A solid torso with a shirt overlaid intersects
-        # as the chest bends, so leave the center strip out of the jacket mesh.
-        count=25; vertices=[]; faces=[]
+    def ribbon(self,name,path,width,thickness,color,weights):
+        super().ribbon(name,curve(path,4),width,thickness,color,weights)
+
+    def jacket(self):
+        body=self.body_weights
+        sections=curve([(.565,.275,.18,0,0),(.59,.302,.196,0,0),(.70,.31,.205,0,0),
+                        (.88,.31,.208,0,-.008),(1.08,.325,.195,0,-.012),(1.19,.278,.165,0,-.012),
+                        (1.235,.14,.108,0,0)],4)
+        count=65; vertices=[]; faces=[]
         for y,rx,rz,cx,cz in sections:
-            for a in np.linspace(.18,math.tau-.18,count):
-                sx=math.sin(a);sz=math.cos(a)
-                vertices.append([cx+rx*math.copysign(abs(sx)**(2/3.6),sx),y,
-                                 cz+rz*math.copysign(abs(sz)**(2/3.6),sz)])
+            for a in np.linspace(.19,math.tau-.19,count):
+                sx,sz=math.sin(a),math.cos(a)
+                vertices.append([rx*math.copysign(abs(sx)**(2/2.9),sx),y,cz+rz*math.copysign(abs(sz)**(2/2.9),sz)])
         for row in range(len(sections)-1):
             for j in range(count-1):
                 a=row*count+j;b=a+1;c=b+count;d=a+count
-                faces += [(a,b,c),(a,c,d)]
-        self.add("Open field jacket",vertices,faces,"jacket",self.body_weights)
+                faces.extend([(a,b,c),(a,c,d)])
+        self.add('Jacket / continuous open shell',vertices,faces,'jacket',body)
+        # The bottom welt follows the actual shell; front plackets close its edges.
+        path=[]
+        for a in np.linspace(.20,math.tau-.20,70):
+            path.append([.296*math.copysign(abs(math.sin(a))**(2/2.9),math.sin(a)),.582,
+                         .197*math.copysign(abs(math.cos(a))**(2/2.9),math.cos(a))])
+        self.tube('Jacket / rounded bottom welt',path,.025,'jacket_dark',body)
+        for s in [-1,1]:
+            self.ribbon('Jacket / front placket',[(s*.085,.59,.199),(s*.09,.75,.215),(s*.10,.98,.210),
+                          (s*.105,1.14,.166)],.042,.023,'jacket_light',body)
+            self.tube('Jacket / placket stitch',[(s*.108,.60,.215),(s*.113,.8,.230),(s*.119,1.02,.220)],.0025,'jacket_seam',body)
+            self.ribbon('Jacket / slant welt pocket',[(s*.245,.685,.196),(s*.235,.75,.217),(s*.202,.815,.231)],.033,.018,'jacket_light',body)
+            self.tube('Jacket / welt pocket opening',[(s*.231,.683,.214),(s*.213,.750,.230),(s*.19,.80,.234)],.004,'jacket_dark',body)
+        for y in [.607,.735,.865,1.003]:
+            self.oval('Jacket / four horn buttons',(-.097,y,.239),(.018,.022,.011),'bag_trim',body,16,8)
+            for x in [-.101,-.093]: self.oval('Button holes',(x,y,.250),(.0016,.003,.001),'jacket_dark',body,8,4)
+        # One chest patch pocket, on anatomical right. The opposite side holds ID.
+        self.box('Jacket / right breast pocket',(-.209,1.01,.198),(.144,.157,.035),'jacket_dark',body,.022)
+        self.box('Jacket / pocket face',(-.209,1.011,.218),(.128,.142,.024),'jacket',body,.018)
+        self.patch('Jacket / pointed breast flap',[(-.282,1.085,.229),(-.137,1.085,.229),(-.145,1.025,.249),(-.207,1.008,.254),(-.272,1.027,.249)],.012,'jacket_light',body)
+        self.oval('Jacket / breast snap',(-.207,1.044,.269),(.016,.016,.008),'bag_trim',body,16,8)
+        self.tube('Jacket / back shoulder seam',[(-.29,1.153,-.12),(-.21,1.16,-.173),(0,1.16,-.185),(.21,1.16,-.173),(.29,1.153,-.12)],.003,'jacket_dark',body)
+        for s in [-1,1]:
+            self.tube('Jacket / side seam',[(s*.30,.62,-.035),(s*.313,.85,-.035),(s*.317,1.06,-.035)],.0028,'jacket_dark',body,normal=(1,0,0))
 
-    def oval(self, name, center, size, color, weights, segments=16, rows=8):
-        x,y,z=center; w,h,d=size
-        self.loft(name,[(y+h*math.sin(a),max(.0001,w*math.cos(a)),
-                        max(.0001,d*math.cos(a)),x,z)
-                       for a in np.linspace(-math.pi/2,math.pi/2,rows+1)],
-                  color,weights,segments,power=2)
+    def hair(self):
+        head=self.rigid('head'); rings=[]
+        for t in np.linspace(0,1,23):
+            ring=[]
+            for a in np.linspace(0,math.tau,64,endpoint=False):
+                front=max(0,math.cos(a)); low=1.36+.59*front**2
+                y=low+(2.23-low)*t
+                rx=np.interp(y,HAIR_Y,HAIR_X)
+                rz=np.interp(y,HAIR_Y,HAIR_Z)
+                ring.append([rx*math.sin(a),y,-.035+rz*math.cos(a)])
+            rings.append(ring)
+        self.rings('Hair / sculpted underlying skull',rings,'hair',head)
+        # Broad flattened swept locks, with sharp ends; deliberately not tubes.
+        for name,path,w,d,c in [
+            ('forelock',[(-.20,2.04,.18),(-.06,2.08,.30),(.055,1.99,.343),(.09,1.86,.325)],.115,.040,'hair_mid'),
+            ('center sweep',[(-.22,2.08,.12),(-.02,2.13,.20),(.20,2.01,.286),(.32,1.91,.24)],.135,.045,'hair'),
+            ('left wave',[(-.11,2.15,.05),(.11,2.14,.12),(.30,2.065,.17),(.405,2.055,.12)],.115,.044,'hair_mid'),
+            ('outer wave',[(.10,2.10,.07),(.30,2.02,.14),(.39,1.94,.16),(.43,1.94,.12)],.105,.039,'hair'),
+            ('right fringe',[(-.16,2.04,.23),(-.28,1.98,.29),(-.35,1.85,.26),(-.355,1.77,.22)],.078,.037,'hair_mid'),
+            ('right fringe overlap',[(-.24,2.06,.16),(-.35,1.98,.20),(-.405,1.87,.15),(-.399,1.83,.10)],.082,.035,'hair'),
+            ('high quiff',[(-.25,2.03,-.03),(-.255,2.14,.02),(-.195,2.21,.015),(-.11,2.245,-.025)],.072,.035,'hair_mid'),
+            ('crown wave',[(-.24,2.12,-.11),(-.08,2.18,-.09),(.12,2.16,-.10),(.24,2.20,-.14)],.105,.04,'hair_mid'),
+            ('temple left',[(.24,2.035,.235),(.34,1.90,.24),(.365,1.76,.16),(.33,1.65,.14)],.07,.036,'hair'),
+            ('temple right',[(-.30,1.99,.21),(-.35,1.86,.23),(-.37,1.72,.16),(-.34,1.63,.13)],.055,.03,'hair'),
+        ]: self.leaf('Hair / '+name,path,w,d,c)
+        # Side and rear overlapping tiers establish the layered nape in all views.
+        for side in [-1,1]:
+            for index in range(3):
+                y=2.17-index*.115; z=.15-index*.035
+                self.leaf('Hair / swept temple layer',[(side*.23,y,z),(side*.35,y-.07,z-.08),
+                          (side*.39,y-.18,z-.22),(side*.34,y-.16,z-.32)],.105,.039,
+                          'hair_mid' if index==1 else 'hair',normal=(side,0,0))
+            for index,z in enumerate([-.08,-.19]):
+                self.leaf('Hair / side nape',[(side*.345,1.80,z),(side*.35,1.64,z-.015),
+                          (side*.285,1.43,z+.005),(side*.245,1.36,z+.035)],.066,.027,'hair',normal=(side,0,-.1))
+        for row in range(2):
+            for col in range(7):
+                x=(col-3)*.100 + (.025 if row%2 else 0)
+                y=2.15-row*.27 - abs(x)*.20 +.024*math.sin(col*2+row)
+                z=-.13-row*.11- .08*(1-abs(x)/.35)
+                bend=.04*math.sin(col+row*2)
+                self.leaf('Hair / rear layered lock',[(x-.055,y,z),(x+bend,y-.10,z-.07),
+                          (x+bend+.03,y-.32,z-.07),(x+.015,max(1.35,y-(.50 if row else .43)-.025*math.cos(col*2)),z-.045)],.115-.02*row,.034,
+                          ['hair_mid','hair','hair','hair_mid','hair','hair','hair_mid'][col],normal=(0,0,-1))
 
-    def ribbon(self, name, path, width, thickness, color, weights):
-        # Rectangular leather/cloth strips with real edge thickness.
-        points=np.asarray(path); rings=[]
-        for i,p in enumerate(points):
-            tangent=normalize(points[min(i+1,len(points)-1)]-points[max(0,i-1)])
-            normal=np.array([0,0,1 if p[2]>=0 else -1])
-            across=normalize(np.cross(tangent,normal))*width*.5
-            rings.append([p-across-normal*thickness/2,p-across+normal*thickness/2,
-                          p+across+normal*thickness/2,p+across-normal*thickness/2])
-        self.rings(name,rings,color,weights)
+    def face(self):
+        head=self.rigid('head')
+        self.loft('Skin / neck',[(1.19,.11,.096,0,0),(1.35,.12,.11,0,.015)],'skin',head)
+        face_start=len(self.geometry['skin']['vertices'])
+        self.loft('Skin / rounded jaw cheeks forehead',[
+            (1.265,.065,.07,0,.02),(1.295,.19,.155,0,.025),(1.35,.28,.231,0,.028),
+            (1.47,.333,.282,0,.018),(1.53,.345,.296,0,.015),(1.57,.352,.301,0,.012),
+            (1.60,.354,.303,0,.01),(1.64,.356,.306,0,.008),(1.69,.358,.309,0,.004),(1.76,.357,.31,0,0),
+            (1.89,.336,.30,0,-.008),(1.985,.28,.25,0,-.02),(2.04,.12,.12,0,-.03)
+        ],'skin',head,192,power=2.35)
+        for p in self.geometry['skin']['vertices'][face_start:]:
+            if p[2]>.20:
+                p[2] += .060*math.exp(-.5*((p[0]/.050)**2+((p[1]-1.585)/.036)**2))
+                p[2] += .013*math.exp(-.5*((p[0]/.028)**2+((p[1]-1.63)/.06)**2))
+        for s in [-1,1]:
+            self.oval('Skin / outer ear',(s*.363,1.585,-.008),(.065,.096,.052),'skin',head,24,12)
+            self.oval('Skin / ear concha',(s*.384,1.59,.031),(.032,.059,.022),'skin_shadow',head,24,12)
+            self.oval('Skin / inner ear',(s*.388,1.575,.042),(.018,.031,.018),'skin',head,20,10)
+            self.oval('Face / brown oval eye',(s*.153,1.65,.303),(.037,.055,.022),'eyes',head,28,14)
+            self.oval('Face / subtle eye catchlight',(s*.153-.009,1.672,.324),(.004,.006,.002),'eye_glint',head,12,6)
+            self.leaf_brow(s,head)
+        self.tube('Face / closed mouth',[(-.04,1.476,.307),(-.014,1.473,.312),(.015,1.474,.312),(.043,1.481,.307)],.003,'mouth',head)
+        self.hair()
 
-    def patch(self, name, outline, depth, color, weights):
-        outline=[list(v) for v in outline]
-        signed=sum(outline[i][0]*outline[(i+1)%len(outline)][1]-outline[(i+1)%len(outline)][0]*outline[i][1] for i in range(len(outline)))
-        if signed<0: outline.reverse()
-        count=len(outline); center=np.mean(outline,axis=0)
-        vertices=outline+[(center+(np.array(v)-center)*.85+np.array([0,0,depth])).tolist() for v in outline]
-        faces=[]
-        for i in range(count):
-            j=(i+1)%count;faces += [(i,j,j+count),(i,j+count,i+count)]
-        ci=len(vertices); vertices.append((center+[0,0,depth]).tolist())
-        for i in range(count): faces.append((ci,i+count,(i+1)%count+count))
-        self.add(name,vertices,faces,color,weights)
-
-    def lock(self, name, path, widths, depths, color):
+    def leaf_brow(self,s,head):
+        pts=curve([(s*.075,1.80,.318),(s*.13,1.815,.314),(s*.195,1.811,.304),(s*.241,1.794,.289)],6)
+        pts[:,1]-=.045
+        pts[:,2]+=.006
         rings=[]
-        for i,p in enumerate(path):
-            p=np.array(p); tangent=normalize(np.array(path[min(i+1,len(path)-1)])-np.array(path[max(0,i-1)]))
-            across=normalize(np.cross(tangent,[0,0,1])); outward=normalize(np.cross(across,tangent))
-            rings.append([p+across*math.sin(a)*widths[i]+outward*math.cos(a)*depths[i]
-                          for a in np.linspace(0,math.tau,12,endpoint=False)])
-        self.rings(name,rings,color,self.rigid("head"))
+        for i,p in enumerate(pts):
+            t=i/(len(pts)-1); r=.023*(.40+.60*math.sin(math.pi*t)**.35)
+            rings.append([p+np.array([0,math.sin(a)*r,math.cos(a)*.014]) for a in np.linspace(0,math.tau,14,endpoint=False)])
+        self.rings('Face / thick sculpted brow',rings,'hair',head)
+
+    def limbs(self):
+        for s,side in [(1,'l'),(-1,'r')]:
+            arm=self.arm_weights(side); leg=self.leg_weights(side); foot=self.rigid('foot.'+side)
+            def armloft(name,sections,col):
+                specs=[(s*x,rz,ry,z,1.16) for x,ry,rz,z in sections]
+                if s<0: specs.reverse()
+                self.loft(name+' / '+side,specs,col,arm,32,power=2.2,axis='x')
+            armloft('Jacket sleeve',[(.195,.12,.115,0),(.29,.142,.132,0),(.38,.131,.123,0),(.47,.114,.107,0),(.58,.108,.103,0),(.70,.10,.10,0)],'jacket')
+            armloft('Sleeve fold',[(.57,.106,.105,0),(.605,.109,.108,0),(.65,.105,.103,0)],'jacket')
+            armloft('Rolled cloth cuff',[(.665,.105,.103,0),(.68,.125,.122,0),(.72,.126,.121,0),(.75,.109,.106,0)],'jacket_light')
+            armloft('Cuff fold edge',[(.724,.125,.122,0),(.74,.121,.12,0),(.752,.11,.106,0)],'jacket')
+            armloft('Skin / continuous forearm and palm',[(.70,.081,.08,0),(.74,.077,.073,0),(.79,.070,.066,0),(.85,.069,.065,0),
+                    (.90,.077,.075,.007),(.95,.076,.075,.011),(.985,.061,.063,.018),(1.005,.038,.041,.023)],'skin')
+            # Palm and four attached fingers form a hand rather than a single mitten.
+            for i in range(4):
+                y=1.16+(i-1.5)*.030
+                length=[.052,.068,.072,.060][i]
+                self.oval('Hand / finger '+side,(s*(.977+length*.25),y,.036),(.033+length*.25,.022,.041),'skin',arm,20,10)
+            self.oval('Hand / thumb base '+side,(s*.877,1.105,.044),(.052,.034,.039),'skin',arm,24,10)
+            self.oval('Hand / thumb tip '+side,(s*.909,1.09,.056),(.034,.022,.026),'skin',arm,20,10)
+            if side=='l':
+                armloft('Watch / leather wrist strap',[(.774,.067,.064,0),(.812,.067,.064,0)],'boots')
+                # Watch is on the outer wrist (+Y in bind), face points outward.
+                self.oval('Watch / round bezel',(s*.794,1.232,0),(.047,.014,.047),'watch',arm,32,12)
+                self.oval('Watch / ivory dial',(s*.794,1.246,0),(.035,.004,.035),'watch_face',arm,32,8)
+                for i in range(12):
+                    a=i*math.tau/12
+                    self.oval('Watch / hour marker',(.794+.029*math.sin(a),1.250,.029*math.cos(a)),(.002,.001,.002),'steel',arm,8,4)
+                self.tube('Watch / hour hand',[(.794,1.252,0),(.778,1.252,.011)],.002,'badge_ink',arm,normal=(0,1,0))
+                self.tube('Watch / minute hand',[(.794,1.252,0),(.795,1.252,-.024)],.0015,'badge_ink',arm,normal=(0,1,0))
+                # Small utility flap pocket on the left outer upper sleeve.
+                self.box('Jacket / left sleeve pocket',(.405,1.285,0),(.15,.025,.117),'jacket_dark',arm,.012)
+                self.box('Jacket / sleeve flap',(.377,1.302,0),(.064,.018,.132),'jacket_light',arm,.012)
+                self.oval('Jacket / sleeve pocket snap',(.382,1.316,0),(.012,.005,.012),'bag_trim',arm,16,8)
+            x=s*.18
+            self.loft('Trousers / leg '+side,[(.235,.101,.101,x,-.006),(.28,.112,.113,x,0),(.34,.119,.12,x,.008),(.40,.113,.12,x,.008),(.49,.123,.13,x,0),(.58,.135,.145,x,0),(.62,.132,.144,x,0)],'pants',leg,32,power=2.6)
+            self.tube('Trousers / outer seam '+side,[(x+s*.104,.27,0),(x+s*.12,.36,0),(x+s*.122,.5,0)],.0025,'pants_seam',leg,normal=(1,0,0))
+            self.loft('Boot / thick outsole '+side,[(.016,.112,.172,x,.05),(.027,.138,.197,x,.05),(.068,.138,.197,x,.05),(.08,.131,.192,x,.05)],'sole',foot,40,power=3.1)
+            self.loft('Boot / leather toe and shaft '+side,[(.074,.128,.186,x,.051),(.11,.13,.186,x,.052),(.155,.12,.173,x,.042),(.19,.109,.134,x,.019),(.245,.108,.107,x,-.012),(.285,.112,.11,x,-.014)],'boots',foot,40,power=2.8)
+            self.loft('Boot / top rolled rim '+side,[(.273,.111,.11,x,-.014),(.286,.116,.114,x,-.014),(.295,.112,.109,x,-.014)],'boot_trim',foot,32)
+            self.patch('Boot / tongue '+side,[(x-.051,.285,.091),(x+.051,.285,.091),(x+.054,.145,.178),(x-.054,.145,.178)],.008,'boot_trim',foot)
+            for i in range(3):
+                y=.254-i*.039; z=.119+i*.025
+                self.tube('Boot / crossed lace '+side,[(x-.057,y,z),(x,y-.018,z+.013),(x+.052,y-.03,z+.021)],.006,'laces',foot)
+                self.tube('Boot / return lace '+side,[(x+.057,y,z),(x,y-.013,z+.02),(x-.052,y-.03,z+.021)],.006,'laces',foot)
+                for ss in [-1,1]: self.oval('Boot / eyelet',(x+ss*.058,y,z),(.009,.009,.005),'brass',foot,12,6)
+            self.tube('Boot / heel seam',[(x,.10,-.134),(x,.20,-.124),(x,.276,-.122)],.0025,'boot_trim',foot,normal=(0,0,-1))
+
+    def accessories(self):
+        body=self.body_weights; hips=self.rigid('hips')
+        starts={color:len(g['vertices']) for color,g in self.geometry.items()}
+        # Bag shares pelvis motion, front and rear straps blend into hips at joins.
+        self.box('Satchel / rounded leather body',(.387,.534,-.025),(.238,.341,.237),'bag',hips,.038)
+        self.box('Satchel / front panel',(.388,.51,.105),(.207,.255,.025),'bag_trim',hips,.025)
+        self.box('Satchel / flap',(.387,.652,.118),(.246,.133,.028),'bag',hips,.024)
+        self.tube('Satchel / flap piped edge',[(.274,.683,.138),(.277,.613,.145),(.311,.596,.147),(.466,.596,.147),(.498,.62,.135)],.004,'bag_trim',hips)
+        for x in [.305,.469]:
+            self.ribbon('Satchel / fastening tab',[(x,.63,.151),(x,.552,.15),(x,.493,.142)],.025,.013,'boots',hips)
+            self.box('Satchel / buckle frame',(x,.542,.165),(.047,.058,.012),'steel',hips,.008)
+            self.box('Satchel / buckle opening',(x,.542,.173),(.029,.037,.006),'boots',hips,.004)
+            self.tube('Satchel / buckle prong',[(x,.559,.179),(x,.534,.181)],.003,'steel',hips)
+            self.oval('Satchel / flap rivet',(x,.618,.157),(.009,.009,.004),'brass',hips,12,6)
+        # The bag's flap faces outwards at the left hip, as shown by sideview2.
+        angle=math.radians(52); c,s=math.cos(angle),math.sin(angle)
+        for color,g in self.geometry.items():
+            for i in range(starts.get(color,0),len(g['vertices'])):
+                x,y,z=g['vertices'][i]; x-=.387; z+=.025
+                g['vertices'][i]=[.387+c*x+s*z,y,-.13-s*x+c*z]
+        # Strap supported by the same skin weights as the jacket beneath it.
+        front=[(-.255,1.221,.095),(-.218,1.165,.18),(-.10,1.05,.241),(.035,.916,.246),(.19,.77,.244),(.32,.668,.201),(.48,.65,-.045)]
+        back=[(-.255,1.221,-.095),(-.205,1.15,-.186),(-.07,1.02,-.225),(.09,.858,-.229),(.245,.719,-.202),(.38,.66,-.25)]
+        self.ribbon('Leather / diagonal front shoulder strap',front,.073,.020,'bag_trim',body)
+        self.ribbon('Leather / diagonal back shoulder strap',back,.073,.020,'bag_trim',body)
+        self.ribbon('Leather / shoulder bridge',[(-.255,1.221,.10),(-.259,1.239,.03),(-.259,1.239,-.04),(-.255,1.221,-.10)],.073,.02,'bag_trim',self.rigid('chest'))
+        # Small stitches restrained to leather edges; no invented graphics.
+        for path in [front,back]:
+            pts=curve(path,6)
+            for i in range(2,len(pts)-2,2):
+                p=pts[i].copy(); p[2]+=.013 if p[2]>0 else -.013
+                self.oval('Leather / strap saddle stitch',p,(.002,.004,.002),'stitch',body,8,4)
+        self.oval('Strap / adjustment stud',(.219,.752,.263),(.015,.016,.007),'steel',body,16,8)
+        # ID has a clip, cream backing, tiny portrait and short abstract print lines.
+        self.box('ID / jacket mount',(.202,1.012,.212),(.13,.152,.029),'jacket_dark',body,.012)
+        self.box('ID / card',(.202,.982,.242),(.112,.092,.011),'badge',body,.009)
+        self.box('ID / blue header',(.202,1.018,.250),(.099,.012,.005),'badge_blue',body,.002)
+        self.box('ID / metal clip',(.202,1.047,.25),(.023,.051,.011),'steel',body,.005)
+        self.box('ID / photo background',(.176,.982,.251),(.033,.045,.004),'badge_blue',body,.002)
+        self.oval('ID / portrait head',(.176,.991,.255),(.009,.011,.002),'skin',body,12,6)
+        self.box('ID / portrait shirt',(.176,.971,.255),(.021,.016,.003),'badge_ink',body,.003)
+        for y,w in [(.996,.030),(.983,.034),(.966,.02)]: self.box('ID / printed line',(.224,y,.252),(w,.006,.003),'badge_ink',body,.001)
 
     def create(self):
-        body=self.body_weights; head=self.rigid("head"); hips=self.rigid("hips")
-        self.loft("Trousers waist",[(.39,.25,.155,0,0),(.46,.28,.18,0,0),(.56,.27,.18,0,0),(.62,.235,.16,0,0)],"pants",hips)
-        self.loft("Shirt under jacket",[(.51,.24,.17,0,0),(.65,.255,.185,0,0),(.89,.26,.19,0,0),
-                   (1.07,.27,.17,0,0),(1.17,.135,.09,0,0)],"shirt",body,power=3)
-        self.open_jacket([(.48,.25,.18,0,0),(.52,.29,.215,0,0),(.64,.285,.215,0,0),(.87,.29,.22,0,0),
-                   (1.04,.325,.21,0,-.005),(1.13,.30,.185,0,0),(1.185,.17,.125,0,0)])
-        self.patch("Cream shirt",[(-.115,1.16,.175),(.115,1.16,.175),(.10,.53,.218),(-.10,.53,.218)],.012,"shirt",body)
-        self.patch("Right lapel",[(-.10,1.18,.16),(-.21,1.12,.175),(-.13,.87,.222),(-.025,1.06,.215)],.025,"jacket_light",body)
-        self.patch("Left lapel",[(.10,1.18,.16),(.21,1.12,.175),(.13,.87,.222),(.025,1.06,.215)],.025,"jacket_light",body)
-        for side in [-1,1]:
-            x=side*.18
-            self.box("Lower patch pocket",(x,.645,.221),(.135,.15,.025),"jacket_dark",body,.012)
-            self.box("Pocket flap",(x,.711,.24),(.15,.043,.025),"jacket_light",body,.008)
-            self.oval("Pocket stud",(x,.703,.256),(.011,.011,.006),"brass",body,8,4)
-        for y in [.87,.76,.57]: self.oval("Jacket button",(-.116,y,.238),(.012,.012,.009),"brass",body,8,4)
-        for y in [.95,.84,.73]: self.oval("Shirt button",(0,y,.239),(.006,.009,.004),"shirt_shadow",body,8,4)
-        self.box("Belt front",(0,.513,.20),(.49,.055,.024),"boots",hips,.009)
-        self.box("Belt buckle",(0,.513,.218),(.065,.057,.018),"brass",hips,.009)
-        self.box("Belt buckle inset",(0,.513,.23),(.04,.032,.008),"boots",hips,.006)
-        self.loft("Neck",[(1.12,.10,.085,0,0),(1.36,.115,.105,0,0)],"skin",head)
-        self.patch("Shirt collar right",[(-.10,1.22,.10),(-.16,1.16,.16),(-.065,1.08,.205),(0,1.17,.16)],.015,"shirt",body)
-        self.patch("Shirt collar left",[(.10,1.22,.10),(.16,1.16,.16),(.065,1.08,.205),(0,1.17,.16)],.015,"shirt",body)
-        # Rounded rectangular head, broad cheeks and a soft jaw. Avoid a sphere head.
-        self.loft("Face and jaw",[(1.30,.19,.14,0,.01),(1.335,.29,.23,0,.02),(1.40,.365,.29,0,.02),
-                   (1.50,.405,.325,0,.01),(1.72,.415,.335,0,0),(1.88,.39,.32,0,-.01),
-                   (1.985,.32,.26,0,-.02),(2.025,.21,.17,0,-.025)],"skin",head,24,power=3.1)
-        for side in [-1,1]:
-            self.oval("Ear",(side*.405,1.59,-.015),(.074,.115,.064),"skin",head)
-            self.oval("Ear inner",(side*.44,1.59,.033),(.027,.06,.016),"skin_shadow",head,12,6)
-            self.oval("Dark oval eye",(side*.151,1.72,.331),(.034,.059,.018),"eyes",head,16,10)
-            self.oval("Eye glint",(side*.151-.007,1.745,.349),(.007,.01,.004),"eye_glint",head,8,6)
-            # Broad eyebrows and small oval eyes are readable at gameplay distance.
-            self.ribbon("Eyebrow",[(side*.092,1.842,.334),(side*.15,1.85,.335),(side*.215,1.835,.324)],.034,.025,"hair",head)
-        self.oval("Nose",(0,1.615,.346),(.052,.064,.059),"skin",head,12,8)
-        self.ribbon("Smile",[(-.065,1.474,.319),(-.035,1.463,.328),(0,1.46,.331),(.038,1.466,.327),(.063,1.479,.319)],.008,.004,"skin_shadow",head)
-        # Asymmetric cap with sculpted, broad swept locks instead of fine strands.
-        rings=[]
-        cap_profile=[(1.43,.405,.325),(1.50,.435,.36),(1.72,.45,.37),
-                     (1.88,.425,.36),(1.985,.36,.30),(2.025,.29,.25),
-                     (2.08,.19,.17),(2.13,.005,.005)]
-        for level in range(10):
-            ring=[]
-            for j in range(24):
-                a=j*math.tau/24; front=max(0,math.cos(a)); low=1.46+.43*front+.025*math.sin(a*2)
-                t=level/9; y=low+(2.13-low)*t
-                rx=np.interp(y,[p[0] for p in cap_profile],[p[1] for p in cap_profile])
-                rz=np.interp(y,[p[0] for p in cap_profile],[p[2] for p in cap_profile])
-                sx=math.sin(a);sz=math.cos(a)
-                ring.append((rx*math.copysign(abs(sx)**(2/3.1),sx),y,
-                             -.025+rz*math.copysign(abs(sz)**(2/3.1),sz)))
-            rings.append(ring)
-        self.rings("Sculpted hair cap",rings,"hair",head)
-        self.lock("Swept fringe main",[(-.32,2.015,.18),(-.21,2.13,.25),(.02,2.12,.33),(.23,1.99,.35),(.29,1.81,.29)],
-                  [.055,.10,.115,.10,.004],[.045,.075,.075,.055,.003],"hair_mid")
-        self.lock("Swept fringe side",[(-.38,1.98,.17),(-.32,2.105,.26),(-.13,2.09,.35),(.04,1.94,.365),(.075,1.85,.35)],
-                  [.04,.075,.09,.06,.002],[.035,.065,.065,.045,.002],"hair")
-        self.lock("Crown quiff",[(-.25,2.075,-.17),(-.18,2.20,-.05),(.04,2.18,.10),(.17,2.08,.16)],
-                  [.065,.10,.12,.02],[.05,.065,.06,.02],"hair_mid")
-        self.lock("Crown side sweep",[(-.36,2.0,-.13),(-.30,2.13,-.01),(-.05,2.14,.14),(.14,2.03,.24)],
-                  [.05,.07,.08,.01],[.035,.05,.05,.008],"hair_light")
-        for side in [-1,1]:
-            self.lock("Temple lock",[(side*.365,1.96,.13),(side*.42,1.79,.14),(side*.38,1.64,.14)],
-                      [.06,.055,.003],[.035,.035,.002],"hair")
-        # Limbs are continuous skinned surfaces, with overlapping rolled cuffs.
-        for sign,side in [(1,"l"),(-1,"r")]:
-            arm=self.arm_weights(side)
-            sleeve=[]
-            for x,r in [(.195,.105),(.25,.13),(.36,.115),(.435,.102),(.50,.094),(.525,.09)]:
-                sleeve.append((sign*x,r,r,0,1.1068))
-            # For x-axis loft: section radii become Z/Y and centers become Z/Y.
-            if sign<0: sleeve.reverse()
-            self.loft("Rolled jacket sleeve "+side,sleeve,"jacket",arm,16,power=2.5,axis="x")
-            cuff=[(sign*x,.105,.105,0,1.1068) for x in [.485,.50,.535]]
-            if sign<0: cuff.reverse()
-            self.loft("Cream rolled cuff "+side,cuff,"shirt_shadow",arm,16,power=2.7,axis="x")
-            forearm=[(sign*x,r,r,0,1.1068) for x,r in [(.515,.078),(.56,.078),(.65,.066),(.735,.055),(.79,.056)]]
-            if sign<0: forearm.reverse()
-            self.loft("Bare forearm "+side,forearm,"skin",arm,16,power=2.3,axis="x")
-            self.oval("Mitten hand "+side,(sign*.845,1.1068,.008),(.103,.075,.064),"skin",arm,16,8)
-            self.oval("Thumb "+side,(sign*.81,1.075,.058),(.04,.047,.039),"skin",arm,12,6)
-            if side=="l":
-                watch=[(sign*x,.061,.064,0,1.1068) for x in [.705,.73]]
-                self.loft("Left wrist watch strap",watch,"boots",arm,16,axis="x")
-                self.box("Watch bezel",(sign*.72,1.17,.003),(.055,.018,.057),"watch",arm,.006)
-                self.box("Watch dial",(sign*.72,1.182,.003),(.04,.006,.041),"watch_face",arm,.004)
-            leg=self.leg_weights(side); x=sign*.17095
-            self.loft("Trouser leg "+side,[(.14,.088,.091,x,0),(.20,.10,.10,x,0),(.285,.102,.11,x,.008),
-                       (.35,.112,.115,x,.004),(.47,.123,.125,x,0),(.55,.125,.13,x,0)],"pants",leg,16,power=3)
-            self.loft("Trouser turned hem "+side,[(.145,.103,.105,x,0),(.19,.108,.108,x,0)],"pants_seam",leg,16,power=3)
-            foot=self.rigid("foot."+side)
-            self.loft("Boot sole "+side,[(.015,.106,.177,x,.06),(.03,.13,.205,x,.06),(.065,.13,.205,x,.06)],"sole",foot,16,power=4)
-            self.loft("Leather boot "+side,[(.058,.122,.195,x,.06),(.09,.13,.19,x,.065),(.13,.115,.165,x,.045),
-                       (.185,.085,.09,x,-.01),(.21,.083,.085,x,-.012)],"boots",foot,16,power=3.2)
-            self.box("Boot tongue "+side,(x,.16,.105),(.10,.11,.03),"boot_trim",foot,.012)
-            for y,z in [(.16,.132),(.135,.158),(.11,.18)]:
-                self.ribbon("Boot lace",[(x-.035,y,z),(x+.035,y,z)],.009,.006,"bag_trim",foot)
-        # Satchel on the anatomical right hip. Rear placement clears arm swings.
-        self.box("Messenger bag",(-.37,.60,-.155),(.235,.30,.175),"bag",hips,.03)
-        self.box("Satchel flap",(-.37,.71,-.137),(.255,.10,.20),"bag_trim",hips,.018)
-        self.box("Satchel front panel",(-.37,.575,-.055),(.18,.17,.018),"bag",hips,.015)
-        self.box("Bag buckle",(-.37,.65,-.025),(.045,.057,.018),"brass",hips,.008)
-        self.box("Bag buckle inset",(-.37,.65,-.012),(.025,.034,.008),"boots",hips,.004)
-        self.ribbon("Crossbody front strap",[(.20,1.17,.13),(.14,1.07,.23),(.015,.90,.247),(-.13,.73,.24),(-.28,.56,.20),(-.37,.56,.035)],.045,.017,"bag",body)
-        self.ribbon("Crossbody back strap",[(.20,1.17,-.11),(.13,1.04,-.22),(-.02,.86,-.235),(-.19,.69,-.23),(-.37,.70,-.22)],.045,.017,"bag",body)
-        self.box("Strap adjuster",(.085,.99,.264),(.066,.071,.018),"brass",body,.006)
-        self.box("Strap adjuster inset",(.085,.99,.276),(.04,.044,.008),"bag",body,.004)
-        # Oversized, readable badge geometry; avoid illegible tiny lettering.
-        self.box("ID metal clip",(.20,1.02,.239),(.025,.055,.018),"watch",body,.005)
-        self.box("Student ID",(.20,.945,.25),(.092,.115,.016),"shirt",body,.008)
-        self.box("ID teal stripe",(.20,.98,.263),(.08,.025,.006),"badge",body,.003)
-        self.box("ID portrait",(.183,.938,.264),(.027,.033,.006),"pants",body,.003)
-        self.box("ID text mark",(.218,.942,.264),(.023,.007,.006),"shirt_shadow",body,.002)
-
-    def export(self):
-        writer=Writer(); source=self.reference.doc
-        count=max(self.skin["joints"])+1
-        joint_nodes=deepcopy(source["nodes"][:count])
-        root_index=next(i for i,n in enumerate(joint_nodes) if n["name"]=="root")
-        nodes=joint_nodes+[{"name":"Rig_Medium","children":[root_index,count+1]},
-                           {"name":"Student_SkinnedMesh","mesh":0,"skin":0}]
-        skin=deepcopy(self.skin)
-        skin["inverseBindMatrices"]=writer.add(self.reference.read(skin["inverseBindMatrices"]),"MAT4")
-        primitives=[]; stats={}
-        for color,g in self.geometry.items():
-            vertices=np.array(g["vertices"]); faces=np.array(g["faces"])
-            normals=np.zeros_like(vertices)
-            face_normals=np.cross(vertices[faces[:,1]]-vertices[faces[:,0]],vertices[faces[:,2]]-vertices[faces[:,0]])
-            for col in range(3): np.add.at(normals,faces[:,col],face_normals)
-            normals/=np.maximum(np.linalg.norm(normals,axis=1,keepdims=True),1e-12)
-            joint_ids=np.zeros((len(vertices),4),dtype=np.uint16); weights=np.zeros((len(vertices),4))
-            for i,values in enumerate(g["weights"]):
-                values=sorted([(self.joints[k],v) for k,v in values.items() if v>1e-8],key=lambda kv:-kv[1])[:4]
-                total=sum(v for _,v in values)
-                assert total>0
-                for j,(bone,value) in enumerate(values): joint_ids[i,j]=bone;weights[i,j]=value/total
-            attributes={"POSITION":writer.add(vertices,"VEC3",target=34962,bounds=True),
-                        "NORMAL":writer.add(normals,"VEC3",target=34962),
-                        "JOINTS_0":writer.add(joint_ids,"VEC4",5123,34962),
-                        "WEIGHTS_0":writer.add(weights,"VEC4",target=34962)}
-            primitives.append({"attributes":attributes,"indices":writer.add(faces.reshape(-1,1),"SCALAR",5125,34963),"material":list(PALETTE).index(color)})
-            stats[color]={"vertices":len(vertices),"triangles":len(faces)}
-        node_map={n["name"]:i for i,n in enumerate(joint_nodes)}
-        animations=[]; animation_sources={}; files={}
-        # Bake the exact authored source tracks onto their matching bone names.
-        # Do not approximate the clips with procedural limb motion.
-        sets=["General","MovementBasic","MovementAdvanced","Simulation","Tools"]
-        for group in sets:
-            path=SOURCE/f"Rig_Medium_{group}.glb"; asset=GLB(path)
-            files[path.name]=hashlib.sha256(path.read_bytes()).hexdigest()
-            cache={}
-            def copy_accessor(index):
-                if index not in cache:
-                    a=asset.doc["accessors"][index]
-                    cache[index]=writer.add(asset.read(index),a["type"],a["componentType"],bounds=a["type"]=="SCALAR")
-                return cache[index]
-            for original in asset.doc["animations"]:
-                if original["name"]=="T-Pose": continue
-                animation=deepcopy(original)
-                for sampler in animation["samplers"]:
-                    sampler["input"]=copy_accessor(sampler["input"])
-                    sampler["output"]=copy_accessor(sampler["output"])
-                for channel in animation["channels"]:
-                    name=asset.doc["nodes"][channel["target"]["node"]]["name"]
-                    channel["target"]["node"]=node_map[name]
-                animations.append(animation);animation_sources[animation["name"]]=path.name
-        materials=[]
-        for name,h in PALETTE.items():
-            rgb=[int(h[i:i+2],16)/255 for i in [0,2,4]]
-            rgb=[x/12.92 if x<=.04045 else ((x+.055)/1.055)**2.4 for x in rgb]
-            materials.append({"name":name,"pbrMetallicRoughness":{"baseColorFactor":rgb+[1],"metallicFactor":0,"roughnessFactor":.85}})
-        writer.save(OUTPUT/"student.glb",{"asset":{"version":"2.0","generator":"Past & Future original student mesh; KayKit Rig_Medium and CC0 animation tracks"},
-                    "scene":0,"scenes":[{"name":"Student","nodes":[count]}],"nodes":nodes,"skins":[skin],
-                    "meshes":[{"name":"Original_Student","primitives":primitives}],"materials":materials,"animations":animations})
-        OUTPUT.mkdir(parents=True,exist_ok=True)
-        all_vertices=np.concatenate([np.asarray(g["vertices"]) for g in self.geometry.values()])
-        manifest={"model":"student.glb","geometry":"Original mesh authored in tools/build_student_kaykit.py; no KayKit character geometry reused.",
-                  "rig":"KayKit Rig_Medium, unchanged joint hierarchy/rest transforms/inverse bind matrices",
-                  "height":float(np.ptp(all_vertices[:,1])),"triangles":sum(g["triangles"] for g in stats.values()),
-                  "vertices":sum(g["vertices"] for g in stats.values()),"joint_count":len(skin["joints"]),
-                  "parts":self.parts,"animation_sources":animation_sources,"source_sha256":files}
-        (OUTPUT/"manifest.json").write_text(json.dumps(manifest,indent=2)+'\n')
-        print(f"Built original skinned student: {manifest['triangles']} triangles, {manifest['joint_count']} joints, {len(animations)} genuine KayKit clips")
+        body=self.body_weights; hips=self.rigid('hips')
+        self.loft('Trousers / pelvis',[(.53,.20,.105,0,0),(.565,.266,.15,0,0),(.62,.276,.168,0,0)],'pants',hips,40,power=3)
+        self.loft('Shirt / continuous cream henley',[(.586,.26,.174,0,0),(.75,.273,.19,0,0),(.97,.264,.187,0,0),(1.16,.246,.15,0,0),(1.24,.115,.087,0,0)],'shirt',body,40,power=2.8)
+        self.jacket()
+        # Raised stand collar wraps the back of the neck and opens at the throat.
+        for s in [-1,1]:
+            self.ribbon('Jacket / standing collar',[(s*.035,1.193,.135),(s*.11,1.265,.107),(s*.15,1.273,.02),(s*.119,1.26,-.105),(0,1.25,-.12)],.063,.025,'jacket_light',body)
+            self.patch('Shirt / open henley collar',[(s*.017,1.14,.188),(s*.087,1.24,.122),(s*.113,1.202,.143),(s*.054,1.105,.193)],.009,'shirt_shadow',body)
+        self.ribbon('Shirt / henley placket',[(0,1.14,.187),(0,1.04,.207)],.027,.009,'shirt_shadow',body)
+        for y in [1.078,1.118]: self.oval('Shirt / small ivory button',(0,y,.215),(.005,.006,.003),'shirt',body,12,6)
+        self.face(); self.limbs(); self.accessories()
 
 
-if __name__=="__main__":
-    student=Student();student.create();student.export()
+if __name__=='__main__':
+    student=Student(); student.create(); student.export()
