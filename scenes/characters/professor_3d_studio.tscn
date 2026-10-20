@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/student_3d_studio.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/characters/professor_3d/professor.glb" id="2"]
+
+[node name="Professor3DStudio" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+character_model = ExtResource("2")
+character_label = "THE PROFESSOR  /  AGE 49"

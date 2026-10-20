@@ -12,7 +12,8 @@ func check(condition: bool, message: String) -> void:
 		push_error(message)
 
 func _run() -> void:
-	var scene: PackedScene = load("res://scenes/characters/student_3d_player.tscn")
+	var character := "professor" if "--professor" in OS.get_cmdline_user_args() else "student"
+	var scene: PackedScene = load("res://scenes/characters/%s_3d_player.tscn" % character)
 	var player = scene.instantiate()
 	var other = scene.instantiate()
 	root.add_child(player)
@@ -55,5 +56,5 @@ func _run() -> void:
 	check(is_equal_approx(ap.current_animation_position, frozen), "Pause must freeze the skeleton animation")
 	check(not player.play_action("interact"), "Paused gameplay must not accept actions")
 	player.controls_enabled = true
-	print("STUDENT 3D: ", "PASS" if failures == 0 else "FAIL", " (", failures, " failures; 77 animation clips)")
+	print(character.to_upper(), " 3D: ", "PASS" if failures == 0 else "FAIL", " (", failures, " failures; 77 animation clips)")
 	quit(0 if failures == 0 else 1)

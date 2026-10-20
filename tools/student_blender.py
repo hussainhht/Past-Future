@@ -54,6 +54,11 @@ def create():
         obj=bpy.data.objects.new(part['name'],data);collection.objects.link(obj)
         data.materials.append(materials[color])
         for poly in data.polygons: poly.use_smooth=True
+        if g.get('normal_overrides'):
+            # Only fitted cloth parts carry transferred surface normals.
+            normals=[g['normal_overrides'].get(i) for i in range(start,end)]
+            if all(n is not None for n in normals):
+                data.normals_split_custom_set_from_vertices([(n[0],-n[2],n[1]) for n in normals])
         groups={}
         for i,values in enumerate(g['weights'][start:end]):
             weights=sorted([(k,w) for k,w in values.items() if w>1e-8],key=lambda kv:-kv[1])[:4]
@@ -71,7 +76,7 @@ def create():
         img=bpy.data.images.load(str(ROOT/'assets/characters/references/18'/filename));img.pack()
         obj=bpy.data.objects.new(filename,None);obj.empty_display_type='IMAGE';obj.data=img
         obj.empty_display_size=4.0;obj.location=(0,.6,1.15);obj.rotation_euler=(math.pi/2,0,0);refs.objects.link(obj)
-    for name in ['build_student_kaykit.py','student_mesh.py','student_rig.py','ground_student_clips.py','gltf_tools.py','student_blender.py']:
+    for name in ['build_student_kaykit.py','student_mesh.py','student_rig.py','ground_student_clips.py','gltf_tools.py','student_blender.py','fit_student_details.py','fit_professor_face.py','fit_professor_clothes.py']:
         bpy.data.texts.load(str(ROOT/'tools'/name))
     note=bpy.data.texts.new('READ ME')
     note.write('Original four-view student. All visible meshes are newly authored.\n'
@@ -133,6 +138,15 @@ def export_edits():
                 weights.append(w)
             g=student.geometry[name];start=len(g['vertices']);faces=[[lookup[i]+start for i in t.vertices] for t in tris]
             g['vertices'].extend(vertices);g['weights'].extend(weights);g['faces'].extend(faces)
+            if data.has_custom_normals:
+                normals=np.zeros((len(data.vertices),3));counts=np.zeros(len(data.vertices))
+                for loop,normal in zip(data.loops,data.corner_normals):
+                    normals[loop.vertex_index]+=normal.vector;counts[loop.vertex_index]+=1
+                normal_matrix=world.to_3x3().inverted().transposed()
+                for local,index in enumerate(indices):
+                    n=normal_matrix@Vector(normals[index]/max(counts[index],1))
+                    n.normalize()
+                    g.setdefault('normal_overrides',{})[start+local]=[n.x,n.z,-n.y]
             student.parts.append({'name':obj.name,'material':name,'vertex_start':start,'vertex_count':len(vertices),'triangles':len(faces)})
         evaluated.to_mesh_clear()
     student.export()

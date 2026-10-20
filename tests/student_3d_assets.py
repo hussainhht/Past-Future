@@ -14,9 +14,10 @@ from student_rig import translate_samples
 from ground_student_clips import sample
 
 
-def main():
-    model = GLB(ROOT / "assets/characters/student_3d/student.glb")
-    manifest = json.loads((ROOT / "assets/characters/student_3d/manifest.json").read_text())
+def main(character="student"):
+    directory = ROOT / f"assets/characters/{character}_3d"
+    model = GLB(directory / f"{character}.glb")
+    manifest = json.loads((directory / "manifest.json").read_text())
     doc = model.doc
     skin = doc["skins"][0]
     assert len(skin["joints"]) == 23
@@ -79,8 +80,11 @@ def main():
                     assert np.array_equal(expected,model.read(b[key])), "KayKit times, rotations and scale must remain unchanged"
             assert a.get("interpolation","LINEAR") == b.get("interpolation","LINEAR")
             tracks += 1
-    print(f"STUDENT 3D ASSETS: PASS ({vertices} skinned vertices, 23 rebuilt bind transforms, 77 clips, {tracks} source/retargeted samplers)")
+    print(f"{character.upper()} 3D ASSETS: PASS ({vertices} skinned vertices, 23 rebuilt bind transforms, 77 clips, {tracks} source/retargeted samplers)")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--character", choices=["student", "professor"], default="student")
+    main(parser.parse_args().character)

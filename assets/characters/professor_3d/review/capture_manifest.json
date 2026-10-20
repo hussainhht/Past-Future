@@ -1,0 +1,1069 @@
+{
+	"camera": {
+		"elevation_degrees": 3.0,
+		"projection": "orthographic",
+		"size": 2.48030519485474
+	},
+	"clips": [
+		{
+			"clip": "Idle_A",
+			"frames": [
+				{
+					"path": "animation/Idle_A/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Idle_A/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Idle_A/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Idle_A/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Idle_A/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Idle_A/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Idle_A/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Idle_A/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Idle_A/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Idle_A/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Idle_A/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Idle_A/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Idle_A/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Idle_A/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Idle_A/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Idle_A/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Idle_A/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Idle_A/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.06666672229767,
+			"reverse": [
+				{
+					"path": "animation/Idle_A/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Idle_A/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Idle_A/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Walking_A",
+			"frames": [
+				{
+					"path": "animation/Walking_A/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Walking_A/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Walking_A/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Walking_A/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Walking_A/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Walking_A/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Walking_A/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Walking_A/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Walking_A/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Walking_A/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Walking_A/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Walking_A/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Walking_A/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Walking_A/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Walking_A/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Walking_A/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Walking_A/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Walking_A/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.06666672229767,
+			"reverse": [
+				{
+					"path": "animation/Walking_A/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Walking_A/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Walking_A/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Running_A",
+			"frames": [
+				{
+					"path": "animation/Running_A/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Running_A/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Running_A/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Running_A/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Running_A/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Running_A/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Running_A/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Running_A/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Running_A/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Running_A/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Running_A/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Running_A/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Running_A/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Running_A/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Running_A/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Running_A/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Running_A/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Running_A/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 0.800000011920929,
+			"reverse": [
+				{
+					"path": "animation/Running_A/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Running_A/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Running_A/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Interact",
+			"frames": [
+				{
+					"path": "animation/Interact/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Interact/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Interact/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Interact/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Interact/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Interact/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Interact/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Interact/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Interact/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Interact/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Interact/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Interact/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Interact/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Interact/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Interact/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Interact/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Interact/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Interact/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.29999995231628,
+			"reverse": [
+				{
+					"path": "animation/Interact/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Interact/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Interact/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "PickUp",
+			"frames": [
+				{
+					"path": "animation/PickUp/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/PickUp/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/PickUp/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/PickUp/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/PickUp/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/PickUp/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/PickUp/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/PickUp/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/PickUp/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/PickUp/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/PickUp/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/PickUp/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/PickUp/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/PickUp/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/PickUp/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/PickUp/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/PickUp/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/PickUp/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.29999995231628,
+			"reverse": [
+				{
+					"path": "animation/PickUp/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/PickUp/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/PickUp/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Crouching",
+			"frames": [
+				{
+					"path": "animation/Crouching/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Crouching/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Crouching/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Crouching/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Crouching/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Crouching/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Crouching/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Crouching/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Crouching/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Crouching/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Crouching/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Crouching/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Crouching/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Crouching/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Crouching/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Crouching/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Crouching/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Crouching/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.06666672229767,
+			"reverse": [
+				{
+					"path": "animation/Crouching/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Crouching/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Crouching/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Waving",
+			"frames": [
+				{
+					"path": "animation/Waving/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Waving/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Waving/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Waving/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Waving/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Waving/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Waving/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Waving/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Waving/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Waving/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Waving/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Waving/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Waving/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Waving/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Waving/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Waving/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Waving/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Waving/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 2.13333344459534,
+			"reverse": [
+				{
+					"path": "animation/Waving/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Waving/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Waving/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Jump_Full_Long",
+			"frames": [
+				{
+					"path": "animation/Jump_Full_Long/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Jump_Full_Long/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Jump_Full_Long/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Jump_Full_Long/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Jump_Full_Long/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Jump_Full_Long/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Jump_Full_Long/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Jump_Full_Long/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Jump_Full_Long/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Jump_Full_Long/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Jump_Full_Long/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Jump_Full_Long/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Jump_Full_Long/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Jump_Full_Long/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Jump_Full_Long/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Jump_Full_Long/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Jump_Full_Long/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Jump_Full_Long/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 2.33333325386047,
+			"reverse": [
+				{
+					"path": "animation/Jump_Full_Long/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Jump_Full_Long/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Jump_Full_Long/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Dodge_Forward",
+			"frames": [
+				{
+					"path": "animation/Dodge_Forward/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Dodge_Forward/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Dodge_Forward/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Dodge_Forward/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Dodge_Forward/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Dodge_Forward/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Dodge_Forward/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Dodge_Forward/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Dodge_Forward/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Dodge_Forward/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Dodge_Forward/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Dodge_Forward/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Dodge_Forward/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Dodge_Forward/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Dodge_Forward/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Dodge_Forward/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Dodge_Forward/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Dodge_Forward/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 0.400000005960464,
+			"reverse": [
+				{
+					"path": "animation/Dodge_Forward/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Dodge_Forward/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Dodge_Forward/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Death_A",
+			"frames": [
+				{
+					"path": "animation/Death_A/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Death_A/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Death_A/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Death_A/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Death_A/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Death_A/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Death_A/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Death_A/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Death_A/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Death_A/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Death_A/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Death_A/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Death_A/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Death_A/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Death_A/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Death_A/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Death_A/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Death_A/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 0.800000011920929,
+			"reverse": [
+				{
+					"path": "animation/Death_A/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Death_A/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Death_A/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		},
+		{
+			"clip": "Crawling",
+			"frames": [
+				{
+					"path": "animation/Crawling/00.png",
+					"phase": 0.0
+				},
+				{
+					"path": "animation/Crawling/01.png",
+					"phase": 0.0555555555555556
+				},
+				{
+					"path": "animation/Crawling/02.png",
+					"phase": 0.111111111111111
+				},
+				{
+					"path": "animation/Crawling/03.png",
+					"phase": 0.166666666666667
+				},
+				{
+					"path": "animation/Crawling/04.png",
+					"phase": 0.222222222222222
+				},
+				{
+					"path": "animation/Crawling/05.png",
+					"phase": 0.277777777777778
+				},
+				{
+					"path": "animation/Crawling/06.png",
+					"phase": 0.333333333333333
+				},
+				{
+					"path": "animation/Crawling/07.png",
+					"phase": 0.388888888888889
+				},
+				{
+					"path": "animation/Crawling/08.png",
+					"phase": 0.444444444444444
+				},
+				{
+					"path": "animation/Crawling/09.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Crawling/10.png",
+					"phase": 0.555555555555556
+				},
+				{
+					"path": "animation/Crawling/11.png",
+					"phase": 0.611111111111111
+				},
+				{
+					"path": "animation/Crawling/12.png",
+					"phase": 0.666666666666667
+				},
+				{
+					"path": "animation/Crawling/13.png",
+					"phase": 0.722222222222222
+				},
+				{
+					"path": "animation/Crawling/14.png",
+					"phase": 0.777777777777778
+				},
+				{
+					"path": "animation/Crawling/15.png",
+					"phase": 0.833333333333333
+				},
+				{
+					"path": "animation/Crawling/16.png",
+					"phase": 0.888888888888889
+				},
+				{
+					"path": "animation/Crawling/17.png",
+					"phase": 0.944444444444444
+				}
+			],
+			"length": 1.06666672229767,
+			"reverse": [
+				{
+					"path": "animation/Crawling/rear_25.png",
+					"phase": 0.25
+				},
+				{
+					"path": "animation/Crawling/rear_50.png",
+					"phase": 0.5
+				},
+				{
+					"path": "animation/Crawling/rear_75.png",
+					"phase": 0.75
+				}
+			]
+		}
+	],
+	"game": [],
+	"model_height": 2.23227457143366,
+	"neutral_clip": "Reference_Neutral",
+	"neutral_phase": 0.0,
+	"renderer": "Godot",
+	"resolution": [
+		1024,
+		572
+	],
+	"scope": "Visual evidence; does not certify reference fidelity or collision-free deformation.",
+	"views": [
+		{
+			"name": "front",
+			"path": "neutral/front.png",
+			"reference": "frontview.png",
+			"yaw": 0.0
+		},
+		{
+			"name": "back",
+			"path": "neutral/back.png",
+			"reference": "backview.png",
+			"yaw": 3.14159265358979
+		},
+		{
+			"name": "right",
+			"path": "neutral/right.png",
+			"reference": "sideview1.png",
+			"yaw": 1.5707963267949
+		},
+		{
+			"name": "left",
+			"path": "neutral/left.png",
+			"reference": "sideview2.png",
+			"yaw": -1.5707963267949
+		},
+		{
+			"name": "three_quarter_right",
+			"path": "neutral/three_quarter_right.png",
+			"reference": "",
+			"yaw": 0.785398163397448
+		},
+		{
+			"name": "three_quarter_left",
+			"path": "neutral/three_quarter_left.png",
+			"reference": "",
+			"yaw": -0.785398163397448
+		}
+	]
+}

@@ -4,8 +4,8 @@ extends SceneTree
 ## Follow with: python tools/assemble_student_review.py
 ## Optional: --neutral-only, --no-game, --neutral-clip=Reference_Neutral
 
-const MODEL := "res://assets/characters/student_3d/student.glb"
-const OUTPUT := "res://assets/characters/student_3d/review"
+var model_path := "res://assets/characters/student_3d/student.glb"
+var output_path := "res://assets/characters/student_3d/review"
 const CAPTURE_SIZE := Vector2i(1024, 572)
 const CLIPS: Array[String] = [
 	"Idle_A", "Walking_A", "Running_A", "Interact", "PickUp", "Crouching",
@@ -59,7 +59,7 @@ func _capture(path: String, capture_viewport: Viewport = null) -> void:
 	RenderingServer.force_draw()
 	var rendered := capture_viewport.get_texture().get_image()
 	assert(not rendered.is_empty(), "Rendering requires a display/rendering device.")
-	assert(rendered.save_png(OUTPUT.path_join(path)) == OK)
+	assert(rendered.save_png(output_path.path_join(path)) == OK)
 
 func _build_stage() -> void:
 	viewport = SubViewport.new()
@@ -82,7 +82,7 @@ func _build_stage() -> void:
 	key.rotation_degrees = Vector3(-35, -35, 0)
 	key.light_color = Color("fff2e1")
 	key.light_energy = 0.65
-	key.shadow_enabled = true
+	key.shadow_enabled = not OS.get_cmdline_user_args().has("--no-shadows")
 	stage.add_child(key)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-20, 145, 0)
@@ -99,7 +99,7 @@ func _build_stage() -> void:
 	floor_instance.mesh = floor_mesh
 	floor_instance.position.y = -0.008
 	stage.add_child(floor_instance)
-	model = load(MODEL).instantiate()
+	model = load(model_path).instantiate()
 	stage.add_child(model)
 	animator = model.find_children("*", "AnimationPlayer", true, false)[0]
 	skeleton = model.find_children("*", "Skeleton3D", true, false)[0]
@@ -114,7 +114,10 @@ func _build_stage() -> void:
 
 func _run() -> void:
 	var args := OS.get_cmdline_user_args()
-	var manifest_path := "res://assets/characters/student_3d/manifest.json"
+	if args.has("--professor"):
+		model_path = "res://assets/characters/professor_3d/professor.glb"
+		output_path = "res://assets/characters/professor_3d/review"
+	var manifest_path := model_path.get_base_dir().path_join("manifest.json")
 	if FileAccess.file_exists(manifest_path):
 		var manifest: Variant = JSON.parse_string(FileAccess.get_file_as_string(manifest_path))
 		if manifest is Dictionary:
@@ -122,8 +125,8 @@ func _run() -> void:
 	for arg in args:
 		if arg.begins_with("--neutral-clip="):
 			neutral_clip = arg.trim_prefix("--neutral-clip=")
-	DirAccess.make_dir_recursive_absolute(OUTPUT.path_join("neutral"))
-	DirAccess.make_dir_recursive_absolute(OUTPUT.path_join("animation"))
+	DirAccess.make_dir_recursive_absolute(output_path.path_join("neutral"))
+	DirAccess.make_dir_recursive_absolute(output_path.path_join("animation"))
 	_build_stage()
 	await process_frame
 	if animator.has_animation("Reference_Neutral") and not args.has("--neutral-clip=Idle_A"):
@@ -156,7 +159,7 @@ func _run() -> void:
 				continue
 			var clip_info := {"clip": clip, "length": animator.get_animation(clip).length, "frames": [], "reverse": []}
 			model.rotation.y = -PI / 5.0
-			DirAccess.make_dir_recursive_absolute(OUTPUT.path_join("animation").path_join(clip))
+			DirAccess.make_dir_recursive_absolute(output_path.path_join("animation").path_join(clip))
 			for frame in range(FRAME_COUNT):
 				var phase := float(frame) / float(FRAME_COUNT)
 				_pose(clip, phase)
@@ -173,7 +176,7 @@ func _run() -> void:
 			print("VISUAL REVIEW: captured ", clip)
 	viewport.queue_free()
 	await process_frame
-	if not args.has("--no-game") and not args.has("--neutral-only"):
+	if not args.has("--no-game") and not args.has("--neutral-only") and not args.has("--professor"):
 		var lab: Node = load("res://scenes/world/spawn_area.tscn").instantiate()
 		lab.pause_when_unfocused = false
 		root.add_child(lab)
@@ -190,8 +193,8 @@ func _run() -> void:
 		await create_timer(0.3).timeout
 		await _capture("studio.png", root)
 		report["game"].append("studio.png")
-	var file := FileAccess.open(OUTPUT.path_join("capture_manifest.json"), FileAccess.WRITE)
+	var file := FileAccess.open(output_path.path_join("capture_manifest.json"), FileAccess.WRITE)
 	file.store_string(JSON.stringify(report, "\t"))
 	file.close()
-	print("STUDENT VISUAL EVIDENCE: CAPTURED (reference fidelity still requires image review)")
+	print(model_path.get_file().get_basename().to_upper(), " VISUAL EVIDENCE: CAPTURED (reference fidelity still requires image review)")
 	quit()

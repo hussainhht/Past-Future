@@ -3,7 +3,8 @@ extends Control
 
 signal close_requested
 
-const MODEL: PackedScene = preload("res://assets/characters/student_3d/student.glb")
+@export var character_model: PackedScene = preload("res://assets/characters/student_3d/student.glb")
+@export var character_label: String = "THE STUDENT  /  AGE 18"
 var model: Node3D
 var animator: AnimationPlayer
 var _status: Label
@@ -31,7 +32,7 @@ func _ready() -> void:
 	var heading := VBoxContainer.new()
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(heading)
-	_label(heading, "THE STUDENT  /  AGE 18", 29, Color("e4bf7f"))
+	_label(heading, character_label, 29, Color("e4bf7f"))
 	_label(heading, "Original 3D character  ·  KayKit character animations", 17, Color("a6b9bd"))
 	header.add_child(_button("RETURN TO LAB  /  ESC", request_close))
 	var row := HBoxContainer.new()
@@ -79,7 +80,7 @@ func _ready() -> void:
 	camera.position = Vector3(0, 2.2, 6)
 	camera.look_at(Vector3(0, 1.12, 0))
 	camera.current = true
-	model = MODEL.instantiate()
+	model = character_model.instantiate()
 	stage.add_child(model)
 	model.rotation.y = -0.6
 	animator = model.get_node("AnimationPlayer")

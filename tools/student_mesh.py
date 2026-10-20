@@ -175,7 +175,10 @@ class MeshAuthor:
                           for a in np.linspace(0,math.tau,12,endpoint=False)])
         self.rings(name,rings,color,self.rigid("head"))
 
-    def export(self):
+    def export(self, output=OUTPUT, model_name="student", reference_dir=None,
+               authoring_script="tools/build_student_kaykit.py"):
+        output = Path(output)
+        reference_dir = Path(reference_dir) if reference_dir else output.parent / "references/18"
         writer=Writer(); source=self.reference.doc
         count=max(self.skin["joints"])+1
         joint_nodes, inverse_binds, retarget = make_rig(source, self.skin)
@@ -191,6 +194,8 @@ class MeshAuthor:
             face_normals=np.cross(vertices[faces[:,1]]-vertices[faces[:,0]],vertices[faces[:,2]]-vertices[faces[:,0]])
             for col in range(3): np.add.at(normals,faces[:,col],face_normals)
             normals/=np.maximum(np.linalg.norm(normals,axis=1,keepdims=True),1e-12)
+            for index,normal in g.get('normal_overrides',{}).items():
+                normals[index]=normal
             joint_ids=np.zeros((len(vertices),4),dtype=np.uint16); weights=np.zeros((len(vertices),4))
             for i,values in enumerate(g["weights"]):
                 values=sorted([(self.joints[k],v) for k,v in values.items() if v>1e-8],key=lambda kv:-kv[1])[:4]
@@ -243,23 +248,23 @@ class MeshAuthor:
             pbr={"baseColorFactor":rgb+[1],"metallicFactor":metallic,"roughnessFactor":roughness}
             pbr.update(self.material_overrides.get(name,{}))
             materials.append({"name":name,"pbrMetallicRoughness":pbr})
-        writer.save(OUTPUT/"student.glb",{"asset":{"version":"2.0","generator":"Past & Future original student mesh; KayKit Rig_Medium and CC0 animation tracks"},
-                    "scene":0,"scenes":[{"name":"Student","nodes":[count]}],"nodes":nodes,"skins":[skin],
-                    "meshes":[{"name":"Original_Student","primitives":primitives}],"materials":materials,"animations":animations})
+        writer.save(output/f"{model_name}.glb",{"asset":{"version":"2.0","generator":f"Past & Future original {model_name} mesh; KayKit Rig_Medium and CC0 animation tracks"},
+                    "scene":0,"scenes":[{"name":model_name.title(),"nodes":[count]}],"nodes":nodes,"skins":[skin],
+                    "meshes":[{"name":f"Original_{model_name.title()}","primitives":primitives}],"materials":materials,"animations":animations})
         from ground_student_clips import bake
-        ground_clearance = bake(OUTPUT/"student.glb")
-        OUTPUT.mkdir(parents=True,exist_ok=True)
+        ground_clearance = bake(output/f"{model_name}.glb")
+        output.mkdir(parents=True,exist_ok=True)
         all_vertices=np.concatenate([np.asarray(g["vertices"]) for g in self.geometry.values()])
         files.update({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in SOURCE.glob("*.glb")})
-        manifest={"model":"student.glb","geometry":"Original mesh authored in tools/build_student_kaykit.py; no KayKit character geometry reused.",
+        manifest={"model":f"{model_name}.glb","geometry":f"Original mesh authored in {authoring_script}; no KayKit character geometry reused.",
                   "rig":"KayKit Rig_Medium hierarchy and axes; proportion-adjusted rest translations, rebuilt inverse binds, length-scaled translation deltas; unchanged rotation/scale samples",
                   "retarget": retarget,
                   "ground_clearance": ground_clearance,
                   "palette_hex_srgb": PALETTE,
-                  "editable_source": "source/student.blend",
-                  "reference_sha256": {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (OUTPUT.parent/"references/18").glob("*view*.png")},
+                  "editable_source": f"source/{model_name}.blend",
+                  "reference_sha256": {p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in reference_dir.glob("*view*.png")},
                   "height":float(np.ptp(all_vertices[:,1])),"triangles":sum(g["triangles"] for g in stats.values()),
                   "vertices":sum(g["vertices"] for g in stats.values()),"joint_count":len(skin["joints"]),
                   "parts":self.parts,"animation_sources":animation_sources,"source_sha256":files}
-        (OUTPUT/"manifest.json").write_text(json.dumps(manifest,indent=2)+'\n')
-        print(f"Built original skinned student: {manifest['triangles']} triangles, {manifest['joint_count']} joints, {len(animations)} genuine KayKit clips")
+        (output/"manifest.json").write_text(json.dumps(manifest,indent=2)+'\n')
+        print(f"Built original skinned {model_name}: {manifest['triangles']} triangles, {manifest['joint_count']} joints, {len(animations)} genuine KayKit clips")
