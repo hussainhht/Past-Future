@@ -1,0 +1,687 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_panel.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_panel_damaged.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_panel_damaged_b.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_low.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_corner.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/security_door.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/door_keypad.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/junction_box.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/console_terminal.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/research_notebook.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/lab_memo.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/radio_pickup_past.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/radio_pickup_future.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/poster_safety.tscn" id="14"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/blackboard.tscn" id="15"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/poster_array.tscn" id="16"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/sign_lab.tscn" id="17"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/sign_warning.tscn" id="18"]
+[ext_resource type="PackedScene" path="res://scenes/environment/interactive/wall_clock.tscn" id="19"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/emergency_light.tscn" id="20"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cable_run.tscn" id="21"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/antenna.tscn" id="22"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/desk_lamp.tscn" id="23"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/paper_stack.tscn" id="24"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/monitor_wave.tscn" id="25"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/monitor_data.tscn" id="26"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/keyboard.tscn" id="27"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/pencil_holder.tscn" id="28"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/mug.tscn" id="29"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/drafting_chair.tscn" id="30"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/picture_frame.tscn" id="31"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/microscope.tscn" id="32"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/flask_set.tscn" id="33"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/oscilloscope.tscn" id="34"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/signal_generator.tscn" id="35"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/paper_graph.tscn" id="36"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/bookcase_stocked.tscn" id="37"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cabinet_low.tscn" id="38"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/wall_shelf.tscn" id="39"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cactus_small_b.tscn" id="40"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/book_set.tscn" id="41"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/poster_resonance.tscn" id="42"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/coat_stand.tscn" id="43"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/potted_plant.tscn" id="44"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cactus_medium.tscn" id="45"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/rug.tscn" id="46"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/reading_table.tscn" id="47"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/table_lamp.tscn" id="48"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/paper_notes.tscn" id="49"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/stool.tscn" id="50"]
+[ext_resource type="PackedScene" path="res://scenes/environment/effects/temporal_rift.tscn" id="51"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/signal_rack.tscn" id="52"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cactus_small.tscn" id="53"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/crate.tscn" id="54"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/box_cardboard.tscn" id="55"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cable_reel.tscn" id="56"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/ceiling_panel.tscn" id="57"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/debris_a.tscn" id="58"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/debris_b.tscn" id="59"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/debris_tiles.tscn" id="60"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/pipe_broken.tscn" id="61"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/cables_hanging.tscn" id="62"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/paper_memo.tscn" id="63"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/paper_crumpled.tscn" id="64"]
+[ext_resource type="PackedScene" path="res://scenes/environment/props/book_single.tscn" id="65"]
+
+[node name="SignalLabLayout" type="Node3D"]
+
+[node name="Architecture" type="Node3D" parent="."]
+
+[node name="North" type="Node3D" parent="Architecture"]
+
+[node name="Panel0" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(-11.16, 0, -7.8)
+
+[node name="Panel1" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(-8.68, 0, -7.8)
+presence = 1
+
+[node name="Panel1Damaged" parent="Architecture/North" instance=ExtResource("2")]
+position = Vector3(-8.68, 0, -7.8)
+presence = 2
+
+[node name="Panel2" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(-6.2, 0, -7.8)
+
+[node name="Panel3" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(-3.72, 0, -7.8)
+
+[node name="Panel4" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(-1.24, 0, -7.8)
+
+[node name="Panel5" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(1.24, 0, -7.8)
+
+[node name="Panel6" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(3.72, 0, -7.8)
+
+[node name="Panel8" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(8.68, 0, -7.8)
+presence = 1
+
+[node name="Panel8Damaged" parent="Architecture/North" instance=ExtResource("3")]
+position = Vector3(8.68, 0, -7.8)
+presence = 2
+
+[node name="Panel9" parent="Architecture/North" instance=ExtResource("1")]
+position = Vector3(11.16, 0, -7.8)
+
+[node name="West" type="Node3D" parent="Architecture"]
+
+[node name="Panel0" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, -6.5)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel1" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, -3.9)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel2" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, -1.3)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel3" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, 1.3)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel4" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, 3.9)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+presence = 1
+
+[node name="Panel4Damaged" parent="Architecture/West" instance=ExtResource("2")]
+position = Vector3(-12.4, 0, 3.9)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+presence = 2
+
+[node name="Panel5" parent="Architecture/West" instance=ExtResource("1")]
+position = Vector3(-12.4, 0, 6.5)
+rotation = Vector3(0, 1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="East" type="Node3D" parent="Architecture"]
+
+[node name="Panel0" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, -6.5)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel1" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, -3.9)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+presence = 1
+
+[node name="Panel1Damaged" parent="Architecture/East" instance=ExtResource("3")]
+position = Vector3(12.4, 0, -3.9)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+presence = 2
+
+[node name="Panel2" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, -1.3)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel3" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, 1.3)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel4" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, 3.9)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="Panel5" parent="Architecture/East" instance=ExtResource("1")]
+position = Vector3(12.4, 0, 6.5)
+rotation = Vector3(0, -1.5708, 0)
+scale = Vector3(1.048, 1, 1)
+
+[node name="South" type="Node3D" parent="Architecture"]
+
+[node name="Low0" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(-11.16, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low1" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(-8.68, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low2" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(-6.2, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low3" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(-3.72, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low4" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(-1.24, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low5" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(1.24, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low6" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(3.72, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low7" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(6.2, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low8" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(8.68, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="Low9" parent="Architecture/South" instance=ExtResource("4")]
+position = Vector3(11.16, 0, 7.8)
+rotation = Vector3(0, 3.14159, 0)
+
+[node name="CornerNW" parent="Architecture" instance=ExtResource("5")]
+position = Vector3(-12.4, 0, -7.8)
+
+[node name="CornerNE" parent="Architecture" instance=ExtResource("5")]
+position = Vector3(12.4, 0, -7.8)
+
+[node name="Interactive" type="Node3D" parent="."]
+
+[node name="SecurityDoor" parent="Interactive" instance=ExtResource("6")]
+position = Vector3(6.2, 0, -7.8)
+
+[node name="DoorKeypad" parent="Interactive" instance=ExtResource("7")]
+position = Vector3(7.78, 1.1, -7.74)
+
+[node name="JunctionBox" parent="Interactive" instance=ExtResource("8")]
+position = Vector3(-2.6, 1.15, -7.74)
+
+[node name="ConsoleTerminal" parent="Interactive" instance=ExtResource("9")]
+position = Vector3(0, 0, -6.6)
+
+[node name="ResearchNotebook" parent="Interactive" instance=ExtResource("10")]
+position = Vector3(6.86, 1.5, 0.64)
+rotation = Vector3(0, -0.10472, 0)
+
+[node name="LabMemo" parent="Interactive" instance=ExtResource("11")]
+position = Vector3(-7.25, 1.5, 0.72)
+rotation = Vector3(0, 0.15708, 0)
+
+[node name="PastRadio" parent="Interactive" instance=ExtResource("12")]
+position = Vector3(-4.85, 1.5, 0.86)
+
+[node name="FutureRadio" parent="Interactive" instance=ExtResource("13")]
+position = Vector3(-8.45, 1, 5.4)
+
+[node name="NorthWall" type="Node3D" parent="."]
+
+[node name="PosterSafety" parent="NorthWall" instance=ExtResource("14")]
+position = Vector3(-11.2, 1.55, -7.74)
+future_offset = Vector3(0.05, -1.53, 0.55)
+future_rotation = Vector3(-84, 0, 6)
+
+[node name="Blackboard" parent="NorthWall" instance=ExtResource("15")]
+position = Vector3(-6.2, 1.12, -7.66)
+
+[node name="PosterArray" parent="NorthWall" instance=ExtResource("16")]
+position = Vector3(1.9, 1.15, -7.74)
+
+[node name="SignLab" parent="NorthWall" instance=ExtResource("17")]
+position = Vector3(2.95, 3.3, -7.74)
+future_rotation = Vector3(0, 0, -4)
+
+[node name="SignWarning" parent="NorthWall" instance=ExtResource("18")]
+position = Vector3(3.85, 1.85, -7.74)
+
+[node name="Clock" parent="NorthWall" instance=ExtResource("19")]
+position = Vector3(-1.25, 3.42, -7.74)
+
+[node name="EmergencyNorth" parent="NorthWall" instance=ExtResource("20")]
+position = Vector3(9.3, 3.3, -7.76)
+
+[node name="CableToBreaker" parent="NorthWall" instance=ExtResource("21")]
+position = Vector3(-1.55, 0, -7.42)
+
+[node name="ConsoleAntenna" parent="NorthWall" instance=ExtResource("22")]
+position = Vector3(0.35, 2.45, -6.7)
+
+[node name="ResearchStation" type="Node3D" parent="."]
+
+[node name="DeskLamp" parent="ResearchStation" instance=ExtResource("23")]
+position = Vector3(3.6, 1.5, 0.42)
+rotation = Vector3(0, 0.436332, 0)
+future_offset = Vector3(0.15, 0.17, 0.1)
+future_rotation = Vector3(0, 0, 84)
+
+[node name="PaperStack" parent="ResearchStation" instance=ExtResource("24")]
+position = Vector3(3.75, 1.5, 0.82)
+rotation = Vector3(0, -0.139626, 0)
+presence = 1
+
+[node name="MonitorLeft" parent="ResearchStation" instance=ExtResource("25")]
+position = Vector3(4.62, 1.5, 0.56)
+rotation = Vector3(0, 0.10472, 0)
+
+[node name="MonitorRight" parent="ResearchStation" instance=ExtResource("26")]
+position = Vector3(5.82, 1.5, 0.56)
+rotation = Vector3(0, -0.10472, 0)
+future_offset = Vector3(0, 0.08, 0.32)
+future_rotation = Vector3(-84, 0, 0)
+
+[node name="Keyboard" parent="ResearchStation" instance=ExtResource("27")]
+position = Vector3(5.22, 1.5, 0.86)
+future_offset = Vector3(0.3, 0, 0.05)
+future_rotation = Vector3(0, 22, 0)
+
+[node name="PencilHolder" parent="ResearchStation" instance=ExtResource("28")]
+position = Vector3(6.25, 1.5, 0.3)
+future_offset = Vector3(0.6, -1.48, 0.95)
+future_rotation = Vector3(90, 30, 0)
+
+[node name="Mug" parent="ResearchStation" instance=ExtResource("29")]
+position = Vector3(7.36, 1.5, 0.32)
+future_rotation = Vector3(0, 0, 0)
+
+[node name="Chair" parent="ResearchStation" instance=ExtResource("30")]
+position = Vector3(5.2, 0, 1.78)
+future_offset = Vector3(0.9, 0.3, 0.55)
+future_rotation = Vector3(0, 35, 82)
+
+[node name="PhotoFrame" parent="ResearchStation" instance=ExtResource("31")]
+position = Vector3(7.35, 1.5, 0.66)
+rotation = Vector3(0, -0.523599, 0)
+future_offset = Vector3(0, 0.04, 0.1)
+future_rotation = Vector3(-80, 0, 0)
+
+[node name="ScienceBench" type="Node3D" parent="."]
+
+[node name="Microscope" parent="ScienceBench" instance=ExtResource("32")]
+position = Vector3(-6.75, 1.5, 0.5)
+rotation = Vector3(0, 0.349066, 0)
+future_offset = Vector3(0, 0.18, 0.2)
+future_rotation = Vector3(0, 0, 76)
+
+[node name="FlaskSet" parent="ScienceBench" instance=ExtResource("33")]
+position = Vector3(-5.55, 1.5, 0.56)
+
+[node name="Oscilloscope" parent="ScienceBench" instance=ExtResource("34")]
+position = Vector3(-4.3, 1.5, 0.48)
+rotation = Vector3(0, -0.139626, 0)
+
+[node name="SignalGenerator" parent="ScienceBench" instance=ExtResource("35")]
+position = Vector3(-3.58, 1.5, 0.78)
+rotation = Vector3(0, -0.261799, 0)
+
+[node name="Mug" parent="ScienceBench" instance=ExtResource("29")]
+position = Vector3(-7.42, 1.5, 0.3)
+presence = 1
+
+[node name="DeskLamp" parent="ScienceBench" instance=ExtResource("23")]
+position = Vector3(-7.35, 1.5, 0.55)
+rotation = Vector3(0, -0.610865, 0)
+future_rotation = Vector3(0, 0, -12)
+
+[node name="Chair" parent="ScienceBench" instance=ExtResource("30")]
+position = Vector3(-3.55, 0, 1.62)
+rotation = Vector3(0, -0.349066, 0)
+future_offset = Vector3(0.2, 0, 0.3)
+future_rotation = Vector3(0, 60, 0)
+
+[node name="PaperGraph" parent="ScienceBench" instance=ExtResource("36")]
+position = Vector3(-6.1, 1.5, 0.95)
+rotation = Vector3(0, 0.244346, 0)
+future_offset = Vector3(-0.6, -1.49, 0.9)
+future_rotation = Vector3(0, 50, 0)
+
+[node name="Library" type="Node3D" parent="."]
+
+[node name="BookcaseNorth" parent="Library" instance=ExtResource("37")]
+position = Vector3(-12.08, 0, -3.65)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="BookcaseSouth" parent="Library" instance=ExtResource("37")]
+position = Vector3(-12.08, 0, -1.25)
+rotation = Vector3(0, 1.5708, 0)
+future_offset = Vector3(0.25, 0, 0)
+future_rotation = Vector3(0, 0, -7)
+
+[node name="EmergencyWest" parent="Library" instance=ExtResource("20")]
+position = Vector3(-12.36, 3.25, -2.4)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="CabinetLow" parent="Library" instance=ExtResource("38")]
+position = Vector3(-11.9, 0, 2.6)
+rotation = Vector3(0, 1.5708, 0)
+future_offset = Vector3(0.15, 0, 0)
+future_rotation = Vector3(0, -6, 0)
+asset_id = "A12"
+
+[node name="WallShelf" parent="Library" instance=ExtResource("39")]
+position = Vector3(-12.15, 2, 2.6)
+rotation = Vector3(0, 1.5708, 0)
+future_offset = Vector3(0, -0.12, 0)
+future_rotation = Vector3(0, 0, 9)
+
+[node name="ShelfCactus" parent="Library" instance=ExtResource("40")]
+position = Vector3(-11.9, 1, 3.25)
+
+[node name="CabinetBooks" parent="Library" instance=ExtResource("41")]
+position = Vector3(-11.95, 1, 2.05)
+rotation = Vector3(0, 1.5708, 0)
+future_offset = Vector3(0.6, -1, 0.4)
+future_rotation = Vector3(0, 30, 90)
+
+[node name="PosterWest" parent="Library" instance=ExtResource("42")]
+position = Vector3(-12.34, 1.45, 5.45)
+rotation = Vector3(0, 1.5708, 0)
+
+[node name="CoatStand" parent="Library" instance=ExtResource("43")]
+position = Vector3(-11.55, 0, 4.4)
+future_offset = Vector3(-0.35, 0, 0)
+future_rotation = Vector3(0, 0, 14)
+
+[node name="PlantSW" parent="Library" instance=ExtResource("44")]
+position = Vector3(-11.7, 0, 7.05)
+
+[node name="PlantNW" parent="Library" instance=ExtResource("45")]
+position = Vector3(-11.55, 0, -7)
+
+[node name="ReadingCorner" type="Node3D" parent="."]
+
+[node name="Rug" parent="ReadingCorner" instance=ExtResource("46")]
+position = Vector3(-8.2, 0.005, 5.2)
+scale = Vector3(1.5, 1.5, 1.5)
+
+[node name="Table" parent="ReadingCorner" instance=ExtResource("47")]
+position = Vector3(-8.7, 0, 5.3)
+
+[node name="TableLamp" parent="ReadingCorner" instance=ExtResource("48")]
+position = Vector3(-8.95, 1, 5.1)
+future_offset = Vector3(0.3, 0.12, 0)
+future_rotation = Vector3(0, 0, -78)
+
+[node name="TableBooks" parent="ReadingCorner" instance=ExtResource("41")]
+position = Vector3(-8.45, 1, 5.55)
+rotation = Vector3(0, 0.349066, 0)
+future_offset = Vector3(0.3, -1, 0.8)
+future_rotation = Vector3(0, 60, 90)
+
+[node name="TableNotes" parent="ReadingCorner" instance=ExtResource("49")]
+position = Vector3(-8.3, 1, 4.95)
+rotation = Vector3(0, -0.20944, 0)
+
+[node name="StoolA" parent="ReadingCorner" instance=ExtResource("50")]
+position = Vector3(-7.35, 0, 5.75)
+future_offset = Vector3(0, 0.36, 0.2)
+future_rotation = Vector3(90, 0, 0)
+
+[node name="StoolB" parent="ReadingCorner" instance=ExtResource("50")]
+position = Vector3(-9.9, 0, 6.2)
+
+[node name="RiftArea" type="Node3D" parent="."]
+
+[node name="FeedCable0" parent="RiftArea" instance=ExtResource("21")]
+position = Vector3(2.35, 0, -5.7)
+rotation = Vector3(0, -0.410127, 0)
+
+[node name="FeedCable1" parent="RiftArea" instance=ExtResource("21")]
+position = Vector3(4.55, 0, -4.4)
+rotation = Vector3(0, -0.651077, 0)
+
+[node name="FeedCable2" parent="RiftArea" instance=ExtResource("21")]
+position = Vector3(6.4, 0, -2.6)
+rotation = Vector3(0, -0.896055, 0)
+
+[node name="FeedCable3" parent="RiftArea" instance=ExtResource("21")]
+position = Vector3(7.75, 0, -0.5)
+rotation = Vector3(0, -1.10715, 0)
+
+[node name="TemporalRift" parent="RiftArea" instance=ExtResource("51")]
+position = Vector3(9.2, 0, 2.3)
+
+[node name="MonitorRack" parent="RiftArea" instance=ExtResource("52")]
+position = Vector3(11.95, 0, 0)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="RackCable" parent="RiftArea" instance=ExtResource("21")]
+position = Vector3(10.45, 0, 1)
+rotation = Vector3(0, 0.698132, 0)
+
+[node name="PosterEast" parent="RiftArea" instance=ExtResource("42")]
+position = Vector3(12.34, 1.4, -2.5)
+rotation = Vector3(0, -1.5708, 0)
+future_offset = Vector3(-0.4, -1.38, 0.2)
+future_rotation = Vector3(-88, 0, 10)
+
+[node name="EmergencyEast" parent="RiftArea" instance=ExtResource("20")]
+position = Vector3(12.36, 3.25, -1)
+rotation = Vector3(0, -1.5708, 0)
+
+[node name="PlantE" parent="RiftArea" instance=ExtResource("53")]
+position = Vector3(11.85, 0, 3.45)
+
+[node name="Storage" type="Node3D" parent="."]
+
+[node name="CrateNE" parent="Storage" instance=ExtResource("54")]
+position = Vector3(11.7, 0, -5.5)
+rotation = Vector3(0, 1.5708, 0)
+future_rotation = Vector3(0, 15, 0)
+
+[node name="BoxNE" parent="Storage" instance=ExtResource("55")]
+position = Vector3(11.7, 0.7, -5.45)
+rotation = Vector3(0, 1.39626, 0)
+future_offset = Vector3(-0.9, -0.7, 0.4)
+future_rotation = Vector3(0, 25, 70)
+
+[node name="CrateSE" parent="Storage" instance=ExtResource("54")]
+position = Vector3(10.95, 0, 6.85)
+
+[node name="BoxSE" parent="Storage" instance=ExtResource("55")]
+position = Vector3(9.95, 0, 7)
+rotation = Vector3(0, 0.174533, 0)
+
+[node name="BoxSEStack" parent="Storage" instance=ExtResource("55")]
+position = Vector3(10.95, 0.7, 6.85)
+rotation = Vector3(0, -0.261799, 0)
+future_offset = Vector3(-0.2, -0.7, -0.9)
+future_rotation = Vector3(0, 40, -75)
+
+[node name="Reel" parent="Storage" instance=ExtResource("56")]
+position = Vector3(8.85, 0, 6.95)
+future_offset = Vector3(0.6, 0, -0.4)
+future_rotation = Vector3(0, 0, 90)
+
+[node name="FutureDamage" type="Node3D" parent="."]
+
+[node name="CeilingPanel" parent="FutureDamage" instance=ExtResource("57")]
+position = Vector3(-1.9, 0, -1.4)
+rotation = Vector3(0, 0.418879, 0)
+presence = 2
+
+[node name="DebrisNorth" parent="FutureDamage" instance=ExtResource("58")]
+position = Vector3(-4.7, 0, -6.9)
+presence = 2
+
+[node name="DebrisRift" parent="FutureDamage" instance=ExtResource("59")]
+position = Vector3(10, 0, 4.85)
+rotation = Vector3(0, 0.523599, 0)
+presence = 2
+
+[node name="DebrisWest" parent="FutureDamage" instance=ExtResource("58")]
+position = Vector3(-10.6, 0, 0.9)
+rotation = Vector3(0, 1.22173, 0)
+presence = 2
+
+[node name="TilesCentre" parent="FutureDamage" instance=ExtResource("60")]
+position = Vector3(2.6, 0, -2.4)
+presence = 2
+
+[node name="TilesDoor" parent="FutureDamage" instance=ExtResource("60")]
+position = Vector3(8.4, 0, -5)
+rotation = Vector3(0, 0.698132, 0)
+presence = 2
+
+[node name="TilesWest" parent="FutureDamage" instance=ExtResource("60")]
+position = Vector3(-9.2, 0, 3.1)
+rotation = Vector3(0, 1.91986, 0)
+presence = 2
+
+[node name="PipeWest" parent="FutureDamage" instance=ExtResource("61")]
+position = Vector3(-8.2, 0, -6.2)
+rotation = Vector3(0, 0.174533, 0)
+presence = 2
+
+[node name="CablesNorth" parent="FutureDamage" instance=ExtResource("62")]
+position = Vector3(8.9, 0, -7.6)
+presence = 2
+
+[node name="CablesWest" parent="FutureDamage" instance=ExtResource("62")]
+position = Vector3(-12.2, 0, 3.9)
+rotation = Vector3(0, 1.5708, 0)
+presence = 2
+
+[node name="CablesCentre" parent="FutureDamage" instance=ExtResource("62")]
+position = Vector3(-2.2, 0, -2)
+rotation = Vector3(0, 0.523599, 0)
+presence = 2
+
+[node name="Paper0" parent="FutureDamage" instance=ExtResource("49")]
+position = Vector3(3.6, 0.01, 1.6)
+rotation = Vector3(0, 0.523599, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper1" parent="FutureDamage" instance=ExtResource("63")]
+position = Vector3(4.9, 0.01, 2.3)
+rotation = Vector3(0, -1.0472, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper2" parent="FutureDamage" instance=ExtResource("36")]
+position = Vector3(6.8, 0.01, 1.9)
+rotation = Vector3(0, 0.174533, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper3" parent="FutureDamage" instance=ExtResource("49")]
+position = Vector3(1.2, 0.01, -5.2)
+rotation = Vector3(0, 1.22173, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper4" parent="FutureDamage" instance=ExtResource("63")]
+position = Vector3(-0.9, 0.01, -5.4)
+rotation = Vector3(0, -0.349066, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper5" parent="FutureDamage" instance=ExtResource("49")]
+position = Vector3(-6.4, 0.01, 1.6)
+rotation = Vector3(0, 2.0944, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper6" parent="FutureDamage" instance=ExtResource("36")]
+position = Vector3(2.2, 0.01, -1)
+rotation = Vector3(0, 0.261799, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Paper7" parent="FutureDamage" instance=ExtResource("63")]
+position = Vector3(-9.9, 0.01, -0.4)
+rotation = Vector3(0, 1.39626, 0)
+presence = 2
+asset_id = "F07"
+
+[node name="Crumpled0" parent="FutureDamage" instance=ExtResource("64")]
+position = Vector3(3.9, 0, 2)
+presence = 2
+
+[node name="Crumpled1" parent="FutureDamage" instance=ExtResource("64")]
+position = Vector3(-0.4, 0, -5)
+rotation = Vector3(0, 1.22173, 0)
+presence = 2
+
+[node name="Crumpled2" parent="FutureDamage" instance=ExtResource("64")]
+position = Vector3(5.6, 0, 2.6)
+rotation = Vector3(0, 2.44346, 0)
+presence = 2
+
+[node name="Crumpled3" parent="FutureDamage" instance=ExtResource("64")]
+position = Vector3(-5, 0, 1.9)
+rotation = Vector3(0, 3.66519, 0)
+presence = 2
+
+[node name="FallenBook0" parent="FutureDamage" instance=ExtResource("65")]
+position = Vector3(-11, -0.07, -2.6)
+rotation = Vector3(1.5708, 0.523599, 0)
+presence = 2
+asset_id = "F01"
+
+[node name="FallenBook1" parent="FutureDamage" instance=ExtResource("65")]
+position = Vector3(-10.6, -0.07, -1.6)
+rotation = Vector3(1.5708, 1.309, 0)
+presence = 2
+asset_id = "F01"
+
+[node name="FallenBook2" parent="FutureDamage" instance=ExtResource("65")]
+position = Vector3(-10.9, -0.07, -0.6)
+rotation = Vector3(1.5708, 0.174533, 0)
+presence = 2
+asset_id = "F01"
+
+[node name="FallenBook3" parent="FutureDamage" instance=ExtResource("65")]
+position = Vector3(-10.3, -0.07, -2.1)
+rotation = Vector3(1.5708, 2.44346, 0)
+presence = 2
+asset_id = "F01"

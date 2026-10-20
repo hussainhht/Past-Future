@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/interactive/wall_clock.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/decorations/lab_wall_clock.glb" id="2"]
+
+[node name="WallClock" type="Node3D"]
+script = ExtResource("1")
+asset_id = "A20"
+future_rotation = Vector3(0, 0, -9)
+
+[node name="Model" parent="." instance=ExtResource("2")]

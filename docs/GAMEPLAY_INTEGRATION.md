@@ -2,14 +2,14 @@
 
 The project now launches its actual playable **Signal Laboratory** from the existing Main Menu. `project.godot` already points to `scenes/menu/main_menu.tscn`; that entry point and its settings/navigation design are preserved. Play → **PLAY THE LAB / SOLO TEST**, or the existing Host/Join/Ready lobby, enters `scenes/world/spawn_area.tscn`.
 
-Repository inspection found this to be the only authored world/laboratory scene in the checkout. Its painted floor, mesh furniture, collision footprints, lighting, spawn marker and tracking camera are reused. A new child composition, `laboratory_gameplay.tscn`, binds the finished systems to these props. The main game does not load a sandbox.
+The merged scene reuses the painted floor, mesh furniture, collision footprints, spawn marker and tracking camera, with the authored `SignalLab` environment providing timeline dressing, lighting, radio pickups, console and puzzle screens. `laboratory_gameplay.tscn` binds character controls and dialogue to those same devices, with one radio, interaction rig, audio system and set of screens. The main game does not load a sandbox.
 
 ## How to play
 
 1. Open `project.godot` in Godot 4.7.2 and press **F5**. Select **PLAY**, then **PLAY THE LAB / SOLO TEST**.
 2. You begin as the Student in the Past. WASD/arrows move, Shift runs, and **F** interacts. Approach the **left workbench** and acquire the handheld radio. Its pickup animation completes before ownership is granted, and the radio appears in the right-hand socket. Enter or clicking the dialogue panel reveals/advances the Student's discovery dialogue.
 3. Use **PLAY AS PROFESSOR** in the header, or **T**, to switch solo roles. This loads the finished Professor character, retints the real environment for the Future, and binds camera, interactions and radio to that one local character.
-4. Acquire the Professor's radio from the **right workbench**. Read the research log on the same workbench, to its right: the temporal frequency is **67 MHz**. Escape closes the document. The log also triggers the existing Future-specific discovery sequence.
+4. Acquire the Professor's radio from the **reading corner in the south-west**. Read the recovered research log at the **rear console**: the temporal frequency is **67 MHz**. Escape closes the document. The log also triggers the existing Future-specific discovery sequence.
 5. Switch back to Student and approach the **main computer at the rear centre**. Press F, enter a frequency, and select **CALIBRATE SIGNAL**. Incorrect values give retry feedback; enter **67** to establish the carrier once both radios have been acquired.
 6. The terminal, HUD and rift show **TEMPORAL RADIO LINK ESTABLISHED**. Close the terminal to continue the actual DialogueDirector radio conversation, alternating Student and Professor with typewriter text, connection status and transmission cues.
 7. The optional **receiver relay beside the left cabinet** now becomes solvable by the Student. Its confirmed completion triggers another shared radio sequence. This separate puzzle never gates the original radio connection or opens a door.

@@ -1,0 +1,11 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/books/kaykit_book_single.glb" id="2"]
+
+[node name="BookSingle" type="Node3D"]
+script = ExtResource("1")
+asset_id = "A15"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+position = Vector3(0, 0.25, 0)

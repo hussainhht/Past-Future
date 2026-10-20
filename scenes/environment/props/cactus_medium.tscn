@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/decorations/kaykit_cactus_medium_a.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/decorations/lab_cactus_dead.glb" id="3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[node name="CactusMedium" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A21"
+
+[node name="PastOnly" type="Node3D" parent="."]
+
+[node name="Plant" parent="PastOnly" instance=ExtResource("2")]
+
+[node name="FutureOnly" type="Node3D" parent="."]
+
+[node name="Plant" parent="FutureOnly" instance=ExtResource("3")]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.4, 0)
+shape = SubResource("BoxShape3D_1")

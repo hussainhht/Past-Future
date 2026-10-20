@@ -123,8 +123,8 @@ func _run() -> void:
 		return
 	check(not puzzles.is_solved(RELAY) and puzzles.get_revision(RELAY) == relay_revision, "Auxiliary relay cannot bypass the required radio link")
 	check("needs an established temporal radio link" in game.objective.text, "Premature relay use gives actionable gameplay feedback")
-	var student_pickup: Node = game.get_node("Props/StudentRadio")
-	await approach(Vector3(-5.4, 0, 1.6), student_pickup)
+	var student_pickup: Node = game.student_pickup
+	await approach(Vector3(-4.85, 0, 1.6), student_pickup)
 	check(room.player.is_action_active() and not game.radio.owns_radio, "Pickup animation precedes ownership grant")
 	check(not game.controller.try_interact(), "Second interaction is refused during pickup animation")
 	if not await wait_for(func() -> bool: return game.radio.owns_radio, "Student radio pickup failed"):
@@ -137,7 +137,7 @@ func _run() -> void:
 	check(game.director.get_current_sequence_id() == "opening_past", "Actual DialogueTrigger starts Past-specific discovery sequence")
 	await finish_dialogue()
 	await capture("08_held_student_radio")
-	await approach(Vector3(0, 0, -2.8), game.get_node("Props/MainComputer"))
+	await approach(Vector3(0, 0, -5.6), game.computer)
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Main console did not open terminal after animation"):
 		quit(1)
 		return
@@ -159,14 +159,14 @@ func _run() -> void:
 	check(room.timeline == "Future" and room.player.scene_file_path.ends_with("professor_3d_player.tscn"), "Solo switches to real Professor model and Future environment")
 	check(game.radio.get_instance_id() == radio_instance and game.radio.get_parent() == room.player, "Role switch rebinds the existing radio component without resetting state")
 	check(room.get_node("CameraRig").target == room.player and game.controller.actor == room.player, "Camera and interaction controller follow the new local character")
-	check(not student_pickup.visible and game.get_node("Props/ProfessorRadio").visible, "Role-specific world radios use the corresponding timeline")
+	check(not student_pickup.is_visible_in_tree() and game.professor_pickup.is_visible_in_tree(), "Role-specific world radios use the corresponding timeline")
 	await capture("04_future_lab")
-	await approach(Vector3(5.4, 0, 1.6), game.get_node("Props/ProfessorRadio"))
+	await approach(Vector3(-8.45, 0, 4.2), game.professor_pickup)
 	if not await wait_for(func() -> bool: return puzzles.is_solved(FREQUENCY), "Final radio did not establish temporal connection"):
 		quit(1)
 		return
 	check(game.radio.can_receive() and game.get_node("GameplayHUD/RadioHUD").status_label.text == "CONNECTED", "Confirmed link updates actual radio HUD")
-	check(game.get_node("Props/TemporalRift").connected, "Actual laboratory rift reflects connection")
+	check(room.lab.get_node("Layout/RiftArea/TemporalRift").linked(), "Actual laboratory rift reflects connection")
 	check("TEMPORAL RADIO LINK ESTABLISHED" in game.objective.text, "Gameplay displays required success text")
 	check(game.director.get_current_sequence_id() == "laboratory.radio_link_established", "Confirmed solve starts real sequence-based radio conversation")
 	check(game.director.dialogue_box.radio_mode and "67 MHz" in game.director.dialogue_box.channel_label.text, "Actual DialogueBox shows radio frequency and channel status")
@@ -193,7 +193,7 @@ func _run() -> void:
 	check(game.director.dialogue_box.get_speaker_text() == "The Professor", "Actual director alternates Student and Professor")
 	await finish_dialogue()
 	check(room.player.controls_enabled and game.adapter.active_sequence_id.is_empty(), "Dialogue completion restores controls and adapter lifetime")
-	await approach(Vector3(6.7, 0, 1.6), game.get_node("Props/ResearchLog"))
+	await approach(Vector3(0, 0, -5.6), game.clue)
 	if not await wait_for(func() -> bool: return game.reader.visible, "Future research reader failed"):
 		quit(1)
 		return
@@ -230,7 +230,7 @@ func _run() -> void:
 	check(puzzles.get_session_id() == session and puzzles.get_revision(FREQUENCY) == revision and game.radio.can_receive(), "Actual scene transition preserves ownership, calibration, session and revision")
 	check(not game.director.is_dialogue_active() and game.adapter.active_sequence_id.is_empty(), "New room does not replay connection conversation")
 	check(room.player.skeleton.get_node("HeldRadioSocket/PlaceholderRadio").visible, "New character presentation recovers held radio from confirmed state")
-	await approach(Vector3(0, 0, -2.8), game.get_node("Props/MainComputer"))
+	await approach(Vector3(0, 0, -5.6), game.computer)
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Recreated lab terminal failed to open"):
 		quit(1)
 		return
@@ -241,7 +241,7 @@ func _run() -> void:
 	room.get_node("%ResetSoloButton").pressed.emit()
 	check(puzzles.get_session_id() != session and not puzzles.is_solved(FREQUENCY) and not puzzles.is_solved(RELAY), "Explicit solo reset clears puzzles under a new session")
 	check(room.timeline == "Past" and not game.radio.owns_radio and room.player.controls_enabled, "Reset restores Student gameplay without stale locks")
-	check(game.get_node("Props/StudentRadio").placeholder.visible and game.director.get_played_ids().is_empty(), "Reset restores pickups and clears dialogue history")
+	check(game.student_pickup.placeholder.visible and game.director.get_played_ids().is_empty(), "Reset restores pickups and clears dialogue history")
 	room._set_paused(true)
 	room.get_node("%MenuButton").pressed.emit()
 	if not await wait_for(func() -> bool: return current_scene != null and current_scene.scene_file_path == "res://scenes/menu/main_menu.tscn", "Return to Menu failed"):

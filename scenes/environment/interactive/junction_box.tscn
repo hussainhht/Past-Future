@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/interactive/junction_box.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/electronics/lab_junction_box.glb" id="2"]
+[ext_resource type="Script" path="res://scripts/interaction/interactable_3d.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/environment/interactive/highlight_rim.gd" id="4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.75, 0.4, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+disable_receive_shadows = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_2"]
+size = Vector2(0.035, 0.035)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="Gradient" id="Gradient_3"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.95, 0.7, 1, 1, 0.55, 0.2, 1, 0.6, 0.15, 0.05, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+size = Vector3(1, 2.2, 1)
+
+[node name="JunctionBox" type="Node3D"]
+script = ExtResource("1")
+asset_id = "A26"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="Sparks" type="CPUParticles3D" parent="."]
+position = Vector3(0.05, 0.55, 0.26)
+emitting = false
+amount = 12
+lifetime = 0.7
+explosiveness = 0.6
+randomness = 0.5
+mesh = SubResource("QuadMesh_2")
+direction = Vector3(0, 0.3, 1)
+spread = 55
+gravity = Vector3(0, -6, 0)
+initial_velocity_min = 0.6
+initial_velocity_max = 1.8
+scale_amount_min = 0.6
+scale_amount_max = 1.4
+color_ramp = SubResource("Gradient_3")
+
+[node name="Inspect" type="Area3D" parent="." node_paths=PackedStringArray("interaction_anchor", "highlight_target")]
+script = ExtResource("3")
+interaction_name = "Inspect breaker"
+interaction_distance = 1.5
+interaction_priority = 0
+allowed_timeline = 0
+play_interaction_animation = true
+animation_action_name = "inspect"
+timing = 0
+interaction_anchor = NodePath("Anchor")
+highlight_target = NodePath("Highlight")
+
+[node name="Shape" type="CollisionShape3D" parent="Inspect"]
+position = Vector3(0, -0.05, 0.5)
+shape = SubResource("BoxShape3D_4")
+
+[node name="Anchor" type="Marker3D" parent="Inspect"]
+position = Vector3(0, -1.15, 0.6)
+
+[node name="Highlight" type="Node3D" parent="Inspect"]
+script = ExtResource("4")

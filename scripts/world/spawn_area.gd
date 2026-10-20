@@ -1,5 +1,6 @@
 extends Node3D
 ## Playable Signal Laboratory, entered by Solo Test or the existing LAN lobby.
+## SpawnPoint and prop instances are editable in Godot.
 
 @export_enum("Past", "Future") var timeline: String = "Past"
 @export var pause_when_unfocused: bool = true
@@ -14,6 +15,15 @@ var _leaving: bool = false
 @onready var camera: Camera3D = $CameraRig/Camera3D
 @onready var pause_panel: ColorRect = %PausePanel
 @onready var gameplay: Node3D = $LaboratoryGameplay
+@onready var lab: SignalLab = $SignalLab
+
+# Keep the room's public accessors bound when solo mode replaces the character.
+var interaction: InteractionController:
+	get:
+		return gameplay.controller as InteractionController
+var radio: TemporalRadio:
+	get:
+		return gameplay.radio
 
 
 func _ready() -> void:
@@ -108,6 +118,7 @@ func _apply_timeline() -> void:
 		if prop != player:
 			prop.future = future
 	player.body_color = accent
+	lab.future = future
 	%TimelineLabel.text = "II  /  FUTURE" if future else "I  /  PAST"
 	%TimelineLabel.add_theme_color_override("font_color", accent)
 	%RoleLabel.text = "THE PROFESSOR" if future else "THE STUDENT"

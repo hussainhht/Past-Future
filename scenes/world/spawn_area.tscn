@@ -8,9 +8,16 @@
 [ext_resource type="Shader" path="res://shaders/lab_floor.gdshader" id="6"]
 [ext_resource type="Texture2D" path="res://assets/world/spawn_ring.svg" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/gameplay/laboratory_gameplay.tscn" id="8_gameplay"]
+[ext_resource type="PackedScene" path="res://scenes/environment/rooms/signal_lab.tscn" id="8"]
 
 [sub_resource type="BoxShape3D" id="HorizontalWall"]
 size = Vector3(25.44, 1, 0.32)
+
+[sub_resource type="BoxShape3D" id="NorthWestWall"]
+size = Vector3(17.92, 1, 0.32)
+
+[sub_resource type="BoxShape3D" id="NorthEastWall"]
+size = Vector3(5.52, 1, 0.32)
 
 [sub_resource type="BoxShape3D" id="VerticalWall"]
 size = Vector3(0.32, 1, 16.24)
@@ -26,6 +33,12 @@ shader = ExtResource("6")
 
 [sub_resource type="BoxMesh" id="HorizontalRim"]
 size = Vector3(25.44, 0.32, 0.32)
+
+[sub_resource type="BoxMesh" id="NorthWestRim"]
+size = Vector3(17.92, 0.32, 0.32)
+
+[sub_resource type="BoxMesh" id="NorthEastRim"]
+size = Vector3(5.52, 0.32, 0.32)
 
 [sub_resource type="BoxMesh" id="VerticalRim"]
 size = Vector3(0.32, 0.32, 15.6)
@@ -76,9 +89,13 @@ mesh = SubResource("FloorMesh")
 
 [node name="Rim" type="Node3D" parent="Floor"]
 
-[node name="North" type="MeshInstance3D" parent="Floor/Rim"]
-position = Vector3(0, 0.16, -7.96)
-mesh = SubResource("HorizontalRim")
+[node name="NorthWest" type="MeshInstance3D" parent="Floor/Rim"]
+position = Vector3(-3.76, 0.16, -7.96)
+mesh = SubResource("NorthWestRim")
+
+[node name="NorthEast" type="MeshInstance3D" parent="Floor/Rim"]
+position = Vector3(9.96, 0.16, -7.96)
+mesh = SubResource("NorthEastRim")
 
 [node name="South" type="MeshInstance3D" parent="Floor/Rim"]
 position = Vector3(0, 0.16, 7.96)
@@ -107,9 +124,13 @@ texture = ExtResource("7")
 position = Vector3(0, -0.1, 0)
 shape = SubResource("FloorShape")
 
-[node name="North" type="CollisionShape3D" parent="Bounds"]
-position = Vector3(0, 0.5, -7.96)
-shape = SubResource("HorizontalWall")
+[node name="NorthWest" type="CollisionShape3D" parent="Bounds"]
+position = Vector3(-3.76, 0.5, -7.96)
+shape = SubResource("NorthWestWall")
+
+[node name="NorthEast" type="CollisionShape3D" parent="Bounds"]
+position = Vector3(9.96, 0.5, -7.96)
+shape = SubResource("NorthEastWall")
 
 [node name="South" type="CollisionShape3D" parent="Bounds"]
 position = Vector3(0, 0.5, 7.96)
@@ -135,19 +156,23 @@ position = Vector3(-5.4, 0, 0.6)
 position = Vector3(5.4, 0, 0.6)
 
 [node name="LeftCabinet" parent="Actors" instance=ExtResource("4")]
-position = Vector3(-9.9, 0, -4.4)
+position = Vector3(-9.6, 0, -7.3)
 kind = 1
 
 [node name="RightCabinet" parent="Actors" instance=ExtResource("4")]
-position = Vector3(10, 0, -4.4)
+position = Vector3(10.4, 0, -7.3)
 kind = 1
 
 [node name="Console" parent="Actors" instance=ExtResource("4")]
-position = Vector3(0, 0, -4.6)
+position = Vector3(0, 0, -6.6)
 kind = 2
 
 [node name="Player" parent="Actors" instance=ExtResource("3")]
 position = Vector3(0, 0, 3.7)
+
+[node name="SignalLab" parent="." node_paths=PackedStringArray("world_environment", "key_light") instance=ExtResource("8")]
+world_environment = NodePath("../WorldEnvironment")
+key_light = NodePath("../CharacterKeyLight")
 
 [node name="LaboratoryGameplay" parent="." instance=ExtResource("8_gameplay")]
 

@@ -144,11 +144,11 @@ func host_game() -> void:
 	check(room.player.position.distance_to(start) < 0.1, "Client movement never controls host character")
 	check(refused.has(["role_not_allowed", "future"]), "Host authenticates remote Future role despite a forged Past argument")
 	check(puzzles.get_state(FREQUENCY).professor_radio and not puzzles.get_state(FREQUENCY).student_radio, "Only confirmed client radio is owned before host pickup")
-	await use_object(Vector3(-5.4, 0, 1.6), "Props/StudentRadio")
+	await use_object(Vector3(-4.85, 0, 1.6), "../SignalLab/Layout/Interactive/PastRadio/Pickup")
 	if not await wait_for(func() -> bool: return game.radio.owns_radio, "Host Student acquisition failed"):
 		return
 	await finish_dialogue()
-	await use_object(Vector3(0, 0, -2.8), "Props/MainComputer")
+	await use_object(Vector3(0, 0, -5.6), "../SignalLab/Layout/Interactive/ConsoleTerminal/Computer")
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Host terminal failed to open"):
 		return
 	game.terminal.frequency_input.text = "67"
@@ -204,7 +204,7 @@ func client_game() -> void:
 	if not await wait_for(func() -> bool: return refused.has(["role_not_allowed", "future"]), "Forged role request was not refused"):
 		return
 	check(not puzzles.is_solved(FREQUENCY), "Client cannot force temporal connection")
-	await use_object(Vector3(5.4, 0, 1.6), "Props/ProfessorRadio")
+	await use_object(Vector3(-8.45, 0, 4.2), "../SignalLab/Layout/Interactive/FutureRadio/Pickup")
 	check(not game.radio.owns_radio, "Animated remote acquisition does not grant ownership optimistically")
 	if not await wait_for(func() -> bool: return game.radio.owns_radio, "Host did not confirm Future radio pickup"):
 		return

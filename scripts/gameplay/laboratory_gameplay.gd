@@ -17,10 +17,14 @@ var _current_role: String = ""
 @onready var director: DialogueDirector = $DialogueDirector
 @onready var adapter: Node = $RadioDialogueAdapter
 @onready var binding: Node = $RadioDirectorBinding
-@onready var audio: AudioDirector = $AudioSystem
+@onready var audio: AudioDirector = $"../SignalLab/AudioSystem"
 @onready var radio_audio: Node = $RadioAudio
-@onready var terminal: Control = $ModalLayer/Terminal
-@onready var reader: Control = $ModalLayer/ResearchReader
+@onready var terminal: Control = $"../SignalLab/FrequencyScreens/Terminal"
+@onready var reader: Control = $"../SignalLab/FrequencyScreens/LogReader"
+@onready var student_pickup: Interactable3D = $"../SignalLab/Layout/Interactive/PastRadio/Pickup"
+@onready var professor_pickup: Interactable3D = $"../SignalLab/Layout/Interactive/FutureRadio/Pickup"
+@onready var computer: Interactable3D = $"../SignalLab/Layout/Interactive/ConsoleTerminal/Computer"
+@onready var clue: Interactable3D = $"../SignalLab/Layout/Interactive/ConsoleTerminal/RecoveredLog"
 @onready var objective: Label = $GameplayHUD/Objective
 @onready var prompt: CanvasLayer = null
 var controller: Node
@@ -40,16 +44,18 @@ func initialize(laboratory: Node3D) -> void:
 	var prompt_panel: Control = prompt.get_node("Root/PromptPanel")
 	prompt_panel.offset_top = -137
 	prompt_panel.offset_bottom = -95
-	for pickup in [$Props/StudentRadio, $Props/ProfessorRadio]:
+	# Use the environment's authored devices and screens; this composition owns
+	# the local character and narrative presentation, not a second copy of Puzzle 01.
+	for pickup in [student_pickup, professor_pickup]:
 		pickup.play_interaction_animation = true
 		pickup.animation_action_name = "pick_up"
 		pickup.timing = Interactable3D.Timing.AFTER_ANIMATION
-		pickup.radio_acquired.connect(_on_radio_acquired)
-	for target in [$Props/MainComputer, $Props/ResearchLog]:
+	for target in [computer, clue]:
 		target.play_interaction_animation = true
-		target.animation_action_name = "inspect" if target == $Props/ResearchLog else "interact"
+		target.animation_action_name = "inspect" if target == clue else "interact"
 		target.timing = Interactable3D.Timing.AFTER_ANIMATION
-	terminal.audio_cue_requested.connect(radio_audio.play_cue)
+	room.lab.attach_radio(radio, radio_audio)
+	room.lab.ui.modal_changed.connect(_on_modal_changed)
 	terminal.modal_changed.connect(_on_modal_changed)
 	reader.modal_changed.connect(_on_modal_changed)
 	director.gameplay_input_block_changed.connect(_on_dialogue_block_changed)
@@ -110,21 +116,16 @@ func apply_timeline() -> void:
 	radio.set_player_role(role)
 	controller.detector.set_current_role(role)
 	director.set_local_timeline(role)
-	$Props/StudentRadio.visible = role == "past"
-	$Props/ProfessorRadio.visible = role == "future"
-	$Props/ResearchLog.visible = role == "future"
-	$Props/MainComputer.visible = role == "past"
 	# Keeping each solo role's position makes switching a useful co-op test flow.
 	if _positions.has(role):
 		room.player.global_position = _positions[role]
 	room.player.carrying = radio.owns_radio
-	audio.ambient_controller.switch_timeline(StringName(role), 0.5)
 	_refresh_state()
 	_sync_controls()
 
 
 func has_modal() -> bool:
-	return terminal.visible or reader.visible
+	return terminal.visible or reader.visible or room.lab.ui.is_modal_open()
 
 
 func can_switch_role() -> bool:
@@ -138,6 +139,7 @@ func sync_controls() -> void:
 func close_overlays() -> void:
 	terminal.close()
 	reader.close()
+	room.lab.ui.close_modal()
 	director.stop_dialogue()
 	adapter.end_conversation()
 
@@ -170,6 +172,7 @@ func _sync_controls() -> void:
 	var overlay: bool = has_modal() or room.is_gameplay_paused()
 	var blocked: bool = overlay or director.is_gameplay_input_blocked()
 	$GameplayHUD.visible = not room.is_character_studio_open()
+	room.lab.ui.visible = not room.is_character_studio_open()
 	if room.player.controls_enabled == blocked:
 		room.player.controls_enabled = not blocked
 	if blocked:
@@ -200,19 +203,14 @@ func _refresh_state() -> void:
 	elif linked:
 		objective.text = "TEMPORAL RADIO LINK ESTABLISHED\n" + ("Receiver online. Use the rift-side receiver to check the channel." if relay_online else "Bring the receiver relay beside the left cabinet online.")
 	elif not radio.owns_radio:
-		objective.text = "THE LOST FREQUENCY\nFind the handheld radio on the %s workbench." % ("right" if radio.player_role == "future" else "left")
+		objective.text = "THE LOST FREQUENCY\nFind the handheld radio %s." % ("in the reading corner" if radio.player_role == "future" else "on the left workbench")
 	elif radio.player_role == "future":
-		objective.text = "THE LOST FREQUENCY\nRead the research log on the right workbench. Help the Student calibrate."
+		objective.text = "THE LOST FREQUENCY\nRead the recovered log at the rear console. Help the Student calibrate."
 	elif state.get("frequency_calibrated", false):
 		objective.text = "SIGNAL LOCKED\nWaiting for the Professor's handheld radio."
 	else:
 		objective.text = "THE LOST FREQUENCY\nUse the rear main computer. The Professor's research log holds the frequency."
 	_sync_controls()
-
-
-func _on_radio_acquired(role: String) -> void:
-	if role == radio.player_role:
-		radio_audio.play_cue(&"pickup")
 
 
 func _on_radio_status_changed(_status: int, owned: bool, _active: bool) -> void:

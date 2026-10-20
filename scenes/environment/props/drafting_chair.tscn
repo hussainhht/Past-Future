@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/lab_drafting_chair.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(0.8, 1.1, 0.8)
+
+[node name="DraftingChair" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A07"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.55, 0)
+shape = SubResource("BoxShape3D_1")

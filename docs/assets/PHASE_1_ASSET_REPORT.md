@@ -1,6 +1,10 @@
 # Phase 1 report: asset acquisition and preparation
 
-Date: 2026-10-20. Branch: `claude/great-franklin-ufe6zm`, working tree on top of `554cc31`. Nothing is committed or pushed.
+Date: 2026-10-20. Branch: `claude/great-franklin-ufe6zm`, working tree on top of `554cc31`. At the time of writing nothing
+was committed; the report was later committed as `6f2e210` and merged into `main` (`bebb9a5`).
+
+> **Superseded for current status.** Phase 2-3 replaced the blocked downloads with KayKit Furniture Bits (CC0, verified)
+> and original procedural assets; see `docs/assets/FINAL_ENVIRONMENT_REPORT.md`. This report is kept as the Phase 1 record.
 
 **PHASE 1 STATUS: PARTIALLY COMPLETE. Asset acquisition is BLOCKED.**
 The inspection, inventory, license registry, tooling and verification are done. No third-party asset could be
