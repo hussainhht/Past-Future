@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/gameplay/frequency/frequency_computer.gd" id="1"]
+
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(1.3, 1.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material"]
+albedo_color = Color(0.15, 0.37, 0.7, 1)
+
+[sub_resource type="BoxMesh" id="Mesh"]
+material = SubResource("Material")
+size = Vector3(1.3, 1.2, 1)
+
+[node name="FrequencyComputer" type="Area3D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1")
+interaction_distance = 2.2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+
+[node name="Placeholder" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh")

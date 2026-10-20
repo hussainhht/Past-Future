@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3]
+
+[sub_resource type="StandardMaterial3D" id="BodyMaterial"]
+albedo_color = Color(0.12, 0.19, 0.23, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="Body"]
+material = SubResource("BodyMaterial")
+size = Vector3(0.22, 0.38, 0.12)
+
+[sub_resource type="StandardMaterial3D" id="DisplayMaterial"]
+albedo_color = Color(0.35, 0.82, 0.84, 1)
+emission_enabled = true
+emission = Color(0.12, 0.35, 0.38, 1)
+
+[sub_resource type="BoxMesh" id="Display"]
+material = SubResource("DisplayMaterial")
+size = Vector3(0.15, 0.09, 0.015)
+
+[sub_resource type="CylinderMesh" id="Antenna"]
+material = SubResource("BodyMaterial")
+top_radius = 0.012
+bottom_radius = 0.018
+height = 0.25
+
+[sub_resource type="BoxMesh" id="Speaker"]
+size = Vector3(0.13, 0.07, 0.018)
+
+[node name="PlaceholderRadio" type="Node3D"]
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("Body")
+
+[node name="Display" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.075, 0.065)
+mesh = SubResource("Display")
+
+[node name="Speaker" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.065, 0.065)
+mesh = SubResource("Speaker")
+
+[node name="Antenna" type="MeshInstance3D" parent="."]
+position = Vector3(-0.07, 0.31, 0)
+mesh = SubResource("Antenna")

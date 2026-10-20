@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/gameplay/frequency/temporal_link_presenter.gd" id="1"]
+
+[sub_resource type="CylinderMesh" id="Mesh"]
+top_radius = 0.2
+bottom_radius = 0.4
+height = 2.5
+radial_segments = 12
+
+[node name="TemporalLinkIndicator" type="Node3D" node_paths=PackedStringArray("indicator", "light")]
+script = ExtResource("1")
+indicator = NodePath("RiftPlaceholder")
+light = NodePath("Light")
+
+[node name="RiftPlaceholder" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh")
+
+[node name="Light" type="OmniLight3D" parent="."]
+omni_range = 5.0
+light_energy = 1.5
