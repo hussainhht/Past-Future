@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world/spawn_area.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/world/lab_floor.gd" id="2"]
-[ext_resource type="PackedScene" path="res://scenes/characters/student_player.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/characters/student_2d_player.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/props/lab_prop.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/world/follow_camera.gd" id="5"]
 [ext_resource type="Shader" path="res://shaders/lab_floor.gdshader" id="6"]
@@ -146,10 +146,11 @@ script = ExtResource("5")
 target_path = NodePath("../Actors/Player")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig"]
-position = Vector3(0, 11.471529, 16.383041)
-rotation = Vector3(-0.6108652, 0, 0)
+position = Vector3(0, 15.320889, 12.855752)
+rotation = Vector3(-0.8726646, 0, 0)
 current = true
-projection = 0
+projection = 1
+size = 18.0
 fov = 48.0
 near = 0.1
 far = 150.0
@@ -229,6 +230,14 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "VIEW FUTURE"
 
+[node name="CharacterButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "CHARACTER  /  F2"
+
 [node name="PauseButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 48)
@@ -259,7 +268,7 @@ offset_top = 12.0
 offset_right = -48.0
 offset_bottom = -10.0
 theme_override_font_sizes/font_size = 17
-text = "Explore the laboratory across two timelines.\nWASD / ARROWS  ·  MOVE     R  ·  RESPAWN     ESC  ·  PAUSE"
+text = "WASD / ARROWS  ·  MOVE     SHIFT  ·  RUN     F  ·  INTERACT     I  ·  INSPECT     E  ·  PICK UP / PUT DOWN\nF2  ·  CHARACTER STUDIO     R  ·  RESPAWN     ESC  ·  PAUSE"
 vertical_alignment = 1
 
 [node name="PausePanel" type="ColorRect" parent="HUD/Interface"]

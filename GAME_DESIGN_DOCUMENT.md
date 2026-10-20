@@ -1,11 +1,11 @@
 # PAST & FUTURE
-## Game Design Document — Version 0.14
+## Game Design Document — Version 0.15
 
 **Project:** CHECKPOINT — Reboot Game Jam 2026  
 **Status:** Visual Direction Approved / Technical Risk Mitigations Defined\
 **Engine:** Godot 4.x  
 **Genre:** Cooperative Mystery / Puzzle Adventure  
-**Visual Style:** Original Stylized 3D Character with Painted Furniture\
+**Visual Style:** Detailed 2D Character with Painted 3D Furniture\
 **Perspective:** Fixed-Angle Perspective View\
 **Platform:** Windows PC  
 **Multiplayer:** Two-Computer LAN Co-op; Remote Play via Tailscale; Same-PC Split-Screen Fallback\
@@ -40,22 +40,22 @@ Neither player can complete the game alone.
 
 ### 2.1 Art Style
 
-The current prototype uses an original custom-mesh 3D student and painted furniture in a 3D world with a fixed-angle perspective camera. The earlier illustrated 2D character assets remain available for visual comparison.
+The current prototype uses a detailed illustrated 2D student with eight directional views, displayed in a 3D world with painted furniture and a fixed-angle perspective camera. The earlier custom 3D student remains available as an alternative.
 
 **Characteristics:**
 
-- Simple stylized 3D character shapes with painted face shading.
+- Detailed outlined 2D character artwork, with articulated cutout animation.
 - Stylized 3D furniture with flat painted face colors.
 - Angled top-down perspective.
 - Layered foreground and background objects.
 - Depth sorting so characters can walk behind and in front of furniture.
 - Soft shadows and atmospheric lighting.
-- Limited character animations.
+- Thirteen procedural character animations, reviewed across eight directions.
 - Environmental distortion around temporal fractures.
 
 The aesthetic should be mysterious, atmospheric, readable, and distinctive.
 
-The current student is an original binary glTF mesh with shaped facial features, layered hair, tailored clothing, and articulated elbows and knees. Detailed character modeling, complex 3D environments, and skeletal rigging are not required for this experiment.
+The student follows the supplied reference: dark tousled hair, ochre jacket, cream shirt, charcoal trousers, boots, ID, right-hip messenger bag, and left-wrist watch. A shared layered rig uses explicit poses and draw orders for every direction. Complex 3D environments are not required for this experiment.
 
 ### 2.2 Artistic Identity
 
@@ -126,15 +126,15 @@ For example, a clean desk in the past becomes a damaged desk in the future. The 
 
 ### 2.6 Perspective and Depth
 
-The world uses a simple 3D ground plane, a solid 3D character, and solid 3D furniture.
+The world uses a simple 3D ground plane, a billboarded 2D character, and solid 3D furniture.
 
 - Movement occurs on the X/Z ground plane; Y represents height.
 - A `Camera3D` follows the local player with perspective projection, a 48-degree field of view, and a fixed 35-degree downward pitch. Players cannot rotate the camera or change projection.
-- The character uses a grounded mesh model that turns toward travel. Furniture uses world-aligned meshes with visible tops, fronts, and sides.
+- The character uses a transparent SubViewport rendering a 2D cutout rig onto a grounded Sprite3D billboard. Eight illustrated views follow travel direction without mirroring asymmetric accessories. Furniture uses world-aligned meshes with visible tops, fronts, and sides.
 - 3D depth testing handles front/behind overlap as players walk around furniture. Screen-Y sorting is not used for the gameplay world.
 - Low walls, floor meshes, and ground shadows provide basic structure. Both workbenches, both cabinets, and the console use solid painted models.
 
-The student uses a custom-built glTF mesh and furniture uses simple Godot meshes. Both use painted face shading. Character motion uses articulated node pivots without a skeletal rig.
+Character artwork uses layered Sprite2D parts, source joint anchors, and two-bone IK. Furniture uses simple Godot meshes with painted face shading. The older glTF student is retained as an alternative.
 
 ---
 
@@ -160,7 +160,7 @@ The student uses a custom-built glTF mesh and furniture uses simple Godot meshes
 - Walk.
 - Interact.
 
-The student uses smooth yaw rotation, opposing arm/leg swings, elbow flex, knee lift, and a neutral idle pose.
+The student has idle, walk, run, interact, inspect, pick-up, put-down, carry-idle, carry-walk, push, pull, react, and arrive clips. These are procedural cutout animations rather than drawn frame sequences. F2 opens a studio for all thirteen clips and eight views; action animations currently demonstrate presentation without modifying puzzle state.
 
 ### Character B — The Professor
 
@@ -185,7 +185,7 @@ Both characters should have recognizable silhouettes and related facial characte
 
 ### Character Production
 
-The current student is built from original mesh topology and exported to `assets/characters/student_v2.glb`; the complete reproducible mesh source is `tools/build_student_model.py`. Previously generated directional PNG artwork remains available if the team returns to the 2D approach.
+The detailed student artwork is in `assets/characters/student_2d/`; the supplied image is preserved at `assets/characters/references/student_reference.png`. `scripts/characters/student_paper_rig.gd` shares one logical rig across eight authored directional poses in `student_direction_poses.gd`. Source joint anchors, alternate hands/eyes, and explicit draw order keep parts attached. See the asset README for prompts, editing, previews, and known polish needs. The original `student_v2.glb` and its mesh builder remain available.
 
 Complex skeletal animation is not required for the prototype.
 
@@ -232,7 +232,7 @@ Examples:
 - F — Activate Machine
 - F — Adjust Support
 
-Character and furniture meshes use depth testing. Character movement retains a small ground collision footprint; furniture, walls, blocked passages, and machines use 3D collision volumes around their physical footprints.
+Character billboards and furniture meshes use depth testing. Character movement retains a small ground collision footprint; furniture, walls, blocked passages, and machines use 3D collision volumes around their physical footprints.
 
 No jumping, combat, or precision platforming is required.
 
@@ -430,15 +430,15 @@ LAN play uses the Host/Join flow with ENet directly, without Tailscale or router
 5. Allow the game through the host's firewall on UDP `7000` if prompted. Guest networks or client isolation can block device-to-device traffic even when the Wi-Fi name matches.
 6. Leaving the session closes its network connection. In the lobby, if the guest leaves, the host stays available for a replacement. During gameplay, losing either player blocks exploration until returning to the menu and starting a fresh session.
 
-**Current Implementation:** The LAN lobby supports hosting, joining by IP, role assignment, host-confirmed ready status, and a host-authorized transition into a temporary spawn laboratory. Each device displays its own timeline and independently controls one solid 3D student prototype character. Connection loss blocks movement and offers a return to the menu. Chapter 0 puzzles and same-PC split-screen remain future work. Cross-device testing on the intended Wi-Fi is still required; two-process loopback testing alone does not verify a real Wi-Fi network.
+**Current Implementation:** The LAN lobby supports hosting, joining by IP, role assignment, host-confirmed ready status, and a host-authorized transition into a temporary spawn laboratory. Each device displays its own timeline and independently controls one illustrated 2D student prototype character. Connection loss blocks movement and offers a return to the menu. Chapter 0 puzzles and same-PC split-screen remain future work. Cross-device testing on the intended Wi-Fi is still required; two-process loopback testing alone does not verify a real Wi-Fi network.
 
-**Spawn Area Preview:** Play Together → Explore the Lab opens the same room without networking. Use WASD or arrow keys to move, R to return to the spawn marker, and Esc to pause or return to the menu. The camera follows at a fixed angle. The preview's View Future / View Past button changes the local timeline appearance; this switch is unavailable during LAN play.
+**Spawn Area Preview:** Play Together → Explore the Lab opens the same room without networking. Use WASD or arrows to move, Shift to run, F for an interaction animation, I to inspect/read, E to pick up/put down a demonstration document, R to respawn, and Esc to pause. F2 or the Character button opens the animation studio. The camera follows at a fixed angle. The preview's View Future / View Past button changes the local timeline appearance; this switch is unavailable during LAN play.
 
-**Current Visual Direction:** Both tables, both cabinets, and the console use solid 3D models with flat painted face shading and Past/Future palettes. The camera keeps a fixed 35-degree downward pitch and perspective projection; Q/E and P do not change the view. Reusable models are `scenes/props/table_visual.tscn`, `cabinet_visual.tscn`, and `console_visual.tscn`, selected by the Kind property on `scenes/props/lab_prop.tscn`.
+**Current Visual Direction:** Both tables, both cabinets, and the console use solid 3D models with flat painted face shading and Past/Future palettes. The camera keeps a fixed 35-degree downward pitch and perspective projection; Q/E and P do not change the view; E now triggers the pick-up/put-down animation. Reusable models are `scenes/props/table_visual.tscn`, `cabinet_visual.tscn`, and `console_visual.tscn`, selected by the Kind property on `scenes/props/lab_prop.tscn`.
 
-**Character Model:** `scenes/characters/student_model.tscn` loads the original custom mesh `assets/characters/student_v2.glb`. Its 10,168 triangles form a shaped face, layered swept hair, jacket lapels and pockets, an ID badge, trousers, shoes, and a leather messenger bag. The player displays it at a nominal 2.15-unit height. `student_player.tscn` supplies the collision body and shadow; `scripts/characters/student_player.gd` controls smooth turning and articulated arm, elbow, leg, and knee motion. Jacket colors follow the Past/Future palette. Both timelines currently share the student; an older professor remains future work. Model source, editing instructions, and a three-angle preview are documented in `assets/characters/STUDENT_MODEL.md`. Earlier 2D character assets remain available as an alternative.
+**Character Rig:** `scenes/characters/student_2d_player.tscn` supplies a grounded collision body, shadow, transparent viewport, and depth-tested billboard. `student_paper_rig.tscn` renders the eight-view illustrated character at a nominal 2.15-unit visual height. Thirteen procedural clips use explicit directional poses and joint anchors. The studio supports view/clip selection, pause, and speed adjustment. Both timelines currently share the student with subtle timeline tinting; the older professor remains future work. These action animations do not implement puzzle interactions or inventory. Asset production and editing are documented in `assets/characters/student_2d/README.md`.
 
-The replaceable room is `scenes/world/spawn_area.tscn`. Move its `SpawnPoint` marker to change the initial position, or rearrange the reusable furniture instances under `Actors`. The player scene is `scenes/characters/student_player.tscn`; its origin remains at the character's feet and its small footprint handles collision. `SpawnPoint` is a `Marker3D` on the ground plane. `Actors` contains grounded collision bodies, solid furniture meshes, and a solid character model; `CameraRig` provides fixed-angle perspective following using `scripts/world/follow_camera.gd`. Each device follows its own player with `Camera3D`; movement is not mirrored into the other timeline.
+The replaceable room is `scenes/world/spawn_area.tscn`. Move its `SpawnPoint` marker to change the initial position, or rearrange the reusable furniture instances under `Actors`. The player scene is `scenes/characters/student_2d_player.tscn`; its origin remains at the character's feet and its small footprint handles collision. `SpawnPoint` is a `Marker3D` on the ground plane. `Actors` contains grounded collision bodies, solid furniture meshes, and a billboarded 2D character; `CameraRig` provides fixed-angle perspective following using `scripts/world/follow_camera.gd`. Each device follows its own player with `Camera3D`; movement is not mirrored into the other timeline.
 
 ### Synchronized Information
 
@@ -515,14 +515,14 @@ Use an external voice call for online cooperative communication.
 
 ## 10. Godot 2.5D Architecture — UPDATED
 
-The gameplay world uses simple 3D geometry and 3D physics, with a painted 3D character and furniture. Menus and HUD remain native 2D UI.
+The gameplay world uses simple 3D geometry and physics, with an illustrated 2D character and painted 3D furniture. Menus and HUD remain native 2D UI.
 
 ### Main Nodes
 
 - `Node3D` — World and camera-rig organization.
 - `CharacterBody3D` — Camera-relative movement on the ground.
-- `Node3D` limb pivots / `MeshInstance3D` — Character body, smooth facing, and procedural arm/leg animation.
-- `Sprite3D` — Floor spawn marker; earlier directional character assets are retained as an alternative.
+- `Node2D` / `Sprite2D` — Eight-view cutout rig with IK, explicit joint anchors, and procedural animation.
+- `SubViewport` / `Sprite3D` — Render the transparent 2D rig into the 3D world as a grounded billboard; also display the floor spawn marker.
 - `StaticBody3D` / `CollisionShape3D` — Ground, wall, and object-footprint collision.
 - `Camera3D` — Fixed-angle perspective following.
 - `Marker3D` — Editable spawn position.
@@ -534,12 +534,12 @@ The gameplay world uses simple 3D geometry and 3D physics, with a painted 3D cha
 
 ### Critical Risk 2 — Sprite Anchors, Billboards, and Depth
 
-**Problem:** Character feet and furniture bases must remain aligned with the floor. Mismatched collision boxes prevent walking naturally around furniture. The earlier sprite alternative also requires consistent ground anchors and alpha cutouts.
+**Problem:** Character feet and furniture bases must remain aligned with the floor. Mismatched collision boxes prevent walking naturally around furniture. The character billboard requires consistent ground anchors and alpha cutouts.
 
 **Required Scene Convention:**
 
 - Place each character/prop root at its ground contact point on X/Z. Keep sprites attached to that anchor and exclude transparent padding from their visible-base offset.
-- Build the character under a grounded visual root with local +Z as its forward direction. Turn the visual independently from the collision body. Furniture meshes stay fixed in world space. If restoring sprites, keep their visible feet aligned with the same root.
+- Keep the character billboard under a grounded visual root. Change the 2D rig view using camera-relative travel, preserve animation phase, and align visible feet with the collision origin. Furniture meshes stay fixed in world space.
 - Use simple painted mesh materials for furniture. Each instance has independent materials so Past/Future recoloring cannot affect another prop.
 - Enable depth testing and alpha-cutout rendering for character cards. Transparent texture regions must not block the objects behind them. Furniture meshes remain opaque.
 - Use 3D collision shapes around furniture footprints and body height, independent of camera orientation. Collision volumes stay fixed in world space.
@@ -643,9 +643,9 @@ The future variant may contain cracks, damage, broken screens, and missing compo
 
 **Step 4 — Godot Integration**
 
-Use the custom student glTF model and reusable Godot furniture scenes. Retain the earlier imported PNG character sheet as an alternative.
+Use the detailed student cutout rig and reusable Godot furniture scenes. Keep the supplied reference, generated part atlases, prompts, source joint metadata, and explicit directional poses together for iteration.
 
-Arrange ground meshes, solid furniture scenes, and the reusable student mesh scene in the 3D world. Keep the student visual root separate from its collision body.
+Arrange ground meshes, solid furniture scenes, and the reusable billboarded student scene in the 3D world. Keep the student visual root separate from its collision body.
 
 Set each scene root to the visible ground contact point and position its geometry to match. Preserve matching anchors across animation frames and past/future variants.
 
@@ -661,7 +661,7 @@ Use lighting, overlays, particles, and sound to differentiate the timelines.
 
 - Maintain a consistent viewing angle.
 - Maintain consistent proportions and pixel density.
-- Use solid meshes for current standalone props; transparency is only needed for optional sprite assets.
+- Use solid meshes for standalone furniture and transparent RGBA artwork for the character rig.
 - Align every sprite scene to its visible feet or base contact point; transparent padding and shadows do not define the anchor.
 - Keep contact anchors consistent across all frames and timeline variants.
 - Deliver painted furniture meshes with ground-footprint collisions and verified depth overlap, following Section 10.
@@ -674,7 +674,7 @@ Use lighting, overlays, particles, and sound to differentiate the timelines.
 **Characters:**
 - Young student.
 - Older professor.
-- Basic idle and walk animations.
+- Student: thirteen procedural cutout clips across eight views; professor animation remains to be produced.
 
 **Environment:**
 - Floor and wall tiles.
@@ -785,7 +785,7 @@ Audio should provide clear feedback without overpowering player-to-player commun
 
 ### Required
 
-- Simple painted character and furniture models with a fixed-angle perspective presentation.
+- Illustrated 2D characters and painted 3D furniture with a fixed-angle perspective presentation.
 - Two controllable characters.
 - Eight-direction movement.
 - Simple interaction system.
@@ -802,7 +802,7 @@ Audio should provide clear feedback without overpowering player-to-player commun
 ### Optional
 
 - Third timed puzzle.
-- Advanced sprite animations.
+- Further hand-authored sprite animation polish and directional transitions.
 - Additional fracture particles.
 - Dynamic lighting transitions.
 - Animated cutscene elements.
@@ -862,7 +862,7 @@ Audio should provide clear feedback without overpowering player-to-player commun
 
 ### Day 1 — Technical Foundation
 
-- Establish a fixed-angle 3D world with a simple ground plane and painted character/furniture meshes.
+- Establish a fixed-angle 3D world with a simple ground plane, billboarded characters, and painted furniture meshes.
 - Implement basic player movement.
 - Build the main Host/Join menu.
 - Add Local Co-op to the menu and establish separate timeline views and input actions.
@@ -922,7 +922,7 @@ The demo is complete when:
 11. The game can be completed in approximately 5–10 minutes.
 12. Both required puzzles and the ending are playable in local split-screen on one PC with internet disabled.
 13. Local input and puzzle UI are routed to the correct player; both players can move and interact simultaneously.
-14. Character feet and prop bases define grounded origins. Walking around objects changes perspective and occlusion while reusing the same character and furniture meshes, without anchor drift or camera rotation, in both timelines.
+14. Character feet and prop bases define grounded origins. Walking around objects changes perspective and occlusion while reusing the character artwork and furniture meshes, without anchor drift or camera rotation, in both timelines.
 15. Character and freestanding-prop 3D collisions follow their ground footprints and stay fixed as the camera follows the player; walls block their intended full gameplay footprint.
 16. Invalid or repeated requests cannot corrupt progression; stale updates are ignored, host and client state agree, and initial snapshots restore the correct client view before interaction.
 17. Connection failures return players to a usable menu with a clear Local Co-op option, and the release includes tested remote setup instructions and local controls.
@@ -949,6 +949,8 @@ The Game Jam prototype is the opening chapter of a larger story.
 
 ## 19. Technical References
 
+- [Eight-direction character rigging in Spine 2D — Armanimation](https://www.youtube.com/watch?v=pxP87em31e8).
+- [Creator discussion: shared rigs, directional poses, and animation continuity](https://en.esotericsoftware.com/forum/d/24092-best-practices-of-rigging-8-directional-character-in-spine-2d).
 - [Godot high-level multiplayer: ENet, RPCs, and authority](https://docs.godotengine.org/en/stable/tutorials/networking/high_level_multiplayer.html).
 - [Godot SpriteBase3D: billboarding, offsets, and alpha cutouts](https://docs.godotengine.org/en/stable/classes/class_spritebase3d.html).
 - [Godot Camera3D: orthographic and perspective projection](https://docs.godotengine.org/en/stable/classes/class_camera3d.html).
@@ -957,9 +959,9 @@ The Game Jam prototype is the opening chapter of a larger story.
 
 ---
 
-**Document Version:** 0.9\
+**Document Version:** 0.15\
 **Narrative:** Approved  
-**Visual Direction:** Custom Stylized 3D Student and Painted Furniture\
+**Visual Direction:** Detailed 2D Student and Painted 3D Furniture\
 **Gameplay and Level Scope:** Updated for Two Developers  
-**Technical Risk Plan:** Tailscale Remote Play / Required Local Split-Screen / Grounded Billboard Sprites / Rotatable Perspective Camera / Host-Authoritative Puzzle State\
+**Technical Risk Plan:** Tailscale Remote Play / Required Local Split-Screen / Grounded Billboard Sprites / Fixed Perspective Camera / Host-Authoritative Puzzle State\
 **Next Milestone:** Verify Cross-Network Play, Shared Puzzle Authority, and the Local Co-op Foundation

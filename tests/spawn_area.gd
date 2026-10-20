@@ -53,26 +53,42 @@ func _run() -> void:
 	var near_span := camera.unproject_position(near_point + camera.global_basis.x).distance_to(camera.unproject_position(near_point))
 	var far_span := camera.unproject_position(far_point + camera.global_basis.x).distance_to(camera.unproject_position(far_point))
 	check(camera.projection == Camera3D.PROJECTION_PERSPECTIVE and near_span > far_span * 2.0, "Perspective view must make distant objects appear smaller")
-	await capture("past-future-student-3d-front.png")
-	var visual: Node3D = player.get_node("Visual")
-	check(visual.find_children("*", "Sprite3D", true, false).is_empty(), "3D student must use solid meshes instead of sprite cards")
-	check(visual.find_children("*", "MeshInstance3D", true, false).size() > 15, "3D student must have solid body, face, clothing, and limbs")
-	var left_leg: Node3D = visual.get_node("StudentModel/LeftLeg")
-	var right_leg: Node3D = visual.get_node("StudentModel/RightLeg")
-	var left_knee: Node3D = left_leg.get_node("LeftKnee")
-	var right_knee: Node3D = right_leg.get_node("RightKnee")
-	for facing in [{"action": "move_right", "yaw": PI / 2.0}, {"action": "move_left", "yaw": -PI / 2.0}, {"action": "move_up", "yaw": PI}, {"action": "move_down", "yaw": 0.0}]:
+	await capture("past-future-student-2d-front.png")
+	var visual: Sprite3D = player.get_node("Visual")
+	var rig = player.rig
+	check(visual.texture is ViewportTexture and visual.billboard == BaseMaterial3D.BILLBOARD_ENABLED, "Student must render its articulated 2D rig as camera-facing artwork")
+	for facing in [{"action": "move_right", "view": "east"}, {"action": "move_left", "view": "west"}, {"action": "move_up", "view": "north"}, {"action": "move_down", "view": "south"}]:
 		Input.action_press(facing.action)
-		await tick(18)
-		check(absf(angle_difference(visual.rotation.y, facing.yaw)) < 0.01, "Moving must turn the 3D student toward travel")
-		check(absf(left_leg.rotation.x) > 0.005 and is_zero_approx(left_leg.rotation.x + right_leg.rotation.x), "Walking must swing the two legs in opposite phases")
-		check(maxf(left_knee.rotation.x, right_knee.rotation.x) > 0.005, "Walking must bend a knee to lift the swinging foot")
-		await capture("past-future-student-3d-" + facing.action + ".png")
+		await tick(12)
+		check(rig.facing == facing.view and rig.animation_name == "walk", "Movement must select the correct illustrated walking direction")
 		Input.action_release(facing.action)
-		await tick(15)
-		check(absf(angle_difference(visual.rotation.y, facing.yaw)) < 0.01, "Idle must retain the last facing direction")
-		check(is_zero_approx(left_knee.rotation.x) and is_zero_approx(right_knee.rotation.x), "Knees must straighten when the character stops")
-		check(absf(visual.position.y) < 0.001 and is_zero_approx(left_leg.rotation.x) and is_zero_approx(right_leg.rotation.x), "Limbs and walking bounce must settle when movement stops")
+		await tick(8)
+		check(rig.facing == facing.view and rig.animation_name == "idle", "Idle must retain the last illustrated direction")
+	area.respawn()
+	send_key(KEY_SHIFT, true)
+	Input.action_press("move_right")
+	await tick(8)
+	check(Vector2(player.velocity.x, player.velocity.z).length() > player.speed * 1.4 and rig.animation_name == "run", "Shift must activate running and the run animation")
+	send_key(KEY_SHIFT, false)
+	Input.action_release("move_right")
+	await tick()
+	check(player.play_action("pick_up"), "Player must be able to start the pickup animation")
+	var action_position := player.position
+	Input.action_press("move_right")
+	await tick(8)
+	check(player.position.distance_to(action_position) < 0.03, "Pickup animation must keep the player grounded in place")
+	Input.action_release("move_right")
+	await create_timer(1.25).timeout
+	check(player.carrying, "Finishing pickup must select the carrying pose")
+	check(player.play_action("put_down"), "Carried object must have a put-down animation")
+	await create_timer(1.25).timeout
+	check(not player.carrying, "Finishing put-down must return to normal locomotion")
+	area._open_character_studio()
+	await tick()
+	check(is_instance_valid(area._character_studio) and not player.controls_enabled, "Character studio must open without leaving the level and block movement")
+	area._character_studio.request_close()
+	await tick()
+	check(player.controls_enabled and not is_instance_valid(area._character_studio), "Closing the studio must restore gameplay")
 	area.respawn()
 	Input.action_press("move_right")
 	await tick(12)
@@ -126,23 +142,22 @@ func _run() -> void:
 	var left_top: MeshInstance3D = area.get_node("Actors/LeftTable/Visual/Table/Top")
 	var right_top: MeshInstance3D = area.get_node("Actors/RightTable/Visual/Table/Top")
 	var past_paint: Color = left_top.material_override.get_shader_parameter("paint_color")
-	var jacket: MeshInstance3D = visual.get_node("StudentModel/Jacket")
-	var past_jacket: Color = jacket.material_override.get_shader_parameter("paint_color")
+	var past_tint: Color = rig.palette_tint
 	var past_color: Color = player.body_color
 	area.get_node("%TimelineButton").pressed.emit()
 	check(area.timeline == "Future" and player.body_color != past_color, "Preview toggle must switch timeline and character appearance")
 	await tick()
-	check(jacket.material_override.get_shader_parameter("paint_color") != past_jacket, "Timeline switching must recolor the 3D jacket")
+	check(rig.palette_tint != past_tint, "Timeline switching must tint the illustrated character")
 	check(left_top.material_override.get_shader_parameter("paint_color") != past_paint, "Future timeline must recolor the solid furniture")
 	area.get_node("Actors/LeftTable").future = false
 	check(left_top.material_override.get_shader_parameter("paint_color") == past_paint, "Furniture must restore its past paint")
 	check(right_top.material_override.get_shader_parameter("paint_color") != past_paint, "Recoloring one furniture instance must not affect another")
 	area.get_node("Actors/LeftTable").future = true
-	await capture("past-future-student-3d-future.png")
+	await capture("past-future-student-2d-future.png")
 	area.get_node("%TimelineButton").pressed.emit()
 	var camera_basis := camera.global_basis
 	var camera_position := camera.global_position
-	for key in [KEY_Q, KEY_E, KEY_P]:
+	for key in [KEY_Q, KEY_P]:
 		send_key(key, true)
 		send_key(key, false)
 		await create_timer(0.35).timeout

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/characters/student_2d_player.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/characters/student_paper_rig.tscn" id="2"]
+
+[sub_resource type="CylinderShape3D" id="Footprint"]
+height = 0.4
+radius = 0.28
+
+[sub_resource type="StandardMaterial3D" id="ShadowMaterial"]
+shading_mode = 0
+albedo_color = Color(0.09, 0.13, 0.14, 1)
+
+[sub_resource type="CylinderMesh" id="ShadowMesh"]
+material = SubResource("ShadowMaterial")
+top_radius = 0.43
+bottom_radius = 0.43
+height = 0.006
+radial_segments = 32
+
+[node name="Student2DPlayer" type="CharacterBody3D"]
+floor_snap_length = 0.25
+script = ExtResource("1")
+
+[node name="Footprint" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.2, 0)
+shape = SubResource("Footprint")
+
+[node name="Shadow" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.012, 0)
+cast_shadow = 0
+mesh = SubResource("ShadowMesh")
+
+[node name="CharacterViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(384, 576)
+render_target_update_mode = 4
+
+[node name="StudentPaperRig" parent="CharacterViewport" instance=ExtResource("2")]
+position = Vector2(192, 548)
+
+[node name="Visual" type="Sprite3D" parent="."]
+cast_shadow = 0
+offset = Vector2(0, 260)
+pixel_size = 0.00419922
+billboard = 1
+alpha_cut = 1
+alpha_scissor_threshold = 0.12

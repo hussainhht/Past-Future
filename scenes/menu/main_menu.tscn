@@ -1,12 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://bj3s6mmbowlma"]
 
-[ext_resource type="Script" path="res://scripts/menu/main_menu.gd" id="1_menu"]
-[ext_resource type="Texture2D" path="res://assets/ui/temporal_background.svg" id="2_background"]
-[ext_resource type="Script" path="res://scripts/menu/temporal_backdrop.gd" id="3_atmosphere"]
+[ext_resource type="Script" uid="uid://ddxt6rqj5p6i1" path="res://scripts/menu/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://cq63ai54uej4g" path="res://assets/ui/temporal_background.svg" id="2_background"]
+[ext_resource type="Script" uid="uid://dct502t6dqx4p" path="res://scripts/menu/temporal_backdrop.gd" id="3_atmosphere"]
 
 [sub_resource type="SystemFont" id="SystemFont_title"]
 font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
-font_weight = 400
 
 [sub_resource type="SystemFont" id="SystemFont_italic"]
 font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
@@ -14,7 +13,7 @@ font_italic = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=791939971]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1299889174]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,7 +33,7 @@ mouse_filter = 2
 texture = ExtResource("2_background")
 expand_mode = 1
 
-[node name="Atmosphere" type="Control" parent="."]
+[node name="Atmosphere" type="Control" parent="." unique_id=804972935]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,7 +43,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_atmosphere")
 
-[node name="Layout" type="Control" parent="."]
+[node name="Layout" type="Control" parent="." unique_id=452914688]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,7 +52,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TopLine" type="ColorRect" parent="Layout"]
+[node name="TopLine" type="ColorRect" parent="Layout" unique_id=1340930590]
+layout_mode = 0
 offset_left = 80.0
 offset_top = 93.0
 offset_right = 1520.0
@@ -61,7 +61,8 @@ offset_bottom = 94.0
 mouse_filter = 2
 color = Color(0.5, 0.59, 0.57, 0.18)
 
-[node name="Brand" type="Label" parent="Layout"]
+[node name="Brand" type="Label" parent="Layout" unique_id=2017737113]
+layout_mode = 0
 offset_left = 80.0
 offset_top = 53.0
 offset_right = 580.0
@@ -70,7 +71,8 @@ theme_override_colors/font_color = Color(0.72, 0.75, 0.68, 1)
 theme_override_font_sizes/font_size = 15
 text = "C H E C K P O I N T    /    T E M P O R A L  R E S E A R C H"
 
-[node name="Edition" type="Label" parent="Layout"]
+[node name="Edition" type="Label" parent="Layout" unique_id=503219867]
+layout_mode = 0
 offset_left = 1170.0
 offset_top = 53.0
 offset_right = 1520.0
@@ -80,48 +82,50 @@ theme_override_font_sizes/font_size = 14
 text = "R E B O O T   G A M E   J A M   /   2 0 2 6"
 horizontal_alignment = 2
 
-[node name="TitleBlock" type="VBoxContainer" parent="Layout"]
+[node name="TitleBlock" type="VBoxContainer" parent="Layout" unique_id=759534350]
+layout_mode = 0
 offset_left = 112.0
 offset_top = 192.0
 offset_right = 700.0
 offset_bottom = 482.0
 theme_override_constants/separation = 0
 
-[node name="Eyebrow" type="Label" parent="Layout/TitleBlock"]
+[node name="Eyebrow" type="Label" parent="Layout/TitleBlock" unique_id=1888590282]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.69, 0.59, 0.43, 1)
 theme_override_font_sizes/font_size = 14
 text = "T W O  L I V E S .   O N E  F R A C T U R E ."
 
-[node name="Past" type="Label" parent="Layout/TitleBlock"]
+[node name="Past" type="Label" parent="Layout/TitleBlock" unique_id=29669714]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 108
 text = "PAST"
 
-[node name="Future" type="Label" parent="Layout/TitleBlock"]
+[node name="Future" type="Label" parent="Layout/TitleBlock" unique_id=245611583]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.57, 0.78, 0.79, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 94
 text = "& FUTURE"
 
-[node name="Tagline" type="Label" parent="Layout/TitleBlock"]
+[node name="Tagline" type="Label" parent="Layout/TitleBlock" unique_id=1026876945]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.67, 0.71, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_italic")
 theme_override_font_sizes/font_size = 22
 text = "What you change, I become."
 
-[node name="Actions" type="VBoxContainer" parent="Layout"]
+[node name="Actions" type="VBoxContainer" parent="Layout" unique_id=610663681]
+layout_mode = 0
 offset_left = 112.0
 offset_top = 536.0
 offset_right = 456.0
 offset_bottom = 748.0
 theme_override_constants/separation = 12
 
-[node name="PlayButton" type="Button" parent="Layout/Actions"]
+[node name="PlayButton" type="Button" parent="Layout/Actions" unique_id=1798032236]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(344, 62)
 layout_mode = 2
@@ -129,11 +133,11 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 18
 text = "PLAY TOGETHER                         →"
 
-[node name="SecondaryActions" type="HBoxContainer" parent="Layout/Actions"]
+[node name="SecondaryActions" type="HBoxContainer" parent="Layout/Actions" unique_id=1518126227]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="SettingsButton" type="Button" parent="Layout/Actions/SecondaryActions"]
+[node name="SettingsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=354479432]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(166, 50)
 layout_mode = 2
@@ -142,7 +146,7 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
 text = "SETTINGS"
 
-[node name="CreditsButton" type="Button" parent="Layout/Actions/SecondaryActions"]
+[node name="CreditsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=868646930]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(166, 50)
 layout_mode = 2
@@ -151,7 +155,7 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 14
 text = "CREDITS"
 
-[node name="QuitButton" type="Button" parent="Layout/Actions"]
+[node name="QuitButton" type="Button" parent="Layout/Actions" unique_id=653793475]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
@@ -161,7 +165,8 @@ theme_override_font_sizes/font_size = 14
 theme_override_styles/normal = SubResource("StyleBoxEmpty")
 text = "QUIT"
 
-[node name="PastStamp" type="Label" parent="Layout"]
+[node name="PastStamp" type="Label" parent="Layout" unique_id=682961004]
+layout_mode = 0
 offset_left = 858.0
 offset_top = 741.0
 offset_right = 1050.0
@@ -170,7 +175,8 @@ theme_override_colors/font_color = Color(0.68, 0.57, 0.41, 1)
 theme_override_font_sizes/font_size = 14
 text = "I   /   THE STUDENT"
 
-[node name="FutureStamp" type="Label" parent="Layout"]
+[node name="FutureStamp" type="Label" parent="Layout" unique_id=540022078]
+layout_mode = 0
 offset_left = 1170.0
 offset_top = 741.0
 offset_right = 1400.0
@@ -179,7 +185,8 @@ theme_override_colors/font_color = Color(0.44, 0.65, 0.69, 1)
 theme_override_font_sizes/font_size = 14
 text = "II   /   THE PROFESSOR"
 
-[node name="YearGap" type="Label" parent="Layout"]
+[node name="YearGap" type="Label" parent="Layout" unique_id=1232014485]
+layout_mode = 0
 offset_left = 965.0
 offset_top = 780.0
 offset_right = 1285.0
@@ -189,7 +196,8 @@ theme_override_font_sizes/font_size = 13
 text = "S E P A R A T E D  B Y  3 1  Y E A R S"
 horizontal_alignment = 1
 
-[node name="BottomLine" type="ColorRect" parent="Layout"]
+[node name="BottomLine" type="ColorRect" parent="Layout" unique_id=862381468]
+layout_mode = 0
 offset_left = 80.0
 offset_top = 830.0
 offset_right = 1520.0
@@ -197,7 +205,8 @@ offset_bottom = 831.0
 mouse_filter = 2
 color = Color(0.5, 0.59, 0.57, 0.18)
 
-[node name="Chapter" type="Label" parent="Layout"]
+[node name="Chapter" type="Label" parent="Layout" unique_id=805845255]
+layout_mode = 0
 offset_left = 80.0
 offset_top = 850.0
 offset_right = 800.0
@@ -206,7 +215,8 @@ theme_override_colors/font_color = Color(0.55, 0.61, 0.59, 1)
 theme_override_font_sizes/font_size = 13
 text = "CHAPTER 0     /     THE FIRST FRACTURE"
 
-[node name="CoopHint" type="Label" parent="Layout"]
+[node name="CoopHint" type="Label" parent="Layout" unique_id=1037026644]
+layout_mode = 0
 offset_left = 1000.0
 offset_top = 850.0
 offset_right = 1520.0
@@ -216,7 +226,7 @@ theme_override_font_sizes/font_size = 13
 text = "A MYSTERY FOR TWO     ·     MOUSE OR ↑ ↓ + ENTER"
 horizontal_alignment = 2
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="." unique_id=796052303]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -226,7 +236,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.015, 0.035, 0.05, 0.88)
 
-[node name="Center" type="CenterContainer" parent="Overlay"]
+[node name="Center" type="CenterContainer" parent="Overlay" unique_id=1171869440]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -235,66 +245,67 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Panel" type="PanelContainer" parent="Overlay/Center"]
+[node name="Panel" type="PanelContainer" parent="Overlay/Center" unique_id=1498367688]
 custom_minimum_size = Vector2(660, 0)
 layout_mode = 2
 
-[node name="Margin" type="MarginContainer" parent="Overlay/Center/Panel"]
+[node name="Margin" type="MarginContainer" parent="Overlay/Center/Panel" unique_id=1225273925]
 layout_mode = 2
 theme_override_constants/margin_left = 44
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 44
 theme_override_constants/margin_bottom = 36
 
-[node name="Pages" type="VBoxContainer" parent="Overlay/Center/Panel/Margin"]
+[node name="Pages" type="VBoxContainer" parent="Overlay/Center/Panel/Margin" unique_id=1713784663]
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="PlayPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
+[node name="PlayPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=890546259]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1803860977]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 38
 text = "Two lives. One connection."
 
-[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1223210088]
 layout_mode = 2
-text = "Two computers. One Wi-Fi network.\nHost a session, or join your partner's game."
+text = "Two computers. One Wi-Fi network.
+Host a session, or join your partner's game."
 
-[node name="LocalButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="LocalButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=134157205]
 layout_mode = 2
 disabled = true
 text = "SAME-PC SPLIT-SCREEN     /     COMING SOON"
 
-[node name="PreviewButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="PreviewButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=792633975]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "EXPLORE THE LAB     /     SOLO PREVIEW"
 
-[node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "HOST ON WI-FI     /     THE STUDENT"
 
-[node name="JoinButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="JoinButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=169651772]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "JOIN ON WI-FI     /     THE PROFESSOR"
 
-[node name="LanPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
+[node name="LanPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=1531286523]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="LanTitle" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="LanTitle" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=737527738]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
@@ -302,92 +313,96 @@ theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 40
 text = "Play on Wi-Fi"
 
-[node name="NetworkHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="NetworkHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1273809504]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Same Wi-Fi or wired LAN  ·  UDP 7000\nUse the same game build on both computers."
+text = "Same Wi-Fi or wired LAN  ·  UDP 7000
+Use the same game build on both computers."
 
-[node name="HostDetails" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="HostDetails" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1244143805]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Instructions" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails"]
+[node name="Instructions" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails" unique_id=681710233]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Share your Wi-Fi address with your partner.\nIf several appear, select your Wi-Fi adapter's address."
+text = "Share your Wi-Fi address with your partner.
+If several appear, select your Wi-Fi adapter's address."
 
-[node name="AddressRow" type="HBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails"]
+[node name="AddressRow" type="HBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails" unique_id=1218396371]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HostAddresses" type="OptionButton" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow"]
+[node name="HostAddresses" type="OptionButton" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow" unique_id=335645454]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 
-[node name="CopyAddress" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow"]
+[node name="CopyAddress" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow" unique_id=543223925]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "COPY"
 
-[node name="JoinDetails" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="JoinDetails" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1583503661]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="HostAddress" type="LineEdit" parent="Overlay/Center/Panel/Margin/Pages/LanPage/JoinDetails"]
+[node name="HostAddress" type="LineEdit" parent="Overlay/Center/Panel/Margin/Pages/LanPage/JoinDetails" unique_id=1399339240]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 placeholder_text = "Host IP address, e.g. 192.168.1.10"
 max_length = 45
 
-[node name="ConnectButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/JoinDetails"]
+[node name="ConnectButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/JoinDetails" unique_id=1474584663]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "JOIN GAME"
 
-[node name="Roles" type="HBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="Roles" type="HBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=317311441]
 layout_mode = 2
 theme_override_constants/separation = 32
 
-[node name="PastRole" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/Roles"]
+[node name="PastRole" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/Roles" unique_id=738587789]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.85, 0.73, 0.54, 1)
 theme_override_font_sizes/font_size = 16
-text = "STUDENT · PAST\nWaiting for host"
+text = "STUDENT · PAST
+Waiting for host"
 
-[node name="FutureRole" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/Roles"]
+[node name="FutureRole" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage/Roles" unique_id=280838424]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.53, 0.78, 0.8, 1)
 theme_override_font_sizes/font_size = 16
-text = "PROFESSOR · FUTURE\nWaiting to join"
+text = "PROFESSOR · FUTURE
+Waiting to join"
 
-[node name="LanStatus" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="LanStatus" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1093145008]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 58)
 theme_override_font_sizes/font_size = 16
 text = "Waiting for a connection…"
 autowrap_mode = 3
 
-[node name="ReadyButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="ReadyButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=495693825]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "I'M READY"
 
-[node name="SessionHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="SessionHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1987846046]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -395,33 +410,33 @@ theme_override_colors/font_color = Color(0.53, 0.64, 0.64, 1)
 theme_override_font_sizes/font_size = 15
 text = "Professor: mark ready. Student: start the game."
 
-[node name="StartGameButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage"]
+[node name="StartGameButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1392309305]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "START GAME"
 
-[node name="SettingsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
+[node name="SettingsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=831165982]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage"]
+[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=256981933]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 40
 text = "Settings"
 
-[node name="FullscreenToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage"]
+[node name="FullscreenToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=1381121658]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "Fullscreen"
 
-[node name="MotionToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage"]
+[node name="MotionToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=291373602]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
@@ -429,51 +444,59 @@ mouse_default_cursor_shape = 2
 button_pressed = true
 text = "Ambient motion"
 
-[node name="Hint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage"]
+[node name="Hint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=1395511723]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.46, 0.57, 0.58, 1)
 theme_override_font_sizes/font_size = 15
 text = "Changes are saved automatically."
 
-[node name="CreditsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
+[node name="CreditsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=691516109]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage"]
+[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage" unique_id=1550104897]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 40
 text = "Across the years"
 
-[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage"]
+[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage" unique_id=664070220]
 layout_mode = 2
-text = "PAST & FUTURE\nA cooperative mystery by CHECKPOINT.\n\nCreated for Reboot Game Jam 2026.\nTheme: TWO\n\nTwo versions of one person.\nThirty-one years apart.\nA future only you can change."
+text = "PAST & FUTURE
+A cooperative mystery by CHECKPOINT.
 
-[node name="QuitPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages"]
+Created for Reboot Game Jam 2026.
+Theme: TWO
+
+Two versions of one person.
+Thirty-one years apart.
+A future only you can change."
+
+[node name="QuitPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=591125676]
 visible = false
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage"]
+[node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=2062193125]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 40
 text = "Leave this timeline?"
 
-[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage"]
+[node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=996593763]
 layout_mode = 2
 text = "The past will be here when you return."
 
-[node name="ConfirmQuit" type="Button" parent="Overlay/Center/Panel/Margin/Pages/QuitPage"]
+[node name="ConfirmQuit" type="Button" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=1585805487]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "QUIT GAME"
 
-[node name="BackButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages"]
+[node name="BackButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages" unique_id=1912238034]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_default_cursor_shape = 2

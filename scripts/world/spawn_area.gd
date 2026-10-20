@@ -7,6 +7,7 @@ extends Node3D
 var _networked: bool = false
 var _paused: bool = false
 var _disconnected: bool = false
+var _character_studio: Control
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -23,6 +24,7 @@ func _ready() -> void:
 	%MenuButton.pressed.connect(_return_to_menu)
 	%QuitGameButton.pressed.connect(func() -> void: get_tree().quit())
 	%TimelineButton.pressed.connect(_switch_preview_timeline)
+	%CharacterButton.pressed.connect(_open_character_studio)
 	%TimelineButton.visible = not _networked
 	player.view_camera = camera
 	_apply_timeline()
@@ -34,14 +36,35 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if is_instance_valid(_character_studio):
+		if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and event.physical_keycode == KEY_F2):
+			_character_studio.request_close()
+			get_viewport().set_input_as_handled()
+		return
 	if event.is_action_pressed("ui_cancel"):
 		if not _disconnected:
 			_set_paused(not _paused)
 		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo and not _paused:
-		if event.physical_keycode == KEY_R:
+		if event.physical_keycode == KEY_F2:
+			_open_character_studio()
+			get_viewport().set_input_as_handled()
+		elif event.physical_keycode == KEY_R:
 			respawn()
 			get_viewport().set_input_as_handled()
+
+
+func _open_character_studio() -> void:
+	if _disconnected or is_instance_valid(_character_studio):
+		return
+	_set_paused(true)
+	pause_panel.hide()
+	_character_studio = load("res://scenes/characters/student_animation_studio.tscn").instantiate()
+	$HUD/Interface.add_child(_character_studio)
+	_character_studio.close_requested.connect(func() -> void:
+		_character_studio = null
+		_set_paused(false)
+	)
 
 
 func _notification(what: int) -> void:
