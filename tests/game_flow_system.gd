@@ -12,6 +12,7 @@ const TEST_ROOMS := "res://resources/levels/test"
 const ROOM_A_SCENE := "res://scenes/testing/transition_room_a.tscn"
 const ROOM_B_SCENE := "res://scenes/testing/transition_room_b.tscn"
 const ROOM_B_FUTURE_SCENE := "res://scenes/testing/transition_room_b_future.tscn"
+const ROOM_02_SCENE := "res://scenes/world/room_02_placeholder.tscn"
 const LAB_SCENE := "res://scenes/world/spawn_area.tscn"
 ## Written by the test and removed afterwards. A dot-prefixed folder is invisible to the editor,
 ## so the deliberately unparsable scene never shows up as an import error.
@@ -416,7 +417,7 @@ func test_signal_laboratory() -> void:
 	check(flow.has_room("room_01"), "resources/levels/room_01.tres is registered automatically")
 	var definition: RoomDef = flow.get_room("room_01")
 	check(definition.shared_scene == LAB_SCENE and definition.next_room_id == "room_02" and definition.required_puzzles == PackedStringArray([FREQ]), "Room 01 is the lab, gated on the Lost Frequency")
-	check(not flow.has_room("room_02"), "Production registers no Room 02: its scenes do not exist yet")
+	check(flow.has_room("room_02") and flow.get_room("room_02").missing_scenes().is_empty(), "Production Room 02 is registered with available scenes")
 	puzzles.offline_role = "past"
 	puzzles.begin_session()
 	check(flow.start_room("room_01"), "The manager enters the real laboratory")
@@ -432,11 +433,6 @@ func test_signal_laboratory() -> void:
 	lab.player.global_position = exit.global_position
 	await tick(6)
 	check(game.controller.get_current_interactable() == exit and game.controller.try_interact(), "The existing detector offers the corridor exit")
-	check(not flow.is_transitioning() and flow.get_block_reason("room_02") == "unknown_room", "An exit to a room that is not registered refuses with a clear reason")
-	# A placeholder Room 02 exists only inside this test.
-	var corridor := make_room("room_02", ROOM_B_SCENE)
-	corridor.allowed_exits = PackedStringArray(["room_01"])
-	check(flow.register_room(corridor), "A placeholder Room 02 registers")
 	check(flow.get_block_reason("room_02") == "puzzle_incomplete" and flow.get_reason_message("puzzle_incomplete") == definition.locked_message, "With the door sealed the lab's own message is shown")
 	for radio_role in ["past", "future"]:
 		puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": radio_role}, radio_role)
@@ -460,11 +456,23 @@ func test_signal_laboratory() -> void:
 	await tick(2)
 	check(not lab.player.controls_enabled, "The lab's own control sync does not release the character during the transition")
 	check(await move_to_idle("Leaving the laboratory did not finish"), "The transition out of the laboratory finishes")
-	check(flow.get_current_room_id() == "room_02" and current_scene.scene_file_path == ROOM_B_SCENE, "The players are in the placeholder Room 02")
+	check(flow.get_current_room_id() == "room_02" and current_scene.scene_file_path == ROOM_02_SCENE, "The players are in the placeholder Room 02")
 	check(get_nodes_in_group("dialogue_director").is_empty() and not is_instance_valid(lab), "The laboratory, its audio and its dialogue are gone")
 	check(current_scene.radio.can_receive() and current_scene.radio.owns_radio, "The radio link is connected in Room 02")
-	# Back to the lab: a brand-new instance restores everything from the managers.
-	check(flow.begin_transition("room_01") == "", "The players can return to the laboratory")
+	check(count_nodes("CharacterBody3D") == 1 and count_nodes("Camera3D") == 1, "Room 02 has one character and one existing fixed camera")
+	check(current_scene.player.is_on_floor() and absf(current_scene.player.position.y) < 0.1, "Room 02 spawn is grounded on its floor")
+	check(current_scene.get_node("HUD/Root/RadioHUD").frequency_label.text == "67 MHz", "Room 02 HUD restores the 67 MHz link")
+	var position_before: Vector3 = current_scene.player.position
+	Input.action_press("move_right")
+	await tick(15)
+	Input.action_release("move_right")
+	await tick(4)
+	check(current_scene.player.position.x > position_before.x + 0.2, "Room 02 accepts normal movement after the fade")
+	# The optional return uses the same actual detector/exit readiness flow.
+	var return_exit: Area3D = current_scene.get_node("ReturnExit")
+	current_scene.player.global_position = return_exit.global_position
+	await tick(6)
+	check(current_scene.controller.get_current_interactable() == return_exit and current_scene.controller.try_interact(), "Temporary return exit uses the existing interaction flow")
 	check(await move_to_idle("Returning to the laboratory did not finish"), "The return finishes")
 	lab = current_scene
 	lab.pause_when_unfocused = false
@@ -490,7 +498,7 @@ func test_signal_laboratory() -> void:
 	check(flow.begin_transition("room_01") == "" and await move_to_idle("Final return did not finish"), "Back to the lab once more")
 	await create_timer(1.0).timeout  # a conversation replayed on entry would start shortly after it
 	check(not current_scene.gameplay.director.is_dialogue_active(), "A third visit to the lab still plays no conversation (%s)" % current_scene.gameplay.director.get_current_sequence_id())
-	check(flow.unregister_room("room_02") and not flow.has_room("room_02"), "The placeholder is removed again")
+	check(flow.has_room("room_02"), "Room 02 stays in the production registry after returning")
 	current_scene.free()  # leave a clean tree for the next test
 	await process_frame
 

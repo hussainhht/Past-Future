@@ -1,0 +1,214 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/room_02_placeholder.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/game_flow/level_exit_interactable.gd" id="2_exit"]
+[ext_resource type="PackedScene" path="res://scenes/ui/interaction_prompt.tscn" id="3_prompt"]
+
+[sub_resource type="Environment" id="Environment"]
+resource_local_to_scene = true
+background_mode = 1
+background_color = Color(0.22, 0.23, 0.22, 1)
+ambient_light_source = 2
+ambient_light_energy = 0.75
+
+[sub_resource type="StandardMaterial3D" id="DoorMaterial"]
+albedo_color = Color(0.3, 0.43, 0.46, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_Floor"]
+size = Vector3(14.4, 0.2, 10.4)
+
+[sub_resource type="BoxShape3D" id="Shape_Floor"]
+size = Vector3(14.4, 0.2, 10.4)
+
+[sub_resource type="BoxMesh" id="Mesh_South"]
+size = Vector3(14.4, 2.8, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_South"]
+size = Vector3(14.4, 2.8, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_East"]
+size = Vector3(0.2, 2.8, 10.4)
+
+[sub_resource type="BoxShape3D" id="Shape_East"]
+size = Vector3(0.2, 2.8, 10.4)
+
+[sub_resource type="BoxMesh" id="Mesh_West"]
+size = Vector3(0.2, 2.8, 10.4)
+
+[sub_resource type="BoxShape3D" id="Shape_West"]
+size = Vector3(0.2, 2.8, 10.4)
+
+[sub_resource type="BoxMesh" id="Mesh_NorthLeft"]
+size = Vector3(5.8, 2.8, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_NorthLeft"]
+size = Vector3(5.8, 2.8, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_NorthRight"]
+size = Vector3(5.8, 2.8, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_NorthRight"]
+size = Vector3(5.8, 2.8, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_EntranceLintel"]
+size = Vector3(2.4, 0.4, 0.2)
+
+[sub_resource type="BoxShape3D" id="Shape_EntranceLintel"]
+size = Vector3(2.4, 0.4, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_EntranceDoor"]
+material = SubResource("DoorMaterial")
+size = Vector3(2.4, 2.4, 0.16)
+
+[sub_resource type="BoxShape3D" id="Shape_EntranceDoor"]
+size = Vector3(2.4, 2.4, 0.16)
+
+[sub_resource type="BoxShape3D" id="ExitZone"]
+size = Vector3(2.8, 2.4, 2)
+
+[node name="Room02Placeholder" type="Node3D"]
+script = ExtResource("1_room")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -30, 0)
+light_color = Color(1, 0.88, 0.68, 1)
+light_energy = 1.05
+
+[node name="Shell" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, -0.1, -0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/Floor"]
+mesh = SubResource("Mesh_Floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/Floor"]
+shape = SubResource("Shape_Floor")
+
+[node name="South" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, 1.4, 5.1)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/South"]
+mesh = SubResource("Mesh_South")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/South"]
+shape = SubResource("Shape_South")
+
+[node name="East" type="StaticBody3D" parent="Shell"]
+position = Vector3(7.1, 1.4, -0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/East"]
+mesh = SubResource("Mesh_East")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/East"]
+shape = SubResource("Shape_East")
+
+[node name="West" type="StaticBody3D" parent="Shell"]
+position = Vector3(-7.1, 1.4, -0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/West"]
+mesh = SubResource("Mesh_West")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/West"]
+shape = SubResource("Shape_West")
+
+[node name="NorthLeft" type="StaticBody3D" parent="Shell"]
+position = Vector3(-4.1, 1.4, -5.1)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/NorthLeft"]
+mesh = SubResource("Mesh_NorthLeft")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/NorthLeft"]
+shape = SubResource("Shape_NorthLeft")
+
+[node name="NorthRight" type="StaticBody3D" parent="Shell"]
+position = Vector3(4.1, 1.4, -5.1)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/NorthRight"]
+mesh = SubResource("Mesh_NorthRight")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/NorthRight"]
+shape = SubResource("Shape_NorthRight")
+
+[node name="EntranceLintel" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, 2.6, -5.1)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/EntranceLintel"]
+mesh = SubResource("Mesh_EntranceLintel")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/EntranceLintel"]
+shape = SubResource("Shape_EntranceLintel")
+
+[node name="EntranceDoor" type="StaticBody3D" parent="Shell"]
+position = Vector3(0, 1.2, -5.12)
+
+[node name="Mesh" type="MeshInstance3D" parent="Shell/EntranceDoor"]
+mesh = SubResource("Mesh_EntranceDoor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Shell/EntranceDoor"]
+shape = SubResource("Shape_EntranceDoor")
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="past_entry" type="Marker3D" parent="Spawns" groups=["spawn_point"]]
+position = Vector3(-1.4, 0, -1.8)
+
+[node name="future_entry" type="Marker3D" parent="Spawns" groups=["spawn_point"]]
+position = Vector3(1.4, 0, -1.8)
+
+[node name="Actors" type="Node3D" parent="."]
+
+[node name="ReturnExit" type="Area3D" parent="."]
+position = Vector3(0, 0, -3.9)
+script = ExtResource("2_exit")
+interaction_distance = 2.1
+destination_room_id = "room_01"
+ready_prompt = "Temporary return to Signal Laboratory"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ReturnExit"]
+position = Vector3(0, 1.2, -0)
+shape = SubResource("ExitZone")
+
+[node name="EntranceLabel" type="Label3D" parent="."]
+position = Vector3(0, 2.45, -4.94)
+rotation_degrees = Vector3(0, 180, 0)
+billboard = 1
+font_size = 32
+pixel_size = 0.006
+text = "TEMPORARY RETURN
+SIGNAL LABORATORY"
+
+[node name="InteractionPrompt" parent="." instance=ExtResource("3_prompt")]
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 15
+
+[node name="Root" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="HUD/Root"]
+offset_left = 24.0
+offset_top = 22.0
+theme_override_font_sizes/font_size = 22
+text = "MAINTENANCE CORRIDOR"
+
+[node name="Hint" type="Label" parent="HUD/Root"]
+layout_mode = 0
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -62.0
+offset_right = 850.0
+offset_bottom = -20.0
+text = "Room 02 placeholder  |  WASD: move  |  F at entrance: temporary return"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="RoomDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/game_flow/room_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+room_id = "room_02"
+display_name = "Maintenance Corridor"
+shared_scene = "res://scenes/world/room_02_placeholder.tscn"
+past_spawn_id = &"past_entry"
+future_spawn_id = &"future_entry"
+next_room_id = ""
+allowed_exits = PackedStringArray("room_01")
+require_both_ready = true

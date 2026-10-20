@@ -5,6 +5,7 @@ Run from any directory: python tests/run_game_flow_tests.py
 Set GODOT_BIN to the Godot executable (or put godot/godot4 on PATH).
 Set FLOW_TEST_VERBOSE=1 to print every log even when everything passes.
 Use --offline-only or --peers-only to run half of it.
+Use --production-only for the real Room 01 -> Room 02 host/client smoke check.
 
 Godot scripts print PASS even when the engine logs script errors, so this runner also fails on
 "SCRIPT ERROR:", on any failed check ("FAILED"), on leaked objects, and on engine "ERROR:" lines that
@@ -120,6 +121,9 @@ def run_peers(godot: str, scenario: str) -> None:
 
 def main() -> None:
     godot = godot_binary()
+    if "--production-only" in sys.argv:
+        run_peers(godot, "production")
+        return
     if "--peers-only" not in sys.argv:
         run_offline(godot)
     if "--offline-only" not in sys.argv:

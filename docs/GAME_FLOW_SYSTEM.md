@@ -29,6 +29,9 @@ scripts/game_flow/
   transition_overlay.gd        class TransitionOverlay (CanvasLayer): fade, loading text, readiness panel, notices
 scenes/game_flow/transition_overlay.tscn
 resources/levels/room_01.tres                      production: the Signal Laboratory
+resources/levels/room_02.tres                      production: Maintenance Corridor placeholder
+scenes/world/room_02_placeholder.tscn              shared, configured for the local timeline
+scripts/world/room_02_placeholder.gd
 resources/levels/test/test_room_a.tres, test_room_b.tres   sandbox rooms (not auto-registered)
 scenes/testing/transition_flow_sandbox.tscn        launcher
 scenes/testing/transition_room_a.tscn              Room A, shared by both timelines
@@ -391,11 +394,18 @@ local player; the offline path currently treats the single local player as suffi
 | `scripts/world/spawn_area.gd`: `attach_room("room_01", self)`, resync controls on `input_lock_changed`, `is_gameplay_paused()` includes `is_input_locked()`, and a `game_flow_suspend()` that closes overlays. | The lab is entered by the menu, and it manages its own controls. |
 | `scenes/gameplay/laboratory_gameplay.tscn`: a `Props/LevelExit` interactable in the corridor beyond the security door, at (6.2, 0, -10.1). | The door is already the room's exit; its corridor is unreachable until the link opens it. |
 
-`room_02` is deliberately **not** registered in production: its scenes do not exist. Until they do, the
-corridor exit answers "That area is not available yet." When the Maintenance Corridor exists, add
-`resources/levels/room_02.tres` (and a way back in `allowed_exits`); nothing else changes.
-`tests/game_flow_system.gd` registers a placeholder Room 02 at run time to prove the full round trip with
-the real laboratory.
+`room_02` is now registered in production by `resources/levels/room_02.tres`. It uses one
+primitive 14 ? 10 metre placeholder scene, `scenes/world/room_02_placeholder.tscn`, configured by the
+local role for warm Past / Student or cool Future / Professor. Its `past_entry` and `future_entry`
+markers select the spawn. No new puzzle or session is created when it loads.
+
+The existing corridor exit now reaches this room after the unchanged Lost Frequency prerequisite
+and cooperative readiness. The placeholder has no next room, and its clearly marked temporary return
+exit reaches `room_01` through `allowed_exits` and the same readiness system. GameFlowManager and the
+Room 01 resource/exit did not need changes. See [ROOM_02_PLACEHOLDER.md](ROOM_02_PLACEHOLDER.md).
+
+`tests/game_flow_system.gd` uses the production resource for its real-laboratory round trip.
+`tests/run_game_flow_tests.py --production-only` checks the actual forward transition on two ENet peers.
 
 ## 16. Running it
 
@@ -460,4 +470,4 @@ Frames captured by `run_game_flow_render.py` with a real renderer (software GL, 
   build.
 * A room is expected to be the only scene with gameplay in the tree. Two rooms alive at once (which the
   manager never does) would both react to the same puzzle events.
-* Real Room 02 scenes, audio and dialogue hooks are not part of this work (section 15, 13, 12).
+* Room 02 is a playable production placeholder only. Its detailed Maintenance Corridor design, new puzzles, music and dialogue remain future work.

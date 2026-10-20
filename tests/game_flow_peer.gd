@@ -220,6 +220,9 @@ func run_host() -> void:
 	if not await wait_for(func() -> bool: return network.guest_ready, "The guest never became ready"):
 		return
 	check(network.start_game(), "The host starts the game through the existing lobby")
+	if scenario == "production":
+		await scenario_production()
+		return
 	await enter_first_room()
 	if scenario == "host_leaves":
 		await scenario_host_leaves()
@@ -233,6 +236,9 @@ func run_client() -> void:
 		return
 	network.set_ready(true)
 	if not await wait_for(func() -> bool: return network.in_game, "The game never started for the client"):
+		return
+	if scenario == "production":
+		await scenario_production()
 		return
 	await enter_first_room()
 	if scenario == "host_leaves":
@@ -583,3 +589,72 @@ func scenario_host_leaves() -> void:
 		check(flow.get_current_room_id() == "test_room_a" and current_scene.scene_file_path == ROOM_A_SCENE, "The client stays in a playable Room A")
 		check(not flow.is_transitioning() and not flow.is_input_locked() and not flow.overlay.is_covering() and current_scene.player.controls_enabled, "Nothing stays locked or black")
 		check(network.state == network.State.IDLE and flow.request_transition("test_room_b") != "", "The session is over; the client cannot start transitions")
+
+
+func scenario_production() -> void:
+	check(flow.has_room("room_02"), "Room 02 is registered without loading the sandbox registry")
+	check(flow.start_room("room_01"), "The production Signal Laboratory starts")
+	await tick(8)
+	var lab: Node3D = current_scene
+	lab.pause_when_unfocused = false
+	lab._set_paused(false)
+	if not await wait_for(func() -> bool: return puzzles.is_session_active(), "Production puzzle session did not arrive"):
+		return
+	session = puzzles.get_session_id()
+	peer_object_id = get_multiplayer().multiplayer_peer.get_instance_id()
+	await barrier()
+	check(flow.get_block_reason("room_02") == "puzzle_incomplete", "The production exit retains the Lost Frequency prerequisite")
+	lab.gameplay.radio.request_acquisition()
+	await barrier()
+	if not await wait_for(func() -> bool: return puzzles.get_state(FREQ).get("student_radio", false) and puzzles.get_state(FREQ).get("professor_radio", false), "Radio acquisition was not confirmed on both peers"):
+		return
+	if is_host():
+		puzzles.submit_action(FREQ, "tune_frequency", {"frequency": 67})
+	if not await wait_for(func() -> bool: return puzzles.is_solved(FREQ), "Production calibration failed"):
+		return
+	await tick(4)
+	for i in 32:
+		if not lab.gameplay.director.is_dialogue_active():
+			break
+		lab.gameplay.director.skip_typewriter()
+		lab.gameplay.director.advance_dialogue()
+		await process_frame
+	await barrier()
+	var revision: int = puzzles.get_revision(FREQ)
+	var state: Dictionary = puzzles.get_state(FREQ)
+	check(flow.get_current_room_id() == "room_01" and not flow.is_transitioning(), "Puzzle completion alone does not trigger departure")
+	var exit: Area3D = lab.gameplay.get_node("Props/LevelExit")
+	lab.player.global_position = exit.global_position
+	await tick(6)
+	check(lab.gameplay.controller.get_current_interactable() == exit, "The production corridor exit is selected")
+	if is_host():
+		check(lab.gameplay.controller.try_interact(), "Student readies using the production exit")
+	await barrier()
+	check(not flow.is_transitioning() and flow.get_current_room_id() == "room_01", "One ready player does not move either peer")
+	await barrier()
+	if not is_host():
+		check(lab.gameplay.controller.try_interact(), "Professor readies using the production exit")
+	if not await wait_for(func() -> bool: return flow.get_current_room_id() == "room_02" and not flow.is_transitioning(), "Production Room 02 transition timed out"):
+		return
+	await tick(4)
+	var room: Node3D = current_scene
+	var timeline := "past" if is_host() else "future"
+	check(room.scene_file_path == "res://scenes/world/room_02_placeholder.tscn" and room.role == timeline, "Production placeholder configures the local timeline")
+	check(room.player.scene_file_path.ends_with("student_3d_player.tscn" if is_host() else "professor_3d_player.tscn"), "Correct production character spawned")
+	var marker: Marker3D = flow.find_spawn_point(flow.get_entry_spawn_id(timeline))
+	check(room.player.global_position.distance_to(marker.global_position) < 0.1 and room.player.is_on_floor(), "Correct grounded timeline marker used")
+	check(count_nodes("CharacterBody3D") == 1 and count_nodes("Camera3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "No duplicate players, cameras, radios or interaction rigs")
+	check(room.find_children("RadioHUD", "", true, false).size() == 1 and count_nodes("AudioDirector") == 0, "One radio HUD; no additional audio manager")
+	check(not flow.is_input_locked() and not flow.overlay.is_covering() and room.player.controls_enabled, "Fade clears and movement controls unlock")
+	check(room.radio.can_receive() and room.radio.owns_radio and room.radio.get_calibrated_frequency() == 67, "Established radio state restores in the placeholder")
+	var before: Vector3 = room.player.position
+	var camera_before: Vector3 = room.camera.global_position
+	Input.action_press("move_right")
+	await tick(16)
+	Input.action_release("move_right")
+	await tick(5)
+	check(room.player.position.x > before.x + 0.2 and room.camera.global_position.x > camera_before.x + 0.1, "Normal movement and the existing follow camera work")
+	check(network.in_game and network.state == network.State.CONNECTED and get_multiplayer().multiplayer_peer.get_instance_id() == peer_object_id, "The same ENet connection survives")
+	check(puzzles.get_session_id() == session and puzzles.get_revision(FREQ) == revision and puzzles.get_state(FREQ) == state and link_completions == 1 and sessions_started == 1, "Puzzle session, state, revision and one completion survive unchanged")
+	await shot("room_02_placeholder")
+	await barrier({"room": flow.get_current_room_id(), "revision": revision})
