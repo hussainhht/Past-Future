@@ -215,6 +215,7 @@ func _refresh_lan() -> void:
 
 func _preview_spawn_area() -> void:
 	if NetworkManager.state == NetworkManager.State.IDLE:
+		PuzzleManager.begin_session()  # a new solo run starts with fresh puzzles
 		_enter_spawn_area()
 
 
