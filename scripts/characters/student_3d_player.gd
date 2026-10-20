@@ -114,9 +114,21 @@ func _on_animation_finished(_clip: StringName) -> void:
 	_action = ""
 	action_finished.emit(finished)
 
+func _get_interaction_controller() -> Node:
+	var controller := get_node_or_null("InteractionRig/InteractionController")
+	if controller == null:
+		controller = find_child("InteractionController", true, false)
+	return controller
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if Engine.is_editor_hint() or not controls_enabled or not event is InputEventKey or not event.pressed or event.echo:
 		return
+	if event.is_action_pressed("interact") or event.physical_keycode == KEY_F:
+		var controller := _get_interaction_controller()
+		if controller != null and controller.has_method("is_interaction_available") and controller.is_interaction_available():
+			if controller.try_interact():
+				get_viewport().set_input_as_handled()
+				return
 	var action := ""
 	match event.physical_keycode:
 		KEY_F: action = "interact"

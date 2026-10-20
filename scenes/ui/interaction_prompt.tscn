@@ -1,0 +1,60 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/interaction_prompt.gd" id="1"]
+
+[node name="InteractionPrompt" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PromptPanel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -90.0
+offset_right = 100.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="Root/PromptPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="HBox" type="HBoxContainer" parent="Root/PromptPanel/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="KeyBadge" type="PanelContainer" parent="Root/PromptPanel/Margin/HBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="KeyLabel" type="Label" parent="Root/PromptPanel/Margin/HBox/KeyBadge"]
+layout_mode = 2
+text = " F "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActionLabel" type="Label" parent="Root/PromptPanel/Margin/HBox"]
+layout_mode = 2
+text = "Interact"
+vertical_alignment = 1
+

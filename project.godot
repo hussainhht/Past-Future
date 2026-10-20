@@ -52,6 +52,15 @@ move_down={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":83)]
 }
+interact={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":70)]
+}
+
+[layer_names]
+
+3d_physics/layer_4="Interaction"
+
 
 [rendering]
 
