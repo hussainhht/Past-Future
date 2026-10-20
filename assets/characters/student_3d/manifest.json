@@ -1,0 +1,532 @@
+{
+  "model": "student.glb",
+  "geometry": "Original mesh authored in tools/build_student_kaykit.py; no KayKit character geometry reused.",
+  "rig": "KayKit Rig_Medium, unchanged joint hierarchy/rest transforms/inverse bind matrices",
+  "height": 2.2790265849956253,
+  "triangles": 10948,
+  "vertices": 5682,
+  "joint_count": 23,
+  "parts": [
+    {
+      "name": "Trousers waist",
+      "material": "pants",
+      "triangles": 128
+    },
+    {
+      "name": "Shirt under jacket",
+      "material": "shirt",
+      "triangles": 160
+    },
+    {
+      "name": "Open field jacket",
+      "material": "jacket",
+      "triangles": 288
+    },
+    {
+      "name": "Cream shirt",
+      "material": "shirt",
+      "triangles": 12
+    },
+    {
+      "name": "Right lapel",
+      "material": "jacket_light",
+      "triangles": 12
+    },
+    {
+      "name": "Left lapel",
+      "material": "jacket_light",
+      "triangles": 12
+    },
+    {
+      "name": "Lower patch pocket",
+      "material": "jacket_dark",
+      "triangles": 128
+    },
+    {
+      "name": "Pocket flap",
+      "material": "jacket_light",
+      "triangles": 128
+    },
+    {
+      "name": "Pocket stud",
+      "material": "brass",
+      "triangles": 80
+    },
+    {
+      "name": "Lower patch pocket",
+      "material": "jacket_dark",
+      "triangles": 128
+    },
+    {
+      "name": "Pocket flap",
+      "material": "jacket_light",
+      "triangles": 128
+    },
+    {
+      "name": "Pocket stud",
+      "material": "brass",
+      "triangles": 80
+    },
+    {
+      "name": "Jacket button",
+      "material": "brass",
+      "triangles": 80
+    },
+    {
+      "name": "Jacket button",
+      "material": "brass",
+      "triangles": 80
+    },
+    {
+      "name": "Jacket button",
+      "material": "brass",
+      "triangles": 80
+    },
+    {
+      "name": "Shirt button",
+      "material": "shirt_shadow",
+      "triangles": 80
+    },
+    {
+      "name": "Shirt button",
+      "material": "shirt_shadow",
+      "triangles": 80
+    },
+    {
+      "name": "Shirt button",
+      "material": "shirt_shadow",
+      "triangles": 80
+    },
+    {
+      "name": "Belt front",
+      "material": "boots",
+      "triangles": 128
+    },
+    {
+      "name": "Belt buckle",
+      "material": "brass",
+      "triangles": 128
+    },
+    {
+      "name": "Belt buckle inset",
+      "material": "boots",
+      "triangles": 128
+    },
+    {
+      "name": "Neck",
+      "material": "skin",
+      "triangles": 64
+    },
+    {
+      "name": "Shirt collar right",
+      "material": "shirt",
+      "triangles": 12
+    },
+    {
+      "name": "Shirt collar left",
+      "material": "shirt",
+      "triangles": 12
+    },
+    {
+      "name": "Face and jaw",
+      "material": "skin",
+      "triangles": 384
+    },
+    {
+      "name": "Ear",
+      "material": "skin",
+      "triangles": 288
+    },
+    {
+      "name": "Ear inner",
+      "material": "skin_shadow",
+      "triangles": 168
+    },
+    {
+      "name": "Dark oval eye",
+      "material": "eyes",
+      "triangles": 352
+    },
+    {
+      "name": "Eye glint",
+      "material": "eye_glint",
+      "triangles": 112
+    },
+    {
+      "name": "Eyebrow",
+      "material": "hair",
+      "triangles": 24
+    },
+    {
+      "name": "Ear",
+      "material": "skin",
+      "triangles": 288
+    },
+    {
+      "name": "Ear inner",
+      "material": "skin_shadow",
+      "triangles": 168
+    },
+    {
+      "name": "Dark oval eye",
+      "material": "eyes",
+      "triangles": 352
+    },
+    {
+      "name": "Eye glint",
+      "material": "eye_glint",
+      "triangles": 112
+    },
+    {
+      "name": "Eyebrow",
+      "material": "hair",
+      "triangles": 24
+    },
+    {
+      "name": "Nose",
+      "material": "skin",
+      "triangles": 216
+    },
+    {
+      "name": "Smile",
+      "material": "skin_shadow",
+      "triangles": 40
+    },
+    {
+      "name": "Sculpted hair cap",
+      "material": "hair",
+      "triangles": 480
+    },
+    {
+      "name": "Swept fringe main",
+      "material": "hair_mid",
+      "triangles": 120
+    },
+    {
+      "name": "Swept fringe side",
+      "material": "hair",
+      "triangles": 120
+    },
+    {
+      "name": "Crown quiff",
+      "material": "hair_mid",
+      "triangles": 96
+    },
+    {
+      "name": "Crown side sweep",
+      "material": "hair_light",
+      "triangles": 96
+    },
+    {
+      "name": "Temple lock",
+      "material": "hair",
+      "triangles": 72
+    },
+    {
+      "name": "Temple lock",
+      "material": "hair",
+      "triangles": 72
+    },
+    {
+      "name": "Rolled jacket sleeve l",
+      "material": "jacket",
+      "triangles": 192
+    },
+    {
+      "name": "Cream rolled cuff l",
+      "material": "shirt_shadow",
+      "triangles": 96
+    },
+    {
+      "name": "Bare forearm l",
+      "material": "skin",
+      "triangles": 160
+    },
+    {
+      "name": "Mitten hand l",
+      "material": "skin",
+      "triangles": 288
+    },
+    {
+      "name": "Thumb l",
+      "material": "skin",
+      "triangles": 168
+    },
+    {
+      "name": "Left wrist watch strap",
+      "material": "boots",
+      "triangles": 64
+    },
+    {
+      "name": "Watch bezel",
+      "material": "watch",
+      "triangles": 128
+    },
+    {
+      "name": "Watch dial",
+      "material": "watch_face",
+      "triangles": 128
+    },
+    {
+      "name": "Trouser leg l",
+      "material": "pants",
+      "triangles": 192
+    },
+    {
+      "name": "Trouser turned hem l",
+      "material": "pants_seam",
+      "triangles": 64
+    },
+    {
+      "name": "Boot sole l",
+      "material": "sole",
+      "triangles": 96
+    },
+    {
+      "name": "Leather boot l",
+      "material": "boots",
+      "triangles": 160
+    },
+    {
+      "name": "Boot tongue l",
+      "material": "boot_trim",
+      "triangles": 128
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Rolled jacket sleeve r",
+      "material": "jacket",
+      "triangles": 192
+    },
+    {
+      "name": "Cream rolled cuff r",
+      "material": "shirt_shadow",
+      "triangles": 96
+    },
+    {
+      "name": "Bare forearm r",
+      "material": "skin",
+      "triangles": 160
+    },
+    {
+      "name": "Mitten hand r",
+      "material": "skin",
+      "triangles": 288
+    },
+    {
+      "name": "Thumb r",
+      "material": "skin",
+      "triangles": 168
+    },
+    {
+      "name": "Trouser leg r",
+      "material": "pants",
+      "triangles": 192
+    },
+    {
+      "name": "Trouser turned hem r",
+      "material": "pants_seam",
+      "triangles": 64
+    },
+    {
+      "name": "Boot sole r",
+      "material": "sole",
+      "triangles": 96
+    },
+    {
+      "name": "Leather boot r",
+      "material": "boots",
+      "triangles": 160
+    },
+    {
+      "name": "Boot tongue r",
+      "material": "boot_trim",
+      "triangles": 128
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Boot lace",
+      "material": "bag_trim",
+      "triangles": 16
+    },
+    {
+      "name": "Messenger bag",
+      "material": "bag",
+      "triangles": 128
+    },
+    {
+      "name": "Satchel flap",
+      "material": "bag_trim",
+      "triangles": 128
+    },
+    {
+      "name": "Satchel front panel",
+      "material": "bag",
+      "triangles": 128
+    },
+    {
+      "name": "Bag buckle",
+      "material": "brass",
+      "triangles": 128
+    },
+    {
+      "name": "Bag buckle inset",
+      "material": "boots",
+      "triangles": 128
+    },
+    {
+      "name": "Crossbody front strap",
+      "material": "bag",
+      "triangles": 48
+    },
+    {
+      "name": "Crossbody back strap",
+      "material": "bag",
+      "triangles": 40
+    },
+    {
+      "name": "Strap adjuster",
+      "material": "brass",
+      "triangles": 128
+    },
+    {
+      "name": "Strap adjuster inset",
+      "material": "bag",
+      "triangles": 128
+    },
+    {
+      "name": "ID metal clip",
+      "material": "watch",
+      "triangles": 128
+    },
+    {
+      "name": "Student ID",
+      "material": "shirt",
+      "triangles": 128
+    },
+    {
+      "name": "ID teal stripe",
+      "material": "badge",
+      "triangles": 128
+    },
+    {
+      "name": "ID portrait",
+      "material": "pants",
+      "triangles": 128
+    },
+    {
+      "name": "ID text mark",
+      "material": "shirt_shadow",
+      "triangles": 128
+    }
+  ],
+  "animation_sources": {
+    "Death_A": "Rig_Medium_General.glb",
+    "Death_A_Pose": "Rig_Medium_General.glb",
+    "Death_B": "Rig_Medium_General.glb",
+    "Death_B_Pose": "Rig_Medium_General.glb",
+    "Hit_A": "Rig_Medium_General.glb",
+    "Hit_B": "Rig_Medium_General.glb",
+    "Idle_A": "Rig_Medium_General.glb",
+    "Idle_B": "Rig_Medium_General.glb",
+    "Interact": "Rig_Medium_General.glb",
+    "PickUp": "Rig_Medium_General.glb",
+    "Spawn_Air": "Rig_Medium_General.glb",
+    "Spawn_Ground": "Rig_Medium_General.glb",
+    "Throw": "Rig_Medium_General.glb",
+    "Use_Item": "Rig_Medium_General.glb",
+    "Jump_Full_Long": "Rig_Medium_MovementBasic.glb",
+    "Jump_Full_Short": "Rig_Medium_MovementBasic.glb",
+    "Jump_Idle": "Rig_Medium_MovementBasic.glb",
+    "Jump_Land": "Rig_Medium_MovementBasic.glb",
+    "Jump_Start": "Rig_Medium_MovementBasic.glb",
+    "Running_A": "Rig_Medium_MovementBasic.glb",
+    "Running_B": "Rig_Medium_MovementBasic.glb",
+    "Walking_A": "Rig_Medium_MovementBasic.glb",
+    "Walking_B": "Rig_Medium_MovementBasic.glb",
+    "Walking_C": "Rig_Medium_MovementBasic.glb",
+    "Crawling": "Rig_Medium_MovementAdvanced.glb",
+    "Crouching": "Rig_Medium_MovementAdvanced.glb",
+    "Dodge_Backward": "Rig_Medium_MovementAdvanced.glb",
+    "Dodge_Forward": "Rig_Medium_MovementAdvanced.glb",
+    "Dodge_Left": "Rig_Medium_MovementAdvanced.glb",
+    "Dodge_Right": "Rig_Medium_MovementAdvanced.glb",
+    "Running_HoldingBow": "Rig_Medium_MovementAdvanced.glb",
+    "Running_HoldingRifle": "Rig_Medium_MovementAdvanced.glb",
+    "Running_Strafe_Left": "Rig_Medium_MovementAdvanced.glb",
+    "Running_Strafe_Right": "Rig_Medium_MovementAdvanced.glb",
+    "Sneaking": "Rig_Medium_MovementAdvanced.glb",
+    "Walking_Backwards": "Rig_Medium_MovementAdvanced.glb",
+    "Cheering": "Rig_Medium_Simulation.glb",
+    "Lie_Down": "Rig_Medium_Simulation.glb",
+    "Lie_Idle": "Rig_Medium_Simulation.glb",
+    "Lie_StandUp": "Rig_Medium_Simulation.glb",
+    "Push_Ups": "Rig_Medium_Simulation.glb",
+    "Sit_Chair_Down": "Rig_Medium_Simulation.glb",
+    "Sit_Chair_Idle": "Rig_Medium_Simulation.glb",
+    "Sit_Chair_StandUp": "Rig_Medium_Simulation.glb",
+    "Sit_Floor_Down": "Rig_Medium_Simulation.glb",
+    "Sit_Floor_Idle": "Rig_Medium_Simulation.glb",
+    "Sit_Floor_StandUp": "Rig_Medium_Simulation.glb",
+    "Sit_Ups": "Rig_Medium_Simulation.glb",
+    "Waving": "Rig_Medium_Simulation.glb",
+    "Chop": "Rig_Medium_Tools.glb",
+    "Chopping": "Rig_Medium_Tools.glb",
+    "Dig": "Rig_Medium_Tools.glb",
+    "Digging": "Rig_Medium_Tools.glb",
+    "Fishing_Bite": "Rig_Medium_Tools.glb",
+    "Fishing_Cast": "Rig_Medium_Tools.glb",
+    "Fishing_Catch": "Rig_Medium_Tools.glb",
+    "Fishing_Idle": "Rig_Medium_Tools.glb",
+    "Fishing_Reeling": "Rig_Medium_Tools.glb",
+    "Fishing_Struggling": "Rig_Medium_Tools.glb",
+    "Fishing_Tug": "Rig_Medium_Tools.glb",
+    "Hammer": "Rig_Medium_Tools.glb",
+    "Hammering": "Rig_Medium_Tools.glb",
+    "Holding_A": "Rig_Medium_Tools.glb",
+    "Holding_B": "Rig_Medium_Tools.glb",
+    "Holding_C": "Rig_Medium_Tools.glb",
+    "Lockpick": "Rig_Medium_Tools.glb",
+    "Lockpicking": "Rig_Medium_Tools.glb",
+    "Pickaxe": "Rig_Medium_Tools.glb",
+    "Pickaxing": "Rig_Medium_Tools.glb",
+    "Saw": "Rig_Medium_Tools.glb",
+    "Sawing": "Rig_Medium_Tools.glb",
+    "Work_A": "Rig_Medium_Tools.glb",
+    "Work_B": "Rig_Medium_Tools.glb",
+    "Work_C": "Rig_Medium_Tools.glb",
+    "Working_A": "Rig_Medium_Tools.glb",
+    "Working_B": "Rig_Medium_Tools.glb",
+    "Working_C": "Rig_Medium_Tools.glb"
+  },
+  "source_sha256": {
+    "Rig_Medium_General.glb": "5f725c0f745f36078c7238968cd5c04843cbc6260689eb6e7f5e2bbd7ffdd7ad",
+    "Rig_Medium_MovementBasic.glb": "11422afd50abf7e8c92ea107e2e0bc94abd38023d6d15f55ad580347efbfa29e",
+    "Rig_Medium_MovementAdvanced.glb": "8b2317cf81e3f24149e4b791c27e1932bebd46cd378ed962e7d27d642fad8c56",
+    "Rig_Medium_Simulation.glb": "ab6ffeed40c8281dd0ce0506534eadf7385151f1c266643a10fa2a0f0a7ba3b1",
+    "Rig_Medium_Tools.glb": "e3b62dc122c5073373376a846e354137add2088ddcce8731c389fc5c20734aad"
+  }
+}

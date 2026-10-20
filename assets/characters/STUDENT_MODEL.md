@@ -1,6 +1,6 @@
 # Alternative 3D student model
 
-The active player uses the detailed 2D rig in [student_2d/README.md](student_2d/README.md). `student_v2.glb` is the earlier original student mesh, retained as an alternative. It replaces the early primitive blockout. The model contains 10,168 triangles and 73 mesh parts in a compact, approximately 296 KiB binary glTF file. Surfaces use solid color materials and smooth vertex normals; no texture downloads or external model assets are required.
+The active player uses the original skinned student with KayKit animations in [student_3d/README.md](student_3d/README.md). `student_v2.glb` is the earlier original student mesh, retained as an alternative. It replaces the early primitive blockout. The model contains 10,168 triangles and 73 mesh parts in a compact, approximately 296 KiB binary glTF file. Surfaces use solid color materials and smooth vertex normals; no texture downloads or external model assets are required.
 
 The silhouette combines a shaped jaw and cheeks, swept layered hair, a tailored field jacket with lapels and pockets, student ID, trousers, leather shoes, and a messenger bag. The scene uses a nominal 2.15-unit visual height. Local +Z faces forward and the origin is at the floor between the shoes.
 

@@ -1,6 +1,6 @@
 # Earlier 2D student prototype artwork
 
-The active character uses the detailed eight-direction cutout rig described in [student_2d/README.md](student_2d/README.md). This earlier three-view sprite sheet and its atlas resources are retained as an alternative and are not referenced by the active player scene.
+The active character uses the original skinned 3D student with KayKit animations described in [student_3d/README.md](student_3d/README.md). The detailed eight-direction cutout rig in [student_2d/README.md](student_2d/README.md) and this earlier three-view sprite sheet remain as alternatives.
 
 Generated with the built-in imagegen tool, then copied unchanged into `student_directions.png` (1536 × 1024 RGBA). The sheet contains front, back, and right-facing neutral poses; left-facing movement mirrors the right view. The game uses three AtlasTexture resources, normalized to a common visual height and foot baseline. Atlas regions exclude transparent padding; alpha cutouts suppress faint background alpha. These poses use a small procedural walking bounce, not a drawn walk cycle.
 

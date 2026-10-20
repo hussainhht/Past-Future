@@ -2,6 +2,8 @@
 .godot/
 /android/
 *.translation
+__pycache__/
+*.pyc
 
 # Export presets (optional, ignore if you want custom build keys hidden)
 export_presets.cfg

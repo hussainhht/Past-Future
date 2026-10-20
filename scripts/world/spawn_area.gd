@@ -59,7 +59,7 @@ func _open_character_studio() -> void:
 		return
 	_set_paused(true)
 	pause_panel.hide()
-	_character_studio = load("res://scenes/characters/student_animation_studio.tscn").instantiate()
+	_character_studio = load("res://scenes/characters/student_3d_studio.tscn").instantiate()
 	$HUD/Interface.add_child(_character_studio)
 	_character_studio.close_requested.connect(func() -> void:
 		_character_studio = null

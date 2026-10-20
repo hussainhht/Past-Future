@@ -1,12 +1,12 @@
 # Detailed 2D student
 
-The active player uses an illustrated, eight-direction cutout of the 18-year-old student. The supplied reference is preserved unchanged at `../references/student_reference.png`. The previous 3D model remains available; see `../STUDENT_MODEL.md`.
+This alternative player uses an illustrated, eight-direction cutout of the 18-year-old student. The active lab now uses the original skinned 3D student described in [../student_3d/README.md](../student_3d/README.md). The complete previous 2D gameplay version is saved in checkpoint commit **244b42a**, and all 2D source assets and scenes remain here. The supplied reference is preserved unchanged at `../references/student_reference.png`.
 
 The student has dark tousled hair, warm tan skin, an ochre rolled-sleeve jacket, cream shirt, charcoal trousers, brown boots, student ID, a messenger bag on his anatomical right hip, and a watch on his anatomical left wrist. Each direction has its own artwork rather than mirroring those asymmetric accessories.
 
 ## Review in Godot
 
-Open **Play Together → Explore the Lab**, then press **F2** or select **Character**. The studio exposes eight views, thirteen animations, pause, and playback speed. Close it with Esc to return to the current room and session.
+Run `scenes/characters/student_animation_studio.tscn` directly to inspect the 2D version. In checkpoint **244b42a**, **Play Together → Explore the Lab → Character / F2** opens this same 2D studio in the room. The studio exposes eight views, thirteen animations, pause, and playback speed.
 
 - WASD / arrows: move. Shift: run.
 - F: interact animation. I: inspect/read animation.
