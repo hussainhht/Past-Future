@@ -1023,7 +1023,7 @@
 		"gameplay_future.png",
 		"studio.png"
 	],
-	"model_height": 2.23227476196103,
+	"model_height": 2.23227457143366,
 	"neutral_clip": "Reference_Neutral",
 	"neutral_phase": 0.0,
 	"renderer": "Godot",

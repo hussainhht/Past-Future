@@ -321,6 +321,8 @@ class Student(MeshAuthor):
         self.ribbon('Shirt / henley placket',[(0,1.14,.187),(0,1.04,.207)],.027,.009,'shirt_shadow',body)
         for y in [1.078,1.118]: self.oval('Shirt / small ivory button',(0,y,.215),(.005,.006,.003),'shirt',body,12,6)
         self.face(); self.limbs(); self.accessories()
+        from fit_student_details import fit_authored_details
+        fit_authored_details(self)
 
 
 if __name__=='__main__':

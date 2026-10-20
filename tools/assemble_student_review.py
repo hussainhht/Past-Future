@@ -18,7 +18,7 @@ MUTED = (158, 167, 180)
 
 
 def font(size):
-    for path in ["C:/Windows/Fonts/segoeui.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]:
+    for path in ["C:/Windows/Fonts/segoeui.ttf", "/System/Library/Fonts/Supplemental/Arial.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"]:
         if Path(path).exists():
             return ImageFont.truetype(path, size)
     return ImageFont.load_default()
@@ -72,6 +72,7 @@ def make_turnaround(meta):
         sheet.paste(image, (x, y))
         text(sheet, (x + 14, y + height + 4), view["name"].replace("_", " ").upper(), 18, MUTED)
     sheet.save(REVIEW / "turnaround.png")
+    sheet.save(REVIEW.parent / "preview.png")
 
 
 def make_animation(clip):

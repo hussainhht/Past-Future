@@ -1,6 +1,6 @@
 # Reference-led student character
 
-The active Godot player now uses newly authored visible geometry reconstructed from all four images in `../references/`. The original references and all KayKit source GLBs and licenses are retained. No mannequin geometry is used in the finished character.
+The active Godot player now uses newly authored visible geometry reconstructed from all four images in `../references/18/`. The original references and all KayKit source GLBs and licenses are retained. No mannequin geometry is used in the finished character.
 
 Open `review/index.html` for the four side-by-side comparisons, six-view turnaround, animation playback, sampled poses, and actual gameplay/studio captures. Godot comparisons show the game renderer; the expandable Blender comparisons show the same geometry under soft studio lighting. These are actual renders, not repainted reference images.
 
@@ -50,13 +50,16 @@ The rendered review requires a graphics device; do not run its Godot command wit
 
 The Blender exporter reads the `Character meshes` collection, vertex groups, and material assignments. It preserves gameplay node paths and rebuilds the same animation library. Solid material Base Color, Roughness, and Metallic values are exported from the Blender Principled shader. For procedural rebuilds, edit `PALETTE` in `tools/build_student_kaykit.py`. Image texture node graphs are not part of this solid-material exporter. Edit the rig's rest coordinates in `tools/student_rig.py` and rebuild; direct Blender rig/action edits are deliberately not exported by the geometry-only route.
 
+The face and garment contact pass seats the eyes, catchlights, brows, and mouth on the skin, and fits collars, jacket trim, pockets, buttons, badge layers, seams, boot details, and torso straps to their supporting surfaces. Sewn details inherit supporting skin weights; thin panels also retain transferred cloth normals to avoid noisy border shading. The satchel body, watch, hair, body proportions, and saved animation actions are preserved.
+
 Authoring modules:
 
 - `tools/build_student_kaykit.py`: geometry and palette, including hair/scalp surfaces and continuous forearm/palm forms.
 - `tools/student_mesh.py`: mesh primitives, normals, normalized weights, materials, and GLB packaging.
 - `tools/student_rig.py`: proportion mapping and translation retarget.
 - `tools/ground_student_clips.py`: sampled skinned-surface clearance for lying/death/crawling contact clips.
-- `tools/student_blender.py`: editable source creation, geometry export, and six-view Cycles rendering.
+- `tools/student_blender.py`: editable source creation, geometry/material/custom-normal export, and six-view Cycles rendering.
+- `tools/fit_student_details.py`: student face and garment fitting; shared surface fitting lives in `fit_professor_face.py` and `fit_professor_clothes.py`.
 - `tools/render_student_review.gd` / `tools/assemble_student_review.py`: Godot evidence and comparison assembly.
 
 ## Animation and gameplay

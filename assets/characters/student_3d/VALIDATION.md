@@ -1,4 +1,4 @@
-﻿# Validation and visual review
+# Validation and visual review
 
 ## Technical checks
 
@@ -53,6 +53,28 @@ The builder now samples the actual skinned surface at 60 Hz for death, lying,
 crawling, and push-up clips and adds only the vertical root displacement needed
 to keep the mesh at least 2 mm above the preview floor at those samples. This
 is animation baking, not runtime cloth or collision simulation.
+
+## Face and clothing contact pass
+
+The updated student contains 90,881 vertices and 180,554 triangles, with the same
+23-bone hierarchy and 77 KayKit clips. Seven face details now follow the actual
+skin or eye surface; the mirrored eyebrow winding is corrected. The clothing
+pass fits 101 details, including both collars, plackets, pockets, buttons, badge
+layers, sleeve pocket, seams, boot trim, and the torso sections of both straps.
+The shoulder bridge and hip connectors retain their existing 3D paths.
+
+Broad panels are refined before projection. Front-opening trim extends the
+jacket surface continuously across the opening instead of jumping inward to
+the shirt. Sewn details inherit supporting cloth weights, and thin panels inherit
+smooth surface normals in both Blender and the exported GLB. This avoids noisy
+shading from their shallow side walls.
+
+The editable source was compared with the pre-fitting Blender file: all 77 saved
+actions have identical keyframes. Hair, body, hands, satchel, watch, main sleeves,
+trouser legs, and boot shells retain their original mesh coordinates. Asset and
+runtime character checks pass, as does the spawn-area integration check. Eleven
+animation sequences and six neutral angles were refreshed in Godot, together
+with the gameplay/studio captures and six Blender studio renders.
 
 ## Remaining limitations
 
