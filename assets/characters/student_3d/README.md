@@ -68,3 +68,5 @@ The rig retains KayKit's hierarchy, bone axes, names, and both hand slots. Rest 
 The active scene remains `scenes/characters/student_3d_player.tscn`. Mesh and skeleton paths, material tinting, animation names, hand attachments, action completion, studio isolation, and networking are preserved. Runtime height now comes from the imported mesh bounds, keeping the player at its existing gameplay height when authored proportions change.
 
 WASD/arrows move; Shift runs; F interacts; I inspects; E picks up/puts down the demonstration document; R respawns; F2 opens the character studio. The studio exposes all 77 clips and supports view rotation, playback speed, pause, and scrubbing. All older 2D assets and scenes remain available.
+
+Movement accelerates, steers, and brakes smoothly. The character turns toward its actual movement, with continuous headings for analog input. Tune `Acceleration`, `Deceleration`, and `Turn Speed` on the player in the Inspector; `Speed` and `Run Multiplier` control travel speed. Pausing and interaction actions stop movement immediately.

@@ -9,6 +9,9 @@ const LOOP_CLIPS: Array[String] = ["Idle_A", "Idle_B", "Walking_A", "Walking_B",
 
 @export var speed: float = 2.8
 @export var run_multiplier: float = 1.55
+@export var acceleration: float = 20.0
+@export var deceleration: float = 28.0
+@export var turn_speed: float = 12.0
 @export var visual_height: float = 2.15:
 	set(value):
 		visual_height = value
@@ -84,6 +87,7 @@ func _create_document() -> void:
 	_held_document.visible = false
 
 func _play(clip: String, blend: float = 0.12, restart: bool = false) -> void:
+	animator.speed_scale = 2 if clip == "Walking_A" else 1.0
 	if animator.current_animation == clip and animator.is_playing() and not restart:
 		return
 	animation_name = clip
@@ -125,7 +129,8 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	var direction := Vector2.ZERO
-	if controls_enabled and _action.is_empty():
+	var can_move := controls_enabled and _action.is_empty()
+	if can_move:
 		direction = (Input.get_vector("move_left", "move_right", "move_up", "move_down") + Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")).limit_length(1.0)
 	var right := Vector3.RIGHT
 	var down := Vector3.BACK
@@ -139,12 +144,18 @@ func _physics_process(delta: float) -> void:
 	var running := controls_enabled and not carrying and Input.is_physical_key_pressed(KEY_SHIFT)
 	var ground_direction := right * direction.x + down * direction.y
 	var movement_speed := speed * (run_multiplier if running else 1.0)
-	velocity.x = ground_direction.x * movement_speed
-	velocity.z = ground_direction.z * movement_speed
+	var ground_velocity := Vector2(velocity.x, velocity.z)
+	var target_velocity := Vector2(ground_direction.x, ground_direction.z) * movement_speed
+	# Steer through intermediate headings instead of instantly changing velocity
+	# with digital inputs. Preserve the full direction and strength of analog input.
+	var response := deceleration if direction.is_zero_approx() else acceleration
+	ground_velocity = ground_velocity.move_toward(target_velocity, response * delta) if can_move else Vector2.ZERO
+	velocity.x = ground_velocity.x
+	velocity.z = ground_velocity.y
 	velocity.y = -0.5 if is_on_floor() else velocity.y - 9.8 * delta
 	move_and_slide()
-	if not ground_direction.is_zero_approx():
-		$Visual.rotation.y = rotate_toward($Visual.rotation.y, atan2(ground_direction.x, ground_direction.z), delta * 12.0)
+	if Vector2(velocity.x, velocity.z).length() > 0.1:
+		$Visual.rotation.y = rotate_toward($Visual.rotation.y, atan2(velocity.x, velocity.z), delta * turn_speed)
 	if _action.is_empty():
 		var moving := Vector2(velocity.x, velocity.z).length() > 0.1
 		_play(("Running_A" if running else "Walking_A") if moving else ("Holding_A" if carrying else "Idle_A"))
