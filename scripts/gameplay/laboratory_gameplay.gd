@@ -139,7 +139,7 @@ func apply_timeline() -> void:
 
 
 func has_modal() -> bool:
-	return terminal.visible or reader.visible or room.lab.ui.is_modal_open()
+	return terminal.visible or reader.visible or room.lab.ui.is_modal_open() or JournalManager.is_open()
 
 
 func can_switch_role() -> bool:

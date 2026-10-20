@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "future_fracture_observation"
+title = "Temporal Fracture Observation"
+subtitle = "Field note  ·  Signal Laboratory"
+body = "The fracture is stable while the link holds. The far side is warm, lit and full of paper.
+
+Something is different about this one: the voice on the other end answered before I finished asking.
+
+[b]Observation:[/b] the sealed door released the instant the link locked. Whatever this room is, it remembers how it used to work."
+category = 2
+timeline = 2
+sort_order = 0
+unlock_on_puzzle = "puzzle_01_frequency"

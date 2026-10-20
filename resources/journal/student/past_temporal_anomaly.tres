@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="JournalEntry" format=3]
+
+[ext_resource type="Script" path="res://scripts/journal/journal_entry.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+entry_id = "past_temporal_anomaly"
+title = "Temporal Anomaly"
+subtitle = "Unlocked on a stable link"
+body = "The link held.
+
+A voice came through the rift, older than mine, and it knew my name. The room looks the same on the far side of the fracture, only emptier, and darker.
+
+The door seal released the moment the link stabilised, exactly as the memo said it would.
+
+[b]Question:[/b] if the signal arrives before we send it, what exactly are we answering?"
+category = 2
+timeline = 1
+sort_order = 1
+unlock_on_puzzle = "puzzle_01_frequency"
