@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://b5f6ho4186edd"]
+
+[ext_resource type="Script" uid="uid://c3p737vasfalb" path="res://scripts/dialogue/dialogue_box.gd" id="1_6uen5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tp52r"]
+resource_local_to_scene = true
+content_margin_left = 36.0
+content_margin_top = 20.0
+content_margin_right = 36.0
+content_margin_bottom = 12.0
+bg_color = Color(0.043, 0.075, 0.098, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.894, 0.749, 0.498, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 24
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="FontVariation" id="FontVariation_eprfq"]
+variation_embolden = 0.35
+spacing_glyph = 2
+
+[sub_resource type="SystemFont" id="SystemFont_gm23c"]
+font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
+
+[sub_resource type="SystemFont" id="SystemFont_erktn"]
+font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
+font_weight = 700
+
+[sub_resource type="SystemFont" id="SystemFont_wiwis"]
+font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
+font_italic = true
+font_weight = 700
+
+[sub_resource type="SystemFont" id="SystemFont_ylafb"]
+font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
+font_italic = true
+
+[node name="DialogueBox" type="CanvasLayer" unique_id=2104978912]
+layer = 10
+script = ExtResource("1_6uen5")
+
+[node name="RootControl" type="Control" parent="." unique_id=1843593639]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="DialoguePanel" type="PanelContainer" parent="RootControl" unique_id=2048363043]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -540.0
+offset_top = -112.0
+offset_right = 540.0
+offset_bottom = -112.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tp52r")
+
+[node name="Content" type="VBoxContainer" parent="RootControl/DialoguePanel" unique_id=994396563]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="SpeakerRow" type="HBoxContainer" parent="RootControl/DialoguePanel/Content" unique_id=145399797]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Portrait" type="TextureRect" parent="RootControl/DialoguePanel/Content/SpeakerRow" unique_id=867832935]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SpeakerName" type="Label" parent="RootControl/DialoguePanel/Content/SpeakerRow" unique_id=910446837]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.7490196, 0.49803922, 1)
+theme_override_fonts/font = SubResource("FontVariation_eprfq")
+theme_override_font_sizes/font_size = 19
+vertical_alignment = 1
+
+[node name="DialogueText" type="RichTextLabel" parent="RootControl/DialoguePanel/Content" unique_id=1614190746]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.9254902, 0.90588236, 0.85490197, 1)
+theme_override_constants/line_separation = 6
+theme_override_fonts/normal_font = SubResource("SystemFont_gm23c")
+theme_override_fonts/bold_font = SubResource("SystemFont_erktn")
+theme_override_fonts/bold_italics_font = SubResource("SystemFont_wiwis")
+theme_override_fonts/italics_font = SubResource("SystemFont_ylafb")
+theme_override_font_sizes/normal_font_size = 28
+theme_override_font_sizes/bold_font_size = 28
+theme_override_font_sizes/bold_italics_font_size = 28
+theme_override_font_sizes/italics_font_size = 28
+theme_override_font_sizes/mono_font_size = 28
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+
+[node name="ContinueIndicator" type="Label" parent="RootControl/DialoguePanel/Content" unique_id=702576676]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.89411765, 0.7490196, 0.49803922, 1)
+theme_override_font_sizes/font_size = 15
+text = "▼"
+horizontal_alignment = 2
+
+[node name="VoicePlayer" type="AudioStreamPlayer" parent="." unique_id=553395869]
+unique_name_in_owner = true

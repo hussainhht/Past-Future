@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://4mk8yrqa1y8t"]
+
+[ext_resource type="Script" uid="uid://dxkc2kjnd56jd" path="res://scripts/dialogue/dialogue_line.gd" id="1_ui55l"]
+[ext_resource type="Script" uid="uid://dt0he3gl6fhur" path="res://scripts/dialogue/dialogue_sequence.gd" id="2_hh0xe"]
+
+[sub_resource type="Resource" id="Resource_84d44"]
+script = ExtResource("1_ui55l")
+line_id = "opening_01"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Something is wrong with the experiment."
+
+[sub_resource type="Resource" id="Resource_sp4pn"]
+script = ExtResource("1_ui55l")
+line_id = "opening_02"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "That signal wasn't there a moment ago."
+
+[sub_resource type="Resource" id="Resource_yg5fp"]
+script = ExtResource("1_ui55l")
+line_id = "opening_03"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "I need to find out what happened."
+
+[resource]
+script = ExtResource("2_hh0xe")
+sequence_id = "opening_past"
+audience = 0
+lines = Array[ExtResource("1_ui55l")]([SubResource("Resource_84d44"), SubResource("Resource_sp4pn"), SubResource("Resource_yg5fp")])
+play_once = true

@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://xk5kqnw203rb"]
+
+[ext_resource type="Script" uid="uid://dxkc2kjnd56jd" path="res://scripts/dialogue/dialogue_line.gd" id="1_mguqx"]
+[ext_resource type="Script" uid="uid://dt0he3gl6fhur" path="res://scripts/dialogue/dialogue_sequence.gd" id="2_nhnyc"]
+
+[sub_resource type="Resource" id="Resource_mcmlb"]
+script = ExtResource("1_mguqx")
+line_id = "future_01"
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "The laboratory is exactly where I remember it."
+timeline = 1
+
+[sub_resource type="Resource" id="Resource_xc31s"]
+script = ExtResource("1_mguqx")
+line_id = "future_02"
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "Except thirty-one years have passed."
+timeline = 1
+
+[sub_resource type="Resource" id="Resource_2ab8q"]
+script = ExtResource("1_mguqx")
+line_id = "future_03"
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "And this time, I know what happens next."
+timeline = 1
+
+[resource]
+script = ExtResource("2_nhnyc")
+sequence_id = "future_discovery"
+audience = 1
+lines = Array[ExtResource("1_mguqx")]([SubResource("Resource_mcmlb"), SubResource("Resource_xc31s"), SubResource("Resource_2ab8q")])
+playback_mode = 1
+play_once = true
+auto_advance = true
+auto_advance_delay = 1.8
