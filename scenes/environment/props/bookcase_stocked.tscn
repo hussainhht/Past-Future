@@ -1,0 +1,67 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/lab_bookcase.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/lab_bookcase_broken.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/books/kaykit_book_set.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/lab_binder_row.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/books/kaykit_book_single.glb" id="6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(2.2, 3, 0.62)
+
+[node name="BookcaseStocked" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A13"
+
+[node name="PastOnly" type="Node3D" parent="."]
+
+[node name="Shelf" parent="PastOnly" instance=ExtResource("2")]
+
+[node name="FutureOnly" type="Node3D" parent="."]
+
+[node name="Shelf" parent="FutureOnly" instance=ExtResource("3")]
+
+[node name="Books0" parent="PastOnly" instance=ExtResource("4")]
+position = Vector3(-0.55, 0.37, 0.05)
+
+[node name="Binders0" parent="PastOnly" instance=ExtResource("5")]
+position = Vector3(0.42, 0.12, 0.04)
+
+[node name="Books1" parent="PastOnly" instance=ExtResource("4")]
+position = Vector3(-0.55, 1.02, 0.05)
+
+[node name="Binders1" parent="PastOnly" instance=ExtResource("5")]
+position = Vector3(0.42, 0.77, 0.04)
+
+[node name="Books2" parent="PastOnly" instance=ExtResource("4")]
+position = Vector3(-0.55, 1.74, 0.05)
+
+[node name="Binders2" parent="PastOnly" instance=ExtResource("5")]
+position = Vector3(0.42, 1.49, 0.04)
+
+[node name="Books3" parent="PastOnly" instance=ExtResource("4")]
+position = Vector3(-0.55, 2.46, 0.05)
+
+[node name="Binders3" parent="PastOnly" instance=ExtResource("5")]
+position = Vector3(0.42, 2.21, 0.04)
+
+[node name="Books0" parent="FutureOnly" instance=ExtResource("4")]
+position = Vector3(-0.6, 0.37, 0.05)
+rotation = Vector3(0, 0, 0.139626)
+
+[node name="Lone0" parent="FutureOnly" instance=ExtResource("6")]
+position = Vector3(0.55, 0.34, 0.05)
+rotation = Vector3(0, 0.349066, -0.488692)
+
+[node name="Books1" parent="FutureOnly" instance=ExtResource("4")]
+position = Vector3(-0.6, 1.74, 0.05)
+rotation = Vector3(0, 0, 0.139626)
+
+[node name="Lone1" parent="FutureOnly" instance=ExtResource("6")]
+position = Vector3(0.55, 1.71, 0.05)
+rotation = Vector3(0, 0.349066, -0.488692)
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1.5, 0)
+shape = SubResource("BoxShape3D_1")

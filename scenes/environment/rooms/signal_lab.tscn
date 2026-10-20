@@ -1,0 +1,124 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/signal_lab.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/audio/audio_system.tscn" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/lab_ui.gd" id="3"]
+[ext_resource type="PackedScene" path="res://scenes/environment/rooms/signal_lab_layout.tscn" id="4"]
+[ext_resource type="Script" path="res://scripts/environment/light_behaviour.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/gameplay/frequency/frequency_puzzle_coordinator.gd" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/gameplay/frequency/frequency_terminal_ui.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/gameplay/frequency/frequency_log_reader.gd" id="8"]
+
+[node name="SignalLab" type="Node3D"]
+script = ExtResource("1")
+
+[node name="AudioSystem" parent="." instance=ExtResource("2")]
+
+[node name="FrequencyCoordinator" type="Node" parent="."]
+script = ExtResource("6")
+
+[node name="LabUI" type="CanvasLayer" parent="."]
+script = ExtResource("3")
+
+[node name="FrequencyScreens" type="CanvasLayer" parent="."]
+layer = 30
+
+[node name="Terminal" parent="FrequencyScreens" instance=ExtResource("7")]
+
+[node name="LogReader" type="Control" parent="FrequencyScreens"]
+script = ExtResource("8")
+
+[node name="Layout" parent="." instance=ExtResource("4")]
+
+[node name="Lighting" type="Node3D" parent="."]
+
+[node name="Past" type="Node3D" parent="Lighting"]
+
+[node name="CeilingWest" type="OmniLight3D" parent="Lighting/Past"]
+position = Vector3(-7, 3.9, -1)
+light_color = Color(1, 0.886, 0.69, 1)
+light_energy = 0.85
+omni_range = 9.5
+omni_attenuation = 0.9
+
+[node name="CeilingCentre" type="OmniLight3D" parent="Lighting/Past"]
+position = Vector3(0.5, 3.9, -2)
+light_color = Color(1, 0.886, 0.69, 1)
+light_energy = 0.8
+omni_range = 9.5
+omni_attenuation = 0.9
+
+[node name="CeilingEast" type="OmniLight3D" parent="Lighting/Past"]
+position = Vector3(7.5, 3.9, -1)
+light_color = Color(1, 0.886, 0.69, 1)
+light_energy = 0.85
+omni_range = 9.5
+omni_attenuation = 0.9
+
+[node name="ResearchLamp" type="OmniLight3D" parent="Lighting/Past"]
+position = Vector3(3.75, 2.25, 0.55)
+light_color = Color(1, 0.847, 0.565, 1)
+light_energy = 1.3
+omni_range = 2.6
+omni_attenuation = 1.5
+
+[node name="ScienceLamp" type="OmniLight3D" parent="Lighting/Past"]
+position = Vector3(-7.35, 2.25, 0.6)
+light_color = Color(1, 0.847, 0.565, 1)
+light_energy = 1.2
+omni_range = 2.6
+omni_attenuation = 1.5
+
+[node name="Future" type="Node3D" parent="Lighting"]
+visible = false
+
+[node name="EmergencyNorth" type="OmniLight3D" parent="Lighting/Future"]
+position = Vector3(9.3, 3, -7.2)
+script = ExtResource("5")
+light_color = Color(1, 0.29, 0.227, 1)
+light_energy = 2.6
+omni_range = 7.5
+omni_attenuation = 1.1
+mode = 2
+speed = 0.7
+depth = 0.3
+
+[node name="EmergencyWest" type="OmniLight3D" parent="Lighting/Future"]
+position = Vector3(-11.85, 2.9, -2.4)
+script = ExtResource("5")
+light_color = Color(1, 0.29, 0.227, 1)
+light_energy = 2.5
+omni_range = 7.5
+omni_attenuation = 1.1
+mode = 2
+speed = 0.5
+depth = 0.3
+
+[node name="EmergencyEast" type="OmniLight3D" parent="Lighting/Future"]
+position = Vector3(11.85, 2.9, -1)
+script = ExtResource("5")
+light_color = Color(1, 0.29, 0.227, 1)
+light_energy = 2.4
+omni_range = 7
+omni_attenuation = 1.1
+mode = 1
+speed = 0.45
+depth = 0.65
+
+[node name="ColdFill" type="OmniLight3D" parent="Lighting/Future"]
+position = Vector3(0, 5.5, 1)
+light_color = Color(0.333, 0.486, 0.525, 1)
+light_energy = 0.55
+omni_range = 17
+omni_attenuation = 0.6
+
+[node name="BrokenCeiling" type="OmniLight3D" parent="Lighting/Future"]
+position = Vector3(-1.9, 3.5, -1.4)
+script = ExtResource("5")
+light_color = Color(0.525, 0.788, 0.82, 1)
+light_energy = 1.0
+omni_range = 5
+omni_attenuation = 1.2
+mode = 2
+speed = 1.4
+depth = 0.6

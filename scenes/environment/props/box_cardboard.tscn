@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/laboratory/lab_box_cardboard.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(0.7, 0.5, 0.52)
+
+[node name="BoxCardboard" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A26"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.25, 0)
+shape = SubResource("BoxShape3D_1")

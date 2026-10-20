@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/timeline_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/environment/models/furniture/kaykit_chair_stool.glb" id="2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(0.7, 0.5, 0.7)
+
+[node name="Stool" type="StaticBody3D"]
+script = ExtResource("1")
+asset_id = "A07"
+
+[node name="Model" parent="." instance=ExtResource("2")]
+scale = Vector3(1.3, 1.3, 1.3)
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.25, 0)
+shape = SubResource("BoxShape3D_1")
