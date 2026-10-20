@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://gc4q5s0anbg0"]
+
+[ext_resource type="Script" uid="uid://07rsf7v8oejw" path="res://scripts/testing/dialogue_sandbox.gd" id="1_sandbox"]
+[ext_resource type="PackedScene" uid="uid://bfg2cr5fesnij" path="res://scenes/dialogue/dialogue_system.tscn" id="2_system"]
+
+[node name="DialogueSandbox" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sandbox")
+
+[node name="DialogueSystem" parent="." instance=ExtResource("2_system")]
