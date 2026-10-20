@@ -441,17 +441,23 @@ tuning the room. That is how the following were found and fixed:
 
 ## 10. Git
 
-The work is on branch `claude/great-franklin-ufe6zm`, which is not merged into `main`. The commits are listed in the
-pull request, in this order:
+The work is on branch `claude/great-franklin-ufe6zm`, which is not merged into `main`.
 
-1. Tools: mesh kit, generators, validator license rule.
-2. Asset library: original models and textures, KayKit models, license registry and documents.
-3. Timeline materials and environment shaders.
-4. Puzzle rules and LabUI.
-5. Room scenes, devices, rift and audio.
-6. `spawn_area` integration.
-7. Tests.
-8. Documentation and screenshots (this file).
+- The branch was fast-forwarded to `main` at `1431fb3` (PR #2) before committing. Nothing conflicted; the only overlap
+  was 8 identical `.uid` files.
+- The commits sit on top of `1431fb3`:
+
+| Commit | Content |
+|---|---|
+| `3d863f2` | Tools: mesh kit, prop and texture generators, validator license rule |
+| `2c30a02` | Asset library: 63 original models, 12 KayKit models, 28 textures, license registry and documents |
+| `7d4b6f6` | Timeline materials and lit environment shaders |
+| `2ab2853` | LabUI: document reader, toasts, banner |
+| `28ab1c6` | The room around the frequency puzzle: prop scenes, layout, devices, radio pickups, rift |
+| `3468beb` | `spawn_area` integration: room, rig, prompt, TemporalRadio, held radio, radio HUD |
+| `1c3ba68` | Solo and two-peer ENet tests |
+| `1bb2dbb` | Documentation and screenshots |
+| (follow-up) | This commit table |
 
 `main` was not changed directly and nothing was force-pushed.
 
