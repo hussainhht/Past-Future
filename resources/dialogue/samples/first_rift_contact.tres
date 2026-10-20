@@ -1,0 +1,50 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3 uid="uid://bq5xd4wiyituv"]
+
+[ext_resource type="Script" uid="uid://dxkc2kjnd56jd" path="res://scripts/dialogue/dialogue_line.gd" id="1_o2x8q"]
+[ext_resource type="Script" uid="uid://dt0he3gl6fhur" path="res://scripts/dialogue/dialogue_sequence.gd" id="2_pbotp"]
+
+[sub_resource type="Resource" id="Resource_j56ri"]
+script = ExtResource("1_o2x8q")
+line_id = "rift_01"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Who's there?"
+
+[sub_resource type="Resource" id="Resource_ui140"]
+script = ExtResource("1_o2x8q")
+line_id = "rift_02"
+speaker_id = "professor"
+speaker_name = "Unknown Voice"
+text = "Can you hear me?"
+timeline = 2
+event_id = "rift_voice_detected"
+
+[sub_resource type="Resource" id="Resource_m43ks"]
+script = ExtResource("1_o2x8q")
+line_id = "rift_03"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Where are you?"
+
+[sub_resource type="Resource" id="Resource_ugqdf"]
+script = ExtResource("1_o2x8q")
+line_id = "rift_04"
+speaker_id = "professor"
+speaker_name = "Unknown Voice"
+text = "That's difficult to explain."
+timeline = 2
+
+[sub_resource type="Resource" id="Resource_86nyh"]
+script = ExtResource("1_o2x8q")
+line_id = "rift_05"
+speaker_id = "student"
+speaker_name = "The Student"
+text = "Then start explaining."
+
+[resource]
+script = ExtResource("2_pbotp")
+sequence_id = "first_rift_contact"
+lines = Array[ExtResource("1_o2x8q")]([SubResource("Resource_j56ri"), SubResource("Resource_ui140"), SubResource("Resource_m43ks"), SubResource("Resource_ugqdf"), SubResource("Resource_86nyh")])
+play_once = true
+start_event_id = "rift_activated"
+finish_event_id = "rift_conversation_finished"
