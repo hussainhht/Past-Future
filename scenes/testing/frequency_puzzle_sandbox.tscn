@@ -3,4 +3,5 @@
 [ext_resource type="Script" uid="uid://3wmu7mbkuwnn" path="res://scripts/testing/frequency_puzzle_sandbox.gd" id="1"]
 
 [node name="FrequencyPuzzleSandbox" type="Node3D" unique_id=487682862]
+transform = Transform3D(0.8801025, 0.4296792, -0.20197861, -0.37090585, 0.8877992, 0.2724727, 0.2963923, -0.16488889, 0.94072485, 0, 0, 0)
 script = ExtResource("1")

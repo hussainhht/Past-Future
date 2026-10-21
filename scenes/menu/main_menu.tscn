@@ -69,7 +69,6 @@ offset_right = 580.0
 offset_bottom = 77.0
 theme_override_colors/font_color = Color(0.72, 0.75, 0.68, 1)
 theme_override_font_sizes/font_size = 15
-text = "C H E C K P O I N T    /    T E M P O R A L  R E S E A R C H"
 
 [node name="Edition" type="Label" parent="Layout" unique_id=503219867]
 layout_mode = 0
@@ -79,7 +78,6 @@ offset_right = 1520.0
 offset_bottom = 77.0
 theme_override_colors/font_color = Color(0.42, 0.56, 0.58, 1)
 theme_override_font_sizes/font_size = 14
-text = "R E B O O T   G A M E   J A M   /   2 0 2 6"
 horizontal_alignment = 2
 
 [node name="TitleBlock" type="VBoxContainer" parent="Layout" unique_id=759534350]
@@ -94,7 +92,6 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_colors/font_color = Color(0.69, 0.59, 0.43, 1)
 theme_override_font_sizes/font_size = 14
-text = "T W O  L I V E S .   O N E  F R A C T U R E ."
 
 [node name="Past" type="Label" parent="Layout/TitleBlock" unique_id=29669714]
 layout_mode = 2
@@ -115,7 +112,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.67, 0.71, 0.68, 1)
 theme_override_fonts/font = SubResource("SystemFont_italic")
 theme_override_font_sizes/font_size = 22
-text = "What you change, I become."
 
 [node name="Actions" type="VBoxContainer" parent="Layout" unique_id=610663681]
 layout_mode = 0
@@ -204,27 +200,6 @@ offset_right = 1520.0
 offset_bottom = 831.0
 mouse_filter = 2
 color = Color(0.5, 0.59, 0.57, 0.18)
-
-[node name="Chapter" type="Label" parent="Layout" unique_id=805845255]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 850.0
-offset_right = 800.0
-offset_bottom = 878.0
-theme_override_colors/font_color = Color(0.55, 0.61, 0.59, 1)
-theme_override_font_sizes/font_size = 13
-text = "CHAPTER 0     /     THE FIRST FRACTURE"
-
-[node name="CoopHint" type="Label" parent="Layout" unique_id=1037026644]
-layout_mode = 0
-offset_left = 1000.0
-offset_top = 850.0
-offset_right = 1520.0
-offset_bottom = 878.0
-theme_override_colors/font_color = Color(0.43, 0.54, 0.55, 1)
-theme_override_font_sizes/font_size = 13
-text = "A MYSTERY FOR TWO     ·     MOUSE OR ↑ ↓ + ENTER"
-horizontal_alignment = 2
 
 [node name="Overlay" type="ColorRect" parent="." unique_id=796052303]
 visible = false
