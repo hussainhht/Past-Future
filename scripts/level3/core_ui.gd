@@ -15,6 +15,9 @@ var debug_button: Button
 var journal_button: Button
 var ending_caption: Label
 var visible_modal: bool = false
+var _status_panel: PanelContainer
+var _last_status: String = ""
+var _status_seconds: float = 0.0
 
 
 func _ready() -> void:
@@ -24,24 +27,42 @@ func _ready() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 	var header := PanelContainer.new()
-	header.position = Vector2(20, 16)
-	header.size = Vector2(1020, 108)
-	header.add_theme_stylebox_override("panel", panel_style())
+	header.name = "Header"
+	header.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	header.offset_left = 16
+	header.offset_top = 12
+	header.offset_right = -16
+	header.offset_bottom = 64
+	var header_style := panel_style()
+	header_style.content_margin_top = 8
+	header_style.content_margin_bottom = 8
+	header.add_theme_stylebox_override("panel", header_style)
 	root.add_child(header)
-	var rows := VBoxContainer.new()
-	header.add_child(rows)
-	identity = text_label("III / THE FINAL FRACTURE", 26)
-	rows.add_child(identity)
-	status = text_label("", 20)
-	status.custom_minimum_size.x = 940
-	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	rows.add_child(status)
-	timer = text_label("", 38)
-	timer.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	timer.position = Vector2(-235, 20)
-	timer.size = Vector2(215, 55)
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 16)
+	header.add_child(row)
+	identity = text_label("", 16)
+	identity.custom_minimum_size.x = 64
+	identity.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(identity)
+	var title := text_label("TEMPORAL CORE", 16)
+	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(title)
+	timer = text_label("", 24)
 	timer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	root.add_child(timer)
+	timer.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(timer)
+	_status_panel = PanelContainer.new()
+	_status_panel.position = Vector2(20, 76)
+	_status_panel.size.x = 520
+	_status_panel.add_theme_stylebox_override("panel", panel_style())
+	_status_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status_panel.hide()
+	root.add_child(_status_panel)
+	status = text_label("", 18)
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_status_panel.add_child(status)
 	var footer := PanelContainer.new()
 	footer.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	footer.offset_left = 20
@@ -86,6 +107,14 @@ func _ready() -> void:
 	ending_caption.size = Vector2(1200, 80)
 	ending_caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	root.add_child(ending_caption)
+
+
+func _process(delta: float) -> void:
+	if status.text != _last_status:
+		_last_status = status.text
+		_status_seconds = 5.0 if not status.text.is_empty() else 0.0
+	_status_seconds = maxf(0.0, _status_seconds - delta)
+	_status_panel.visible = _status_seconds > 0.0 and not visible_modal
 
 
 func panel_style() -> StyleBoxFlat:
@@ -154,7 +183,7 @@ func close_panel() -> void:
 
 
 func render(state: Dictionary, role: String, predicted_remaining: float) -> void:
-	identity.text = "III / THE FINAL FRACTURE  ·  " + ("II / PROFESSOR / FUTURE" if role == "future" else "I / STUDENT / PAST")
+	identity.text = role.to_upper()
 	identity.modulate = Color("9edfeb") if role == "future" else Color("edc894")
 	timer.visible = state.stage in ["STAGE_A", "STAGE_B", "STAGE_C", "OVERLOAD"]
 	timer.text = "%02d:%02d" % [int(ceil(predicted_remaining)) / 60, int(ceil(predicted_remaining)) % 60]

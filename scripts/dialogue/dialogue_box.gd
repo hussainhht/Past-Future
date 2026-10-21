@@ -95,8 +95,8 @@ func _layout_panel() -> void:
 	var max_height := minf(340.0, screen.y - 306.0)
 	_text_scroll.custom_minimum_size.y = clampf(float(_text.get_content_height()), 36.0, maxf(36.0, max_height - overhead))
 	var height := overhead + _text_scroll.custom_minimum_size.y
-	_panel.offset_bottom = -150.0
-	_panel.offset_top = -150.0 - height
+	_panel.offset_bottom = -28.0
+	_panel.offset_top = -28.0 - height
 
 
 func _exit_tree() -> void:

@@ -42,10 +42,6 @@ func initialize(laboratory: Node3D) -> void:
 	prompt = load("res://scenes/ui/interaction_prompt.tscn").instantiate()
 	prompt.name = "InteractionPrompt"
 	add_child(prompt)
-	# Separate the focus prompt from the footer and the dialogue panel.
-	var prompt_panel: Control = prompt.get_node("Root/PromptPanel")
-	prompt_panel.offset_top = -137
-	prompt_panel.offset_bottom = -95
 	# Use the environment's authored devices and screens; this composition owns
 	# the local character and narrative presentation, not a second copy of Puzzle 01.
 	for pickup in [student_pickup, professor_pickup]:

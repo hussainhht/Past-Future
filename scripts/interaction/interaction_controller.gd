@@ -50,6 +50,8 @@ func _auto_wire_components() -> void:
 func _on_target_changed(target: Interactable3D) -> void:
 	if is_instance_valid(prompt_ui) and not _interaction_blocked:
 		var prompt_text := target.get_interaction_prompt(actor)
+		if prompt_ui.has_method("set_target"):
+			prompt_ui.call("set_target", target)
 		if prompt_ui.has_method("show_prompt"):
 			prompt_ui.call("show_prompt", prompt_text, get_actor_role())
 

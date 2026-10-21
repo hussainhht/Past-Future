@@ -13,9 +13,6 @@
 [ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="menu_theme"]
 [ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="menu_button"]
 
-[ext_resource type="Theme" path="res://resources/ui/menu_theme.tres" id="menu_theme"]
-[ext_resource type="Script" path="res://scripts/menu/menu_button.gd" id="menu_button"]
-
 [sub_resource type="BoxShape3D" id="HorizontalWall"]
 size = Vector3(25.44, 1, 0.32)
 
@@ -212,7 +209,7 @@ theme = SubResource("WorldTheme")
 [node name="Header" type="ColorRect" parent="HUD/Interface"]
 layout_mode = 1
 anchor_right = 1.0
-offset_bottom = 82.0
+offset_bottom = 52.0
 mouse_filter = 2
 color = Color(0.035, 0.06, 0.075, 0.96)
 
@@ -221,65 +218,57 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 28
-theme_override_constants/margin_right = 28
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_bottom = 12
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="Row" type="HBoxContainer" parent="HUD/Interface/Header/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
 
 [node name="Identity" type="VBoxContainer" parent="HUD/Interface/Header/Margin/Row"]
 layout_mode = 2
-custom_minimum_size = Vector2(165, 0)
+custom_minimum_size = Vector2(64, 0)
+size_flags_vertical = 4
 theme_override_constants/separation = 5
 
 [node name="TimelineLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/Identity"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "I  /  PAST"
-
-[node name="RoleLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/Identity"]
-unique_name_in_owner = true
-layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "THE STUDENT"
+text = "PAST"
 
 [node name="RoomInfo" type="VBoxContainer" parent="HUD/Interface/Header/Margin/Row"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
 theme_override_constants/separation = 5
 
 [node name="Title" type="Label" parent="HUD/Interface/Header/Margin/Row/RoomInfo"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("hud_heading")
-theme_override_font_sizes/font_size = 24
-text = "SIGNAL LABORATORY"
-
-[node name="ConnectionLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/RoomInfo"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.46, 0.60, 0.60, 1)
 theme_override_font_sizes/font_size = 16
-text = "SOLO PREVIEW"
+text = "SIGNAL LABORATORY"
 
 [node name="TimelineButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
 size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "VIEW FUTURE"
+theme_override_font_sizes/font_size = 16
+text = "SWITCH TIMELINE"
 
 [node name="PauseButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(110, 48)
+custom_minimum_size = Vector2(72, 32)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
 text = "PAUSE"
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]

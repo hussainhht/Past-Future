@@ -1,9 +1,9 @@
 extends "res://scripts/puzzles/puzzle_base.gd"
 ## Level 02's canonical progression. All choices, costs and recovery survive scene changes.
 
+const Storage := preload("res://scripts/gameplay/storage/storage_rules.gd")
 const ID := "puzzle_02_maintenance"
 const DESTINATION := "res://scenes/world/maintenance_corridor.tscn"
-var support_solution := {"circle": 3, "triangle": 2, "square": 1}
 var access_code := "3142"
 
 
@@ -11,8 +11,7 @@ func get_initial_state() -> Dictionary:
 	return {"arrived_past": false, "arrived_future": false, "service_isolated": false,
 		"battery_ready": false, "priority": "shared", "briefed_past": false,
 		"briefed_future": false, "bypass_past": false, "bypass_future": false,
-		"supports": {"circle": 1, "triangle": 1, "square": 1}, "supports_secured": false,
-		"archive_read": false, "recording": "pending", "core_authorized": false,
+		"storage": Storage.initial(), "archive_read": false, "recording": "pending", "core_authorized": false,
 		"future_release_open": false, "anchor_past": false, "anchor_future": false}
 
 
@@ -21,11 +20,12 @@ func get_prerequisites() -> PackedStringArray:
 
 
 func get_actions() -> Dictionary:
-	return {"arrive": [], "read_reserve_note": [], "reserve_power": [], "repair_bypass": [],
-		"isolate_service": [PAST], "charge_battery": [FUTURE], "set_support": [PAST],
-		"apply_supports": [PAST], "read_archive": [FUTURE], "preserve_recording": [FUTURE],
+	var actions := Storage.actions()
+	actions.merge({"arrive": [], "read_reserve_note": [], "reserve_power": [], "repair_bypass": [],
+		"isolate_service": [PAST], "charge_battery": [FUTURE], "read_archive": [FUTURE], "preserve_recording": [FUTURE],
 		"extract_cell": [FUTURE], "authorize_core": [PAST], "release_door": [FUTURE],
-		"arm_anchor": []}
+		"arm_anchor": []})
+	return actions
 
 
 static func bypass_ready(state: Dictionary) -> bool:
@@ -50,12 +50,9 @@ func validate_action(action: String, payload: Dictionary, role: String, state: D
 	var reason := super(action, payload, role, state)
 	if not reason.is_empty():
 		return reason
-	if action == "set_support":
-		if payload.size() != 2 or payload.get("support") not in support_solution or typeof(payload.get("stage")) != TYPE_INT:
-			return "invalid_support"
-		if payload.stage < 1 or payload.stage > 3:
-			return "invalid_stage"
-	elif action == "authorize_core":
+	if Storage.actions().has(action):
+		return Storage.validate(action, payload, state)
+	if action == "authorize_core":
 		if payload.size() != 1 or not payload.get("code") is String or payload.code.length() > 8:
 			return "invalid_code"
 	elif not payload.is_empty():
@@ -76,13 +73,8 @@ func validate_action(action: String, payload: Dictionary, role: String, state: D
 		if state.core_authorized or state.future_release_open:
 			return "distribution_locked"
 		return ""
-	if action in ["set_support", "apply_supports"]:
-		if state.supports_secured:
-			return "supports_locked"
-		return "" if has_power(state, PAST) else "past_auxiliary_feed_offline"
-	if not state.supports_secured:
-		return "secure_crossing_first"
 	if action == "read_archive":
+		if not Storage.repaired(state): return "repair_archive_first"
 		return "" if has_power(state, FUTURE) else "future_auxiliary_feed_offline"
 	if action in ["preserve_recording", "extract_cell"]:
 		if not state.archive_read:
@@ -109,6 +101,7 @@ func validate_action(action: String, payload: Dictionary, role: String, state: D
 
 
 func apply_action(action: String, payload: Dictionary, role: String, state: Dictionary) -> Dictionary:
+	if Storage.actions().has(action): return Storage.apply(action, payload, state)
 	var key := ""
 	match action:
 		"arrive": key = "arrived_" + role
@@ -124,15 +117,6 @@ func apply_action(action: String, payload: Dictionary, role: String, state: Dict
 				return no_change("Local reserve is already engaged.")
 			state.priority = role
 			state.battery_ready = true
-		"set_support":
-			if state.supports[payload.support] == payload.stage:
-				return no_change()
-			state.supports[payload.support] = payload.stage
-		"apply_supports":
-			for support in support_solution:
-				if state.supports[support] != support_solution[support]:
-					return no_change("Unsafe load at %s. Check the Future diagnostic diagram." % support.to_upper())
-			key = "supports_secured"
 		"preserve_recording": state.recording = "preserved"
 		"extract_cell": state.recording = "erased"
 		"authorize_core":

@@ -64,6 +64,7 @@ var room_events: Array = []  # [room ID, screen black, input locked, controls en
 var requested: Array = []  # [from, to]
 var link_completions: int = 0
 var sessions_started: int = 0
+var expected_root_nodes: int = 1  # One room, plus the configured autoloads.
 var broken_scene: String = ""
 ## Set by run_game_flow_render.py: peers run with a real renderer and save what each player sees.
 var shots_directory: String = ""
@@ -137,7 +138,7 @@ func verify_room(room_id: String, scene_path: String, label: String) -> void:
 	var expected_body := "student_3d_player.tscn" if is_host() else "professor_3d_player.tscn"
 	check(current_scene.player.scene_file_path.ends_with(expected_body), "%s: this peer plays its own timeline's character" % label)
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "%s: one character, one radio, one controller" % label)
-	check(current_scene.find_children("StatusHUD", "CanvasLayer", true, false).size() == 1 and root.get_child_count() == 5, "%s: one HUD and no stray scenes" % label)
+	check(current_scene.find_children("StatusHUD", "CanvasLayer", true, false).size() == 1 and root.get_child_count() == expected_root_nodes, "%s: one HUD and no stray scenes" % label)
 	check(network.in_game and network.state == network.State.CONNECTED and get_multiplayer().multiplayer_peer.get_instance_id() == peer_object_id, "%s: the same ENet connection is still in the game" % label)
 	check(puzzles.get_session_id() == session and sessions_started == 1, "%s: still the same puzzle session, never restarted" % label)
 
@@ -179,6 +180,9 @@ func make_room(room_id: String, past_scene: String, future_scene: String) -> Roo
 
 
 func _run() -> void:
+	for property in ProjectSettings.get_property_list():
+		if String(property.name).begins_with("autoload/"):
+			expected_root_nodes += 1
 	var arguments := OS.get_cmdline_user_args()
 	role = arguments[0]
 	port = int(arguments[1])
@@ -648,7 +652,7 @@ func scenario_production() -> void:
 	var marker: Marker3D = flow.find_spawn_point(flow.get_entry_spawn_id(timeline))
 	check(room.player.global_position.distance_to(marker.global_position) < 0.1 and room.player.is_on_floor(), "Correct grounded timeline marker used")
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("Camera3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "No duplicate players, cameras, radios or interaction rigs")
-	check("67 MHz" in room.radio_label.text and count_nodes("AudioDirector") == 1, "The gallery owns one radio status display and one audio director")
+	check(room.timeline_label.text == timeline.to_upper() and room.radio.get_calibrated_frequency() == 67 and count_nodes("AudioDirector") == 1, "The gallery shows the local timeline and retains its radio link and audio director")
 	check(not flow.is_input_locked() and not flow.overlay.is_covering() and room.player.controls_enabled, "Fade clears and movement controls unlock")
 	check(room.radio.can_receive() and room.radio.owns_radio and room.radio.get_calibrated_frequency() == 67, "Established radio state restores in the gallery")
 	var before: Vector3 = room.player.position

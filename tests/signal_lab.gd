@@ -289,4 +289,4 @@ func _check_reset() -> void:
 	check(not lab.door.is_open and lab.door.leaf.position.x < 0.1, "A reset must seal the door again")
 	check(lab.get_node("Layout/Interactive/PastRadio/Pickup/Model").visible, "A reset must put the Student's radio back")
 	var console: Node = lab.get_node("Layout/Interactive/ConsoleTerminal")
-	check(console.readout.text == "SIGNAL UNSTABLE", "A reset must clear the console readout")
+	check(console.readout.text.is_empty(), "A reset must clear the console readout")

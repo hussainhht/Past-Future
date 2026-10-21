@@ -19,13 +19,11 @@ func quiet() -> void:
 func act(action: String, who: String, payload: Dictionary = {}) -> void:
 	var result: Dictionary = puzzles.submit_action(Rules.ID, action, payload, who)
 	assert(result.status != puzzles.Status.REJECTED, str(result))
-func stage_crossing() -> void:
+func restore_power() -> void:
 	act("isolate_service", "past")
 	act("charge_battery", "future")
-	for support in {"circle":3,"triangle":2,"square":1}:
-		act("set_support", "past", {"support":support,"stage":{"circle":3,"triangle":2,"square":1}[support]})
-	act("apply_supports", "past")
 func finish(recording: String) -> void:
+	preload("res://tests/storage_fixture.gd").repair(root.get_node("PuzzleManager"))
 	act("read_archive", "future")
 	if recording == "preserved":
 		act("repair_bypass", "past")
@@ -62,19 +60,20 @@ func run() -> void:
 	await capture("future_entry")
 	room.player.position = Vector3(1.2,0,3.3)
 	room.get_node("CameraRig").snap_to_target()
-	await capture("future_blocked")
+	await capture("future_passage")
 	act("isolate_service", "past")
 	room._show_device("ReserveFuture")
 	await capture("reserve_choice")
 	room.ui.close_modal()
-	stage_crossing()
+	restore_power()
 	await create_timer(1.3).timeout
 	await quiet()
-	await capture("future_bridge")
+	await capture("future_powered_passage")
 	room.player.position = Vector3(0,0,-4.1)
 	room.get_node("CameraRig").snap_to_target()
 	await quiet()
 	await capture("future_records")
+	preload("res://tests/storage_fixture.gd").repair(root.get_node("PuzzleManager"))
 	act("read_archive", "future")
 	await quiet()
 	room.player.position = Vector3(5.4,0,-5.2)
@@ -90,7 +89,7 @@ func run() -> void:
 	await quiet()
 	await capture("core_stable")
 	puzzles.reset_puzzle(Rules.ID)
-	stage_crossing()
+	restore_power()
 	finish("erased")
 	await capture("ending_erased")
 	room.queue_free()

@@ -440,6 +440,28 @@ func _test_interaction_prompt_ui() -> void:
 	prompt_scene.show_prompt("Examine Temporal Rift", "Future")
 	check(prompt_scene.action_label.text == "Examine Temporal Rift", "Prompt updates text dynamically")
 
+	var world := Node3D.new()
+	root.add_child(world)
+	var camera := Camera3D.new()
+	world.add_child(camera)
+	camera.position = Vector3(0, 2, 5)
+	camera.look_at(Vector3.ZERO)
+	camera.make_current()
+	var target := Interactable3D.new()
+	world.add_child(target)
+	prompt_scene.set_target(target)
+	await tick(2)
+	check(prompt_scene.panel.get_global_rect().get_center().distance_to(camera.unproject_position(target.get_prompt_position())) < 1.0, "Prompt is centered on the targeted object")
+	camera.position.x += 1.0
+	await tick(2)
+	check(prompt_scene.panel.get_global_rect().get_center().distance_to(camera.unproject_position(target.get_prompt_position())) < 1.0, "Prompt follows the object as the camera moves")
+	target.position = camera.position + camera.basis.z * 2.0
+	await tick(2)
+	check(not prompt_scene.panel.visible, "Targets behind the camera do not show a floating prompt")
+	world.queue_free()
+	await tick(2)
+	check(not prompt_scene._is_visible, "Deleting the target dismisses its prompt safely")
+
 	prompt_scene.hide_prompt()
 	check(not prompt_scene._is_visible, "Prompt internal state updates to hidden on hide_prompt")
 

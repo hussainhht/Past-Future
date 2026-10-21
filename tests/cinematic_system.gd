@@ -87,7 +87,14 @@ func _run() -> void:
 	var lab := current_scene
 	lab.pause_when_unfocused = false
 	lab._set_paused(false)
-	await wait_until(func() -> bool: return cinema.is_playing(), "Entering Room 01 starts the introduction")
+	await tick(8)
+	# The tutorial intentionally owns input for first-time players; verify cinematic locking
+	# after dismissing it without changing the player's saved tutorial preference.
+	lab.tutorial.close_silently()
+	check(not cinema.is_playing() and started.is_empty(), "Normal level entry shows no cinematic introduction")
+	check(not flow.is_input_locked() and lab.player.controls_enabled, "Normal level entry allows immediate gameplay")
+	cinema.enabled = true
+	check(cinema.show_room_intro("room_01"), "Explicit preview starts the introduction")
 	check(started.size() == 1 and started[0] == ["room_01", "past"], "One Past introduction for Room 01: %s" % [started])
 	check(not flow.is_input_locked(), "The introduction does not lock input")
 	await create_timer(0.45).timeout
@@ -111,8 +118,7 @@ func _run() -> void:
 	check(not journal.is_open(), "Journal closed")
 
 	# --- Real transition Room 01 -> Room 02 ---
-	flow.fade_out_seconds = 0.2
-	flow.fade_in_seconds = 0.2
+	cinema.enabled = false
 	for radio_role in ["past", "future"]:
 		puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": radio_role}, radio_role)
 	puzzles.submit_action(FREQ, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY}, "past")
@@ -121,7 +127,11 @@ func _run() -> void:
 	lab.gameplay.director.stop_dialogue()
 	check(flow.begin_transition("room_02") == "", "The transition to Room 02 starts")
 	await wait_until(func() -> bool: return flow.get_current_room_id() == "room_02" and not flow.is_transitioning(), "Room 02 is entered", 15.0)
-	await wait_until(func() -> bool: return cinema.is_playing(), "Room 02 introduces itself after the fade")
+	await tick(8)
+	check(not cinema.is_playing() and started.size() == 1, "Changing levels shows no cinematic introduction")
+	check(not flow.is_input_locked() and not flow.overlay.is_covering(), "The new level is playable with no transition overlay")
+	cinema.enabled = true
+	check(cinema.show_room_intro("room_02"), "Room 02 introduction remains available for explicit previews")
 	check(started.size() == 2 and started[1] == ["room_02", "past"], "Room 02 introduction: %s" % [started])
 	check(not flow.is_input_locked(), "Input is free during the Room 02 introduction")
 	await create_timer(1.6).timeout

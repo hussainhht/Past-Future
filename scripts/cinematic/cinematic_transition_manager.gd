@@ -1,7 +1,8 @@
 extends Node
 ## Room introductions (autoload "CinematicTransitionManager").
 ##
-## Watches GameFlowManager and plays one cinematic title card per real room entry, styled for the
+## Optional cinematic title cards, disabled during normal gameplay. When enabled, watches
+## GameFlowManager and plays one title card per real room entry, styled for the
 ## local player's timeline. Everything here is local to this client: no RPCs, no puzzle state, no
 ## input locking. Each peer decides from its own role, so the Student sees the Past card and the
 ## Professor the Future card for the same room.
@@ -9,7 +10,8 @@ extends Node
 ## Rooms are described by RoomIntroData resources in resources/cinematic/rooms/ and styled by
 ## RoomIntroStyle presets in resources/cinematic/presets/. A new room only needs a new .tres.
 ##
-## Manual use (normally unnecessary, rooms registered with GameFlowManager play automatically):
+## Preview use (enable explicitly before playing):
+##   CinematicTransitionManager.enabled = true
 ##   CinematicTransitionManager.show_room_intro("room_03")            # local timeline
 ##   CinematicTransitionManager.show_room_intro("room_03", "future")  # explicit timeline
 
@@ -29,8 +31,8 @@ const FALLBACK_PRESET := &"neutral"
 const MAX_WAIT_SECONDS := 8.0
 const AUDIO_GROUP := &"lab_audio"
 
-## Master switch. When false nothing plays.
-var enabled: bool = true
+## Room entry goes straight to gameplay. Enable only for explicit cinematic previews.
+var enabled: bool = false
 ## Global speed multiplier for every introduction (2.0 plays twice as fast).
 var time_scale: float = 1.0
 ## null follows the main menu's "ambient motion" setting; true or false forces reduced motion.

@@ -70,13 +70,13 @@ func _show_state(_animate: bool) -> void:
 		readout.text = "TEMPORAL LINK"
 		readout.modulate = Color("8dffb8")
 	elif future:
-		readout.text = "LIVE RECEIVER"
+		readout.text = ""
 		readout.modulate = Color("9fe8f0")
 	elif calibrated:
 		readout.text = "SIGNAL LOCKED"
 		readout.modulate = Color("ffd59a")
 	else:
-		readout.text = "SIGNAL UNSTABLE"
+		readout.text = ""
 		readout.modulate = Color("ffb36b")
 
 

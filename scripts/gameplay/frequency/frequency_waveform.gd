@@ -36,10 +36,9 @@ func _draw() -> void:
 	var frequency: int = state.get("current_frequency", Rules.INITIAL_FREQUENCY)
 	var amplitude: int = state.get("current_amplitude", Rules.INITIAL_AMPLITUDE)
 	draw_rect(Rect2(Vector2.ZERO, size), Color("081b20"))
-	draw_string(font, Vector2(30, 45), "LIVE RECEIVER" if show_target else "PAST TRANSMITTER", HORIZONTAL_ALIGNMENT_LEFT, -1, text_px, Color("b8d8d6"))
+	if not show_target:
+		draw_string(font, Vector2(30, 45), "PAST TRANSMITTER", HORIZONTAL_ALIGNMENT_LEFT, -1, text_px, Color("b8d8d6"))
 	_draw_readout(font, digits, text_px, 91.0, "CURRENT  ", frequency, amplitude, CURRENT)
-	if show_target:
-		_draw_readout(font, digits, text_px, 134.0, "TARGET    ", target_frequency, target_amplitude, TARGET)
 	var plot := Rect2(32, 151, size.x - 64, size.y - 243)
 	for index in 13:
 		var x := plot.position.x + plot.size.x * float(index) / 12.0
