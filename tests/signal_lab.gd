@@ -84,6 +84,7 @@ func _run() -> void:
 	puzzles = root.get_node("PuzzleManager")
 	area = load("res://scenes/world/spawn_area.tscn").instantiate()
 	area.pause_when_unfocused = false
+	area.level_travel_enabled = false  # This suite inspects/reset the lab after its exit; travel has its own suite.
 	root.add_child(area)
 	current_scene = area
 	await create_timer(0.4).timeout
@@ -110,6 +111,9 @@ func _run() -> void:
 	await _check_exit()
 	await _check_reset()
 	await create_timer(1.5).timeout  # let the last one-shot sounds finish before the engine shuts down
+	area.queue_free()
+	await tick(3)
+	await create_timer(.2).timeout
 	print("SIGNAL LAB: ", "PASS" if failures == 0 else "FAIL", " (", failures, " failures)")
 	quit(0 if failures == 0 else 1)
 
@@ -251,10 +255,10 @@ func _check_puzzle() -> void:
 	check(target != null and target.get_parent().name == "FutureRadio", "The Professor's radio must be in the reading corner")
 	await use(target.name)
 	check(Rules.link_established(state()) and completions == 1, "The second radio must establish the link, once")
-	check("TEMPORAL RADIO LINK ESTABLISHED" in lab.ui.banner_text(), "Both timelines must get the link banner")
+	check("Radio connection established" in lab.ui.toast_text(), "Connection guidance appears as explicitly separated player feedback")
 	check(lab.door.opening or lab.door.is_open, "The link must start opening the door")
 	check(await wait_until(func() -> bool: return lab.door.is_open, 4.0), "The door must finish opening")
-	check(&"door_open" in sounds and &"interaction_success" in sounds, "The door and console must sound through the AudioDirector")
+	check(&"door_open" in sounds and &"computer_success" in sounds, "The door and console must sound through the AudioDirector")
 	check(console.readout.text == "TEMPORAL LINK", "The console readout must confirm the link")
 	var leaf_open: Vector3 = lab.door.leaf.position
 	check(leaf_open.x > 1.9, "The leaf must slide clear of the opening")

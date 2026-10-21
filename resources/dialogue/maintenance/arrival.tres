@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line0"]
+
+script = ExtResource("2")
+
+speaker_id = "student"
+
+speaker_name = "The Student"
+
+text = "I made it out. The corridor looks clear."
+
+timeline = 0
+
+[sub_resource type="Resource" id="Line1"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "The ceiling's down over here. There's an emergency cabinet beside the door. Let me see if I can read the plate."
+
+timeline = 1
+
+[resource]
+
+script = ExtResource("1")
+
+sequence_id = "maintenance.arrival"
+
+lines = Array[ExtResource("2")]([SubResource("Line0"), SubResource("Line1")])
+
+play_once = true
+
+playback_mode = 1
+
+typing_speed = 42.0

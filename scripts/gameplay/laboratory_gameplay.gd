@@ -28,12 +28,14 @@ var _current_role: String = ""
 @onready var objective: Label = $GameplayHUD/Objective
 @onready var prompt: CanvasLayer = null
 var controller: Node
+var physical_devices: Node
 
 
 func initialize(laboratory: Node3D) -> void:
 	if configured:
 		return
 	room = laboratory
+	room.lab.ui.guide_top = 230.0  # The radio status panel owns the row above the message rail.
 	configured = true
 	if not PuzzleManager.is_registered(Relay.ID):
 		PuzzleManager.register_puzzle(Relay.ID, Relay.new())
@@ -73,6 +75,10 @@ func initialize(laboratory: Node3D) -> void:
 		room.get_node(button_path).set_meta("audio_event", &"")
 	audio.bind_ui(room)
 	bind_player()
+	physical_devices = preload("res://scripts/gameplay/devices/laboratory_devices.gd").new()
+	physical_devices.name = "PhysicalDevices"
+	add_child(physical_devices)
+	physical_devices.configure(self)
 	apply_timeline()
 	_refresh_state()
 
@@ -129,6 +135,7 @@ func apply_timeline() -> void:
 	(room.player.get_node("FootstepEmitter3D") as FootstepEmitter3D).set_timeline(StringName(role))
 	radio.set_player_role(role)
 	controller.detector.set_current_role(role)
+	if physical_devices != null: physical_devices.apply_timeline()
 	director.set_local_timeline(role)
 	# Keeping each solo role's position makes switching a useful co-op test flow.
 	if _positions.has(role):
@@ -185,8 +192,13 @@ func _sync_controls() -> void:
 	if not configured or _shutting_down:
 		return
 	var overlay: bool = has_modal() or room.is_gameplay_paused()
+	room.lab.ui.set_overlay_blocked(room.is_gameplay_paused())
+	if physical_devices != null and physical_devices.inspector != null:
+		physical_devices.inspector.suspended = room.is_gameplay_paused()
 	var blocked: bool = overlay or director.is_gameplay_input_blocked()
-	$GameplayHUD.visible = not room.is_character_studio_open()
+	var inspecting: bool = physical_devices != null and physical_devices.inspector != null and physical_devices.inspector.active
+	$GameplayHUD.visible = not room.is_character_studio_open() and not inspecting
+	room.get_node("HUD").visible = not inspecting
 	room.lab.ui.visible = not room.is_character_studio_open()
 	if room.player.controls_enabled == blocked:
 		room.player.controls_enabled = not blocked
@@ -217,7 +229,7 @@ func _refresh_state() -> void:
 	if not _feedback.is_empty():
 		objective.text = _feedback
 	elif linked:
-		objective.text = "TEMPORAL RADIO LINK ESTABLISHED\n" + ("Receiver online. Use the rift-side receiver to check the channel." if relay_online else "Bring the receiver relay beside the left cabinet online.")
+		objective.text = "TEMPORAL RADIO LINK ESTABLISHED\nLeave through the north security door. The receiver relay is optional."
 	elif not radio.owns_radio:
 		objective.text = "THE LOST FREQUENCY\nFind the handheld radio %s." % ("in the reading corner" if radio.player_role == "future" else "on the left workbench")
 	elif radio.player_role == "future":
@@ -226,6 +238,8 @@ func _refresh_state() -> void:
 		objective.text = "SIGNAL LOCKED\nWaiting for the Professor's handheld radio."
 	else:
 		objective.text = "THE LOST FREQUENCY\nUse the rear main computer. The Professor's research log holds the frequency."
+	objective.hide()
+	room.lab.ui.set_guidance(objective.text)
 	_sync_controls()
 
 

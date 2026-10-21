@@ -23,6 +23,17 @@ var _toast_tween: Tween
 var _banner: PanelContainer
 var _banner_title: Label
 var _banner_subtitle: Label
+var _banner_tween: Tween
+var _guide: PanelContainer
+var _guide_goal: Label
+var _guide_controls: Label
+var _observation: Label
+var _observation_panel: PanelContainer
+var _observation_remaining := 0.0
+var _sidebar: ScrollContainer
+var _message_stack: VBoxContainer
+var _overlay_blocked := false
+var guide_top := 156.0
 # A toast or banner raised while a screen is open waits for it to close (the screen already
 # shows the same news in its own status line).
 var _pending_toast: Array = []
@@ -37,8 +48,77 @@ func _ready() -> void:
 	_root.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_root)
+	process_priority = 100
+	_build_sidebar()
 	_build_toast()
 	_build_banner()
+	_build_guide()
+	_layout_text()
+
+
+func _build_sidebar() -> void:
+	_sidebar = ScrollContainer.new()
+	_sidebar.name = "MessageRail"
+	_sidebar.anchor_left = 1.0
+	_sidebar.anchor_right = 1.0
+	_sidebar.anchor_bottom = 1.0
+	_sidebar.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_sidebar.mouse_filter = Control.MOUSE_FILTER_PASS
+	_root.add_child(_sidebar)
+	_message_stack = VBoxContainer.new()
+	_message_stack.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_message_stack.add_theme_constant_override("separation", 12)
+	_sidebar.add_child(_message_stack)
+
+
+func set_overlay_blocked(blocked: bool) -> void:
+	_overlay_blocked = blocked
+	_layout_text()
+
+
+func _dialogue_presented() -> bool:
+	for box in get_tree().get_nodes_in_group("dialogue_box"):
+		if box.is_presented(): return true
+	return false
+
+
+func _process(delta: float) -> void:
+	_layout_text()
+	if _observation_panel.visible:
+		_observation_remaining = maxf(0.0, _observation_remaining - delta)
+		_observation.modulate.a = minf(1.0, _observation_remaining / 0.5)
+
+
+func _layout_text() -> void:
+	if _guide == null: return
+	var screen := get_viewport().get_visible_rect().size
+	var width := clampf(screen.x * 0.23, 280.0, 340.0)
+	_sidebar.offset_left = -width - 26.0
+	_sidebar.offset_right = -26.0
+	_sidebar.offset_top = 26.0 if not _guide_controls.text.is_empty() else guide_top
+	for overlay in get_tree().get_nodes_in_group("game_flow_overlay"):
+		var occupied: Rect2 = overlay.message_rect()
+		if occupied.has_area(): _sidebar.offset_top = maxf(_sidebar.offset_top, occupied.end.y + 12.0)
+	_sidebar.offset_bottom = -112.0
+	var blocked := _overlay_blocked or _modal != null or not visible
+	_sidebar.visible = not blocked
+	_observation_panel.visible = not blocked and not _dialogue_presented() and _observation_remaining > 0.0
+	_observation_panel.offset_left = 42.0
+	_observation_panel.offset_right = minf(1122.0, screen.x - width - 70.0)
+	_observation_panel.offset_top = -256.0
+	_observation_panel.offset_bottom = -150.0
+
+
+func reserved_text_rects() -> Array[Rect2]:
+	var occupied: Array[Rect2] = []
+	if _sidebar.is_visible_in_tree(): occupied.append(_sidebar.get_global_rect())
+	if _observation_panel.is_visible_in_tree(): occupied.append(_observation_panel.get_global_rect())
+	for overlay in get_tree().get_nodes_in_group("game_flow_overlay"):
+		var notice: Rect2 = overlay.message_rect()
+		if notice.has_area(): occupied.append(notice)
+	for box in get_tree().get_nodes_in_group("dialogue_box"):
+		if box.is_presented(): occupied.append(box.get_node("%DialoguePanel").get_global_rect())
+	return occupied
 
 
 func accent() -> Color:
@@ -48,6 +128,7 @@ func accent() -> Color:
 func set_timeline(is_future: bool) -> void:
 	if future != is_future:
 		close_modal()
+		_observation_remaining = 0.0
 	future = is_future
 	_restyle()
 
@@ -95,11 +176,12 @@ func banner(title: String, subtitle: String, seconds: float = 7.0) -> void:
 	_restyle()
 	_banner.visible = true
 	_banner.modulate.a = 0.0
-	var tween := create_tween()
-	tween.tween_property(_banner, "modulate:a", 1.0, 0.6)
-	tween.tween_interval(seconds)
-	tween.tween_property(_banner, "modulate:a", 0.0, 1.0)
-	tween.tween_callback(func() -> void: _banner.visible = false)
+	if _banner_tween: _banner_tween.kill()
+	_banner_tween = create_tween()
+	_banner_tween.tween_property(_banner, "modulate:a", 1.0, 0.6)
+	_banner_tween.tween_interval(seconds)
+	_banner_tween.tween_property(_banner, "modulate:a", 0.0, 1.0)
+	_banner_tween.tween_callback(func() -> void: _banner.visible = false)
 
 
 ## The banner on screen, or the one waiting for the open screen to close.
@@ -113,54 +195,112 @@ func banner_text() -> String:
 func _restyle() -> void:
 	if _toast == null:
 		return
-	_toast.add_theme_stylebox_override("panel", _panel_style(Color(0.05, 0.08, 0.1, 0.92), accent(), 1))
+	_toast.add_theme_stylebox_override("panel", _panel_style(Color(0.05, 0.08, 0.1, 1.0), accent(), 1))
 	_toast_label.add_theme_color_override("font_color", accent().lightened(0.35))
 	_banner_title.add_theme_color_override("font_color", accent().lightened(0.25))
-	_banner.add_theme_stylebox_override("panel", _panel_style(Color(0.03, 0.06, 0.08, 0.94), accent(), 2))
+	_banner.add_theme_stylebox_override("panel", _panel_style(Color(0.03, 0.06, 0.08, 1.0), accent(), 2))
 
 
 func _build_toast() -> void:
 	_toast = PanelContainer.new()
 	_toast.name = "Toast"
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_toast.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM, Control.PRESET_MODE_MINSIZE)
-	_toast.anchor_left = 0.5
-	_toast.anchor_right = 0.5
-	_toast.offset_left = -430
-	_toast.offset_right = 430
-	_toast.offset_top = -210
-	_toast.offset_bottom = -112
+	_toast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_toast.visible = false
-	_toast_label = _label("", 22)
+	_toast_label = _label("", 17)
 	_toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	_toast.add_child(_margin(_toast_label, 22, 12))
-	_root.add_child(_toast)
+	var box := VBoxContainer.new()
+	box.add_child(_label("PLAYER FEEDBACK / NOT DIALOGUE", 12))
+	box.add_child(_toast_label)
+	_toast.add_child(_margin(box, 16, 12))
+	_message_stack.add_child(_toast)
+
+
+func _build_guide() -> void:
+	_guide = PanelContainer.new()
+	_guide.name = "PlayerGuide"
+	_guide.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_guide.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_guide.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.045, 0.055, 1.0), Color("627e87"), 1))
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 10)
+	box.add_child(_label("PLAYER GUIDE / OUTSIDE THE STORY", 12, Color("99b0b7")))
+	_guide_goal = _label("", 17)
+	_guide_goal.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(_guide_goal)
+	_guide_controls = _label("", 15, Color("9fc6cc"))
+	_guide_controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	box.add_child(_guide_controls)
+	_guide.add_child(_margin(box, 16, 14))
+	_message_stack.add_child(_guide)
+	_message_stack.move_child(_guide, 0)
+	_guide.hide()
+	_observation_panel = PanelContainer.new()
+	_observation_panel.name = "CharacterThought"
+	_observation_panel.anchor_top = 1.0
+	_observation_panel.anchor_bottom = 1.0
+	_observation_panel.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.045, 0.055, 1.0), Color("627e87"), 1))
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_observation = _label("", 20)
+	_observation.name = "CharacterObservation"
+	_observation.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_observation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_observation.add_theme_color_override("font_shadow_color", Color("081217"))
+	_observation.add_theme_constant_override("shadow_offset_x", 2)
+	_observation.add_theme_constant_override("shadow_offset_y", 2)
+	scroll.add_child(_observation)
+	_observation_panel.add_child(_margin(scroll, 16, 10))
+	_root.add_child(_observation_panel)
+	_observation_panel.hide()
+
+
+func set_guidance(text: String) -> void:
+	if _guide_goal.text != text: _reset_message_scroll.call_deferred()
+	_guide_goal.text = text
+	_guide.visible = not text.is_empty() or not _guide_controls.text.is_empty()
+
+
+func set_control_hint(text: String) -> void:
+	if _guide_controls.text != text: _reset_message_scroll.call_deferred()
+	_guide_controls.text = text
+	_guide.visible = not text.is_empty() or not _guide_goal.text.is_empty()
+	_layout_text()
+
+
+func _reset_message_scroll() -> void:
+	_sidebar.scroll_vertical = 0
+
+
+func observe(speaker: String, thought: String) -> void:
+	_observation.text = speaker + " · thought\n“" + thought + "”"
+	_observation.modulate.a = 1.0
+	_observation_remaining = 7.5
+	_layout_text()
 
 
 func _build_banner() -> void:
 	_banner = PanelContainer.new()
 	_banner.name = "Banner"
 	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_banner.anchor_left = 0.5
-	_banner.anchor_right = 0.5
-	_banner.offset_left = -560
-	_banner.offset_right = 560
-	_banner.offset_top = 150
-	_banner.offset_bottom = 300
+	_banner.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_banner.visible = false
 	var box := VBoxContainer.new()
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	_banner_title = _label("", 40)
+	_banner_title = _label("", 22)
+	_banner_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_banner_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_banner_subtitle = _label("", 22)
+	_banner_subtitle = _label("", 17)
+	_banner_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_banner_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner_subtitle.add_theme_color_override("font_color", Color(0.85, 0.88, 0.85))
 	box.add_child(_banner_title)
 	box.add_child(_banner_subtitle)
 	_banner.add_child(_margin(box, 30, 18))
-	_root.add_child(_banner)
+	_message_stack.add_child(_banner)
 
 
 # --- Modals --------------------------------------------------------------------------------

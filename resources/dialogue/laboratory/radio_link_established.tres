@@ -26,7 +26,7 @@ text = "The computer says sixty-seven megahertz. Who are you?"
 script = ExtResource("2")
 speaker_id = "professor"
 speaker_name = "The Professor"
-text = "Someone who remembers this laboratory. Bring the receiver relay online; we'll need this channel."
+text = "Someone who remembers this laboratory. The north door is open. We can check the receiver relay, or head into the maintenance gallery."
 timeline = 1
 
 [resource]

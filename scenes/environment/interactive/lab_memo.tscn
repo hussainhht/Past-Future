@@ -26,7 +26,7 @@ future_text = "The memo is yellowed and spotted with mould. Someone circled one 
 
 \"The seal releases automatically when the array reports a stable temporal link.\"
 
-Underneath, in pencil: Nobody got out that night. The link never held."
+Underneath, in pencil: Nobody got through this door that night. The link never held."
 prompt = "Read memo"
 
 [node name="Model" parent="." instance=ExtResource("2")]

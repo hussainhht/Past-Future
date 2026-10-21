@@ -1,0 +1,98 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line0"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "The archive still has my personnel record. Thirty-one years after your date."
+
+timeline = 1
+
+[sub_resource type="Resource" id="Line1"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "The inscription inside your watch: Don't waste it."
+
+timeline = 1
+
+[sub_resource type="Resource" id="Line2"]
+
+script = ExtResource("2")
+
+speaker_id = "student"
+
+speaker_name = "The Student"
+
+text = "How do you know what is inside my watch?"
+
+timeline = 0
+
+[sub_resource type="Resource" id="Line3"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "Because I am still wearing it. I am you."
+
+timeline = 1
+
+[sub_resource type="Resource" id="Line4"]
+
+script = ExtResource("2")
+
+speaker_id = "student"
+
+speaker_name = "The Student"
+
+text = "Then you remember how I get out."
+
+timeline = 0
+
+[sub_resource type="Resource" id="Line5"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "I remember the corridor falling. Not this way through."
+
+timeline = 1
+
+[sub_resource type="Resource" id="Line6"]
+script = ExtResource("2")
+speaker_id = "professor"
+speaker_name = "The Professor"
+text = "I still remember it falling. Even after you moved those supports. The room has changed, but that memory hasn't."
+timeline = 1
+
+[resource]
+
+script = ExtResource("1")
+
+sequence_id = "maintenance.identity"
+
+lines = Array[ExtResource("2")]([SubResource("Line0"), SubResource("Line1"), SubResource("Line2"), SubResource("Line3"), SubResource("Line4"), SubResource("Line5"), SubResource("Line6")])
+
+play_once = true
+
+playback_mode = 1
+
+typing_speed = 42.0
