@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="RoomIntroStyle" format=3]
+
+[ext_resource type="Script" path="res://scripts/cinematic/room_intro_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+preset_id = &"past_memory"
+text_color = Color(0.9412, 0.8863, 0.7804, 1)
+accent_color = Color(0.8941, 0.7490, 0.4980, 1)
+secondary_color = Color(0.7765, 0.6118, 0.3333, 1)
+shade_color = Color(0.1882, 0.1569, 0.1255, 1)
+scrim_alpha = 0.72
+vignette_alpha = 0.38
+title_fonts = PackedStringArray("Georgia", "Palatino Linotype", "Book Antiqua", "Times New Roman", "serif")
+label_fonts = PackedStringArray("Georgia", "Palatino Linotype", "Times New Roman", "serif")
+title_size = 76
+label_size = 17
+detail_size = 22
+tracking_start = 0.14
+tracking_end = 0.045
+timeline_numeral = "I / PAST"
+role_line = "PAST — THE STUDENT"
+timeline_line = "01 / PAST — 31 YEARS BEFORE"
+light_sweep = true
+film_grain = true
+overlay_in = 0.25
+chapter_start = 0.25
+chapter_duration = 0.45
+title_start = 0.55
+title_duration = 0.65
+accent_start = 0.9
+accent_duration = 0.5
+detail_start = 1.05
+detail_duration = 0.45
+out_start = 2.2
+out_duration = 0.85
