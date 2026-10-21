@@ -9,6 +9,8 @@ const TemporalGhost := preload("res://scripts/world/temporal_ghost.gd")
 @export var pause_when_unfocused: bool = true
 @export var level_travel_enabled: bool = true
 @export var temporal_ghost_enabled: bool = true
+## Opens the "how to play" popup the first time this player reaches the room (never when headless).
+@export var tutorial_auto_show: bool = DisplayServer.get_name() != "headless"
 
 const CorridorRules := preload("res://scripts/puzzles/implementations/maintenance_corridor_puzzle.gd")
 
@@ -19,6 +21,7 @@ var _character_studio: Control
 var _leaving: bool = false
 var temporal_ghost: Node3D
 var settings_overlay: CanvasLayer
+var tutorial: TutorialPopup
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -67,6 +70,12 @@ func _ready() -> void:
 		pause_panel.show()
 		%SettingsButton.grab_focus()
 	)
+	tutorial = load("res://scenes/ui/tutorial_popup.tscn").instantiate()
+	add_child(tutorial)
+	tutorial.configure(gameplay.audio)
+	tutorial.closed.connect(_on_tutorial_closed)
+	tutorial.opened.connect(gameplay.sync_controls)
+	%HowToPlayButton.pressed.connect(_open_tutorial.bind(true))
 	if not PuzzleManager.is_registered(CorridorRules.ID):
 		PuzzleManager.register_puzzle(CorridorRules.ID, CorridorRules.new())
 	lab.player_exited.connect(_on_laboratory_exit)
@@ -86,6 +95,8 @@ func _ready() -> void:
 	# The scene can also run directly with F6, without a network session.
 	if _networked:
 		_on_network_changed()
+	if tutorial_auto_show:
+		_show_first_time_tutorial()
 
 
 func _temporal_ghost_context() -> Dictionary:
@@ -98,6 +109,7 @@ func _temporal_ghost_context() -> Dictionary:
 
 func _input(event: InputEvent) -> void:
 	if settings_overlay != null and settings_overlay.handle_input(event): return
+	if tutorial != null and tutorial.handle_input(event): return  # owns Escape / back while open
 	if gameplay.configured and gameplay.has_modal() and not _paused:
 		return  # the terminal/document owns Escape and all gameplay input
 	if is_instance_valid(_character_studio):
@@ -132,6 +144,39 @@ func _on_laboratory_exit(body: Node3D) -> void:
 	PuzzleManager.submit_action(CorridorRules.ID, "arrive")
 	# Walking through the door and using the exit share the same host-authoritative flow.
 	GameFlowManager.request_transition("room_02")
+
+
+## Opens the tutorial for this player's own role only. Local: the partner and the session go on.
+func _open_tutorial(from_pause: bool = false) -> void:
+	if tutorial.is_open() or _leaving:
+		return
+	pause_panel.hide()
+	tutorial.open("future" if timeline == "Future" else "past", from_pause)
+
+
+func _on_tutorial_closed(_dismissed: bool) -> void:
+	if _paused and not is_instance_valid(_character_studio):
+		pause_panel.show()
+		%HowToPlayButton.grab_focus()
+	gameplay.sync_controls()
+
+
+func _tutorial_can_open() -> bool:
+	if _paused or _disconnected or _leaving or tutorial.is_open() or is_instance_valid(_character_studio):
+		return false
+	if CinematicTransitionManager.is_playing() or GameFlowManager.is_transitioning() or GameFlowManager.is_input_locked():
+		return false
+	return not (gameplay.has_modal() or gameplay.director.is_dialogue_active() or player.is_action_active())
+
+
+## First visit only: waits for the room introduction, level flow and any early dialogue to settle.
+func _show_first_time_tutorial() -> void:
+	if TutorialPopup.has_been_shown():
+		return
+	while is_inside_tree() and not _tutorial_can_open():
+		await get_tree().create_timer(0.25).timeout
+	if is_inside_tree() and not TutorialPopup.has_been_shown():
+		_open_tutorial()
 
 
 func _open_character_studio() -> void:
@@ -228,7 +273,9 @@ func _set_paused(paused: bool) -> void:
 	%PauseTitle.text = "A moment between years"
 	%PauseDescription.text = "Take your time. The lab will be here."
 	%QuitGameButton.hide()
-	if paused:
+	if tutorial != null and tutorial.is_open():
+		pause_panel.hide()  # a lost focus or connection must not cover or steal focus from it
+	elif paused:
 		%ResumeButton.grab_focus()
 	if gameplay.configured:
 		gameplay.sync_controls()

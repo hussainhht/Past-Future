@@ -293,6 +293,10 @@ static func get_action_label(action: StringName) -> String:
 			return "Esc"
 		&"temporal_ghost":
 			return ("R1" if is_dualsense else "RB") if is_controller else "G"
+		&"move":
+			return "Left Stick" if is_controller else "W A S D"
+		&"journal":
+			return "J"  # Keyboard only: the journal has no gamepad binding in project.godot.
 		&"pause":
 			if is_controller:
 				return "Options" if is_dualsense else "Menu"

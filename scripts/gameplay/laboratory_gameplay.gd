@@ -146,7 +146,12 @@ func apply_timeline() -> void:
 
 
 func has_modal() -> bool:
-	return terminal.visible or reader.visible or room.lab.ui.is_modal_open() or JournalManager.is_open()
+	return terminal.visible or reader.visible or room.lab.ui.is_modal_open() or JournalManager.is_open() or _tutorial_open()
+
+
+func _tutorial_open() -> bool:
+	var tutorial: Variant = room.get("tutorial")
+	return tutorial != null and tutorial.is_open()
 
 
 func can_switch_role() -> bool:
@@ -161,6 +166,9 @@ func close_overlays() -> void:
 	terminal.close()
 	reader.close()
 	room.lab.ui.close_modal()
+	var tutorial: Variant = room.get("tutorial")
+	if tutorial != null:
+		tutorial.close_silently()
 	director.stop_dialogue()
 	adapter.end_conversation()
 
