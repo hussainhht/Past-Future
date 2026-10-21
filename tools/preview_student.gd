@@ -30,7 +30,7 @@ func _render() -> void:
 	var canvas := CanvasLayer.new()
 	root.add_child(canvas)
 	var title := Label.new()
-	title.text = "PAST & FUTURE  /  THE STUDENT"
+	title.text = "THE OTHER ME  /  THE STUDENT"
 	title.position = Vector2(48, 32)
 	title.add_theme_font_size_override("font_size", 26)
 	title.modulate = Color("e4bf7f")

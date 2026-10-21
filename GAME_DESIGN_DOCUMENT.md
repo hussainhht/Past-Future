@@ -1,4 +1,4 @@
-# PAST & FUTURE
+# THE OTHER ME (formerly PAST & FUTURE)
 ## Game Design Document — Version 0.17
 
 **Project:** CHECKPOINT — Reboot Game Jam 2026  

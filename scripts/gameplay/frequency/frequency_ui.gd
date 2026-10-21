@@ -18,10 +18,11 @@ static func panel(accent: Color = AMBER) -> StyleBoxFlat:
 	return style
 
 
-static func label(text: String, size: int = 18, color: Color = AMBER) -> Label:
+## Terminal text: Departure Mono for headings and readouts, role &"future_journal_body" for sentences.
+static func label(text: String, size: int = 20, color: Color = AMBER, role: StringName = &"terminal_log") -> Label:
 	var result := Label.new()
 	result.text = text
-	result.add_theme_font_size_override("font_size", size)
+	Typography.apply(result, role, size)
 	result.add_theme_color_override("font_color", color)
 	return result
 
@@ -30,7 +31,7 @@ static func button(text: String) -> Button:
 	var result := Button.new()
 	result.text = text
 	result.custom_minimum_size.y = 44
-	result.add_theme_font_size_override("font_size", 18)
+	Typography.apply(result, &"terminal_log", 20)
 	result.add_theme_stylebox_override("normal", panel(AMBER))
 	result.add_theme_stylebox_override("hover", panel(CYAN))
 	result.add_theme_stylebox_override("focus", panel(CYAN))

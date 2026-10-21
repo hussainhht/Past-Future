@@ -130,9 +130,11 @@ func show_toast(entry: JournalEntry) -> void:
 	_toast_head.text = skin.toast_head
 	_toast_head.add_theme_color_override("font_color", skin.accent)
 	_toast_head.add_theme_font_override("font", skin.head_font)
+	_toast_head.add_theme_font_size_override("font_size", skin.toast_head_size)
 	_toast_text.text = entry.title
 	_toast_text.add_theme_color_override("font_color", skin.toast_ink)
 	_toast_text.add_theme_font_override("font", skin.body_font)
+	_toast_text.add_theme_font_size_override("font_size", skin.toast_size)
 	_toast.show()
 	_toast.reset_size()
 	var rest_y := 70.0
@@ -156,12 +158,12 @@ func refresh_hint() -> void:
 	_hint.text = "%s  %s%s" % [skin.hint_name, "● " if fresh > 0 else "", ("%d new" % fresh) if fresh > 0 else ""]
 	_hint.add_theme_color_override("font_color", skin.accent if fresh > 0 else skin.hint_ink)
 	_hint.add_theme_font_override("font", skin.head_font)
+	_hint.add_theme_font_size_override("font_size", skin.hint_size)
 	_hint.add_theme_stylebox_override("normal", _box(skin.toast_bg, skin.toast_border, 1, skin.radius, Vector2(12, 5)))
 
 
 func _build_overlays() -> void:
 	_hint = Label.new()
-	_hint.add_theme_font_size_override("font_size", 16)
 	_hint.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	_hint.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	_hint.grow_vertical = Control.GROW_DIRECTION_BEGIN
@@ -176,9 +178,7 @@ func _build_overlays() -> void:
 	box.add_theme_constant_override("separation", 2)
 	_toast.add_child(box)
 	_toast_head = Label.new()
-	_toast_head.add_theme_font_size_override("font_size", 14)
 	_toast_text = Label.new()
-	_toast_text.add_theme_font_size_override("font_size", 22)
 	box.add_child(_toast_head)
 	box.add_child(_toast_text)
 	add_child(_toast)
@@ -187,17 +187,9 @@ func _build_overlays() -> void:
 
 # --- Skins --------------------------------------------------------------------------------
 
-func _font(names: Array[String], weight: int = 400) -> SystemFont:
-	var font := SystemFont.new()
-	font.font_names = PackedStringArray(names)
-	font.font_weight = weight
-	return font
-
-
 func _make_skin(role: String) -> Dictionary:
 	if role == "past":
-		var hand: Array[String] = ["Segoe Print", "Bradley Hand", "Noteworthy", "Purisa", "Comic Sans MS", "cursive"]
-		var serif: Array[String] = ["Georgia", "Palatino Linotype", "Book Antiqua", "Times New Roman", "serif"]
+		var hand := Typography.font(&"past_journal")
 		return {
 			"title": "STUDENT'S NOTEBOOK", "subtitle": "Signal Laboratory  ·  Research Journal",
 			"cover": Color("5a3a20"), "cover_edge": Color("3a2412"), "cover_ink": Color("ead6a6"),
@@ -207,12 +199,14 @@ func _make_skin(role: String) -> Dictionary:
 			"toast_bg": Color("f3e8ca"), "toast_border": Color("5a3a20"), "toast_ink": Color("3b2a1b"),
 			"toast_head": "NEW RESEARCH ENTRY", "hint_name": "J  ·  NOTEBOOK", "hint_ink": Color("3b2a1b"),
 			"radius": 6, "glow": 0, "student": true,
-			"head_font": _font(hand, 700), "body_font": _font(serif), "bold_font": _font(serif, 700),
+			"head_font": hand, "body_font": hand, "bold_font": hand, "list_font": hand,
+			"title_size": 34, "sub_size": 22, "label_size": 22, "small_size": 20, "list_size": 24, "body_size": 26,
+			"counter_size": 22, "button_size": 22, "hint_size": 22, "toast_head_size": 20, "toast_size": 26, "line_gap": 8,
+			"list_width": 420,
 			"close_hint": "J / Esc  close", "prev": "◀  Previous page", "next": "Next page  ▶",
 			"page_word": "Page", "empty": "These pages are still blank.\n\nExamine research papers in the laboratory and the important ones will be copied here.",
 			"status": "",
 		}
-	var mono: Array[String] = ["Consolas", "Cascadia Mono", "Menlo", "DejaVu Sans Mono", "Courier New", "monospace"]
 	return {
 		"title": "RESEARCH DATAPAD", "subtitle": "RECOVERED ARCHIVE",
 		"cover": Color("0a1119"), "cover_edge": Color("3fd6e6"), "cover_ink": Color("8fe9f2"),
@@ -222,7 +216,11 @@ func _make_skin(role: String) -> Dictionary:
 		"toast_bg": Color("0a1119"), "toast_border": Color("3fd6e6"), "toast_ink": Color("cfe6ea"),
 		"toast_head": "NEW RESEARCH ENTRY", "hint_name": "J  ·  DATAPAD", "hint_ink": Color("8fe9f2"),
 		"radius": 3, "glow": 12, "student": false,
-		"head_font": _font(mono, 700), "body_font": _font(mono), "bold_font": _font(mono, 700),
+		"head_font": Typography.font(&"future_journal_title"), "body_font": Typography.font(&"future_journal_body"),
+		"bold_font": Typography.font(&"future_journal_bold"), "list_font": Typography.font(&"future_journal_body"),
+		"title_size": 33, "sub_size": 18, "label_size": 22, "small_size": 20, "list_size": 18, "body_size": 22,
+		"counter_size": 22, "button_size": 20, "hint_size": 20, "toast_head_size": 20, "toast_size": 22, "line_gap": 6,
+		"list_width": 440,
 		"close_hint": "[J] / [ESC]  CLOSE", "prev": "◀  PREV", "next": "NEXT  ▶",
 		"page_word": "FILE", "empty": "> NO FILES RECOVERED\n\n> Examine terminals and documents to add them to the archive.",
 		"status": "● OFFLINE  ·  LOCAL STORAGE",
@@ -298,11 +296,11 @@ func _build_frame() -> void:
 	titles.add_theme_constant_override("separation", -2)
 	titles.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	header.add_child(titles)
-	_title_label = _label(s.title, 30, s.cover_ink, s.head_font)
+	_title_label = _label(s.title, s.title_size, s.cover_ink, s.head_font)
 	titles.add_child(_title_label)
-	titles.add_child(_label(s.subtitle, 15, s.cover_ink.darkened(0.15), s.body_font))
+	titles.add_child(_label(s.subtitle, s.sub_size, s.cover_ink.darkened(0.15), s.body_font))
 	if not s.student:
-		var status := _label(s.status, 14, s.accent, s.head_font)
+		var status := _label(s.status, s.small_size, s.accent, s.head_font)
 		status.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		header.add_child(status)
 		_pulse_tween = create_tween().set_loops()
@@ -311,7 +309,7 @@ func _build_frame() -> void:
 		var gap := Control.new()
 		gap.custom_minimum_size.x = 18
 		header.add_child(gap)
-	var close_button := _flat_button("✕", 18)
+	var close_button := _flat_button("✕", s.button_size)
 	_style_button(close_button)
 	close_button.pressed.connect(JournalManager.close_journal)
 	close_button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -324,13 +322,13 @@ func _build_frame() -> void:
 	column.add_child(pages)
 
 	var list_page := PanelContainer.new()
-	list_page.custom_minimum_size.x = 420
+	list_page.custom_minimum_size.x = s.list_width
 	list_page.add_theme_stylebox_override("panel", _page_box(true))
 	pages.add_child(list_page)
 	var list_column := VBoxContainer.new()
 	list_column.add_theme_constant_override("separation", 6)
 	list_page.add_child(list_column)
-	list_column.add_child(_label("CONTENTS" if s.student else "> ARCHIVE INDEX", 17, s.accent, s.head_font))
+	list_column.add_child(_label("CONTENTS" if s.student else "> ARCHIVE INDEX", s.label_size, s.accent, s.head_font))
 	list_column.add_child(_rule())
 	var list_scroll := ScrollContainer.new()
 	list_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -364,10 +362,10 @@ func _build_frame() -> void:
 	_read_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_read_box.add_theme_constant_override("separation", 6)
 	read_row.add_child(_read_box)
-	_read_title = _label("", 30, s.ink, s.head_font)
+	_read_title = _label("", s.title_size, s.ink, s.head_font)
 	_read_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_read_box.add_child(_read_title)
-	_read_subtitle = _label("", 16, s.ink_dim, s.body_font)
+	_read_subtitle = _label("", s.sub_size, s.ink_dim, s.body_font)
 	_read_box.add_child(_read_subtitle)
 	_read_box.add_child(_rule())
 	_read_scroll = ScrollContainer.new()
@@ -390,8 +388,15 @@ func _build_frame() -> void:
 	_read_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_read_body.add_theme_font_override("normal_font", s.body_font)
 	_read_body.add_theme_font_override("bold_font", s.bold_font)
-	_read_body.add_theme_font_size_override("normal_font_size", 21)
-	_read_body.add_theme_font_size_override("bold_font_size", 21)
+	_read_body.add_theme_font_size_override("normal_font_size", s.body_size)
+	_read_body.add_theme_font_size_override("bold_font_size", s.body_size)
+	_read_body.add_theme_font_size_override("italics_font_size", s.body_size)
+	_read_body.add_theme_font_size_override("bold_italics_font_size", s.body_size)
+	_read_body.add_theme_font_size_override("mono_font_size", s.body_size)
+	_read_body.add_theme_font_override("italics_font", s.body_font)
+	_read_body.add_theme_font_override("bold_italics_font", s.bold_font)
+	_read_body.add_theme_font_override("mono_font", Typography.font(&"terminal_log"))
+	_read_body.add_theme_constant_override("line_separation", s.line_gap)
 	_read_body.add_theme_color_override("default_color", s.ink)
 	content.add_child(_read_body)
 
@@ -399,21 +404,21 @@ func _build_frame() -> void:
 	var footer := HBoxContainer.new()
 	footer.add_theme_constant_override("separation", 14)
 	column.add_child(footer)
-	_prev = _flat_button(s.prev, 18)
-	_next = _flat_button(s.next, 18)
+	_prev = _flat_button(s.prev, s.button_size)
+	_next = _flat_button(s.next, s.button_size)
 	for button: Button in [_prev, _next]:
 		_style_button(button)
 		button.custom_minimum_size.x = 190
 	_prev.pressed.connect(_step.bind(-1))
 	_next.pressed.connect(_step.bind(1))
 	footer.add_child(_prev)
-	_counter = _label("", 18, s.cover_ink, s.head_font)
+	_counter = _label("", s.counter_size, s.cover_ink, s.head_font)
 	_counter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_counter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_counter.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	footer.add_child(_counter)
 	footer.add_child(_next)
-	var close_hint := _label(s.close_hint, 14, s.cover_ink.darkened(0.25), s.head_font)
+	var close_hint := _label(s.close_hint, s.small_size, s.cover_ink.darkened(0.25), s.head_font)
 	close_hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	footer.add_child(close_hint)
 
@@ -481,7 +486,7 @@ func _populate() -> void:
 		var entry := _entries[i]
 		if entry.category != last_category:
 			last_category = entry.category
-			var header := _label(headers[entry.category], 14, s.ink_dim, s.head_font)
+			var header := _label(headers[entry.category], s.small_size, s.ink_dim, s.head_font)
 			var holder := MarginContainer.new()
 			holder.add_theme_constant_override("margin_top", 10 if i > 0 else 2)
 			holder.add_child(header)
@@ -491,8 +496,8 @@ func _populate() -> void:
 		button.button_group = group
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.clip_text = true
-		button.add_theme_font_size_override("font_size", 20 if s.student else 17)
-		button.add_theme_font_override("font", s.head_font)
+		button.add_theme_font_size_override("font_size", s.list_size)
+		button.add_theme_font_override("font", s.list_font)
 		button.add_theme_color_override("font_color", s.ink)
 		button.add_theme_color_override("font_hover_color", s.ink)
 		button.add_theme_color_override("font_pressed_color", s.ink)

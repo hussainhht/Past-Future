@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" load_steps=3 format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/interface/GeistSans-SemiBold.ttf" id="1_font"]
+[ext_resource type="FontFile" path="res://assets/fonts/future/MonaspaceKrypton-Regular.otf" id="2_font"]
+
+[resource]
+base_font = ExtResource("1_font")
+fallbacks = [ExtResource("2_font")]

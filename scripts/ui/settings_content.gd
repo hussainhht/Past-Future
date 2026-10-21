@@ -18,7 +18,7 @@ func _ready() -> void:
 	add_child(tabs)
 	_build_audio(_page("Audio"))
 	_build_controls(_page("Controls"))
-	var hint := _label("Changes are saved automatically.", 14)
+	var hint := _label("Changes are saved automatically.", 17, &"settings_note")
 	hint.modulate = Color("99afb2")
 	add_child(hint)
 	tabs.tab_changed.connect(func(_index: int) -> void:
@@ -67,7 +67,7 @@ func _build_audio(box: VBoxContainer) -> void:
 		row.add_theme_constant_override("separation", 12)
 		box.add_child(row)
 		var label := _label({&"SFX": "Sound effects", &"UI": "Interface"}.get(category, String(category)))
-		label.custom_minimum_size.x = 116
+		label.custom_minimum_size.x = 164
 		row.add_child(label)
 		var slider := HSlider.new()
 		slider.name = String(category) + "Volume"
@@ -79,13 +79,19 @@ func _build_audio(box: VBoxContainer) -> void:
 		slider.tooltip_text = String(category) + " volume"
 		row.add_child(slider)
 		audio_sliders[category] = slider
-		var percent := _label("%d%%" % roundi(slider.value * 100), 16)
-		percent.custom_minimum_size.x = 44
+		var percent := _label("%d%%" % roundi(slider.value * 100), 21, &"settings_value")
+		percent.custom_minimum_size.x = 60
 		percent.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		row.add_child(percent)
 		var mute := CheckButton.new()
 		TemporalButton.apply(mute, &"ToggleButton")
 		mute.text = "Mute"
+		Typography.apply(mute, &"settings_label", 20)
+		for state in ["normal", "hover", "pressed", "disabled"]:
+			var style := StyleBoxFlat.new()
+			style.bg_color = Color("203338") if state == "hover" else Color.TRANSPARENT
+			style.set_content_margin_all(4)
+			mute.add_theme_stylebox_override(state, style)
 		mute.button_pressed = audio.is_category_muted(category)
 		mute.toggled.connect(func(value: bool) -> void: audio.set_category_muted(category, value))
 		slider.value_changed.connect(func(value: float) -> void:
@@ -95,7 +101,7 @@ func _build_audio(box: VBoxContainer) -> void:
 		)
 		row.add_child(mute)
 		mute_buttons[category] = mute
-	var explanation := _label("Master adjusts all audio. Set any slider to 0% to silence it.", 14)
+	var explanation := _label("Master adjusts all audio. Set any slider to 0% to silence it.", 17, &"settings_note")
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(explanation)
 
@@ -107,7 +113,7 @@ func _build_controls(box: VBoxContainer) -> void:
 	grid.add_theme_constant_override("v_separation", 12)
 	box.add_child(grid)
 	for heading in ["ACTION", "KEYBOARD / MOUSE", "CONTROLLER"]:
-		grid.add_child(_label(heading, 13))
+		grid.add_child(_label(heading, 15, &"settings_label"))
 	for row in [
 		["Move", "WASD / Arrow keys", "Left stick / D-pad"],
 		["Run", "Shift", "L3 / LS"],
@@ -122,18 +128,18 @@ func _build_controls(box: VBoxContainer) -> void:
 		["Character studio (lab)", "F2", "Pause menu button"],
 	]:
 		for cell in row:
-			grid.add_child(_label(cell, 15))
-	var note := _label("Menus: arrow keys / D-pad to navigate, Enter / Cross / A to select.\nAudio sliders: Left / Right to adjust. Controls vary by room and device.", 14)
+			grid.add_child(_label(cell, 17, &"settings_value"))
+	var note := _label("Menus: arrow keys / D-pad to navigate, Enter / Cross / A to select.\nAudio sliders: Left / Right to adjust. Controls vary by room and device.", 17, &"settings_note")
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(note)
-	box.add_child(_label("FREQUENCY CONSOLE", 13))
-	var console := _label("Drag a dial to tune it. Use the mouse wheel or arrow keys for fine adjustments, Tab to select the other dial, and Shift for 10 steps. Esc / F steps back.", 14)
+	box.add_child(_label("FREQUENCY CONSOLE", 15, &"settings_label"))
+	var console := _label("Drag a dial to tune it. Use the mouse wheel or arrow keys for fine adjustments, Tab to select the other dial, and Shift for 10 steps. Esc / F steps back.", 17, &"settings_note")
 	console.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(console)
 
 
-func _label(value: String, size: int = 18) -> Label:
+func _label(value: String, size: int = 22, role: StringName = &"settings_label") -> Label:
 	var label := Label.new()
 	label.text = value
-	label.add_theme_font_size_override("font_size", size)
+	Typography.apply(label, role, size)
 	return label

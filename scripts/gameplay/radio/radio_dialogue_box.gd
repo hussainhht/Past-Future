@@ -13,7 +13,7 @@ func _ready() -> void:
 	super._ready()
 	channel_label = Label.new()
 	channel_label.name = "RadioChannel"
-	channel_label.add_theme_font_size_override("font_size", 15)
+	Typography.apply(channel_label, &"terminal_log")
 	channel_label.add_theme_color_override("font_color", future_accent)
 	var content: VBoxContainer = $RootControl/DialoguePanel/Content
 	content.add_child(channel_label)

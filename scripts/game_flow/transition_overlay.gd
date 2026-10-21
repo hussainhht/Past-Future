@@ -42,6 +42,7 @@ func _ready() -> void:
 	fill.bg_color = FUTURE_ACCENT
 	progress_bar.add_theme_stylebox_override("background", background)
 	progress_bar.add_theme_stylebox_override("fill", fill)
+	Typography.apply(title_label, &"chapter_name", 28)
 	title_label.add_theme_color_override("font_color", PAST_ACCENT)
 	status_label.add_theme_color_override("font_color", Color("bac5c2"))
 	clear_status()

@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ddxt6rqj5p6i1" path="res://scripts/menu/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://cq63ai54uej4g" path="res://assets/ui/temporal_background.svg" id="2_background"]
 [ext_resource type="Script" uid="uid://dct502t6dqx4p" path="res://scripts/menu/temporal_backdrop.gd" id="3_atmosphere"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/heading_font.tres" id="4_heading"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_regular_font.tres" id="5_regular"]
 [ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="4_theme"]
 [ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="5_button"]
 
@@ -97,21 +99,19 @@ theme_override_font_sizes/font_size = 14
 [node name="Past" type="Label" parent="Layout/TitleBlock" unique_id=29669714]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 108
-text = "PAST"
+text = "THE OTHER"
 
 [node name="Future" type="Label" parent="Layout/TitleBlock" unique_id=245611583]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.57, 0.78, 0.79, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
 theme_override_font_sizes/font_size = 94
-text = "& FUTURE"
+text = "ME"
 
 [node name="Tagline" type="Label" parent="Layout/TitleBlock" unique_id=1026876945]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.67, 0.71, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_italic")
+theme_override_fonts/font = ExtResource("5_regular")
 theme_override_font_sizes/font_size = 22
 
 [node name="Actions" type="VBoxContainer" parent="Layout" unique_id=610663681]
@@ -127,9 +127,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(360, 66)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_type_variation = &"PrimaryButton"
-text = "PLAY TOGETHER"
-script = ExtResource("5_button")
+theme_override_font_sizes/font_size = 28
+text = "PLAY TOGETHER  →"
 
 [node name="SecondaryActions" type="HBoxContainer" parent="Layout/Actions" unique_id=1518126227]
 layout_mode = 2
@@ -137,31 +136,32 @@ theme_override_constants/separation = 12
 
 [node name="SettingsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=354479432]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(174, 52)
+custom_minimum_size = Vector2(176, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
+theme_override_font_sizes/font_size = 25
 text = "SETTINGS"
 script = ExtResource("5_button")
 
 [node name="CreditsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=868646930]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(174, 52)
+custom_minimum_size = Vector2(176, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
+theme_override_font_sizes/font_size = 25
 text = "CREDITS"
 script = ExtResource("5_button")
 
 [node name="QuitButton" type="Button" parent="Layout/Actions" unique_id=653793475]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
-theme_type_variation = &"TertiaryButton"
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty")
 text = "QUIT"
 script = ExtResource("5_button")
 
@@ -182,7 +182,7 @@ offset_top = 741.0
 offset_right = 1050.0
 offset_bottom = 770.0
 theme_override_colors/font_color = Color(0.68, 0.57, 0.41, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 15
 text = "I   /   THE STUDENT"
 
 [node name="FutureStamp" type="Label" parent="Layout" unique_id=540022078]
@@ -192,7 +192,7 @@ offset_top = 741.0
 offset_right = 1400.0
 offset_bottom = 770.0
 theme_override_colors/font_color = Color(0.44, 0.65, 0.69, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 15
 text = "II   /   THE PROFESSOR"
 
 [node name="YearGap" type="Label" parent="Layout" unique_id=1232014485]
@@ -257,8 +257,8 @@ theme_override_constants/separation = 16
 [node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1803860977]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 38
+theme_override_fonts/font = ExtResource("4_heading")
+theme_override_font_sizes/font_size = 34
 text = "Two lives. One connection."
 
 [node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1223210088]
@@ -327,8 +327,8 @@ theme_override_constants/separation = 18
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("4_heading")
+theme_override_font_sizes/font_size = 36
 text = "Play on Wi-Fi"
 
 [node name="NetworkHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1273809504]
@@ -456,8 +456,8 @@ theme_override_constants/separation = 18
 [node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=256981933]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("4_heading")
+theme_override_font_sizes/font_size = 36
 text = "Settings"
 
 [node name="FullscreenToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=1381121658]
@@ -493,13 +493,13 @@ theme_override_constants/separation = 20
 [node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage" unique_id=1550104897]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("4_heading")
+theme_override_font_sizes/font_size = 36
 text = "Across the years"
 
 [node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/CreditsPage" unique_id=664070220]
 layout_mode = 2
-text = "PAST & FUTURE
+text = "THE OTHER ME
 A cooperative mystery by CHECKPOINT.
 
 Created for Reboot Game Jam 2026.
@@ -520,8 +520,8 @@ theme_override_constants/separation = 24
 [node name="Title" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=2062193125]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.83, 0.68, 1)
-theme_override_fonts/font = SubResource("SystemFont_title")
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("4_heading")
+theme_override_font_sizes/font_size = 36
 text = "Leave this timeline?"
 
 [node name="Description" type="Label" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=996593763]
