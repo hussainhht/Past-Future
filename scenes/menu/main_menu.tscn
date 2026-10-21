@@ -8,6 +8,8 @@
 [ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="4_theme"]
 [ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="5_button"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty"]
+
 [sub_resource type="SystemFont" id="SystemFont_title"]
 font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
 
