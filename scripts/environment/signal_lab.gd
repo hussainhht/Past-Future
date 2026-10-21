@@ -113,21 +113,23 @@ func _on_puzzle_state_changed(puzzle_id: String, state: Dictionary, _revision: i
 		return
 	# What the other timeline just did, as the room hears it.
 	if state.get("professor_radio", false) and not previous.get("professor_radio", false) and not future:
-		ui.toast("Your radio crackles: someone thirty-one years away has switched on a handheld.")
+		ui.observe("Student", "A second receiver light. Someone's on this band.")
 	if state.get("student_radio", false) and not previous.get("student_radio", false) and future:
-		ui.toast("Your radio crackles: a young voice, very far away, is on the same band.")
+		ui.observe("Professor", "A voice under the static. Young. I know that voice.")
 	if state.get("frequency_calibrated", false) and not previous.get("frequency_calibrated", false) and future:
 		ui.toast("The console flickers: SIGNAL LOCKED. The array has been calibrated in the Past.")
+		ui.observe("Professor", "The carrier light just held. Whatever he did, it's reaching this console.")
 
 
 func _on_radio_acquired(role: String) -> void:
 	if _radio != null and role == _radio.player_role:
 		radio_audio.play_cue(&"pickup")
-		ui.toast("Handheld radio acquired. Both timelines need theirs on before the array can hold a link.")
+		ui.observe("Professor" if future else "Student", "It's still picking up static. There's a second receiver indicator, but no voice yet.")
 
 
 func _on_link_established() -> void:
 	ui.banner("TEMPORAL RADIO LINK ESTABLISHED", "The array holds the carrier across thirty-one years. The security door is open.")
+	ui.toast("Radio connection established. The north door is unlocked.")
 	puzzle_solved.emit()
 
 
@@ -135,7 +137,7 @@ func _on_player_exited(body: Node3D) -> void:
 	if exited:
 		return
 	exited = true
-	ui.banner("SIGNAL LABORATORY CLEARED", "Both timelines found the way out.", 6.0)
+	ui.toast("Laboratory exit reached. Continue into the maintenance gallery.")
 	audio.play_sfx(&"objective_completed")
 	player_exited.emit(body)
 

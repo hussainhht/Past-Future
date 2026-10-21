@@ -1,5 +1,7 @@
 extends Control
-## Subtle clock motion and drifting dust. All artwork uses native 2D rendering.
+## Accelerated clock hands and drifting dust. All artwork uses native 2D rendering.
+
+@export_range(1.0, 120.0, 1.0) var minute_hand_revolution_seconds: float = 30.0
 
 var motion_enabled: bool = true
 var elapsed: float = 0.0
@@ -20,8 +22,9 @@ func _draw() -> void:
 		var color := Color("bda780") if index < 30 else Color("7bb9bf")
 		color.a = 0.50 if major else 0.19
 		draw_line(center + direction * (178.0 if major else 185.0), center + direction * 191.0, color, 1.5, true)
-	var hour_angle := -PI * 0.72 + sin(elapsed * 0.08) * 0.025
-	var minute_angle := -PI * 0.16 - elapsed * 0.012
+	var clock_angle := -elapsed * TAU / minute_hand_revolution_seconds
+	var hour_angle := -PI * 0.72 + clock_angle / 12.0
+	var minute_angle := -PI * 0.16 + clock_angle
 	draw_line(center, center + Vector2.from_angle(hour_angle) * 102.0, Color("c4ad85"), 3.0, true)
 	draw_line(center, center + Vector2.from_angle(minute_angle) * 149.0, Color("78b9bf"), 2.0, true)
 	draw_circle(center, 6.0, Color("a8b9ae"), false, 1.5, true)

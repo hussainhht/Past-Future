@@ -27,6 +27,7 @@ func _ready() -> void:
 	root_control.modulate.a = 0.0
 	root_control.visible = false
 	_apply_timeline_style("past")
+	process_priority = 90
 	_update_key_badge()
 	InputManager.get_instance().device_changed_signal.connect(_on_device_changed)
 
@@ -40,6 +41,17 @@ func _update_key_badge() -> void:
 		return
 	var label: String = InputManager.get_action_label(&"interact")
 	key_label.text = " %s " % label
+
+
+func _process(_delta: float) -> void:
+	if not root_control.visible: return
+	var screen := get_viewport().get_visible_rect().size
+	var right := minf(1122.0, screen.x - clampf(screen.x * 0.23, 280.0, 340.0) - 70.0)
+	var width := maxf(200.0, panel.get_combined_minimum_size().x)
+	panel.anchor_left = 0.0
+	panel.anchor_right = 0.0
+	panel.offset_left = (42.0 + right - width) / 2.0
+	panel.offset_right = panel.offset_left + width
 
 
 func _apply_timeline_style(timeline: String) -> void:
@@ -63,7 +75,7 @@ func _apply_timeline_style(timeline: String) -> void:
 
 	# Apply style to main panel
 	var panel_style := StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.06, 0.08, 0.11, 0.88)
+	panel_style.bg_color = Color(0.06, 0.08, 0.11, 1.0)
 	panel_style.border_color = Color(accent_color.r, accent_color.g, accent_color.b, 0.35)
 	panel_style.set_border_width_all(1)
 	panel_style.set_corner_radius_all(6)
@@ -126,7 +138,11 @@ func set_prompt_text(text: String) -> void:
 func set_interaction_blocked(blocked: bool) -> void:
 	_is_blocked = blocked
 	if blocked:
-		hide_prompt()
+		if _current_tween != null: _current_tween.kill()
+		_current_tween = null
+		_is_visible = false
+		root_control.modulate.a = 0.0
+		root_control.hide()
 
 
 ## Convenience method matching prompt interface requirements.
