@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l2_recorder"
+role = "future"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 50
+title = "Examine the Incident Recorder"
+summary = "Inspect the recorder at the end of the corridor."
+description = "Something recorded the moment of the incident. Inspect the recorder at the end of the corridor."
+hint = ""
+icon = &"document"
+secret = true
+conditions = Array[Dictionary]([{"kind": "one_of", "puzzle": "puzzle_02_maintenance", "path": "recording", "values": ["preserved", "erased"]}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

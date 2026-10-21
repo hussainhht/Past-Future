@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l3_arm"
+role = "future"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 20
+title = "Arm the Temporal Core"
+summary = "Arm the reactor together with your partner."
+description = "When you and your partner are ready, arm the reactor. A shared 150-second challenge begins, and menus do not pause it."
+hint = "Anyone can arm the reactor at its console once you have both finished looking around."
+icon = &"core"
+secret = false
+conditions = Array[Dictionary]([{"kind": "at_least", "puzzle": "puzzle_03_final_fracture", "path": "stage", "order": ["DISCOVERY", "STAGE_A", "STAGE_B", "STAGE_C", "ENDING"], "value": "STAGE_A"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = "puzzle_03_final_fracture"

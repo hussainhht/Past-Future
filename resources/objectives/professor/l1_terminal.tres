@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l1_terminal"
+role = "future"
+chapter = "room_01"
+chapter_order = 1
+sort_order = 20
+title = "Investigate the Damaged Terminal"
+summary = "Search the ruins for information about the signal."
+description = "Search the ruined laboratory for information about the experimental signal. A recovered calibration record is on the console."
+hint = "The same console shows a live receiver trace."
+icon = &"terminal"
+secret = false
+conditions = Array[Dictionary]([{"kind": "journal", "entry": "future_frequency_log"}])
+expires = Array[Dictionary]([{"kind": "solved", "puzzle": "puzzle_01_frequency"}])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

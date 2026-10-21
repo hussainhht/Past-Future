@@ -122,6 +122,7 @@ func _run() -> void:
 	for property in ProjectSettings.get_property_list():
 		if String(property.name).begins_with("autoload/"):
 			expected_root_nodes += 1
+	expected_root_nodes += 1  # the Mission Log layer, which ObjectiveManager keeps last under root
 	flow = root.get_node("GameFlowManager")
 	puzzles = root.get_node("PuzzleManager")
 	network = root.get_node("NetworkManager")

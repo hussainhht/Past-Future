@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l2_read_record"
+role = "future"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 40
+title = "Read the Maintenance Record"
+summary = "Read the repaired record for the Core access record."
+description = "With the archive repaired, read it for the Core access record. The Student will need what you find."
+hint = ""
+icon = &"document"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "archive_read"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

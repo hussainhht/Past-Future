@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l1_guide"
+role = "future"
+chapter = "room_01"
+chapter_order = 1
+sort_order = 30
+title = "Guide the Calibration"
+summary = "Guide the Student's tuning from the live receiver."
+description = "Watch the live receiver and talk your younger self through the tuning until the green trace matches the grey target."
+hint = "You see the result and the Student has the dials. Describe exactly what you see."
+icon = &"dial"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_01_frequency", "path": "frequency_calibrated"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

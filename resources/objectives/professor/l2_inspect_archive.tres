@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l2_inspect_archive"
+role = "future"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 20
+title = "Inspect the Archive Damage"
+summary = "Check the damaged archive and its shipping record."
+description = "The maintenance archive is damaged. Power its terminal, check the shipping record, and tell the Student what you learn."
+hint = "The Student can only see what is physically in front of them."
+icon = &"terminal"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.manifest_read"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

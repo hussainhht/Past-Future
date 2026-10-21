@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l1_find_radio"
+role = "future"
+chapter = "room_01"
+chapter_order = 1
+sort_order = 10
+title = "Find the Handheld Radio"
+summary = "Find the handheld radio in the reading corner."
+description = "Search the ruined laboratory for the handheld radio in the reading corner."
+hint = "Your younger self has one too. You will need both to open a channel."
+icon = &"radio"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_01_frequency", "path": "professor_radio"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""
