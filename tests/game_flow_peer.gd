@@ -228,6 +228,9 @@ func run_host() -> void:
 	if scenario == "production":
 		await scenario_production()
 		return
+	if scenario == "demo":
+		await scenario_demo()
+		return
 	await enter_first_room()
 	if scenario == "host_leaves":
 		await scenario_host_leaves()
@@ -244,6 +247,9 @@ func run_client() -> void:
 		return
 	if scenario == "production":
 		await scenario_production()
+		return
+	if scenario == "demo":
+		await scenario_demo()
 		return
 	await enter_first_room()
 	if scenario == "host_leaves":
@@ -594,6 +600,37 @@ func scenario_host_leaves() -> void:
 		check(flow.get_current_room_id() == "test_room_a" and current_scene.scene_file_path == ROOM_A_SCENE, "The client stays in a playable Room A")
 		check(not flow.is_transitioning() and not flow.is_input_locked() and not flow.overlay.is_covering() and current_scene.player.controls_enabled, "Nothing stays locked or black")
 		check(network.state == network.State.IDLE and flow.request_transition("test_room_b") != "", "The session is over; the client cannot start transitions")
+
+
+func scenario_demo() -> void:
+	check(flow.start_room("room_01"), "demo starts in production laboratory")
+	await tick(8)
+	await wait_for(func() -> bool: return puzzles.is_session_active(), "demo session starts")
+	await barrier()
+	for destination in ["room_02", "room_03", "room_01"]:
+		var menu: Node = current_scene.pause_menu
+		menu._pause.call(true)
+		if not is_host():
+			check(menu.button("SkipLevelButton").disabled, "guest navigation is disabled")
+			check(flow.navigate_demo(destination) == "not_authority", "guest cannot authorize navigation")
+		await barrier()
+		if is_host():
+			if destination == "room_01": flow.navigate_demo(destination)
+			else: menu.button("SkipLevelButton").pressed.emit()
+		if not await wait_for(func() -> bool: return flow.get_current_room_id() == destination and not flow.is_transitioning(), "both peers enter " + destination): return
+		await tick(6)
+		check(current_scene.player.controls_enabled, "character controls resume after demo transition")
+		check(puzzles.get_local_role() == ("past" if is_host() else "future"), "network role preserved")
+		check(not puzzles.is_solved(FREQ), "demo does not mark laboratory complete")
+		if destination == "room_02":
+			check(current_scene.radio.has_established_link(), "both peers have demo radio access")
+			var action: Dictionary = puzzles.submit_action("puzzle_02_maintenance", "arrive")
+			check(action.get("reason") != "prerequisite_not_met", "maintenance is playable")
+		await barrier()
+	await barrier()
+	if is_host(): flow.end_demo()
+	await wait_for(func() -> bool: return current_scene.scene_file_path == "res://scenes/menu/main_menu.tscn", "finish returns both peers to menu")
+	check(not network.in_game and not flow.demo_radio_link, "session ends cleanly on both peers")
 
 
 func scenario_production() -> void:

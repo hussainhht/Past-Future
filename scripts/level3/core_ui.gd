@@ -12,9 +12,6 @@ var device_feedback: Label
 var device_hint: Label
 var device_buttons: Dictionary = {}
 var header: PanelContainer
-var footer: PanelContainer
-var reactor_status: Label
-var progress: Label
 var _error_until := 0
 var _device_error := ""
 
@@ -22,7 +19,6 @@ var root: Control
 var identity: Label
 var timer: Label
 var _timer_row: HBoxContainer
-var objective: Label
 var status: Label
 var modal: PanelContainer
 var modal_box: VBoxContainer
@@ -30,11 +26,12 @@ var veil: ColorRect
 var switch_button: Button
 var pause_button: Button
 var guidance: LabUI
-var radio_status: Label
 var journal_button: Button
 var ending_caption: Label
 var visible_modal: bool = false
 var _last_status: String = ""
+var room_title: Label
+var header_status: Label
 
 
 func _ready() -> void:
@@ -42,18 +39,14 @@ func _ready() -> void:
 	root = Control.new()
 	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	TemporalButton.theme_for(root)
 	add_child(root)
 	header = PanelContainer.new()
 	header.name = "Header"
 	header.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	header.offset_left = 16
-	header.offset_top = 12
-	header.offset_right = -16
-	header.offset_bottom = 64
-	var style := LabUI._panel_style(Color(0.035, 0.065, 0.08, 1.0), Color("647b7a"), 1)
-	style.content_margin_left = 16
-	style.content_margin_right = 16
+	header.offset_bottom = 52
+	var style := LabUI._panel_style(Color(0.035, 0.06, 0.075, 0.96), Color("647b7a"), 0)
+	style.content_margin_left = 18
+	style.content_margin_right = 18
 	style.content_margin_top = 8
 	style.content_margin_bottom = 8
 	header.add_theme_stylebox_override("panel", style)
@@ -66,11 +59,15 @@ func _ready() -> void:
 	identity.custom_minimum_size.x = 64
 	identity.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	row.add_child(identity)
-	var title := text_label("III / THE FINAL FRACTURE", 16)
-	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	row.add_child(title)
-	timer = text_label("", 24)
+	room_title = text_label("III / THE FINAL FRACTURE", 16)
+	room_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	room_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	room_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(room_title)
+	header_status = text_label("IDLE", 15)
+	header_status.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(header_status)
+	timer = text_label("", 22)
 	timer.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	row.add_child(timer)
 	journal_button = make_button("NOTEBOOK [J]", func() -> void: JournalManager.toggle_journal())
@@ -82,24 +79,14 @@ func _ready() -> void:
 	row.add_child(pause_button)
 	for button in [journal_button, switch_button, pause_button]:
 		button.custom_minimum_size.y = 32
+		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		button.add_theme_font_size_override("font_size", 16)
 	guidance = LabUI.new()
 	add_child(guidance)
-	guidance.guide_top = 80
-	footer = guidance._guide
-	objective = guidance._guide_goal
+	guidance.guide_top = 72
 	status = Label.new()
 	status.hide()
 	root.add_child(status)
-	reactor_status = text_label("REACTOR IDLE", 17)
-	reactor_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	guidance.add_status_control(reactor_status)
-	progress = text_label("A POWER / B ALIGNMENT / C IDENTITY", 16)
-	progress.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	guidance.add_status_control(progress)
-	radio_status = text_label("", 16)
-	radio_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	guidance.add_status_control(radio_status)
 	device_panel = PanelContainer.new()
 	device_panel.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	device_panel.add_theme_stylebox_override("panel", panel_style())
@@ -213,44 +200,30 @@ func close_panel() -> void:
 
 
 func render(state: Dictionary, role: String, predicted_remaining: float, predicted_sync: float = -1.0) -> void:
-	identity.text = "PROFESSOR / FUTURE" if role == "future" else "STUDENT / PAST"
+	identity.text = "FUTURE" if role == "future" else "PAST"
 	if guidance.future != (role == "future"): guidance.set_timeline(role == "future")
 	journal_button.text = ("DATAPAD" if role == "future" else "NOTEBOOK") + " [" + Inputs.get_action_label(&"journal") + "]"
 	identity.modulate = Color("9edfeb") if role == "future" else Color("edc894")
 	timer.visible = true
-	timer.text = "%02d:%02d" % [int(ceil(predicted_remaining)) / 60, int(ceil(predicted_remaining)) % 60]
-	if state.stage == "DISCOVERY": timer.text = "IDLE"
-	elif state.stage == "ENDING": timer.text = "COMPLETE"
-	timer.modulate = Color("f0a581") if predicted_remaining <= 10 else Color.WHITE
-	reactor_status.text = {"DISCOVERY": "REACTOR IDLE / AWAITING ARMING", "STAGE_A": "REACTOR ACTIVE / RESTORE POWER", "STAGE_B": "REACTOR ACTIVE / ALIGN BOTH TIMELINES", "STAGE_C": "REACTOR ACTIVE / IDENTITY COMMANDS", "OVERLOAD": "OVERLOAD / RESETTING ATTEMPT", "ENDING": "REACTOR RESOLVED"}.get(state.stage, "WAITING FOR REACTOR")
-	var current := ["STAGE_A", "STAGE_B", "STAGE_C", "ENDING"].find(state.stage)
-	var parts := PackedStringArray()
-	for index in 3:
-		parts.append(("[ACTIVE] " if index == current else ("[OK] " if index < current else "")) + ["A POWER", "B ALIGNMENT", "C IDENTITY"][index])
-	progress.text = "  /  ".join(parts)
-	var text := ""
-	match state.stage:
-		"DISCOVERY": text = "Read your records, then inspect the reactor console."
-		"STAGE_A":
-			text = "RESTORE POWER  /  Cycle the three coils using the Professor's routing diagram." if role == "past" else "RESTORE POWER  /  Restore the receiver and inspect the routing diagram. Read its settings to the Student."
-		"STAGE_B":
-			if not state.anchor: text = "SYNCHRONIZE  /  Professor: cross the rebuilt conduit and calibrate the Signal Anchor."
-			elif not state.origin: text = "SYNCHRONIZE  /  Student: the exposed waveform enables the Origin Core. Stabilize it."
-			else:
-				var seconds: float = maxf(0.0, predicted_sync) if predicted_sync >= 0 else state.sync_remaining
-				var sync_text := "WINDOW: %.1fs" % seconds if state.sync_past or state.sync_future else "SYNC WINDOW: 5 SECONDS"
-				text = "Both engage your PHASE SWITCH. " + sync_text
-				if device_panel.visible: device_feedback.text = "STUDENT: %s\nPROFESSOR: %s\n%s" % ["HELD" if state.sync_past else "READY", "HELD" if state.sync_future else "READY", sync_text]
-		"STAGE_C": text = "IDENTITY LOCK  /  Operate your final terminal. Two versions. One identity. One survivor."
-		"OVERLOAD": text = "TEMPORAL COLLAPSE / Returning both timelines to the beginning."
-		"ENDING": text = "END OF CHAPTER 0"
-	if state.stage == "STAGE_C":
-		text += "  /  YOU: %s  ·  PARTNER: %s" % ["LOCKED" if state["locked_" + role] else "WAITING", "LOCKED" if state["locked_" + ("past" if role == "future" else "future")] else "WAITING"]
-	guidance.set_guidance(text)
+	var remaining := maxi(0, int(ceil(predicted_remaining)))
+	timer.text = "%02d:%02d" % [remaining / 60, remaining % 60]
+	if state.stage == "DISCOVERY": timer.text = "--:--"
+	elif state.stage == "ENDING": timer.text = "DONE"
+	timer.modulate = Color("ff7272") if remaining <= 15 else (Color("edc894") if remaining <= 45 else Color("c9e9df"))
+	if state.stage == "DISCOVERY": timer.modulate = Color("99b0b7")
+	header_status.text = {"DISCOVERY": "IDLE", "STAGE_A": "POWER", "STAGE_B": "ALIGNMENT", "STAGE_C": "IDENTITY", "OVERLOAD": "OVERLOAD", "ENDING": "RESOLVED"}.get(state.stage, "WAITING")
+	# The ObjectiveManager tracker owns objective text and progress. Keep LabUI's
+	# guide inactive; this layer still supplies transient notices and device feedback.
+	if state.stage == "STAGE_B" and state.anchor and state.origin and device_panel.visible:
+		var seconds: float = maxf(0.0, predicted_sync) if predicted_sync >= 0 else state.sync_remaining
+		var sync_text := "WINDOW: %.1fs" % seconds if state.sync_past or state.sync_future else "SYNC WINDOW: 5 SECONDS"
+		device_feedback.text = "STUDENT: %s\nPROFESSOR: %s\n%s" % ["HELD" if state.sync_past else "READY", "HELD" if state.sync_future else "READY", sync_text]
 
 
 func _layout() -> void:
 	var screen := get_viewport().get_visible_rect().size
+	room_title.add_theme_font_override("font", Typography.font(&"heading"))
+	_timer_row.add_theme_constant_override("separation", 10 if screen.x < 1100 else 16)
 	device_panel.offset_left = -clampf(screen.x * 0.23, 280.0, 340.0) - 26.0
 	device_panel.offset_right = -26
 	device_panel.offset_top = 108
@@ -332,10 +305,6 @@ func show_error(message: String) -> void:
 
 func set_overlay_blocked(blocked: bool) -> void:
 	guidance.set_overlay_blocked(blocked)
-
-
-func set_radio_status(radio: TemporalRadio) -> void:
-	radio_status.text = "RADIO / " + ("CONNECTED" if radio.has_established_link() else "NO LINK")
 
 
 func _hud_button(caption: String) -> Button:

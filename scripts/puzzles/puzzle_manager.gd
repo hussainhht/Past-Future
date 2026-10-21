@@ -317,6 +317,8 @@ func _run_action(puzzle_id: String, action: String, payload: Variant, role: Stri
 	if logic == null:
 		return _rejected(puzzle_id, action, "unknown_puzzle")
 	for prerequisite in logic.get_prerequisites():
+		if GameFlowManager.demo_radio_link and puzzle_id == "puzzle_02_maintenance" and prerequisite == "puzzle_01_frequency":
+			continue # Demonstration access grants entry, never a completed puzzle record.
 		if not is_solved(prerequisite):
 			return _rejected(puzzle_id, action, "prerequisite_not_met", prerequisite)
 	if not _records.has(puzzle_id):

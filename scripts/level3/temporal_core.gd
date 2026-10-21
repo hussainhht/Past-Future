@@ -348,7 +348,6 @@ func _process(delta: float) -> void:
 		# Display-only interpolation. The host remains the sole deadline owner.
 		sync_left = maxf(0.0, _confirmed_sync_remaining - (_clock() - _snapshot_at))
 	ui.render(state, role, predicted, sync_left)
-	ui.set_radio_status(radio)
 	sound.tick(delta, predicted, sync_left)
 	# Stop scene-bound pose/hello RPCs before either peer unloads this room.
 	if networked and not disconnected and NetworkManager.in_game and not _meltdown_started:
@@ -363,6 +362,8 @@ func _process(delta: float) -> void:
 
 
 func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
+	# A replacement scene can reset state before this queued old instance is freed.
+	if not is_inside_tree(): return
 	if id != Rules.ID: return
 	# A fresh campaign snapshot arrives before the room swap. Keep the black frame
 	# and input lock intact until this scene is actually removed.

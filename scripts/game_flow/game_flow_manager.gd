@@ -126,6 +126,64 @@ var _reactor_restart_session: int = 0
 var _reactor_guest_finished: int = -1
 var _reactor_restart_deadline: int = 0
 var _campaign_restart_in_flight := false
+## Demo access supplies a radio link without completing the laboratory puzzle.
+var demo_radio_link := false
+var _previous_demo_link := false
+const DEMO_ROOMS := ["room_01", "room_02", "room_03"]
+const ROOM_PUZZLES := {"room_01": "puzzle_01_frequency", "room_02": "puzzle_02_maintenance", "room_03": "puzzle_03_final_fracture"}
+
+
+func demo_navigation_reason(destination: String) -> String:
+	if _mode() == Mode.CLIENT: return "not_authority"
+	if _mode() == Mode.LOST: return "no_partner"
+	if _phase != Phase.IDLE: return "busy"
+	if not PuzzleManager.is_session_active(): return "no_session"
+	if _mode() == Mode.HOST and (_partner_busy or _guest_peer() == 0): return "partner_busy"
+	if not DEMO_ROOMS.has(get_current_room_id()): return "no_current_room"
+	if not DEMO_ROOMS.has(destination) or not _rooms.has(destination): return "unknown_room"
+	if not ResourceLoader.exists(get_room(destination).get_scene_path(_local_role())): return "scene_missing"
+	return ""
+
+
+## Explicit demonstration access; normal load/ack/commit/abort still owns the transition.
+func navigate_demo(destination: String) -> String:
+	var reason := demo_navigation_reason(destination)
+	if not reason.is_empty():
+		_reject(destination, reason)
+		return reason
+	_start_authorized(destination, true)
+	return ""
+
+
+func end_demo() -> void:
+	if _mode() == Mode.CLIENT or is_transitioning(): return
+	if _mode() == Mode.HOST and _guest_peer() != 0:
+		_rpc_end_demo.rpc_id(_guest_peer(), PuzzleManager.get_session_id())
+		await get_tree().create_timer(0.15).timeout
+	_end_demo_local()
+
+
+func _end_demo_local() -> void:
+	if is_instance_valid(_room_node) and _room_node.has_method("game_flow_suspend"):
+		_room_node.game_flow_suspend()
+	JournalManager.close_journal()
+	demo_radio_link = false
+	_reactor_restart_attempt = -1
+	_campaign_restart_in_flight = false
+	PuzzleManager.gameplay_suspended = false
+	_clear_readiness()
+	_blockers.clear()
+	_current_id = ""
+	_room_node = null
+	NetworkManager.leave_game()
+	PuzzleManager.begin_session()
+	CinematicTransitionManager.reset_history()
+	get_tree().change_scene_to_file.call_deferred(fallback_scene)
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_end_demo(session_id: int) -> void:
+	if _from_host(session_id): _end_demo_local()
 
 
 func _ready() -> void:
@@ -135,6 +193,7 @@ func _ready() -> void:
 	overlay.fade_finished.connect(_on_fade_finished)
 	NetworkManager.state_changed.connect(_on_network_changed)
 	PuzzleManager.session_ended.connect(_on_session_ended)
+	PuzzleManager.session_started.connect(func() -> void: demo_radio_link = false)
 	load_room_directory()
 	InputManager.ensure_initialized(self)
 
@@ -513,7 +572,7 @@ func _required_ready() -> bool:
 	return _ready_roles[PAST] and _ready_roles[FUTURE]
 
 
-func _start_authorized(destination: String) -> void:
+func _start_authorized(destination: String, demo: bool = false) -> void:
 	_seq += 1
 	var tid := _seq
 	var from := get_current_room_id()
@@ -530,10 +589,10 @@ func _start_authorized(destination: String) -> void:
 		_partner_busy = true
 		_partner_tid = tid
 		_partner_deadline_ms = Time.get_ticks_msec() + int(finish_timeout_seconds * 1000.0) + int(transition_timeout_seconds * 1000.0)
-		_rpc_begin.rpc_id(_guest_peer(), PuzzleManager.get_session_id(), tid, from, destination)
+		_rpc_begin.rpc_id(_guest_peer(), PuzzleManager.get_session_id(), tid, from, destination, demo)
 	if mode != Mode.OFFLINE:
 		overlay.show_departing()
-	_begin_local(tid, from, destination)
+	_begin_local(tid, from, destination, demo)
 
 
 func _publish_readiness() -> void:
@@ -584,7 +643,8 @@ func _local_blocker_message() -> String:
 
 # --- Local transition (both peers) --------------------------------------------------------
 
-func _begin_local(tid: int, from: String, destination: String) -> void:
+func _begin_local(tid: int, from: String, destination: String, demo: bool = false) -> void:
+	_previous_demo_link = demo_radio_link
 	_tid = tid
 	_highest_tid = maxi(_highest_tid, tid)
 	_from_room = from
@@ -603,6 +663,14 @@ func _begin_local(tid: int, from: String, destination: String) -> void:
 	_set_phase(Phase.FADING_OUT)
 	overlay.set_status("LOADING...", "")
 	_set_input_locked(true)
+	if demo:
+		# Suspend the old room before resetting state: no old dialogue or device reacts.
+		demo_radio_link = destination != "room_01"
+		_reactor_restart_attempt = -1
+		JournalManager.close_journal()
+		CinematicTransitionManager.reset_history()
+		if PuzzleManager.is_authority():
+			PuzzleManager.reset_puzzle(ROOM_PUZZLES[destination])
 	overlay.fade_out(fade_out_seconds)
 	_request_load(destination)
 	# Last, so a listener that reacts by cancelling or disconnecting finds a complete transition.
@@ -799,6 +867,7 @@ func _abort(reason: String) -> void:
 func _recover(reason: String) -> void:
 	if _phase == Phase.IDLE or _committed or not _failing_reason.is_empty():
 		return
+	demo_radio_link = _previous_demo_link
 	# A failed fresh-game load cannot restore a destroyed chamber with erased progress.
 	if _campaign_restart_in_flight:
 		_campaign_restart_in_flight = false
@@ -856,6 +925,7 @@ func _on_network_changed() -> void:
 
 
 func _on_session_ended() -> void:
+	demo_radio_link = false
 	_clear_readiness()
 	_partner_busy = false
 	if _phase != Phase.IDLE and not _committed:
@@ -1059,7 +1129,7 @@ func _rpc_ready_state(session_id: int, destination: String, past_ready: bool, fu
 
 
 @rpc("authority", "call_remote", "reliable")
-func _rpc_begin(session_id: int, tid: int, from_room: String, to_room: String) -> void:
+func _rpc_begin(session_id: int, tid: int, from_room: String, to_room: String, demo: bool = false) -> void:
 	if not _from_host(session_id) or tid <= _highest_tid:
 		return  # not from our host, or a stale / repeated message
 	_highest_tid = tid
@@ -1080,7 +1150,7 @@ func _rpc_begin(session_id: int, tid: int, from_room: String, to_room: String) -
 		return
 	_clear_readiness()
 	overlay.show_departing()
-	_begin_local(tid, from_room, to_room)
+	_begin_local(tid, from_room, to_room, demo)
 
 
 @rpc("any_peer", "call_remote", "reliable")

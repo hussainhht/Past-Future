@@ -64,7 +64,7 @@ func _ready() -> void:
 	# F6 is a stand-alone preview. A normal laboratory transition never seeds or resets progress.
 	if not PuzzleManager.is_registered(Frequency.ID):
 		PuzzleManager.register_puzzle(Frequency.ID, Frequency.new())
-		if not NetworkManager.in_game:
+		if not NetworkManager.in_game and not GameFlowManager.demo_radio_link:
 			PuzzleManager.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "past"}, "past")
 			PuzzleManager.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "future"}, "future")
 			PuzzleManager.submit_action(Frequency.ID, "tune_frequency", {"frequency": 67}, "past")

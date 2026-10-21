@@ -36,7 +36,7 @@ func request_acquisition() -> Dictionary:
 
 
 func has_established_link() -> bool:
-	return Rules.link_established(PuzzleManager.get_state(Rules.ID))
+	return GameFlowManager.demo_radio_link or Rules.link_established(PuzzleManager.get_state(Rules.ID))
 
 
 func can_receive() -> bool:
@@ -88,7 +88,7 @@ func set_transmitting(value: bool, incoming: bool = true) -> void:
 
 func refresh() -> void:
 	var state := PuzzleManager.get_state(Rules.ID)
-	var owned: bool = state.get(Rules.ownership_key(player_role), false) == true
+	var owned: bool = GameFlowManager.demo_radio_link or state.get(Rules.ownership_key(player_role), false) == true
 	if not owned:
 		_interference_left = 0.0
 		set_process(false)
@@ -98,7 +98,7 @@ func refresh() -> void:
 	# Scene entry/resync is silent. Connection audio comes from confirmed completion only.
 	var next := SignalState.DISCONNECTED
 	if owns_radio and presentation_active:
-		next = SignalState.CONNECTED if Rules.link_established(state) and _interference_left <= 0.0 else SignalState.SEARCHING
+		next = SignalState.CONNECTED if has_established_link() and _interference_left <= 0.0 else SignalState.SEARCHING
 	signal_state = next
 	if next != SignalState.CONNECTED:
 		set_transmitting(false)
