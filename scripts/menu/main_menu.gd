@@ -1,9 +1,7 @@
 extends Control
 
-const WARM := Color("d8ba89")
-const COOL := Color("86c6cd")
-const INK := Color("101c24")
 const InputManager := preload("res://scripts/input/input_manager.gd")
+const TemporalButton := preload("res://scripts/menu/menu_button.gd")
 
 var audio: AudioDirector
 
@@ -88,58 +86,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _apply_theme() -> void:
-	var menu_theme := Theme.new()
-	menu_theme.default_font_size = 18
-	for state in ["normal", "hover", "pressed", "disabled"]:
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color("15242b")
-		style.border_color = Color("3b4b4c")
-		style.set_border_width_all(1)
-		style.content_margin_left = 24
-		style.content_margin_right = 24
-		style.content_margin_top = 14
-		style.content_margin_bottom = 14
-		if state == "hover":
-			style.bg_color = Color("203338")
-			style.border_color = COOL
-		elif state == "pressed":
-			style.bg_color = Color("30464a")
-		elif state == "disabled":
-			style.bg_color = Color("131e25")
-			style.border_color = Color("2b393e")
-		menu_theme.set_stylebox(state, "Button", style)
-	var focus := StyleBoxFlat.new()
-	focus.bg_color = Color.TRANSPARENT
-	focus.border_color = COOL
-	focus.set_border_width_all(2)
-	focus.expand_margin_left = 4
-	focus.expand_margin_right = 4
-	focus.expand_margin_top = 4
-	focus.expand_margin_bottom = 4
-	menu_theme.set_stylebox("focus", "Button", focus)
-	menu_theme.set_stylebox("focus", "CheckButton", focus)
-	menu_theme.set_color("font_color", "Button", Color("dadcd2"))
-	menu_theme.set_color("font_hover_color", "Button", Color("f0e9d7"))
-	menu_theme.set_color("font_focus_color", "Button", Color("f0e9d7"))
-	menu_theme.set_color("font_disabled_color", "Button", Color("77868a"))
-	menu_theme.set_color("font_color", "CheckButton", Color("dadcd2"))
-	menu_theme.set_color("font_color", "Label", Color("bac5c2"))
-	theme = menu_theme
-	var primary := StyleBoxFlat.new()
-	primary.bg_color = WARM
-	primary.border_color = WARM
-	primary.set_border_width_all(1)
-	primary.content_margin_left = 24
-	primary.content_margin_right = 24
-	var primary_hover := primary.duplicate() as StyleBoxFlat
-	primary_hover.bg_color = Color("efdab5")
-	var primary_pressed := primary.duplicate() as StyleBoxFlat
-	primary_pressed.bg_color = Color("baa077")
-	%PlayButton.add_theme_stylebox_override("normal", primary)
-	%PlayButton.add_theme_stylebox_override("hover", primary_hover)
-	%PlayButton.add_theme_stylebox_override("pressed", primary_pressed)
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		%PlayButton.add_theme_color_override(state, INK)
+	# Button, label and toggle styling lives in resources/ui/menu_theme.tres (assigned on the scene root).
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color("122028")
 	panel_style.border_color = Color("627f80")
@@ -313,8 +260,9 @@ func _build_audio_settings() -> void:
 		slider.tooltip_text = String(category) + " volume"
 		row.add_child(slider)
 		var mute := CheckButton.new()
+		mute.set_script(TemporalButton)
+		mute.theme_type_variation = &"ToggleButton"
 		mute.text = "Mute"
-		mute.add_theme_font_size_override("font_size", 16)
 		mute.set_pressed_no_signal(audio.is_category_muted(category))
 		mute.toggled.connect(func(value: bool) -> void: audio.set_category_muted(category, value))
 		slider.value_changed.connect(func(value: float) -> void:

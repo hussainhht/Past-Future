@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://ddxt6rqj5p6i1" path="res://scripts/menu/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://cq63ai54uej4g" path="res://assets/ui/temporal_background.svg" id="2_background"]
 [ext_resource type="Script" uid="uid://dct502t6dqx4p" path="res://scripts/menu/temporal_backdrop.gd" id="3_atmosphere"]
+[ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="4_theme"]
+[ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="5_button"]
 
 [sub_resource type="SystemFont" id="SystemFont_title"]
 font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
@@ -11,8 +13,6 @@ font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
 font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
 font_italic = true
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty"]
-
 [node name="MainMenu" type="Control" unique_id=791939971]
 layout_mode = 3
 anchors_preset = 15
@@ -20,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("4_theme")
 script = ExtResource("1_menu")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1299889174]
@@ -116,18 +117,19 @@ theme_override_font_sizes/font_size = 22
 [node name="Actions" type="VBoxContainer" parent="Layout" unique_id=610663681]
 layout_mode = 0
 offset_left = 112.0
-offset_top = 536.0
-offset_right = 456.0
-offset_bottom = 748.0
-theme_override_constants/separation = 12
+offset_top = 500.0
+offset_right = 472.0
+offset_bottom = 686.0
+theme_override_constants/separation = 14
 
 [node name="PlayButton" type="Button" parent="Layout/Actions" unique_id=1798032236]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(344, 62)
+custom_minimum_size = Vector2(360, 66)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 18
-text = "PLAY TOGETHER                         →"
+theme_type_variation = &"PrimaryButton"
+text = "PLAY TOGETHER"
+script = ExtResource("5_button")
 
 [node name="SecondaryActions" type="HBoxContainer" parent="Layout/Actions" unique_id=1518126227]
 layout_mode = 2
@@ -135,31 +137,33 @@ theme_override_constants/separation = 12
 
 [node name="SettingsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=354479432]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(166, 50)
+custom_minimum_size = Vector2(174, 52)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
+theme_type_variation = &"SecondaryButton"
 text = "SETTINGS"
+script = ExtResource("5_button")
 
 [node name="CreditsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=868646930]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(166, 50)
+custom_minimum_size = Vector2(174, 52)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
+theme_type_variation = &"SecondaryButton"
 text = "CREDITS"
+script = ExtResource("5_button")
 
 [node name="QuitButton" type="Button" parent="Layout/Actions" unique_id=653793475]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 38)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = SubResource("StyleBoxEmpty")
+theme_type_variation = &"TertiaryButton"
 text = "QUIT"
+script = ExtResource("5_button")
 
 [node name="PastStamp" type="Label" parent="Layout" unique_id=682961004]
 layout_mode = 0
@@ -253,27 +257,39 @@ text = "Explore both timelines in Solo Test,
 or host and join together on the same LAN."
 
 [node name="LocalButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=134157205]
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
+theme_type_variation = &"SecondaryButton"
 disabled = true
 text = "SAME-PC SPLIT-SCREEN     /     COMING SOON"
+script = ExtResource("5_button")
 
 [node name="PreviewButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=792633975]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "PLAY THE LAB     /     SOLO TEST"
+script = ExtResource("5_button")
 
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "HOST ON WI-FI     /     THE STUDENT"
+script = ExtResource("5_button")
 
 [node name="JoinButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=169651772]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "JOIN ON WI-FI     /     THE PROFESSOR"
+script = ExtResource("5_button")
 
 [node name="LanPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=1531286523]
 visible = false
@@ -311,15 +327,19 @@ theme_override_constants/separation = 12
 
 [node name="HostAddresses" type="OptionButton" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow" unique_id=335645454]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
 
 [node name="CopyAddress" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/HostDetails/AddressRow" unique_id=543223925]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(104, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "COPY"
+script = ExtResource("5_button")
 
 [node name="JoinDetails" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1583503661]
 unique_name_in_owner = true
@@ -335,9 +355,12 @@ max_length = 45
 
 [node name="ConnectButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage/JoinDetails" unique_id=1474584663]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"PrimaryButton"
 text = "JOIN GAME"
+script = ExtResource("5_button")
 
 [node name="Roles" type="HBoxContainer" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=317311441]
 layout_mode = 2
@@ -373,9 +396,12 @@ autowrap_mode = 3
 [node name="ReadyButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=495693825]
 unique_name_in_owner = true
 visible = false
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"PrimaryButton"
 text = "I'M READY"
+script = ExtResource("5_button")
 
 [node name="SessionHint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1987846046]
 unique_name_in_owner = true
@@ -388,9 +414,12 @@ text = "Professor: mark ready. Student: start the game."
 [node name="StartGameButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/LanPage" unique_id=1392309305]
 unique_name_in_owner = true
 visible = false
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"PrimaryButton"
 text = "START GAME"
+script = ExtResource("5_button")
 
 [node name="SettingsPage" type="VBoxContainer" parent="Overlay/Center/Panel/Margin/Pages" unique_id=831165982]
 visible = false
@@ -406,18 +435,22 @@ text = "Settings"
 
 [node name="FullscreenToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=1381121658]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"ToggleButton"
 text = "Fullscreen"
+script = ExtResource("5_button")
 
 [node name="MotionToggle" type="CheckButton" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=291373602]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"ToggleButton"
 button_pressed = true
 text = "Ambient motion"
+script = ExtResource("5_button")
 
 [node name="Hint" type="Label" parent="Overlay/Center/Panel/Margin/Pages/SettingsPage" unique_id=1395511723]
 layout_mode = 2
@@ -470,12 +503,19 @@ text = "The past will be here when you return."
 
 [node name="ConfirmQuit" type="Button" parent="Overlay/Center/Panel/Margin/Pages/QuitPage" unique_id=1585805487]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "QUIT GAME"
+script = ExtResource("5_button")
 
 [node name="BackButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages" unique_id=1912238034]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
 text = "BACK"
+script = ExtResource("5_button")
+points_back = true
