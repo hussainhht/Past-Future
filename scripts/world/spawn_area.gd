@@ -219,11 +219,8 @@ func _apply_timeline() -> void:
 			prop.future = future
 	player.body_color = accent
 	lab.future = future
-	%TimelineLabel.text = "II  /  FUTURE" if future else "I  /  PAST"
+	%TimelineLabel.text = "FUTURE" if future else "PAST"
 	%TimelineLabel.add_theme_color_override("font_color", accent)
-	%RoleLabel.text = "THE PROFESSOR" if future else "THE STUDENT"
-	%TimelineButton.text = "PLAY AS STUDENT" if future else "PLAY AS PROFESSOR"
-	%ConnectionLabel.text = "LAN CO-OP" if _networked else "SOLO EXPLORATION"
 	if not _networked:
 		PuzzleManager.offline_role = "future" if future else "past"
 	if gameplay.configured:

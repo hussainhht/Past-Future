@@ -105,8 +105,8 @@ func _layout_text() -> void:
 	_observation_panel.visible = not blocked and not _dialogue_presented() and _observation_remaining > 0.0
 	_observation_panel.offset_left = 42.0
 	_observation_panel.offset_right = minf(1122.0, screen.x - width - 70.0)
-	_observation_panel.offset_top = -256.0
-	_observation_panel.offset_bottom = -150.0
+	_observation_panel.offset_top = -134.0
+	_observation_panel.offset_bottom = -28.0
 
 
 func reserved_text_rects() -> Array[Rect2]:

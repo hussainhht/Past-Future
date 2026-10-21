@@ -9,14 +9,13 @@ const TemporalGhost := preload("res://scripts/world/temporal_ghost.gd")
 const TemporalButton := preload("res://scripts/menu/menu_button.gd")
 const SEQUENCES := {
 	"arrival": "res://resources/dialogue/maintenance/arrival.tres",
-	"crossing": "res://resources/dialogue/maintenance/crossing.tres",
 	"identity": "res://resources/dialogue/maintenance/identity.tres",
 	"preserved": "res://resources/dialogue/maintenance/preserved.tres",
 	"erased": "res://resources/dialogue/maintenance/erased.tres",
 	"ending_preserved": "res://resources/dialogue/maintenance/ending_preserved.tres",
 	"ending_erased": "res://resources/dialogue/maintenance/ending_erased.tres"}
-const FUTURE_DEVICES := ["Battery", "ReserveFuture", "BypassFuture", "Diagnostic", "Archive", "Recorder", "Release"]
-const PAST_DEVICES := ["Service", "ReservePast", "BypassPast", "Apply", "Keypad", "Support_circle", "Support_triangle", "Support_square"]
+const FUTURE_DEVICES := ["Battery", "ReserveFuture", "BypassFuture", "Archive", "Recorder", "Release"]
+const PAST_DEVICES := ["Service", "ReservePast", "BypassPast", "Keypad"]
 
 @export var pause_when_unfocused := true
 @export var temporal_ghost_enabled := true
@@ -27,8 +26,7 @@ var devices: Dictionary = {}
 var radio: TemporalRadio
 var controller: InteractionController
 var prompt: CanvasLayer
-var objective: Label
-var radio_label: Label
+var timeline_label: Label
 var role_button: Button
 var pause_button: Button
 var pause_screen: Control
@@ -40,8 +38,6 @@ var _panel_refresh_queued := false
 var _paused := false
 var _disconnected := false
 var _leaving := false
-var _bridge_ready := false
-var _bridge_tween: Tween
 var _last_power := true
 var _initialized := false
 var _ending_dismissed := false
@@ -51,6 +47,7 @@ var _signal_materials: Dictionary = {}
 var _device_labels: Dictionary = {}
 var _floating_labels: Array[Label3D] = []
 var _equipment_tween: Tween
+var storage: Node3D
 var settings_overlay: CanvasLayer
 
 @onready var player: CharacterBody3D = $Actors/Player
@@ -77,6 +74,9 @@ func _ready() -> void:
 	audio.add_to_group("lab_audio")
 	_build_hud()
 	_create_devices()
+	storage = preload("res://scripts/gameplay/storage/storage_room.gd").new()
+	$Layout.add_child(storage)
+	storage.configure(self)
 	ui.inspector.install_keypad($Layout/Shared/KeypadStand)
 	for id in devices:
 		_device_labels[id] = $Layout.get_node_or_null("Shared/" + id + "Label")
@@ -118,6 +118,9 @@ func _create_devices() -> void:
 		var target := Interactable3D.new()
 		target.name = marker.name
 		target.position = marker.position
+		var stand := $Layout.get_node_or_null("Shared/" + String(marker.name) + "Stand")
+		if stand != null:
+			target.prompt_anchor = stand.get_node_or_null("CrankWheel" if marker.name == "Battery" else "Panel")
 		target.interaction_distance = 1.85
 		target.interaction_name = "Use " + String(marker.name).to_snake_case().replace("_", " ")
 		target.play_interaction_animation = true
@@ -233,36 +236,12 @@ func _collisions(node: Node, enabled: bool) -> void:
 
 func _apply_state(animate: bool) -> void:
 	if state.is_empty(): return
-	var secured: bool = state.supports_secured
-	var branch := $Layout/FutureOnly
-	if secured and not _bridge_ready and animate and role == "future":
-		if not _bridge_tween:
-			var slab: Node3D = branch.get_node("BlockedSlab")
-			_bridge_tween = create_tween()
-			_bridge_tween.tween_property(slab, "position:y", -0.15, 1.1)
-			_bridge_tween.parallel().tween_property(slab, "rotation", Vector3.ZERO, 1.1)
-			_bridge_tween.tween_callback(func() -> void:
-				_bridge_ready = true
-				_bridge_tween = null
-				_apply_state(false)
-			)
-	else:
-		if not _bridge_tween: _bridge_ready = secured
-	branch.get_node("BlockedSlab").visible = not _bridge_ready
-	branch.get_node("GapBarrier").visible = not _bridge_ready
-	_collisions(branch.get_node("GapBarrier"), role == "future" and not _bridge_ready)
-	branch.get_node("SecuredBridge").visible = _bridge_ready
-	_collisions(branch.get_node("SecuredBridge"), role == "future" and _bridge_ready)
 	for variant in ["PastOnly", "FutureOnly"]:
 		var unlocked: bool = state.core_authorized if variant == "PastOnly" else state.future_release_open
 		var gate: Node3D = $Layout.get_node(variant + "/CoreGate")
 		gate.visible = not unlocked
 		_collisions(gate, not unlocked and ((role == "past") == (variant == "PastOnly")))
 		$Layout.get_node(variant + "/GateBand").visible = not unlocked
-	for support in state.supports:
-		$Layout.get_node("Shared/Stage_" + support).text = "STAGE %d%s" % [state.supports[support], " / LOCKED" if secured else ""]
-		var piston: Node3D = $Layout.get_node("Shared/Support_" + support + "/Piston")
-		piston.scale.y = 0.65 + float(state.supports[support]) * 0.18
 	var powered := Rules.has_power(state, role)
 	$KeyLight.light_energy = (0.66 if role == "future" else 0.95) if powered else (0.28 if role == "future" else 0.5)
 	if powered and state.priority == role: $KeyLight.light_energy *= 1.2
@@ -270,6 +249,7 @@ func _apply_state(animate: bool) -> void:
 		ui.toast("Auxiliary voltage dropped. Inspect the distribution meter at your reserve station.")
 		if _initialized: audio.play_sfx(&"interaction_denied")
 	_last_power = powered
+	storage.refresh(animate)
 	_refresh_equipment(animate)
 	_refresh_hud()
 	if state.anchor_past and state.anchor_future and not _ending_dismissed: _show_ending()
@@ -306,7 +286,6 @@ func _refresh_equipment(animate: bool = false) -> void:
 		"Service": state.service_isolated, "Battery": state.battery_ready,
 		"ReservePast": state.priority == "past", "ReserveFuture": state.priority == "future",
 		"BypassPast": state.bypass_past, "BypassFuture": state.bypass_future,
-		"Diagnostic": state.supports_secured, "Apply": state.supports_secured,
 		"Archive": state.archive_read, "Recorder": state.recording != "pending",
 		"Keypad": state.core_authorized, "Release": state.future_release_open,
 		"Anchor": state.get("anchor_" + role, false)}
@@ -325,23 +304,20 @@ func _refresh_equipment(animate: bool = false) -> void:
 			"Bypass": color = live if Rules.bypass_ready(state) else (ready if state.get("bypass_" + role, false) else off)
 		for piece in $Layout.get_node("Shared/PowerRoutes/" + feed).get_children():
 			if String(piece.name).begins_with("Current"): _signal(piece.get_node("Mesh"), color)
-	for support in state.supports:
-		for stage in [1, 2, 3]:
-			var color := live if state.supports_secured else ready
-			if stage > int(state.supports[support]): color = off
-			_equipment_light("Shared/Support_" + support + "/StageLamp%d/Mesh" % stage, color)
 	for reserve in ["Past", "Future"]:
 		_equipment_light("Shared/Reserve" + reserve + "Stand/MeterLamp/Mesh", ready if state.priority == reserve.to_lower() else off)
 	if _equipment_tween: _equipment_tween.kill()
 	_equipment_tween = create_tween().set_parallel(true)
 	var mechanical := [
+		[$Layout/Shared/BatteryStand/CrankWheel, "rotation_degrees:z", 720.0 if state.battery_ready else 0.0],
 		[$Layout/Shared/ServiceStand/IsolatorLever, "rotation_degrees:x", 28.0 if state.service_isolated else -28.0],
 		[$Layout/Shared/ReservePastStand/ReserveLever, "rotation_degrees:x", 28.0 if state.priority == "past" else -35.0],
 		[$Layout/Shared/ReserveFutureStand/ReserveLever, "rotation_degrees:x", 28.0 if state.priority == "future" else -35.0],
 		[$Layout/Shared/AnchorStand/AnchorLever, "rotation_degrees:x", 28.0 if state.get("anchor_" + role, false) else -28.0],
 		[$Layout/Shared/ReleaseStand/ReleaseWheel, "rotation_degrees:z", 160.0 if state.future_release_open else 0.0]]
 	for control in mechanical:
-		_equipment_tween.tween_property(control[0], control[1], control[2], 0.30 if animate else 0.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		var duration := 0.85 if control[0] == $Layout/Shared/BatteryStand/CrankWheel else 0.30
+		_equipment_tween.tween_property(control[0], control[1], control[2], duration if animate else 0.0).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	$Layout/Shared/RecorderStand/Cell.visible = state.recording != "erased"
 	$Layout/Shared/RecorderStand/CellHandle.visible = state.recording != "erased"
 	_equipment_light("Shared/RecorderStand/RecordLamp/Mesh", live if state.recording == "preserved" else (off if state.recording == "erased" else fault))
@@ -364,10 +340,6 @@ func _refresh_wayfinding(delta: float) -> void:
 		if id == "Audit": shown = shown and player.position.z < -11.5
 		label.modulate.a = move_toward(label.modulate.a, 1.0 if shown else 0.0, delta * 6.0)
 		label.visible = not inspecting and label.modulate.a > 0.01
-	for support in state.supports:
-		var near: bool = player.global_position.distance_to(devices["Support_" + support].global_position) < 5.0
-		$Layout.get_node("Shared/Support_" + support + "/Symbol").visible = near and not inspecting
-		$Layout.get_node("Shared/Stage_" + support).visible = near and not inspecting
 	# The fixed camera looks through this lintel after entering the Core.
 	$Layout/Shared/GateLintel.visible = player.position.z > -9.0
 	$Layout/Shared/NorthSign.visible = player.position.z > -9.0 and not inspecting
@@ -380,10 +352,10 @@ func _refresh_wayfinding(delta: float) -> void:
 
 
 func _wayfinding_goals() -> Array:
-	if not state.service_isolated: return ["Service"] if role == "past" else ["Diagnostic"]
+	if not state.service_isolated: return ["Service"] if role == "past" else ["Battery"]
 	if not state.battery_ready: return ["Battery"] if role == "future" else []
 	if not Rules.has_power(state, role): return ["BypassPast" if role == "past" else "BypassFuture"]
-	if not state.supports_secured: return ["Apply"] if role == "past" else ["Diagnostic"]
+	if not Rules.Storage.repaired(state): return ["Archive"] if role == "future" else ["StorageBay0", "StorageBay1", "StorageBay2"]
 	if not state.archive_read: return ["Archive"] if role == "future" else []
 	if state.recording == "pending":
 		return ["Recorder", "BypassFuture"] if role == "future" else ["BypassPast"]
@@ -405,7 +377,14 @@ func _show_device(id: String) -> void:
 	var target: Interactable3D = devices.get(id)
 	if target == null or not target.is_timeline_allowed(role): return
 	var first_inspection: bool = _active_device != id or not ui.is_modal_open()
+	if id.begins_with("Case_"): return
 	_active_device = id
+	if storage.handles(id):
+		storage.open_device(id)
+		return
+	if id == "Archive" and not Rules.Storage.repaired(state):
+		storage.open_archive()
+		return
 	var title := ""
 	var body := ""
 	var thought := ""
@@ -431,7 +410,7 @@ func _show_device(id: String) -> void:
 			if not state.get("briefed_" + role, false): _request("read_reserve_note", {})
 			title = "PRIORITY RESERVE / ALLOCATION"
 			body = "LOCAL PRIORITY / EMERGENCY USE\nEngage to charge this receiver and reserve its supply. WARNING: remote auxiliary feed disconnected. Allocation cannot be reversed under load.\n"
-			body += "Local decoder and structural plan available on reserve power." if role == "past" else "Reserve output can operate the Core release independently of the authorization line."
+			body += "Reserve output powers the local equipment feed." if role == "past" else "Reserve output can operate the Core release independently of the authorization line."
 			body += "\n\nISOLATED BYPASS: " + ("CONTINUITY VERIFIED" if Rules.bypass_ready(state) else "OPEN CIRCUIT")
 			body += "\nLOCAL PRIORITY: " + ("ENGAGED" if state.priority == role else "DISENGAGED")
 			thought = "I could power my own equipment right now. But that warning... it would cut the other receiver off."
@@ -443,21 +422,9 @@ func _show_device(id: String) -> void:
 			thought = "There's a clean fuse in the cover. The return line needs a ground connection too." if role == "past" else "The ground lead has come loose. The fuse symbol on the diagram marks the other break."
 			actions = [_option("Seat replacement fuse" if role == "past" else "Reconnect ground lead", "repair_bypass", {}, state.get("bypass_" + role, false) or not state.service_isolated)]
 			bindings.repair_bypass = stand.get_node("FuseLink")
-		"Diagnostic":
-			title = "FACILITIES / LOAD DIAGNOSTIC"
-			body = "ISOLATION PLATE\nEmergency cell: preserve SERVICE. Do not connect to ARRAY.\n"
-			body += "RECOVERED LOAD READING\nCIRCLE / upper slab: BRACE\nTRIANGLE / archive hatch: PIN\nSQUARE / service opening: RETRACT\n\nExtension legend illegible." if powered else "SCREEN OFFLINE / AUXILIARY VOLTAGE LOW"
-			thought = "The instructions survived on the plate. The numbered extension legend hasn't."
-		"Apply":
-			title = "STRUCTURAL SUPPORT / CONTROL"
-			body = "EXTENSION LEGEND\n1 RETRACT / 2 PIN / 3 BRACE\n\nSTAGED SETTINGS\nCIRCLE %d / TRIANGLE %d / SQUARE %d\n\nPress green commit switch after checking all load points. Safety interlock rejects unsupported loads." % [state.supports.circle, state.supports.triangle, state.supports.square]
-			if state.priority == "past": body += "\nLOCAL DECODER: CIRCLE BRACE / TRIANGLE PIN / SQUARE RETRACT"
-			thought = "The green switch commits all three jacks. I need the load readings before I touch it."
-			actions = [_option("Commit support settings", "apply_supports", {}, state.supports_secured or not powered)]
-			bindings.apply_supports = stand.get_node("CommitButton")
 		"Archive":
 			title = "MAINTENANCE / ACCESS RECORD"
-			if not state.supports_secured or not powered: body = "RECORD TERMINAL OFFLINE\nAuxiliary voltage required."
+			if not powered: body = "RECORD TERMINAL OFFLINE\nAuxiliary voltage required."
 			else:
 				if not state.archive_read: _request("read_archive", {})
 				body = "SERVICE OVERRIDE / 3142\nCore entrance: authorization at console, manual wheel at motor.\nPERSONNEL / CAREER HISTORY\nCurrent appointment: Research Professor.\nFirst appointment: Student Research Assistant.\nService record: 31 years.\nOriginal induction card attached.\nINCIDENT INDEX / 23:44\nWarning acknowledged. Automatic shutdown overridden. Authorization retained in incident recorder."
@@ -473,7 +440,7 @@ func _show_device(id: String) -> void:
 		"Keypad":
 			title = "CORE ENTRANCE / AUTHORIZATION"
 			body = "SERVICE ACCESS\nEnter maintenance override.\nRecorder memory transfer or buffer release must complete before interlock clears.\n" + ("ACCESS AUTHORIZED" if state.core_authorized else ("AUXILIARY VOLTAGE LOW" if not powered else "CODE REQUIRED"))
-			thought = "Four digits. There should be an access record in the cabinets beyond the jacks."
+			thought = "Four digits. There should be an access record in the cabinets in the storage room."
 			code_entry = not state.core_authorized
 			actions = [_option("Authorize service entrance", "authorize_core", {}, state.core_authorized or not powered)]
 		"Release":
@@ -491,18 +458,6 @@ func _show_device(id: String) -> void:
 		"Audit":
 			title = "ANCHOR 01 / INCIDENT AUDIT"
 			body = _record_audit() if state.anchor_past and state.anchor_future else "AUDIT STORAGE SEALED\nStabilization required."
-		_:
-			if id.begins_with("Support_"):
-				var key := id.trim_prefix("Support_")
-				stand = $Layout.get_node("Shared/Support_" + key)
-				title = key.to_upper() + " / JACK EXTENSION"
-				body = "1 RETRACT / 2 PIN / 3 BRACE\n\nStage the selector, then commit the complete support plan at the control cabinet.\nSTAGED EXTENSION: %d" % state.supports[key]
-				thought = "Three marked stops. The cabinet has a switch to commit the whole plan."
-				for stage in range(1, 4):
-					var option := _option("Stage %d" % stage, "set_support", {"support": key, "stage": stage}, state.supports_secured or not powered)
-					option.stamp = str(stage)
-					actions.append(option)
-					bindings[option.label] = stand.get_node("Selector%d" % stage)
 	ui.device_mount = stand
 	ui.device_bindings = bindings
 	ui.camera = camera
@@ -530,10 +485,11 @@ func _on_rejected(id: String, _action: String, reason: String, actor_role: Strin
 		"past_auxiliary_feed_offline": "The Student's auxiliary feed is offline. Repair both bypass ends.",
 		"future_auxiliary_feed_offline": "The Professor's auxiliary feed is offline. Repair both bypass ends.",
 		"repair_both_bypass_ends": "Repair the Past fuse and Future ground lead before exporting.",
-		"secure_crossing_first": "Secure the Future crossing first.",
 		"resolve_archive_recording": "Read the archive and resolve its recorder transfer first.",
 		"await_core_authorization": "Waiting for the Student's code authorization.",
-		"supports_locked": "The crossing is secured. Its supports are locked."}
+		"repair_archive_first": "Inspect the archive damage and install all three preserved replacements.",
+		"return_future_item_first": "Return or lower the Future tray before changing the Past contents.",
+		"restore_power_first": "Restore the service power before using the storage equipment."}
 	ui.toast(messages.get(reason, reason.replace("_", " ").capitalize()))
 	audio.play_sfx(&"interaction_denied")
 
@@ -543,9 +499,6 @@ func _on_state_changed(id: String, next: Dictionary, _revision: int) -> void:
 	var previous := state
 	state = next
 	if not _initialized: return
-	if state.battery_ready and not previous.get("battery_ready", false) and state.priority == "shared":
-		create_tween().tween_property($Layout/Shared/BatteryStand/CrankWheel, "rotation_degrees:z", 720.0, 0.85).as_relative()
-	if state.supports_secured and not previous.get("supports_secured", false): _queue_line("crossing")
 	if state.archive_read and not previous.get("archive_read", false): _queue_line("identity")
 	if state.recording != "pending" and previous.get("recording", "pending") == "pending": _queue_line(String(state.recording))
 	if state.anchor_past and state.anchor_future and not (previous.get("anchor_past", false) and previous.get("anchor_future", false)):
@@ -566,7 +519,6 @@ func _sync_story_from_state() -> void:
 		_queue_line("ending_" + String(state.recording))
 		return
 	_queue_line("arrival")
-	if state.supports_secured: _queue_line("crossing")
 	if state.archive_read: _queue_line("identity")
 	if state.recording != "pending": _queue_line(String(state.recording))
 
@@ -589,6 +541,7 @@ func _audit_text() -> String:
 
 func _process(delta: float) -> void:
 	if not _initialized or _leaving: return
+	storage.update_carry()
 	_refresh_wayfinding(delta)
 	if player.position.y < -3: respawn()
 	_sync_controls()
@@ -635,6 +588,12 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventKey and event.pressed and not event.echo and not _paused:
 		if event.physical_keycode == KEY_T: switch_role()
 		elif event.physical_keycode == KEY_R and not player.is_action_active(): respawn()
+		elif event.physical_keycode == KEY_E and player.controls_enabled and role == "past" and not state.storage.past_hand.is_empty() and not player.is_action_active():
+			if player.position.z <= -3.3 and player.position.z >= -8.5:
+				var drop := Vector3(clampf(player.position.x, -6.6, 6.6), 0, clampf(player.position.z + 0.5, -8.5, -3.3))
+				_request("drop_storage_item", {"position": drop})
+			else: ui.toast("Put equipment down inside the storage room.")
+			get_viewport().set_input_as_handled()
 
 
 func respawn() -> void:
@@ -738,37 +697,37 @@ func _build_hud() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	layer.add_child(root)
 	var header := PanelContainer.new()
+	header.name = "Header"
 	header.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-	header.offset_left = 26
-	header.offset_top = 18
-	header.offset_right = -26
-	header.offset_bottom = 122
+	header.offset_left = 16
+	header.offset_top = 12
+	header.offset_right = -16
+	header.offset_bottom = 64
 	var header_style := LabUI._panel_style(Color(0.035, 0.065, 0.08, 1.0), Color("647b7a"), 1)
 	header_style.content_margin_left = 16
 	header_style.content_margin_right = 16
-	header_style.content_margin_top = 10
-	header_style.content_margin_bottom = 10
+	header_style.content_margin_top = 8
+	header_style.content_margin_bottom = 8
 	header.add_theme_stylebox_override("panel", header_style)
 	root.add_child(header)
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 22)
+	row.add_theme_constant_override("separation", 16)
 	header.add_child(row)
-	var heading := VBoxContainer.new()
-	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_child(heading)
-	heading.add_child(_hud_label("02 / THE BROKEN CORRIDOR", 25))
-	objective = _hud_label("", 18)
-	objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	heading.add_child(objective)
-	var right := VBoxContainer.new()
-	row.add_child(right)
-	radio_label = _hud_label("67 MHz / CONNECTED", 17)
-	right.add_child(radio_label)
-	var buttons := HBoxContainer.new()
-	right.add_child(buttons)
-	role_button = _button(buttons, "SWITCH ROLE / T", switch_role)
+	timeline_label = _hud_label("", 16)
+	timeline_label.custom_minimum_size.x = 64
+	timeline_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(timeline_label)
+	var room_title := _hud_label("MAINTENANCE CORRIDOR", 16)
+	room_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	room_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	row.add_child(room_title)
+	role_button = _button(row, "SWITCH TIMELINE", switch_role)
 	role_button.visible = not NetworkManager.in_game
-	pause_button = _button(buttons, "PAUSE / ESC", func() -> void: set_paused(true))
+	pause_button = _button(row, "PAUSE", func() -> void: set_paused(true))
+	for button in [role_button, pause_button]:
+		button.custom_minimum_size = Vector2(0, 32)
+		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		button.add_theme_font_size_override("font_size", 16)
 	var overlays := CanvasLayer.new()
 	overlays.name = "Overlays"
 	overlays.layer = 30
@@ -873,18 +832,16 @@ func _refresh_hud() -> void:
 		message = "Student: authorize the Core. Professor: turn the manual release."
 	elif state.archive_read:
 		message = "Recover the incident recording. The isolated bypass can preserve its buffer."
-	elif state.supports_secured:
-		message = "Cross the secured gallery. The maintenance archive holds Core access."
+	elif state.battery_ready and not Rules.Storage.repaired(state):
+		message = "Professor: inspect archive damage and shipping record. Student: weigh cases, then lower each tray underground."
 	elif state.battery_ready:
-		message = "Compare Future load requirements with Past extension stages. Apply a safe plan."
+		message = "Read the repaired maintenance archive for Core access."
 	elif state.service_isolated:
 		message = "Professor: charge the local emergency battery."
 	else:
-		message = "Read the Future isolation plate. Student: preserve the SERVICE circuit."
+		message = "Student: isolate SERVICE. Professor: inspect the emergency-cell charging instructions."
 	if state.battery_ready and not Rules.has_power(state, role):
 		message = "AUXILIARY FEED OFFLINE / Repair the Past fuse and Future ground lead."
-	objective.text = message
-	objective.hide()
 	ui.set_guidance(message)
-	radio_label.text = "%s / %s\n67 MHz / %s" % ["THE PROFESSOR" if role == "future" else "THE STUDENT", role.to_upper(), "AUXILIARY INTERFERENCE" if state.battery_ready and not Rules.has_power(state, role) else "CONNECTED"]
-	role_button.text = "PLAY AS STUDENT / T" if role == "future" else "PLAY AS PROFESSOR / T"
+	timeline_label.text = role.to_upper()
+	timeline_label.add_theme_color_override("font_color", LabUI.FUTURE_ACCENT if role == "future" else LabUI.PAST_ACCENT)

@@ -66,8 +66,9 @@ const MESSAGES := {
 	"blocked": "You cannot leave right now.",
 }
 
-var fade_out_seconds: float = 0.45
-var fade_in_seconds: float = 0.55
+## Cut directly between rooms; the cover is only needed while loading and synchronising peers.
+var fade_out_seconds: float = 0.0
+var fade_in_seconds: float = 0.0
 ## Host: seconds from "begin" until every peer must have loaded. The guest allows a little longer.
 var transition_timeout_seconds: float = 20.0
 ## Host: how long to wait for the guest to report it left a transition before allowing the next one.
@@ -551,7 +552,7 @@ func _begin_local(tid: int, from: String, destination: String) -> void:
 	_progress = 0.0
 	_deadline_ms = Time.get_ticks_msec() + int(transition_timeout_seconds * 1000.0)
 	_set_phase(Phase.FADING_OUT)
-	overlay.set_status("TEMPORAL TRANSITION", "STABILIZING CONNECTION...")
+	overlay.set_status("LOADING...", "")
 	_set_input_locked(true)
 	overlay.fade_out(fade_out_seconds)
 	_request_load(destination)
@@ -757,7 +758,7 @@ func _recover(reason: String) -> void:
 		_deadline_ms = Time.get_ticks_msec() + int(transition_timeout_seconds * 1000.0)
 		_target_room = _from_room
 		_set_phase(Phase.LOADING)
-		overlay.set_status("TEMPORAL TRANSITION", "RESTORING PREVIOUS AREA...")
+		overlay.set_status("LOADING...", "RESTORING PREVIOUS AREA...")
 		room_loading.emit(_target_room)
 		_request_load(_target_room)
 	else:

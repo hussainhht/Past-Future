@@ -30,6 +30,9 @@ var debug_button: Button
 var journal_button: Button
 var ending_caption: Label
 var visible_modal: bool = false
+var _status_panel: PanelContainer
+var _last_status: String = ""
+var _status_seconds: float = 0.0
 
 
 func _ready() -> void:
@@ -58,6 +61,16 @@ func _ready() -> void:
 	timer.size = Vector2(215, 55)
 	timer.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	root.add_child(timer)
+	_status_panel = PanelContainer.new()
+	_status_panel.position = Vector2(20, 138)
+	_status_panel.size.x = 520
+	_status_panel.add_theme_stylebox_override("panel", panel_style())
+	_status_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status_panel.hide()
+	root.add_child(_status_panel)
+	status = text_label("", 18)
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_status_panel.add_child(status)
 	footer = PanelContainer.new()
 	footer.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 	footer.offset_left = 20
@@ -71,9 +84,6 @@ func _ready() -> void:
 	objective = text_label("", 19)
 	objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	bottom.add_child(objective)
-	status = text_label("", 16)
-	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	bottom.add_child(status)
 	var controls := HBoxContainer.new()
 	bottom.add_child(controls)
 	journal_button = make_button("JOURNAL", func() -> void: JournalManager.toggle_journal())
@@ -115,6 +125,14 @@ func _ready() -> void:
 	root.add_child(ending_caption)
 	_layout()
 	get_viewport().size_changed.connect(_layout)
+
+
+func _process(delta: float) -> void:
+	if status.text != _last_status:
+		_last_status = status.text
+		_status_seconds = 5.0 if not status.text.is_empty() else 0.0
+	_status_seconds = maxf(0.0, _status_seconds - delta)
+	_status_panel.visible = _status_seconds > 0.0 and not visible_modal
 
 
 func panel_style() -> StyleBoxFlat:

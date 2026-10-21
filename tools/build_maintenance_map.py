@@ -106,22 +106,30 @@ def instance(name,parent,pos,path,scale=(1,1,1),yaw=0):
     serial+=1;ext=f'asset_{serial}';exts.append(f'[ext_resource type="PackedScene" path="{path}" id="{ext}"]')
     nodes.append(f'[node name="{name}" parent="{parent}" instance=ExtResource("{ext}")]\nposition = {value(pos)}\nscale = {value(scale)}\nrotation_degrees = Vector3(0, {yaw}, 0)\n')
 
+def storage_floor(name,y,height,material,left,right,near,far,solid=False):
+    # Boundaries subdivide the rectangle; cells inside the three hatch footprints are omitted.
+    xs=sorted({left,right,-2.43,-1.07,-.68,.68,1.07,2.43})
+    zs=sorted({near,far,-6.93,-5.57})
+    for xi,(x1,x2) in enumerate(zip(xs,xs[1:])):
+        for zi,(z1,z2) in enumerate(zip(zs,zs[1:])):
+            x,z=(x1+x2)/2,(z1+z2)/2
+            if -6.93 < z < -5.57 and any(abs(x-center)<.68 for center in [-1.75,0,1.75]):continue
+            box(f'{name}_{xi}_{zi}','Shared',(x,y,z),(x2-x1,height,z2-z1),material,solid)
+
 exts=[]
 node('MaintenanceLayout',parent=None)
 for name in ['Shared','PastOnly','FutureOnly','Devices']:
     node(name,**({'visible':False} if name=='FutureOnly' else {}))
-# All floor tops are exactly y=0. The Future has a real gap with guarded approaches.
-for name,z,depth in [('South',4.85,8.1),('North',-6.2,6.8)]:
-    box(name+'Floor','Shared',(0,-.2,z),(16,.4,depth),'floor',True)
+# All floor tops are exactly y=0. Both eras have a continuous route to storage.
+box('SouthFloor','Shared',(0,-.2,4.85),(16,.4,8.1),'floor',True)
+storage_floor('NorthFloor',-.2,.4,'floor',-8,8,-9.6,-2.8,True)
 box('CoreFloor','Shared',(0,-.2,-12.0),(8,.4,4.8),'floor',True)
 box('IntactWalkway','PastOnly',(0,-.2,-1.0),(16,.4,3.6),'floor',True)
-box('DarkPit','FutureOnly',(0,-1.7,-1.0),(16,.2,3.6),'black')
+box('AgedWalkway','FutureOnly',(0,-.2,-1.0),(16,.4,3.6),'floor',True)
 for side in [-1,1]:
     box('SideWall'+str(side),'Shared',(side*8.25,1.4,-.1),(.4,2.8,19.9),'wall',True)
     box('CoreSide'+str(side),'Shared',(side*4.2,1.3,-12),(.4,2.6,5),'wall',True)
     box('Bulkhead'+str(side),'Shared',(side*5,1.6,-9.7),(6.4,3.2,.4),'wall',True)
-    box('GapGuard'+str(side),'FutureOnly',(side*5.25,.5,.84),(6.3,1,.25),'steel',True)
-    box('FarGuard'+str(side),'FutureOnly',(side*5.25,.5,-2.84),(6.3,1,.25),'steel',True)
     cylinder('Pipe'+str(side),'Shared',(side*7.7,2.6,-.2),.10,19,'copper',(90,0,0))
     for z in [7,3,-4,-8]:
         box('WallFoot'+str(side)+'_'+str(z),'Shared',(side*7.8,1.4,z),(.45,2.8,.55),'steel')
@@ -130,41 +138,22 @@ box('CoreEnd','Shared',(0,1.4,-14.5),(8.5,2.8,.4),'wall',True)
 floor_text('EntrySign','Shared',(0,.025,8.5),'02 / MAINTENANCE',58)
 label('NorthSign','Shared',(0,3.35,-9.5),'CORE / AUTHORIZED ACCESS',70)
 label('CoreSign','Shared',(0,2.8,-14.2),'ANCHOR 01',86)
-for z in [7.8,5.8,3.8,1.8,-3.6,-5.6,-7.6]:
+for z in [7.8,5.8,3.8,1.8,-3.6,-5.25,-7.6]:
     box('FloorJoint'+str(z),'Shared',(0,.004,z),(15.7,.006,.025),'edge')
 for side in [-1,1]:
     box('Lane'+str(side),'Shared',(side*2.5,.008,4.8),(.07,.009,8),'yellow')
     box('NorthLane'+str(side),'Shared',(side*2.5,.008,-6.1),(.07,.009,6.5),'yellow')
-# The opening collision stays until the secured bridge presentation finishes.
-box('GapBarrier','FutureOnly',(0,.7,.84),(4.3,1.4,.24),'concrete',True)
-blocked=box('BlockedSlab','FutureOnly',(0,1,-.9),(4.1,.35,3.9),'concrete',False,(-34,0,9))
-for x in [-1.5,-.5,.5,1.5]:box('Fracture'+str(x),blocked,(x,.181,0),(.035,.008,3.5),'black')
-node('SecuredBridge',parent='FutureOnly',visible=False)
-box('Deck','FutureOnly/SecuredBridge',(0,-.16,-1),(4.2,.32,3.6),'concrete',True)
-for side in [-1,1]:
-    box('BridgeRail'+str(side),'FutureOnly/SecuredBridge',(side*2.13,.5,-1),(.12,1,3.6),'steel',True)
-    cylinder('Brace'+str(side),'FutureOnly/SecuredBridge',(side*1.5,-.8,-1),.16,1.4,'steel')
-# Three physical jacks; symbols correspond to the puzzle, not camera-relative left/right.
-for key,x,symbol in [('circle',-5.3,'CIRCLE'),('triangle',0,'TRIANGLE'),('square',5.3,'SQUARE')]:
-    root=node('Support_'+key,parent='Shared',position=(x,0,1.5))
-    box('Foot',root,(0,.12,0),(1.1,.24,1.1),'steel',True)
-    cylinder('Piston',root,(0,.8,0),.16,1.4,'copper')
-    box('Head',root,(0,1.5,0),(.85,.18,.8),'yellow')
-    label('Symbol',root,(0,2.35,0),symbol,48)
-    node('Support_'+key,'Marker3D','Devices',position=(x,0,2.35))
-    label('Stage_'+key,'Shared',(x,1.9,1.8),'STAGE 1',42,'7dc6ce')
 # Grounded stations stay out of the central walking lane.
 device('Service',(-5.7,0,7.5),'SERVICE ISOLATOR')
 device('ReservePast',(-2.5,0,7.5),'LOCAL RESERVE / I')
 device('ReserveFuture',(2.5,0,7.5),'LOCAL RESERVE / II')
 device('Battery',(5.7,0,7.5),'EMERGENCY CELL')
 wheel=res('TorusMesh','inner_radius = 0.22\nouter_radius = 0.29\nrings = 24\nring_segments = 8')
-raw_node('CrankWheel','MeshInstance3D','Shared/BatteryStand',mesh=wheel,material_override=M['copper'],position=(0,.95,.38),rotation_degrees=(90,0,0))
-box('CrankGrip','Shared/BatteryStand',(.25,.96,.47),(.10,.10,.28),'yellow')
+crank=node('CrankWheel',parent='Shared/BatteryStand',position=(0,.95,.38))
+raw_node('Mesh','MeshInstance3D',crank,mesh=wheel,material_override=M['copper'],rotation_degrees=(90,0,0))
+box('CrankGrip',crank,(.25,.01,.09),(.10,.10,.28),'yellow')
 device('BypassPast',(-6.2,0,4.7),'BYPASS / I')
 device('BypassFuture',(6.2,0,4.7),'BYPASS / II')
-device('Diagnostic',(-3.4,0,4.7),'LOAD DIAGNOSTIC')
-device('Apply',(3.4,0,4.7),'APPLY SUPPORT PLAN')
 device('Archive',(-5.4,0,-5.8),'MAINTENANCE ARCHIVE','wood')
 device('Recorder',(5.4,0,-5.8),'INCIDENT RECORDER')
 for side in [-1,1]:
@@ -211,22 +200,12 @@ for side in [-1,1]:
         box(f'Rib_{side}_{z}','Shared/Architecture',(side*7.1,3.0,z),(2.2,.18,.2),'edge')
         box(f'RibBrace_{side}_{z}','Shared/Architecture',(side*7.3,2.75,z),(1.0,.12,.16),'steel',rotation=(0,0,side*26))
 
-# Clear visual rhythm: power bay -> load crossing -> records bay -> Core.
-for name,z,depth in [('PowerBay',6.25,4.7),('RecordsBay',-6.1,5.5)]:
-    box(name+'Inset','Shared',(0,.006,z),(14.5,.008,depth),'tile')
-for name,z,text in [('PowerBayTitle',8.0,'01 / POWER DISTRIBUTION'),('SupportBayTitle',3.15,'02 / STRUCTURAL SUPPORT'),('RecordsBayTitle',-4.25,'03 / RECORDS + CORE ACCESS')]:
+# Clear visual rhythm: power bay -> storage room -> Core.
+box('PowerBayInset','Shared',(0,.006,6.25),(14.5,.008,4.7),'tile')
+storage_floor('RecordsBayInset',.006,.008,'tile',-7.25,7.25,-8.85,-3.35)
+for name,z,text in [('PowerBayTitle',8.0,'01 / POWER DISTRIBUTION'),('StorageRouteTitle',3.15,'STORAGE / STRAIGHT AHEAD'),('RecordsBayTitle',-4.25,'02 / STORAGE + ARCHIVE')]:
     floor_text(name,'Shared',(0,.035,z),text,54)
-for z in [6,4.8,-3.5,-5,-7.4,-10.8,-11.7]: arrow('Route'+str(z),'Shared',0,z)
-for side in [-1,1]:
-    hazard('NearCaution'+str(side),'Shared',side*5.35,.80,4.3)
-    hazard('FarCaution'+str(side),'Shared',side*5.35,-2.81,4.3)
-    box('BridgeTrack'+str(side),'FutureOnly/SecuredBridge',(side*1.8,.012,-1),(.08,.015,3.5),'yellow')
-    for z in [-2.5,-1.7,-.9,-.1,.6]:
-        box('DeckSeam'+str(side)+str(z),'FutureOnly/SecuredBridge',(side*1.05,.01,z),(1.9,.012,.04),'edge')
-    # Far-side rail silhouettes explain where the collapsed walkway used to continue.
-    for z in [0,-1,-2]:
-        cylinder('BrokenPost'+str(side)+str(z),'FutureOnly',(side*6.9,.3,z),.05,.6,'rust',rotation=(0,0,side*22))
-
+for z in [6,4.8,-3.5,-4.9,-7.4,-10.8,-11.7]: arrow('Route'+str(z),'Shared',0,z)
 # Surface-mounted conduits communicate the shared circuit; the controller changes current strips.
 node('PowerRoutes',parent='Shared')
 route('Main',[(-5.7,6.7),(-5.7,6.05),(5.7,6.05),(5.7,6.7)])
@@ -264,36 +243,6 @@ for name in ['BypassPast','BypassFuture']:
         cylinder('Contact'+str(side),p,(side*.29,1.02,.01),.085,.10,'copper',(90,0,0))
     box('FuseLink',p,(0,1.02,.10),(.47,.12,.12),'insulator')
     torus('EarthLoop',p,(.30,.41,.40),.20,.235,'yellow')
-
-diag='Shared/DiagnosticStand'
-box('MonitorCase',diag,(0,1.10,-.02),(1.02,.72,.40),'edge')
-box('MonitorGlass',diag,(0,1.13,.197),(.83,.48,.018),'black')
-for i,h in enumerate([.12,.22,.30,.17,.26,.10]):
-    box('Graph'+str(i),diag,(-.31+i*.12,1.02+h/2,.212),(.055,h,.013),'cyan')
-apply='Shared/ApplyStand'
-for i in range(3):
-    box('Slot'+str(i),apply,(-.32+i*.32,.72,.08),(.17,.035,.38),'black')
-    box('Switch'+str(i),apply,(-.32+i*.32,.79,.08),(.12,.12,.16),'yellow')
-box('CommitButton',apply,(0,.78,.36),(.30,.14,.18),'green')
-
-# Jacks have matching symbols, ruler stops and visible stage lamps. No numerical solution is added.
-for key in ['circle','triangle','square']:
-    p='Shared/Support_'+key
-    for stage in [1,2,3]:
-        selector=box('Selector'+str(stage),p,((stage-2)*.28,.40,.61),(.22,.18,.10),'steel')
-        label('Number',selector,(0,0,.065),str(stage),30,'e6d7b1',False)
-    box('GaugeBack',p,(.42,.87,0),(.22,1.35,.20),'dark')
-    for n in [1,2,3]:
-        box('Stop'+str(n),p,(.44,.35+n*.29,.13),(.16,.045,.045),'paper')
-        box('StageLamp'+str(n),p,(-.40,.35+n*.29,.38),(.12,.12,.07),'off')
-    if key=='circle': torus('SymbolBadge',p,(0,1.75,.20),.17,.23,'yellow')
-    elif key=='square':
-        for x,y,w,h in [(0,1.97,.44,.07),(0,1.55,.44,.07),(-.21,1.76,.07,.42),(.21,1.76,.07,.42)]:
-            box('Square'+str(x)+str(y),p,(x,y,.20),(w,h,.07),'yellow')
-    else:
-        box('TriBase',p,(0,1.56,.20),(.48,.07,.07),'yellow')
-        box('TriLeft',p,(-.12,1.77,.20),(.07,.48,.07),'yellow',rotation=(0,0,-30))
-        box('TriRight',p,(.12,1.77,.20),(.07,.48,.07),'yellow',rotation=(0,0,30))
 
 archive='Shared/ArchiveStand'
 box('ArchiveShelf',archive,(0,1.1,-.18),(1.1,.68,.42),'wood')
@@ -371,7 +320,7 @@ for variant in ['PastOnly','FutureOnly']:
 board=box('FacilityDiagram','Shared',(-5.25,1.73,-9.43),(2.8,1.75,.08),'edge')
 box('DiagramFace',board,(0,0,.06),(2.60,1.55,.025),'paper')
 label('DiagramTitle',board,(0,.54,.09),'SERVICE ROUTE',44,'293c42',False)
-for i,(text,y) in enumerate([('POWER',.16),('SUPPORT',-.17),('CORE',-.50)]):
+for i,(text,y) in enumerate([('POWER',.16),('STORAGE',-.17),('CORE',-.50)]):
     box('DiagramBay'+str(i),board,(-.70,y,.09),(.28,.22,.025),'blue')
     if i<2:box('DiagramLine'+str(i),board,(-.70,y-.17,.10),(.04,.14,.025),'edge')
     label('DiagramText'+str(i),board,(.30,y,.11),text,35,'293c42',False)

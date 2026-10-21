@@ -1,7 +1,12 @@
 # Cinematic Room Transitions
 
-A title card plays when a player enters a major room: chapter label, room title, accent line, timeline
-identity and coordinates. The Student sees the warm Past card, the Professor the cold Future card.
+Normal level entry goes straight to gameplay, without cinematic title cards or animated fades.
+Room changes use a plain loading cover only while loading and synchronising peers.
+
+The title-card system remains available for explicit previews, with `CinematicTransitionManager.enabled`
+defaulting to `false`. The API and automatic behaviour below apply only after enabling it.
+Its cards show the chapter label, room title, accent line, timeline identity and coordinates.
+The Student sees the warm Past card, the Professor the cold Future card.
 Verified against Godot 4.7.2, GL Compatibility.
 
 ## 1. Architecture

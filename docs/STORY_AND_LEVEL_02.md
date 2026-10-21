@@ -1,6 +1,6 @@
 # Chapter 0 story continuation and Level 02
 
-Original authored design, 2026-10-20; implementation update, 2026-10-21. The maintenance gallery and compact Core finale are now playable, with additional power and recorder choices. See [Level 02 implementation](LEVEL_02.md) for the built route, branching outcomes, controls and verification. The original plan below records the story intent; its unconditional full-audit reveal now applies to the preserved-recording branch.
+Original authored design, 2026-10-20; implementation update, 2026-10-21. The maintenance gallery and compact Core finale are now playable, with additional power and recorder choices. See [Level 02 implementation](LEVEL_02.md) for the built route, branching outcomes, controls and verification. The Circle/Triangle/Square support puzzle in the original plan below has been replaced by the preservation-storage and archive-repair puzzle; use `LEVEL_02.md` for the current implementation. The original plan below records the story intent; its unconditional full-audit reveal now applies to the preserved-recording branch.
 
 ## Runtime inspection before Level 02 implementation (2026-10-20)
 

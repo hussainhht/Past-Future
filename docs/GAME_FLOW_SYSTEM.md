@@ -328,9 +328,11 @@ fires. A room that manages these flags itself (the Signal Laboratory's `_sync_co
 `GameFlowManager.is_input_locked()` in its own "paused" test and resync on `input_lock_changed`, otherwise
 its own sync could release the character mid-transition. No movement or interaction code was changed.
 
-`TransitionOverlay` lives on the autoload (layer 100): the fade, "TEMPORAL TRANSITION / STABILIZING
-CONNECTION...", a thin progress bar, and, docked at the right below the radio HUD, the readiness panel and
-refusal notices. Fade lengths are `fade_out_seconds` (0.45) and `fade_in_seconds` (0.55).
+`TransitionOverlay` lives on the autoload (layer 100): a plain "LOADING..." cover, a thin progress bar,
+and, docked at the right below the radio HUD, the readiness panel and refusal notices. Both
+`fade_out_seconds` and `fade_in_seconds` default to `0.0`, so rooms cut directly to gameplay once loaded
+and synchronised. Cinematic room title cards are disabled by default. Fade durations and cinematic
+previews can still be enabled explicitly by development tools.
 
 ## 11. Puzzle progress and the temporal radio
 

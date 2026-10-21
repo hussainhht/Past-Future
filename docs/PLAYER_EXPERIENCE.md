@@ -2,6 +2,10 @@
 
 The playable laboratory and maintenance gallery now distinguish what the character knows from what the player needs to operate the game.
 
+The in-game top bar is a single 52-pixel row showing the timeline, room name and compact controls.
+Character names, chapter numbering and connection readouts are omitted. Solo play retains the timeline
+switch; the Core keeps its active countdown in the bar and shows operation feedback briefly below it.
+
 Story information comes from printed service instructions, equipment readouts, retained records, and named character thoughts. A document does not address “both players” or identify a machine as “Future only.” Characters infer changes from what they have seen; the corridor dialogue no longer asserts an unexplained theory of how the link anchors their memories. The identity reveal still happens through the personnel record and the private watch inscription.
 
 Controls, objectives, network confirmations, and puzzle help appear on the right, explicitly labelled **PLAYER GUIDE / OUTSIDE THE STORY** or **PLAYER FEEDBACK / NOT DIALOGUE**. Character observations appear separately as **Student · thought** or **Professor · thought**. These local thoughts are not conversations transmitted to the other character. The ending overlay is labelled a player summary; the physical audit terminal contains only its retained machine record.
@@ -16,8 +20,9 @@ Walk to equipment and press **F**. The camera moves to a close-up of the actual 
 
 - SERVICE and reserve levers rotate after the host confirms their actions.
 - The emergency charging crank turns when a normal charge is confirmed.
-- The three jack selectors, support commit switch, export button, release wheel, and stabilization lever are actual map geometry.
+- The underground storage computers, loading handles and floor hatches, archive repair sockets, export button, release wheel, and stabilization lever are actual map geometry.
 - The recorder's removable cell remains absent after extraction and after a room reload.
+- In the maintenance storage room, F picks up a distinct equipment case and E puts it down. Each underground bay has place/remove handles and a computer. The storage command opens a floor hatch, lowers the loaded tray to the bottom of the shaft, then closes the hatch. In the Future, the computer opens the hatch and raises the preserved tray; collection unlocks after the lift stops. Its Past screen displays measured weight; required shipping weights belong to the Future archive record. Each lift operates independently, and every portable item can be preserved, including wrong equipment. The Professor retrieves, returns or physically installs each component at the damaged archive.
 - Both players collect their handheld radios before the laboratory console unlocks its two dials. The Past adjusts **frequency (1–999 MHz)** and **amplitude (1–100%)**. Drag either knob clockwise to increase or counterclockwise to decrease. The wheel over a knob and arrow keys adjust by one; Shift adjusts by ten. Tab selects the other dial for keyboard tuning. Every change is sent immediately; no calibration button is needed.
 - The Future console shows two overlaid waveforms: **green is current**, **grey is target**. Frequency changes cycle spacing; amplitude changes wave height. The Professor guides the Student until the traces match, automatically establishing the radio link and unlocking the door. Both dials then lock. Only the Future can see the target.
 

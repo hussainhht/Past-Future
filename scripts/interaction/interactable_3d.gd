@@ -56,6 +56,9 @@ enum Timing { IMMEDIATE = 0, AFTER_ANIMATION = 1 }
 ## Optional 3D node used as the target center point instead of this Area3D's origin.
 @export var interaction_anchor: Node3D = null
 
+## Optional visual attachment for the interaction prompt, independent of interaction range.
+@export var prompt_anchor: Node3D = null
+
 ## Optional node to receive highlight toggles (e.g. an outline mesh or indicator node).
 @export var highlight_target: Node3D = null
 
@@ -90,6 +93,15 @@ func _ready() -> void:
 func get_interaction_position() -> Vector3:
 	if is_instance_valid(interaction_anchor):
 		return interaction_anchor.global_position
+	return global_position
+
+
+func get_prompt_position() -> Vector3:
+	if is_instance_valid(prompt_anchor):
+		return prompt_anchor.global_position
+	for child in get_children():
+		if child is CollisionShape3D:
+			return child.global_position
 	return global_position
 
 

@@ -368,7 +368,7 @@ func _run() -> void:
 	check(corridor.scene_file_path == "res://scenes/world/maintenance_corridor.tscn" and root.get_node("GameFlowManager").get_current_room_id() == "room_02", "Shortcut enters the real Level 02 and attaches its room flow")
 	check(puzzles.get_session_id() != session and puzzles.is_solved(FREQUENCY), "Shortcut starts a fresh session with Level 01 completed")
 	check(corridor.role == "past" and corridor.radio.owns_radio and corridor.radio.has_established_link() and corridor.radio.get_calibrated_frequency() == 67, "Shortcut starts as Student with a working 67 MHz radio")
-	check(not corridor.state.service_isolated and not corridor.state.supports_secured and not puzzles.is_solved("puzzle_02_maintenance"), "Shortcut leaves Level 02 puzzles unsolved")
+	check(not corridor.state.service_isolated and not corridor.state.storage.manifest_read and not puzzles.is_solved("puzzle_02_maintenance"), "Shortcut leaves Level 02 puzzles unsolved")
 	corridor.director.stop_dialogue()
 	corridor._pending_lines.clear()
 	await tick()

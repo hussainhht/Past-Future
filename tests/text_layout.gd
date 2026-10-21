@@ -73,7 +73,7 @@ func run() -> void:
 		var panel: Control = room.director.dialogue_box.get_node("%DialoguePanel")
 		separate(panel, ui._sidebar, "Dialogue is outside the message column")
 		check(panel.get_global_rect().position.y >= 145.0, "Long dialogue stays below the header")
-		check(panel.get_global_rect().end.y <= dimensions.y - 145.0, "Dialogue leaves space for interaction and footer")
+		check(is_equal_approx(panel.get_global_rect().end.y, dimensions.y - 28.0), "Dialogue sits close to the bottom edge")
 		check(root.get_visible_rect().encloses(ui._sidebar.get_global_rect()), "Message column stays on screen after resize")
 		var flow_overlay = root.get_node("GameFlowManager").overlay
 		flow_overlay.show_readiness("Maintenance Corridor", true, false)
@@ -118,18 +118,18 @@ func run() -> void:
 		var puzzles := root.get_node("PuzzleManager")
 		puzzles.submit_action("puzzle_02_maintenance", "isolate_service", {}, "past")
 		puzzles.submit_action("puzzle_02_maintenance", "charge_battery", {}, "future")
-		# Inspect every station in both roles, including the diagnostic shown in the reported image.
+		# Inspect every station in both roles, including every preservation bay.
 		for role in ["past", "future"]:
 			if room.role != role: room.switch_role()
 			room.director.stop_dialogue()
 			room._pending_lines.clear()
 			for id in room.devices:
-				if not room.devices[id].is_timeline_allowed(role): continue
+				if not room.devices[id].is_timeline_allowed(role) or id.begins_with("Case_"): continue
 				room._show_device(id)
 				await create_timer(.32).timeout
 				await tick(2)
 				check_inspection(ui.inspector, ui, "%s %s %d" % [role, id, dimensions.x])
-				if id == "Diagnostic": await capture("diagnostic_%d" % dimensions.x)
+				if id == "StorageBay0": await capture("storage_%s_%d" % [role, dimensions.x])
 				room.set_paused(true)
 				await tick(2)
 				check(not ui.inspector._record_layer.visible, "Paused inspection hides the record")

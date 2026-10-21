@@ -44,6 +44,7 @@ if __name__=='__main__':
     with tempfile.TemporaryDirectory(prefix='past-future-level02-') as temp:
         folder=Path(temp)
         if not args.lan_only:
+            single('storage_rules.gd','STORAGE RULES: PASS',folder)
             single('maintenance_rules.gd','MAINTENANCE RULES: PASS',folder)
             single('maintenance_corridor.gd','MAINTENANCE SCENE: PASS',folder)
             single('temporal_ghost.gd','TEMPORAL GHOST: PASS',folder)

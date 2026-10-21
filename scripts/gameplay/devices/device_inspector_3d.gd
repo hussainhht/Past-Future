@@ -92,7 +92,9 @@ func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String,
 			if bound:
 				var mesh := visual as MeshInstance3D
 				if mesh == null: mesh = visual.get_node_or_null("Mesh") as MeshInstance3D
-				if mesh != null: bounds = mesh.get_aabb().size + Vector3.ONE * 0.10
+				if mesh != null:
+					var local_bounds := mesh.get_aabb() if mesh == visual else mesh.transform * mesh.get_aabb()
+					bounds = local_bounds.size + Vector3.ONE * 0.10
 			_attach_control(option.label, visual, option, bounds, not bound)
 	for display in mount.find_children("*Readout", "Label3D", true, false):
 		display.font = Typography.display_font(future)
@@ -160,6 +162,13 @@ func _layout_record() -> void:
 func _collect_equipment_points() -> void:
 	_equipment_points.clear()
 	var root := mount.get_meta("occlusion_body", mount) as Node3D
+	if root.has_meta("inspection_bounds"):
+		var bounds: AABB = root.get_meta("inspection_bounds")
+		for x in [0, 1]:
+			for y in [0, 1]:
+				for z in [0, 1]:
+					_equipment_points.append(root.global_transform * (bounds.position + bounds.size * Vector3(x, y, z)))
+		return
 	var pieces := root.find_children("*", "MeshInstance3D", true, false)
 	if root is MeshInstance3D: pieces.append(root)
 	# Laboratory controls live on the environment console, separate from its furniture body.
@@ -186,7 +195,7 @@ func _frame_device(animate: bool) -> void:
 	var bounds := AABB(_equipment_points[0], Vector3.ZERO)
 	for point in _equipment_points: bounds = bounds.expand(point)
 	var focus := bounds.get_center()
-	var basis := Basis.looking_at(Vector3(0, -0.55, -4.4))
+	var basis := Basis.looking_at(mount.get_meta("inspection_direction", Vector3(0, -0.55, -4.4)))
 	var start := camera.global_transform
 	var start_fov := camera.fov
 	var destination := start
