@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cdmj7av2cvxs7"
 path.s3tc="res://.godot/imported/paper_graph.png-d643c0faeaae9b7a082cdb196bf7814c.s3tc.ctex"
+path.etc2="res://.godot/imported/paper_graph.png-d643c0faeaae9b7a082cdb196bf7814c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/environment/textures/paper_graph.png"
-dest_files=["res://.godot/imported/paper_graph.png-d643c0faeaae9b7a082cdb196bf7814c.s3tc.ctex"]
+dest_files=["res://.godot/imported/paper_graph.png-d643c0faeaae9b7a082cdb196bf7814c.s3tc.ctex", "res://.godot/imported/paper_graph.png-d643c0faeaae9b7a082cdb196bf7814c.etc2.ctex"]
 
 [params]
 

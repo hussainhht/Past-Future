@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://w3t3vapokpeg"
 path.s3tc="res://.godot/imported/table.svg-f48c88b84703ba520a1885d96e47816c.s3tc.ctex"
+path.etc2="res://.godot/imported/table.svg-f48c88b84703ba520a1885d96e47816c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/world/table.svg"
-dest_files=["res://.godot/imported/table.svg-f48c88b84703ba520a1885d96e47816c.s3tc.ctex"]
+dest_files=["res://.godot/imported/table.svg-f48c88b84703ba520a1885d96e47816c.s3tc.ctex", "res://.godot/imported/table.svg-f48c88b84703ba520a1885d96e47816c.etc2.ctex"]
 
 [params]
 

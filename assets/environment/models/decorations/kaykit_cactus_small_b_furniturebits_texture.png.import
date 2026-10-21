@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ba2inoq0wm5a1"
 path.s3tc="res://.godot/imported/kaykit_cactus_small_b_furniturebits_texture.png-d7a27f9e40cfe0cc58a45aebb3ffc0d3.s3tc.ctex"
+path.etc2="res://.godot/imported/kaykit_cactus_small_b_furniturebits_texture.png-d7a27f9e40cfe0cc58a45aebb3ffc0d3.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/environment/models/decorations/kaykit_cactus_small_b_furniturebits_texture.png"
-dest_files=["res://.godot/imported/kaykit_cactus_small_b_furniturebits_texture.png-d7a27f9e40cfe0cc58a45aebb3ffc0d3.s3tc.ctex"]
+dest_files=["res://.godot/imported/kaykit_cactus_small_b_furniturebits_texture.png-d7a27f9e40cfe0cc58a45aebb3ffc0d3.s3tc.ctex", "res://.godot/imported/kaykit_cactus_small_b_furniturebits_texture.png-d7a27f9e40cfe0cc58a45aebb3ffc0d3.etc2.ctex"]
 
 [params]
 

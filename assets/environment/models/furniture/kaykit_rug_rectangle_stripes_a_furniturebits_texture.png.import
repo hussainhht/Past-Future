@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d0ouw2tr8q7gk"
 path.s3tc="res://.godot/imported/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png-e06f415cf09fd06e4eba673acd2b4d72.s3tc.ctex"
+path.etc2="res://.godot/imported/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png-e06f415cf09fd06e4eba673acd2b4d72.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/environment/models/furniture/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png"
-dest_files=["res://.godot/imported/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png-e06f415cf09fd06e4eba673acd2b4d72.s3tc.ctex"]
+dest_files=["res://.godot/imported/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png-e06f415cf09fd06e4eba673acd2b4d72.s3tc.ctex", "res://.godot/imported/kaykit_rug_rectangle_stripes_a_furniturebits_texture.png-e06f415cf09fd06e4eba673acd2b4d72.etc2.ctex"]
 
 [params]
 

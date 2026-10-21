@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dpfu3qksar36e"
 path.s3tc="res://.godot/imported/kaykit_lamp_table_furniturebits_texture.png-6bf443e9406cb1f554610bc7140d1279.s3tc.ctex"
+path.etc2="res://.godot/imported/kaykit_lamp_table_furniturebits_texture.png-6bf443e9406cb1f554610bc7140d1279.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/environment/models/furniture/kaykit_lamp_table_furniturebits_texture.png"
-dest_files=["res://.godot/imported/kaykit_lamp_table_furniturebits_texture.png-6bf443e9406cb1f554610bc7140d1279.s3tc.ctex"]
+dest_files=["res://.godot/imported/kaykit_lamp_table_furniturebits_texture.png-6bf443e9406cb1f554610bc7140d1279.s3tc.ctex", "res://.godot/imported/kaykit_lamp_table_furniturebits_texture.png-6bf443e9406cb1f554610bc7140d1279.etc2.ctex"]
 
 [params]
 

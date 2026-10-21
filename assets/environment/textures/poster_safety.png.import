@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cbb1f37a2iefu"
 path.s3tc="res://.godot/imported/poster_safety.png-da8080cb2cb6c3bf16d324c1a5cfc348.s3tc.ctex"
+path.etc2="res://.godot/imported/poster_safety.png-da8080cb2cb6c3bf16d324c1a5cfc348.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/environment/textures/poster_safety.png"
-dest_files=["res://.godot/imported/poster_safety.png-da8080cb2cb6c3bf16d324c1a5cfc348.s3tc.ctex"]
+dest_files=["res://.godot/imported/poster_safety.png-da8080cb2cb6c3bf16d324c1a5cfc348.s3tc.ctex", "res://.godot/imported/poster_safety.png-da8080cb2cb6c3bf16d324c1a5cfc348.etc2.ctex"]
 
 [params]
 

@@ -16,370 +16,233 @@ The experimental temporal device has suffered a catastrophic fracture. But this 
 
 ---
 
+
+<h1 align="center">THE OTHER ME</h1>
+
+<p align="center">
+  <strong>Your only way forward is the person you become.</strong><br>
+  Two lives. One facility. Thirty-one years apart.
+</p>
+
+<p align="center">
+  <img src="docs/assets/screenshots/past_overview.jpg" alt="The Student in the warm, intact Signal Laboratory, surrounded by research desks and a glowing temporal device" width="960">
+</p>
+
+<p align="center">
+  <strong>Asymmetric co-op · Sci-fi mystery · 3D puzzle adventure</strong><br>
+  Windows PC · Godot 4.7.2 · Two-player LAN + solo exploration<br>
+  Created for <strong>Reboot CHECKPOINT Game Jam 2026</strong> · Theme: <strong>TWO</strong>
+</p>
+
+<p align="center">
+  <a href="#gameplay-screenshots">Screenshots</a> ·
+  <a href="#explore-the-three-levels">The levels</a> ·
+  <a href="#how-to-play">How to play</a> ·
+  <a href="#installation-and-running">Run from source</a>
+</p>
+
+## About the Game
+
+An impossible connection brings two versions of the same person together. In the Past, an 18-year-old Student explores a working university laboratory. Thirty-one years later, his older self, a 49-year-old Professor, searches its damaged remains.
+
+An experimental device has fractured time. Each player sees a different side of the same facility: intact machinery and research notes in one era, broken equipment and surviving records in the other. Share what you find, test each other's theories, and watch changes in the Past reshape the Future.
+
+**The Other Me** pairs exploration with hands-on puzzles and a mystery about trust, memory, and consequences. What you learn together—and what you choose to share—matters.
+
+<sub>Developed under the name <strong>Past-Future</strong>; the repository and some technical documents retain that name.</sub>
+
+## Gameplay Screenshots
+
+<table>
+  <tr>
+    <td width="50%" align="center"><strong>PAST / The Student</strong></td>
+    <td width="50%" align="center"><strong>FUTURE / The Professor</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/assets/screenshots/past_rift.jpg" alt="The Student beside the temporal device in a clean, amber-lit laboratory" width="460"></td>
+    <td><img src="docs/assets/screenshots/future_rift.jpg" alt="The Professor beside the same device, now fractured and glowing violet in the dark laboratory" width="460"></td>
+  </tr>
+  <tr>
+    <td align="center">Warm light, working instruments, a world still intact.</td>
+    <td align="center">Cold blue shadows, damaged equipment, traces of what happened.</td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="docs/interactions/screenshots/frequency_dial.png" alt="Close-up gameplay view of the laboratory transmitter's frequency and amplitude dials, waveform screen, and research notes" width="840"><br>
+  <em>Get close to the equipment. Your partner has information your instruments cannot provide.</em>
+</p>
+
+All images on this page are existing gameplay captures or character renders from the repository. Captures span development revisions, so HUD details may differ from the current build.
+
 ## Key Features
 
-- **Asymmetric Cooperative Gameplay**: Neither player can solve puzzles alone. The Future player deciphers surviving logs, diagnostic schematics, and rubble paths; the Past player manipulates intact machinery, electrical breakers, and hydraulic supports.
-- **Three Playable Chapters**:
-  - **Room 01 — Signal Laboratory**: Calibrate radio transceivers and frequency dials (67 MHz / 70% amplitude) to establish a cross-timeline link and unseal the security door.
-  - **Room 02 — Maintenance Corridor**: Isolate service electrical loops, hand-crank emergency cells, align hydraulic floor jacks to shift a collapsed ceiling into a walkable bridge, and navigate private shortcut dilemmas.
-  - **Room 03 — The Final Fracture**: A climactic 150-second reactor challenge with coil sequencing, anchor calibration, 5-second phase switch synchronization, and Stage C identity choices.
-- **Four Branching Narrative Endings**:
-  - `trust` (*The Last Goodbye*): The Professor voluntarily fades; reality is stabilized.
-  - `student_override` (*Erased Future*): The future timeline is erased; forbidden protocols are exposed.
-  - `professor_override` (*Stolen Tomorrow*): The Student fades; the changed future and Professor survive.
-  - `paradox` (*Iteration 02*): Both identities dissolve; simulation restarts with `ITERATION 02 DETECTED`.
-- **Two Original Skinned 3D Characters**: Both the Student and Professor models share the standard 23-joint KayKit skeleton with 77 genuine animation clips, proportion retargeting, and in-game animation inspection studios (hotkey `F2`).
-- **3D Physical Device Inspector**: Smooth camera close-up transitions allowing direct manipulation of ray-picked 3D keypads, switches, and rotatable frequency tuning dials.
-- **Investigation Journal & Dialogue**: In-game typewriter dialogue system with character portraits, paired with an asymmetric investigation journal (Student Notebook vs. Professor DataPad) on hotkey `J`.
-- **Solo Temporal Ghost Hologram**: Playable offline in single-player preview mode; toggle a translucent cyan hologram echo of the other timeline with `G` to inspect remote changes.
-- **Full Controller & Haptics Support**: Plug-and-play support for Sony DualSense (PS5) and Xbox controllers with dynamic glyph adaptation and vibration haptics.
-- **5-Bus Audio Subsystem**: Spatial 3D footsteps (tile vs. concrete), ambient timeline soundscapes, and UI cues sourced from Kenney CC0.
+- **Two perspectives, one problem.** Cooperate as the Student and Professor, with different clues, equipment, and responsibilities.
+- **Actions that cross time.** Restore power and adjust machinery in the Past to change the paths and systems available in the Future.
+- **Hands-on 3D puzzles.** Inspect devices up close, turn tuning dials, operate switches, and work with physical mechanisms.
+- **An investigation worth sharing.** Follow story dialogue and collect separate evidence in the Student's notebook and Professor's DataPad.
+- **Three playable environments.** Explore the laboratory, maintenance corridor, and temporal research core, with cinematic room introductions.
+- **Decisions with consequences.** Discover private choices and four possible narrative outcomes in The Final Fracture.
+- **A changing soundscape.** Timeline-specific ambience, spatial machinery, and an adaptive score follow the reactor countdown.
+- **Keyboard and gamepad input.** Xbox and DualSense mappings, contextual prompts, and vibration are implemented; some actions still require a keyboard or mouse.
 
----
+## Meet the Characters
 
-## Development Status
+<table>
+  <tr>
+    <td width="50%" align="center"><strong>The Student — Past</strong></td>
+    <td width="50%" align="center"><strong>The Professor — Future</strong></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/characters/student_3d/review/neutral/three_quarter_left.png" alt="Actual render of the young Student model, wearing an ochre jacket, messenger bag, and wristwatch" width="460"></td>
+    <td align="center"><img src="assets/characters/professor_3d/review/neutral/three_quarter_left.png" alt="Actual render of the older Professor model, with graying hair, a long navy coat, and the same wristwatch" width="460"></td>
+  </tr>
+  <tr>
+    <td>Curious and close to the source. At 18, the Student has access to intact research equipment and service machinery. His notebook records observations; his actions can change what survives.</td>
+    <td>Experienced and surrounded by consequences. At 49, the Professor works through damaged systems and recovered records. His DataPad holds clues that can guide his younger self.</td>
+  </tr>
+</table>
 
-| Component                      | Status                           | Details                                                                          |
-| ------------------------------ | -------------------------------- | -------------------------------------------------------------------------------- |
-| **Campaign Content**     | **COMPLETE — VERIFIED**   | 3 fully connected rooms (Signal Lab, Maintenance Corridor, Temporal Core)        |
-| **Puzzles 01, 02, 03**   | **COMPLETE — VERIFIED**   | All three puzzle sequences implemented and verified with automated test suites   |
-| **Character Models**     | **COMPLETE — VERIFIED**   | Both 18yo Student and 49yo Professor models playable with 77 animation clips     |
-| **Multiplayer (LAN)**    | **COMPLETE — VERIFIED**   | ENet host/join architecture on UDP port 7000 (verified on loopback test harness) |
-| **Multiplayer (WAN)**    | **COMPLETE — UNVERIFIED** | Tailscale Virtual Mesh supported; requires multi-device testing                  |
-| **Offline Split-Screen** | **NOT STARTED**            | Main menu button is present (`COMING SOON`); implementation in progress        |
+## Explore the Three Levels
 
----
+<table>
+  <tr>
+    <td width="33%" align="center"><strong>01 / Signal Laboratory</strong></td>
+    <td width="33%" align="center"><strong>02 / Maintenance Corridor</strong></td>
+    <td width="33%" align="center"><strong>03 / The Final Fracture</strong></td>
+  </tr>
+  <tr>
+    <td><img src="docs/assets/screenshots/past_library_corner.jpg" alt="The Student exploring bookshelves, research benches, and the temporal device in the Signal Laboratory" width="300"></td>
+    <td><img src="docs/level02/screenshots/future_bridge.png" alt="The Professor exploring the Maintenance Corridor's industrial machinery and altered crossing in the Future" width="300"></td>
+    <td><img src="docs/assets/screenshots/level3/environment/future_core.png" alt="The Professor facing the ringed temporal reactor amid damaged research equipment in the Future" width="300"></td>
+  </tr>
+  <tr>
+    <td align="center">Make first contact.</td>
+    <td align="center">Change the route ahead.</td>
+    <td align="center">Hold the fracture together.</td>
+  </tr>
+</table>
 
-## Technology Stack
+### Level 01 — Signal Laboratory
 
-- **Game Engine**: Godot Engine 4.7.2-stable official (`GL Compatibility` renderer, D3D12 on Windows)
-- **Physics Engine**: Godot Jolt Physics 3D
-- **Network Protocol**: Godot High-Level Multiplayer (`ENetMultiplayerPeer`) over UDP port `7000`
-- **Resolution**: $1600 \times 900$ base canvas ($1280 \times 720$ window override, minimum $960 \times 540$)
-- **Scripting**: GDScript 2.0 with static typing conventions
-- **Tooling**: Python 3.11+ (`numpy`, `Pillow`, `bpy` Blender Python API)
+A familiar research room becomes the site of an impossible conversation. Find the radios, compare surviving records with working instruments, and tune a connection across time. Communication opens the way out.
 
----
+### Level 02 — Maintenance Corridor
 
-## Installation & Running Instructions
+The facility's service systems have become an obstacle course. Coordinate power, emergency equipment, cargo handling, and structural supports across both eras. Explore the archive while weighing shortcuts against the evidence they could cost.
 
-### Prerequisites
+### Level 03 — The Final Fracture
 
-- Windows 10/11 (x86_64)
-- [Godot Engine 4.7.2-stable](https://godotengine.org/download)
+At the temporal research core, investigation gives way to a **150-second reactor challenge**. Divide responsibilities, align equipment, and synchronize across timelines as the room grows unstable. The final decisions belong to both of you.
 
-### Quick Start
+## How to Play
 
-```powershell
-# Clone the repository
-git clone https://github.com/hussainhht/Past-Future.git
-cd past-future
+**Two-player LAN co-op** is implemented through the main menu's **PLAY TOGETHER** page. Each player uses a separate computer: the host is the Student in the Past; the joining player is the Professor in the Future. Talk in person or use a separate voice call to exchange clues. In-game radios deliver story dialogue; live voice chat is not implemented.
 
-# Launch the game with Godot
-godot --path .
-```
+**Solo Exploration** starts in the laboratory. Press **T** to switch roles and **G** to toggle the other timeline's holographic echo. This is an offline way to explore and test both sides of the puzzles. **LEVEL 3 / SOLO TEST** starts an isolated finale session.
 
-### Direct Scene Launches (Fast Testing)
+**Access every level:** open the pause menu with **Escape**, then choose **LEVEL SELECT**. The pause menu also offers restart and skip options. In a LAN session, the host controls level changes. The laboratory leads to the corridor, but the corridor currently ends with its own summary; use **LEVEL SELECT → Level 3** or **SKIP TO LEVEL 3** to reach the separate finale.
 
-```powershell
-# Explore the Signal Laboratory (Level 1)
-godot --path . res://scenes/world/spawn_area.tscn
+**Same-PC split-screen** is marked **COMING SOON** and disabled. Remote internet play through Tailscale is documented as an experimental route and still needs real cross-network validation. See [development status](#development-status) for verification limits.
 
-# Play Level 2 (Maintenance Corridor)
-godot --path . res://scenes/world/maintenance_corridor.tscn
+<details>
+<summary>View the title screen</summary>
 
-# Play Level 3 (The Final Fracture)
-godot --path . res://scenes/rooms/temporal_core.tscn
+<p align="center">
+  <img src="docs/assets/screenshots/system_unification/main_menu_solo_only.png" alt="The Other Me title screen with an amber and cyan title, fractured clock motif, Play Together, settings, credits, and solo test options" width="800">
+</p>
 
-# Launch Level 3 Testing Sandbox (Solo Future role)
-godot --path . res://scenes/testing/temporal_core_sandbox.tscn -- --core-solo future
-```
-
----
+</details>
 
 ## Controls
 
-The game automatically detects connected gamepads and swaps button glyphs dynamically:
+Bindings below follow `project.godot` and the runtime input setup, including their current limitations.
 
-| Action                          | Keyboard / Mouse                    | DualSense (PS5)         | Xbox Controller         |
-| ------------------------------- | ----------------------------------- | ----------------------- | ----------------------- |
-| **Move**                  | `W`, `A`, `S`, `D` / Arrows | Left Stick / D-Pad      | Left Stick / D-Pad      |
-| **Sprint**                | `Shift` (Hold)                    | `R2` Trigger / `L3` | `RT` Trigger / `LS` |
-| **Interact**              | `F`                               | Cross (`✕`)          | `A` Button            |
-| **Inspect**               | `I`                               | Square (`□`)         | `X` Button            |
-| **Use Item**              | `E`                               | Triangle (`△`)       | `Y` Button            |
-| **Journal**               | `J`                               | Touchpad / Select       | View / Select Button    |
-| **Solo Ghost**            | `G`                               | `R1` Bumper           | `RB` Bumper           |
-| **Switch Role** (Offline) | `T`                               | `L1` Bumper           | `LB` Bumper           |
-| **Animation Studio**      | `F2`                              | —                      | —                      |
-| **Cancel / Pause**        | `Escape`                          | Options / Start         | Menu / Start            |
-| **Device Click**          | Left Mouse Click                    | Cross (`✕`)          | `A` Button            |
-| **Dial Adjust**           | Mouse Drag / Wheel                  | D-Pad Left / Right      | D-Pad Left / Right      |
+| Action | Keyboard / mouse | Xbox | DualSense |
+| --- | --- | --- | --- |
+| Move / menu navigation | WASD / arrow keys | Left stick / D-pad | Left stick / D-pad |
+| Sprint | Hold Shift | Left stick click (LS) | L3 |
+| Interact | F | A | Cross |
+| Inspect | I | X | Square |
+| Use / pick up / put down item | E | Y | Triangle |
+| Investigation journal | J | Keyboard J | Keyboard J |
+| Mission Log | M | View | Create / touchpad click |
+| Switch role in solo mode | T | Keyboard T | Keyboard T |
+| Toggle solo temporal ghost | G | RB | R1 |
+| Pause | Escape | Menu | Options |
+| Back / cancel | Escape | B | Circle |
+| Confirm menu / focused UI | Enter / left click | A | Cross |
+| Physical device controls | Left click; drag / wheel to turn dials | See note below | See note below |
 
----
+**Device inspection:** keyboard arrows adjust a laboratory dial; **Tab** switches between frequency and amplitude. The laboratory's physical inspector requires keyboard/mouse input; Level 3 also provides focusable device controls for gamepads. Use the on-screen prompts for context-specific actions. The journal and solo role switch currently have no dedicated gamepad binding.
 
-## Multiplayer Setup
+## Installation and Running
 
-Past-Future is a two-player cooperative game. Exactly one player is assigned to the Past (Student) and one to the Future (Professor).
+### Run from source
 
-### 1. Same Wi-Fi / Local Network (LAN)
-
-1. Connect both computers to the same Wi-Fi router or wired local network.
-2. **Player 1 (Host / Past)**: Select `PLAY TOGETHER` $\rightarrow$ `HOST ON WI-FI`. Note the IP address shown in the lobby.
-3. **Player 2 (Client / Future)**: Select `PLAY TOGETHER` $\rightarrow$ `JOIN ON WI-FI`, enter the Host's IP address, and click `CONNECT`.
-4. Once connected, Player 2 clicks `I'M READY`, and Player 1 clicks `START GAME`.
-5. Ensure Windows Firewall permits incoming UDP traffic on port `7000`.
-
-### 2. Remote Internet Play (via Tailscale)
-
-When playing over the internet without router port forwarding:
-
-1. Install [Tailscale](https://tailscale.com) on both PCs and log into the same tailnet (or share machine access).
-2. Host selects `HOST ON WI-FI`. Share the host's `100.x.y.z` Tailscale IP address.
-3. Client selects `JOIN ON WI-FI`, enters the host's Tailscale IP, and connects.
-
----
-
-## Repository Structure
-
-```text
-past-future/
-├── assets/
-│   ├── audio/           Kenney CC0 sound effects, footsteps & ambiences
-│   ├── characters/      Original Student (18yo) & Professor (49yo) 3D skinned models
-│   ├── environments/    Modular laboratory props and textures
-│   └── third_party/     KayKit CC0 character animations (77 clips)
-├── docs/                Detailed technical specifications, level designs & screenshots
-├── PROJECT_CONTEXT/     Master 14-file technical context archive for engineers & AI agents
-├── resources/           Dialogue sequences, journal entries, room definitions, and UI themes
-├── scenes/
-│   ├── characters/      Player character scenes and in-game animation studios
-│   ├── cinematic/       Room introduction title cards (CanvasLayer 40)
-│   ├── dialogue/        Dialogue overlay and typewriter system
-│   ├── environment/     Interactive stations (consoles, keypads, security doors)
-│   ├── journal/         Investigation notebook and DataPad interface
-│   ├── menu/            Title screen, LAN lobby, settings, and credits
-│   ├── rooms/           Level 3 Temporal Research Core scene
-│   └── world/           Level 1 (Signal Lab) and Level 2 (Maintenance Corridor)
-├── scripts/             Gameplay controllers, autoload singletons, puzzles, and shaders
-├── shaders/             Custom unshaded lambertian, procedural tile floor, and ghost shaders
-├── tests/               13 automated test suites and headless verification scripts
-└── tools/               Python procedural mesh generators and Blender export scripts
-```
-
----
-
-## Testing
-
-To run the automated headless verification suite:
+Use **Godot 4.7.2-stable**, the version recorded in the setup documentation and confirmed by the local engine binary. The project declares Godot **4.7**, uses the **GL Compatibility** renderer, and enables **Jolt Physics**. Windows PC is the documented target; other platforms have not been validated in this README review.
 
 ```powershell
-$env:GODOT_BIN = "C:\Users\hanwd\OneDrive\Desktop\Godot_v4.7.2-stable_win64.exe"
-$env:DISPLAY = "1"
-
-# Run Asset Integrity Check
-python tests/student_3d_assets.py
-python tests/student_3d_assets.py --character professor
-
-# Run Authoritative Puzzle Synchronization Suite
-python tests/run_puzzle_tests.py
-
-# Run Level 1 Frequency Suite
-python tests/run_frequency_tests.py
-
-# Run Dialogue System Suite (382 checks)
-python tests/run_dialogue_tests.py
-
-# Run Level 3 Final Fracture Suite (Core + 4 Endings over ENet)
-python tests/run_level3_tests.py
+git clone https://github.com/hussainhht/Past-Future.git
+cd Past-Future
 ```
 
+1. Open Godot's Project Manager and choose **Import**.
+2. Select this repository's **project.godot** and open the project.
+3. Allow the initial asset import to finish, then press **F5** to run the main menu.
+4. Choose **PLAY TOGETHER**, then **SOLO EXPLORATION** or a LAN option.
+
+If the Godot executable is on your PATH, you can also launch from the repository root:
+
+```powershell
+godot --path .
+```
+
+The public GitHub releases list contained **no published releases** when checked on **22 October 2026**. Run from source; local export files and test builds are not presented here as verified public downloads.
+
+### Host or join a LAN session
+
+1. Put both computers on the same local network and run the same project revision.
+2. **Host:** choose **PLAY TOGETHER → HOST ON WI-FI**. Share the local IP address displayed in the lobby.
+3. **Guest:** choose **PLAY TOGETHER → JOIN ON WI-FI**, enter that address, then select **JOIN GAME**.
+4. The guest selects **I'M READY**; the host selects **START GAME**.
+5. Allow Godot/the game through the host's firewall for **UDP port 7000**. Guest Wi-Fi or client isolation may prevent the computers from reaching one another.
+
+For developer scene launches, tests, and the experimental remote-network setup, see [Setup and Testing](PROJECT_CONTEXT/10_SETUP_AND_TESTING.md) and the [design document's multiplayer architecture](GAME_DESIGN_DOCUMENT.md#9-multiplayer-architecture). These documents contain puzzle and story spoilers; some older menu labels and controls have changed.
+
+## Technology Stack
+
+**Godot Engine 4.7.2 · GDScript · Jolt 3D Physics · ENet multiplayer over UDP**
+
+Stylized 3D environments and animated characters use a fixed-angle perspective camera. Blender source files and Python asset tools are included for development; they are not required to run the game in Godot. System details live in the [architecture guide](PROJECT_CONTEXT/02_PROJECT_ARCHITECTURE.md).
+
+## Development Status
+
+The repository contains a **three-level playable prototype**: both timeline characters, cooperative puzzle rules, dialogue and journals, device inspection, room introductions, and four finale outcomes are implemented. Level selection and host-controlled navigation provide access to all three areas; the normal corridor-to-finale story transition is not connected.
+
+- **Existing verification:** project reports record automated puzzle, scene, and ENet loopback checks. Those historical results are not a fresh full-game validation of this checkout.
+- **Still unverified:** physical two-computer LAN play, remote Tailscale play, and cross-platform exports. Controller mappings exist, with the keyboard/mouse requirements listed above.
+- **Remaining work:** same-PC split-screen, the normal finale transition, cross-device playtesting, and a verified public release package.
+
+See [Development Progress](PROJECT_CONTEXT/08_DEVELOPMENT_PROGRESS.md) and [Known Issues](PROJECT_CONTEXT/09_BUGS_AND_TECHNICAL_DEBT.md) for engineering context. These historical reports include spoilers and may describe earlier revisions; this page follows the current menu and source.
+
+## Credits and Acknowledgements
+
+- **CHECKPOINT** — project credit in the game menu; created for **Reboot CHECKPOINT Game Jam 2026**, theme **TWO**.
+- **Hussain Ali and Bader Alafoo** — contributors recorded in the repository's Git history.
+- **Kay Lousberg** — KayKit Character Animations and Furniture Bits, **CC0**. See the [animation license](assets/third_party/kaykit_character_animations/License.txt), [Furniture Bits license](assets/third_party/kaykit_furniture_bits/LICENSE.txt), and [environment attribution](assets/environment/licenses/THIRD_PARTY_ATTRIBUTION.md).
+- **Kenney, SpliceSound, Kinoton, BenjaminNelan, thegoose09, SketchMan3, and yd** — audio and music sources recorded in the [audio credits](docs/AUDIO_ASSET_CREDITS.md).
+- **SRG774 and bart**, alongside reused Kenney and ambience assets — sources for the later levels' sound design and reactor score; see [Level 2 and Level 3 audio credits](docs/LEVEL2_LEVEL3_AUDIO.md).
+- **Font creators and open-source type projects** — bundled families and their individual terms are listed in the [font credits](assets/fonts/README.md), including the [Broken font notice](assets/fonts/licenses/Broken-NOTICE.txt).
+
+Third-party licenses apply to their respective assets. The repository currently has no project-wide license file; the CC0 asset licenses do not license the entire game.
+
 ---
 
-## Technical Documentation & References
-
-- [GAME_DESIGN_DOCUMENT.md](GAME_DESIGN_DOCUMENT.md): Game Design Document (v0.17).
-- [PROJECT_CONTEXT/00_START_HERE.md](PROJECT_CONTEXT/00_START_HERE.md): Technical entry point and documentation index.
-- [PROJECT_CONTEXT/13_AI_HANDOVER.md](PROJECT_CONTEXT/13_AI_HANDOVER.md): Master technical brief and architectural invariants.
-
----
-
-## Credits & Asset Attribution
-
-- **Game Design & Engineering**: Hussain Ali
-- **Character Animations**: [KayKit Character Animations 1.1](https://kaylousberg.itch.io/kaykit-character-animations) by Kay Lousberg (CC0 Public Domain).
-- **Environment Props**: [KayKit Space Base &amp; Prototype Bits](https://kaylousberg.itch.io) by Kay Lousberg (CC0 Public Domain).
-- **Audio Assets**: [Kenney Game Audio](https://kenney.nl) (Impact Sounds, Interface Sounds, Sci-Fi Sounds) by Kenney (CC0 Public Domain).
-
-# THE OTHER ME — Level 2 & Level 3 Audio and VFX Overhaul
-
-Act as a Senior Game Audio Designer, Sound Engineer, and Godot 4.7.2 Developer.
-
-Your task is to **find, download, integrate, and test high-quality sound effects, environmental ambience, and dynamic music** for Level 2 and Level 3 of our existing game, THE OTHER ME.
-
-This is an implementation task, not merely a proposal. You must make real changes to the Godot project and deliver a working experience.
-
-## PRIORITY 1 — LEVEL 3: THE FINAL FRACTURE
-
-This is the climax of the game and deserves approximately 80% of the effort.
-
-The level is a dangerous temporal reactor chamber with two players, one in the Past and one in the Future.
-
-Inspect these existing files first:
-
-- `scenes/rooms/temporal_core.tscn`
-- `scripts/level3/temporal_core.gd`
-- `scripts/level3/core_rules.gd`
-- `scripts/audio/audio_director.gd`
-- `scripts/audio/sound_catalog.gd`
-- `scenes/audio/audio_system.tscn`
-- `docs/AUDIO_SYSTEM.md`
-- `docs/LEVEL3_FINAL_FRACTURE.md`
-
-### A. Reactor Atmosphere
-
-Before activation, create a dark, mysterious sci-fi atmosphere using deep reactor humming, distant electrical activity, unstable temporal energy, subtle machinery vibration, and occasional mysterious pulses.
-
-The Past should feel like a functional but increasingly dangerous scientific facility. The Future should feel damaged, unstable, abandoned, and haunted by temporal anomalies.
-
-Use carefully layered spatial ambience rather than constant loud noise.
-
-### B. Dynamic Countdown Music — CRITICAL
-
-The reactor countdown is exactly **150 seconds (2 minutes and 30 seconds)** and begins when the player activates `ARM REACTOR`.
-
-The music must begin automatically with the confirmed countdown activation.
-
-Create an adaptive, cinematic, suspenseful sci-fi music system.
-
-Use the actual authoritative reactor remaining-time state, not an unrelated audio timer.
-
-Suggested progression:
-
-**150–111 seconds remaining:** Low, dark atmospheric music begins. Slow electronic pulses, deep synths, subtle tension.
-
-**110–76 seconds:** Add rhythmic pulses, percussion, and more noticeable temporal energy.
-
-**75–41 seconds:** Increase musical urgency and rhythmic density. Introduce stronger beats and higher tension.
-
-**40–21 seconds:** Fast, dramatic electronic rhythm, rising sound design, warning sounds.
-
-**20–11 seconds:** High urgency with faster pulses, stronger percussion, and escalating reactor instability.
-
-**10–0 seconds:** Extremely tense final countdown with increasingly rapid warning pulses, dramatic risers, and an unmistakable sense of imminent failure.
-
-IMPORTANT: The music should feel progressively faster, not merely louder.
-
-Prefer layered, compatible musical loops, increasing rhythmic subdivisions, percussion density, and tension over excessive pitch shifting. Ensure seamless crossfades and smooth transitions.
-
-Make the musical tension follow the actual remaining time even after retries, scene transitions, or state synchronization.
-
-### C. Device Sound Effects
-
-Inspect every actual interactive object in Level 3 and assign appropriate sounds to its existing interaction and confirmed result.
-
-Cover the ARM REACTOR activation, west-bank reactor coils, emergency receiver battery, Signal Anchor, Origin Core stabilizer, conduit power routing, synchronization switches, both identity terminals, successful calibration, rejected operations, reactor instability, and room machinery.
-
-Sounds should correspond to the physical action.
-
-For example, switching a heavy reactor mechanism should not sound like a basic UI mouse click.
-
-Use convincing mechanical clunks, electrical surges, frequency sweeps, energy charging, machinery movement, reactor humming, alarms, and power stabilization effects.
-
-Provide meaningful audio feedback for success, failure, activation, and major state changes without spamming repetitive sounds.
-
-### D. Synchronization Challenge
-
-The two players must activate their phase switches within a five-second window.
-
-Create a distinctive activation sound, a five-second synchronized urgency pulse, success confirmation, and missed-window failure sound.
-
-Both players should hear appropriate confirmed events.
-
-### E. Cinematic Endings
-
-Design a different audio identity for each existing ending:
-
-**Trust / Last Goodbye:** Peaceful emotional release, reactor stabilization, soft energy dissolution, and a melancholic ending atmosphere.
-
-**Student Override / Erased Future:** Powerful temporal disruption, reverse-energy effects, and an unsettling erasure sound.
-
-**Professor Override / Stolen Tomorrow:** Cold sci-fi energy locking, deep resonance, and an ominous conclusion.
-
-**Paradox / Iteration 02:** Distorted audio, temporal glitches, reversed sounds, deep unstable energy, and a dramatic reality-reset effect.
-
-When the reactor overloads, create a powerful overload sequence with an appropriate impact, distortion, and a smooth return to the initial atmosphere when the attempt resets.
-
-### F. Visual Effects Polish
-
-Where practical, reinforce major sounds with subtle corresponding VFX: reactor pulsing, energy flashes, synchronized coil glow, increasing instability, and distinct ending effects.
-
-Prioritize existing shaders, lights, and particle systems. Preserve the game's art direction, camera, performance, and GL Compatibility renderer.
-
-Do not unnecessarily redesign gameplay or scene geometry.
-
-## PRIORITY 2 — LEVEL 2: MAINTENANCE CORRIDOR
-
-This is a transition level, so keep the implementation simpler.
-
-Inspect `scenes/world/maintenance_corridor.tscn` and its existing scripts.
-
-Add a convincing industrial background atmosphere.
-
-Cover the SERVICE circuit lever, emergency battery crank, hydraulic supports, bridge movement, electrical restoration, archive equipment, access keypad, release wheel, doors, and major confirmed puzzle interactions.
-
-Use metallic machinery, distant ventilation, electrical buzzes, grinding metal, hydraulic movement, industrial impacts, and subtle environmental tension.
-
-Keep background sounds relatively quiet to preserve player communication.
-
-## SOUND ASSET RESEARCH AND LICENSING
-
-Actively search for suitable real audio assets.
-
-Start with Kenney, OpenGameArt, and other reputable royalty-free game-audio libraries.
-
-Prefer verified CC0 assets. Only use other licenses if redistribution and commercial use are clearly permitted and all attribution conditions can be satisfied.
-
-Never use copyrighted soundtrack recordings, unverified YouTube downloads, or assets with unclear ownership.
-
-Preview candidates and select sounds that fit the game's established dark sci-fi atmosphere.
-
-Download and integrate the selected assets into `assets/audio/`, using clear folder structures and meaningful filenames.
-
-Preserve source URLs, creator names, license details, and asset provenance. Update `asset_provenance.json` or equivalent documentation.
-
-Reuse compatible existing sounds where appropriate, but add genuinely new audio where the game needs it.
-
-## GODOT AUDIO ENGINEERING
-
-Build upon the existing `AudioDirector`, `SoundCatalog`, audio buses, and ambient crossfade architecture.
-
-Use `AudioStreamPlayer3D` for positional machinery and `AudioStreamPlayer` for music and HUD/UI warnings as appropriate.
-
-Respect existing Master, SFX, UI, Ambience, and Music volume settings.
-
-Keep warning effects audible but do not overwhelm musical balance or mask important dialogue and player communication.
-
-Ensure music does not restart every frame or overlap itself.
-
-Handle initial activation, countdown progression, countdown expiration, overload, retry, successful completion, all four endings, pause behavior, and room exit correctly.
-
-Preserve host-authoritative multiplayer puzzle logic. Clients should react to confirmed events and authoritative countdown state without changing puzzle authority.
-
-## TESTING AND DELIVERY
-
-Run existing audio and Level 3 tests, including `tests/audio_system.gd` and `tests/run_level3_tests.py`.
-
-Add focused tests for countdown audio progression, event triggering, reset behavior, and cleanup.
-
-Test Level 2 and Level 3 in solo preview and multiplayer modes where available.
-
-Confirm that all audio resources import and play properly, without missing files, repeated loops, clipping, invalid scene references, or GDScript errors.
-
-Do not break Level 1 or existing game mechanics.
-
-At the end, provide a concise report showing the actual files changed, sounds downloaded, sound sources and licenses, interaction-to-sound mappings, countdown music implementation, and test results.
-
-**Success criterion:** The final level must sound like a cinematic sci-fi climax. The player should hear danger building throughout the 150-second countdown, receive convincing feedback from every important machine, and experience distinctive sound design for every ending.
-
-Do not stop after writing a plan. Implement, integrate, and verify the changes.
+<p align="center">
+  <strong>THE OTHER ME</strong><br>
+  Chapter 0 — The First Fracture<br><br>
+  <a href="PROJECT_CONTEXT/00_START_HERE.md">Developer documentation</a> ·
+  <a href="GAME_DESIGN_DOCUMENT.md">Game design document (spoilers)</a> ·
+  <a href="https://github.com/hussainhht/Past-Future/issues">Report an issue</a>
+</p>

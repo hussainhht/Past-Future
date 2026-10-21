@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dm7g7na8dsvfe"
 path.s3tc="res://.godot/imported/kaykit_book_set_furniturebits_texture.png-c72e3ca21596f3897b15903bebfeee08.s3tc.ctex"
+path.etc2="res://.godot/imported/kaykit_book_set_furniturebits_texture.png-c72e3ca21596f3897b15903bebfeee08.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/environment/models/books/kaykit_book_set_furniturebits_texture.png"
-dest_files=["res://.godot/imported/kaykit_book_set_furniturebits_texture.png-c72e3ca21596f3897b15903bebfeee08.s3tc.ctex"]
+dest_files=["res://.godot/imported/kaykit_book_set_furniturebits_texture.png-c72e3ca21596f3897b15903bebfeee08.s3tc.ctex", "res://.godot/imported/kaykit_book_set_furniturebits_texture.png-c72e3ca21596f3897b15903bebfeee08.etc2.ctex"]
 
 [params]
 

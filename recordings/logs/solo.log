@@ -1,0 +1,19 @@
+[   0.01 f000000 solo] AutoPlay harness started role=solo args={ "role": "solo", "script": "probe", "wait": "5" }
+[   1.92 f000000 solo] SCENE res://scenes/world/spawn_area.tscn
+[   1.93 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/SecurityDoor/Inspect | 'Inspect sealed door' | at (6.20, 0.00, -7.25) | en=true tl=0 dist=1.7 | visible
+[   1.94 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/DoorKeypad/Interactable | 'Check keypad' | at (7.78, 0.00, -7.19) | en=true tl=0 dist=1.5 | visible
+[   1.94 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/JunctionBox/Inspect | 'Inspect breaker' | at (-2.60, 0.00, -7.14) | en=true tl=0 dist=1.5 | visible
+[   1.95 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/Computer | 'Use Calibration Computer' | at (0.00, 0.60, -5.75) | en=true tl=1 dist=2.2 | visible
+[   1.95 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/RecoveredLog | 'Watch Live Signal' | at (0.00, 0.95, -5.85) | en=true tl=2 dist=2.2 | visible
+[   1.95 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/ResearchNotebook/Interactable | 'Read research notebook' | at (6.77, 0.00, 1.49) | en=true tl=0 dist=1.5 | visible
+[   1.96 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/LabMemo/Interactable | 'Read memo' | at (-7.12, 0.00, 1.56) | en=true tl=0 dist=1.5 | visible
+[   1.96 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/PastRadio/Pickup | 'Acquire Handheld Radio' | at (-4.85, 1.75, 0.86) | en=true tl=1 dist=2.0 | visible
+[   1.96 f000000 solo] INT SpawnArea/SignalLab/Layout/Interactive/FutureRadio/Pickup | 'Acquire Handheld Radio' | at (-8.45, 1.25, 5.40) | en=true tl=2 dist=2.0 | hidden
+[   1.97 f000000 solo] INT SpawnArea/SignalLab/Layout/RiftArea/TemporalRift/Inspect | 'Inspect temporal rift' | at (9.20, 0.00, 2.30) | en=true tl=0 dist=2.3 | visible
+[   1.97 f000000 solo] INT SpawnArea/LaboratoryGameplay/Props/ReceiverRelay | 'Activate Receiver Relay' | at (-9.90, 1.20, -3.90) | en=true tl=1 dist=2.2 | visible
+[   1.97 f000000 solo] INT SpawnArea/LaboratoryGameplay/Props/RadioCheck | 'Check Radio Connection' | at (-3.00, 0.80, -4.80) | en=false tl=0 dist=2.0 | visible
+[   1.98 f000000 solo] INT SpawnArea/LaboratoryGameplay/Props/LevelExit | 'Proceed to Next Area' | at (6.20, 0.00, -8.70) | en=true tl=0 dist=1.8 | visible
+[   1.98 f000000 solo] PLAYER at (0.0, 0.0, 3.7) mask=1 layer=1
+[   1.98 f000000 solo] CAM [X: (1.0, 0.0, 0.0), Y: (0.0, 0.819152, -0.573576), Z: (0.0, 0.573576, 0.819152), O: (0.0, 12.17153, 18.08304)] fov=48.0
+[   2.80 f000000 solo] screenshot probe_solo.png
+[   2.81 f000000 solo] Script finished.

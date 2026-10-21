@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cy7vv5c3wje8a"
 path.s3tc="res://.godot/imported/spawn_ring.svg-33ec72122c6681a51e76309a8d22564e.s3tc.ctex"
+path.etc2="res://.godot/imported/spawn_ring.svg-33ec72122c6681a51e76309a8d22564e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/world/spawn_ring.svg"
-dest_files=["res://.godot/imported/spawn_ring.svg-33ec72122c6681a51e76309a8d22564e.s3tc.ctex"]
+dest_files=["res://.godot/imported/spawn_ring.svg-33ec72122c6681a51e76309a8d22564e.s3tc.ctex", "res://.godot/imported/spawn_ring.svg-33ec72122c6681a51e76309a8d22564e.etc2.ctex"]
 
 [params]
 

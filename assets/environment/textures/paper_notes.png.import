@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bke1yn3i37rem"
 path.s3tc="res://.godot/imported/paper_notes.png-1f061ab8e4712c60067c97fac5957ce6.s3tc.ctex"
+path.etc2="res://.godot/imported/paper_notes.png-1f061ab8e4712c60067c97fac5957ce6.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/environment/textures/paper_notes.png"
-dest_files=["res://.godot/imported/paper_notes.png-1f061ab8e4712c60067c97fac5957ce6.s3tc.ctex"]
+dest_files=["res://.godot/imported/paper_notes.png-1f061ab8e4712c60067c97fac5957ce6.s3tc.ctex", "res://.godot/imported/paper_notes.png-1f061ab8e4712c60067c97fac5957ce6.etc2.ctex"]
 
 [params]
 

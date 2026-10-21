@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://mqjpmfxfohue"
 path.s3tc="res://.godot/imported/blackboard_past.png-8bc84c6e71fb3addd4e0b4b1bb3e295b.s3tc.ctex"
+path.etc2="res://.godot/imported/blackboard_past.png-8bc84c6e71fb3addd4e0b4b1bb3e295b.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/environment/textures/blackboard_past.png"
-dest_files=["res://.godot/imported/blackboard_past.png-8bc84c6e71fb3addd4e0b4b1bb3e295b.s3tc.ctex"]
+dest_files=["res://.godot/imported/blackboard_past.png-8bc84c6e71fb3addd4e0b4b1bb3e295b.s3tc.ctex", "res://.godot/imported/blackboard_past.png-8bc84c6e71fb3addd4e0b4b1bb3e295b.etc2.ctex"]
 
 [params]
 
