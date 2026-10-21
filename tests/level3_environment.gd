@@ -37,11 +37,26 @@ func shot(label: String) -> void:
 	RenderingServer.force_draw(false)
 	var frame := root.get_texture().get_image()
 	check(frame.save_png(OUT.path_join(label + ".png")) == OK, "saved " + label)
+	var total_draws := Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
 	metrics[label] = {
-		"draw_calls": Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+		"draw_calls": total_draws,
 		"primitives": Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
 		"camera_position": str(room.camera.global_position),
 		"player_local_position": str(room.local_position())}
+	if label.ends_with("_core"):
+		var art: Node3D = room.worlds[room.role].environment_art
+		var casing: Node3D = room.worlds.future.gate.get_node("GateDressing") if room.role == "future" else null
+		art.hide()
+		if casing != null: casing.hide()
+		RenderingServer.force_draw(false)
+		var without_art := Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
+		metrics[label].decoration_draw_calls = total_draws - without_art
+		metrics[label].procedural_triangles = art.triangle_count
+		metrics[label].instanced_boxes = art.instance_count
+		check(total_draws - without_art < 80, label + " decoration adds fewer than 80 actual draws including reused props")
+		art.show()
+		if casing != null: casing.show()
+		RenderingServer.force_draw(false)
 
 
 func run() -> void:
