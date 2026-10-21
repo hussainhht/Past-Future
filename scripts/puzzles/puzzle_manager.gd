@@ -172,6 +172,22 @@ func submit_action(puzzle_id: String, action: String, payload: Dictionary = {}, 
 	return _handle_request(puzzle_id, action, payload, _local_role(actor_role))
 
 
+## Host-only clock/lifecycle hook for timed puzzles. No RPC accepts an updater or state.
+## Untimed implementations need no changes. The hook returns the usual puzzle outcome.
+func refresh_puzzle(puzzle_id: String) -> bool:
+	if not _can_administer():
+		return false
+	var logic: PuzzleBase = _logic.get(puzzle_id)
+	if logic == null or not logic.has_method("refresh_state") or not _records.has(puzzle_id):
+		return false
+	var outcome: Dictionary = logic.call("refresh_state", get_state(puzzle_id))
+	if outcome.get("status") == Status.CHANGED and outcome.get("state") is Dictionary:
+		if outcome.state != get_state(puzzle_id):
+			_commit_record(puzzle_id, logic, outcome.state, Cause.ACTION)
+			return true
+	return false
+
+
 ## Return one puzzle to its initial state. Host/offline only. Returns false if it cannot.
 func reset_puzzle(puzzle_id: String) -> bool:
 	var logic: PuzzleBase = _logic.get(puzzle_id)
@@ -300,6 +316,9 @@ func _run_action(puzzle_id: String, action: String, payload: Variant, role: Stri
 			return _rejected(puzzle_id, action, "prerequisite_not_met", prerequisite)
 	if not _records.has(puzzle_id):
 		_commit_record(puzzle_id, logic, _initial_state(logic), Cause.INITIAL)
+	# Settle a host deadline before validating a request at its boundary.
+	if logic.has_method("refresh_state"):
+		refresh_puzzle(puzzle_id)
 	var record: Record = _records[puzzle_id]
 	# Puzzles get copies, so neither a buggy puzzle nor a caller can alias canonical state.
 	var reason: Variant = logic.validate_action(action, payload.duplicate(true), role, record.state.duplicate(true))
