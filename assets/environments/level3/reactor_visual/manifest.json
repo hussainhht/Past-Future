@@ -1,0 +1,103 @@
+{
+  "generator": "tools/reactor_visual/build_reactor.py",
+  "original_geometry": true,
+  "seed": "deterministic",
+  "units": "metres",
+  "floor_radius": 1.65,
+  "triangles": 30426,
+  "material_surfaces": 47,
+  "tree": {
+    "name": "TemporalAssembly",
+    "triangles": 0,
+    "surfaces": 0,
+    "children": [
+      {
+        "name": "Platform",
+        "triangles": 6144,
+        "surfaces": 8,
+        "children": []
+      },
+      {
+        "name": "Supports",
+        "triangles": 4784,
+        "surfaces": 8,
+        "children": []
+      },
+      {
+        "name": "Chamber",
+        "triangles": 5952,
+        "surfaces": 6,
+        "children": []
+      },
+      {
+        "name": "Cover0",
+        "triangles": 96,
+        "surfaces": 2,
+        "children": []
+      },
+      {
+        "name": "Cover1",
+        "triangles": 96,
+        "surfaces": 2,
+        "children": []
+      },
+      {
+        "name": "Cover2",
+        "triangles": 96,
+        "surfaces": 2,
+        "children": []
+      },
+      {
+        "name": "Cover3",
+        "triangles": 96,
+        "surfaces": 2,
+        "children": []
+      },
+      {
+        "name": "OuterAxis",
+        "triangles": 0,
+        "surfaces": 0,
+        "children": [
+          {
+            "name": "OuterRotor",
+            "triangles": 5632,
+            "surfaces": 5,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "InnerAxis",
+        "triangles": 0,
+        "surfaces": 0,
+        "children": [
+          {
+            "name": "InnerRotor",
+            "triangles": 4224,
+            "surfaces": 5,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "FocusAxis",
+        "triangles": 0,
+        "surfaces": 0,
+        "children": [
+          {
+            "name": "FocusRotor",
+            "triangles": 2816,
+            "surfaces": 5,
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "FutureDamage",
+        "triangles": 490,
+        "surfaces": 2,
+        "children": []
+      }
+    ]
+  }
+}

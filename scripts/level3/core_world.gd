@@ -4,6 +4,7 @@ extends Node3D
 const Rules := preload("res://scripts/level3/core_rules.gd")
 const Interactable := preload("res://scripts/interaction/interactable_3d.gd")
 const Palette := preload("res://scripts/environment/env_palette.gd")
+const EnvironmentArt := preload("res://scenes/level3/environment/laboratory_environment.tscn")
 
 var role: String
 var stations: Dictionary = {}
@@ -23,26 +24,24 @@ var stage: String = "DISCOVERY"
 var ending: String = ""
 var accent: Color
 var _coil_materials: Array[StandardMaterial3D] = []
+var environment_art: Node3D
 
 
-func build(timeline: String, operate: Callable) -> void:
+func build(timeline: String, operate: Callable, decorate: bool = true) -> void:
 	role = timeline
 	future = role == "future"
 	accent = Color("74deed") if future else Color("efc077")
 	var wall := Color("324b60") if future else Color("d4c4a2")
 	var floor_color := Color("243b4b") if future else Color("979480")
+	var architecture_color := Color("304653") if future else Color("889584")
 	box(Vector3(0, -0.15, 0), Vector3(18.4, 0.3, 14.4), floor_color, true)
-	# Tile seams and rails are deliberately low under the fixed 35-degree camera.
-	for x in range(-9, 10):
-		box(Vector3(x, 0.006, 0), Vector3(0.018, 0.008, 14), floor_color.darkened(0.3))
-	for z in range(-7, 8):
-		box(Vector3(0, 0.006, z), Vector3(18, 0.008, 0.018), floor_color.darkened(0.3))
+	# The new plate layer is cosmetic; this original slab remains the Y=0 contact plane.
 	for x in [-9.2, 9.2]:
-		box(Vector3(x, 0.48, 0), Vector3(0.3, 0.96, 14.6), wall, true)
+		box(Vector3(x, 0.48, 0), Vector3(0.3, 0.96, 14.6), architecture_color, true)
 	for z in [-7.2, 7.2]:
-		box(Vector3(0, 0.4, z), Vector3(18.6, 0.8, 0.3), wall, true)
+		box(Vector3(0, 0.4, z), Vector3(18.6, 0.8, 0.3), architecture_color, true)
 	for x in [-8.5, -4.5, 4.5, 8.5]:
-		var column := box(Vector3(x, 1.2, -6.6), Vector3(0.6, 2.4, 0.65), wall, true)
+		var column := box(Vector3(x, 1.2, -6.6), Vector3(0.6, 2.4, 0.65), architecture_color, true)
 		if future:
 			column.rotation.z = 0.12 if x < 0 else -0.18
 			column.scale.y = 0.6
@@ -160,7 +159,12 @@ func build(timeline: String, operate: Callable) -> void:
 				box(area.position + Vector3(0, 0.4, 0), Vector3(0.7, 0.8, 0.45), wall, true)
 	waveform = label("", Vector3(6 if future else -3, 2, -3), 24)
 	waveform.font = Typography.display_font(future)
-	label("III / THE FINAL FRACTURE\n" + ("31 YEARS LATER" if future else "PROJECT CONTINUITY"), Vector3(0, 1.5, -6.7), 32)
+	var chapter_sign := label("III / THE FINAL FRACTURE\n" + ("31 YEARS LATER" if future else "PROJECT CONTINUITY"), Vector3(0, 1.5, -6.7), 32)
+	chapter_sign.visible = not decorate
+	if decorate:
+		environment_art = EnvironmentArt.instantiate()
+		add_child(environment_art)
+		environment_art.build(future, gate)
 
 
 func apply_state(state: Dictionary) -> void:
@@ -207,6 +211,7 @@ func apply_state(state: Dictionary) -> void:
 
 func _process(delta: float) -> void:
 	age += delta
+	if environment_art != null: environment_art.set_effects_enabled(effects_enabled)
 	var speed := 0.2 if stage == "DISCOVERY" else 0.8
 	if stage == "STAGE_C": speed = 1.4
 	if ending == "trust": speed = 0.06

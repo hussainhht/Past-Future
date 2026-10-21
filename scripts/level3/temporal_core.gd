@@ -8,8 +8,14 @@ const UI := preload("res://scripts/level3/core_ui.gd")
 const Sound := preload("res://scripts/level3/core_sound.gd")
 const Story := preload("res://scripts/level3/core_story.gd")
 const Inputs := preload("res://scripts/input/input_manager.gd")
+const Devices := preload("res://scripts/level3/core_devices.gd")
+const ReactorBridge := preload("res://scripts/level3/core_reactor_bridge.gd")
 
 @export var challenge_seconds: float = Rules.CHALLENGE_SECONDS
+## Assign only a completed, verified module. Null keeps the stock assembly.
+@export var reactor_visual_scene: PackedScene
+var devices: Node
+var reactor_bridge: Node
 var player: CharacterBody3D
 var role: String = "past"
 var camera: Camera3D
@@ -35,6 +41,7 @@ var _pose_budget: float = 0.0
 var _sync_age: float = 0.0
 var _refresh_age: float = 0.0
 var _snapshot_at: float = 0.0
+var _confirmed_sync_remaining: float = 0.0
 var _shown_ending: String = ""
 var _ending_tween: Tween
 var _last_notice: String = ""
@@ -87,8 +94,8 @@ func _ready() -> void:
 	prompt = load("res://scenes/ui/interaction_prompt.tscn").instantiate()
 	add_child(prompt)
 	# Keep the existing contextual prompt clear of the taller Room C objective strip.
-	prompt.get_node("Root/PromptPanel").offset_top = -205
-	prompt.get_node("Root/PromptPanel").offset_bottom = -155
+	prompt.get_node("Root/PromptPanel").offset_top = -255
+	prompt.get_node("Root/PromptPanel").offset_bottom = -205
 	sound = Sound.new()
 	sound.name = "CoreSound"
 	add_child(sound)
@@ -101,6 +108,15 @@ func _ready() -> void:
 		ui.modal_box.find_children("", "Button", true, false)[0].grab_focus()
 	)
 	_spawn_player()
+	devices = Devices.new()
+	devices.name = "CoreDevices"
+	add_child(devices)
+	devices.setup(self)
+	reactor_bridge = ReactorBridge.new()
+	add_child(reactor_bridge)
+	if reactor_visual_scene == null: reactor_visual_scene = reactor_bridge.verified_scene()
+	reactor_bridge.setup(worlds, reactor_visual_scene)
+	reactor_bridge.sync_preferences(worlds, role)
 	_register_evidence()
 	rules = Rules.new()
 	rules.challenge_seconds = challenge_seconds
@@ -170,7 +186,7 @@ func _spawn_player() -> void:
 
 func switch_debug_role() -> void:
 	if networked or NetworkManager.state != NetworkManager.State.IDLE or not OS.is_debug_build(): return
-	if ui.visible_modal or JournalManager.is_open() or state.get("stage") == "ENDING": return
+	if ui.visible_modal or devices.inspector.active or JournalManager.is_open() or state.get("stage") == "ENDING": return
 	var old_role := role
 	_poses[role] = local_position()
 	role = "future" if role == "past" else "past"
@@ -180,6 +196,8 @@ func switch_debug_role() -> void:
 	player.queue_free()
 	player = null
 	_spawn_player()
+	devices.refresh()
+	reactor_bridge.sync_preferences(worlds, role)
 	key_light.light_color = Color("b5d9ec") if role == "future" else Color("ffe2b8")
 	environment.background_color = Color("15212c") if role == "future" else Color("353832")
 	JournalManager.state_changed.emit()
@@ -206,6 +224,7 @@ func _register_evidence() -> void:
 
 func operate(id: String) -> void:
 	if not _configured or is_gameplay_paused() or state.is_empty(): return
+	if not worlds[role].stations.has(id) or not _near_station(role, id): return
 	if Story.EVIDENCE.has(id):
 		var data: Array = Story.EVIDENCE[id]
 		if id == "routing" and not state.receiver:
@@ -213,19 +232,14 @@ func operate(id: String) -> void:
 			return
 		JournalManager.unlock_entry(data[0])
 		_show(data[1], data[2], [{"label": "CLOSE / SAVED TO YOUR JOURNAL", "callback": _close}])
-	elif id == "start":
-		_modal_kind = "start"
-		_show("ARM TEMPORAL CORE?", "This deliberate operation starts a 150-second reactor challenge for both timelines.\n\nYou will need the three power coils, the Future receiver, and both phase switches. Read the evidence first if you need time.\n\nMenus and journals do not pause an active challenge.", [
-			{"label": "KEEP INVESTIGATING", "callback": _close},
-			{"label": "CONFIRM / START 150-SECOND CHALLENGE", "callback": func() -> void: _close(); request_action("start")}])
-	elif id.begins_with("terminal_"):
-		_show_terminal()
-	elif id.begins_with("coil_"):
-		request_action("coil", {"index": int(id.trim_prefix("coil_"))})
-	elif id.begins_with("sync_"):
-		request_action("sync")
-	else:
-		request_action(id)
+	elif devices.is_device(id): devices.open(id)
+
+
+func confirm_arming() -> void:
+	_modal_kind = "start"
+	_show("ARM TEMPORAL CORE?", "This confirmed operation starts the shared 150-second reactor challenge.\n\nBoth timelines must restore power, align the core, engage phase switches within five seconds, then lock private identity commands.\n\nMenus and journals do not pause an active challenge.", [
+		{"label": "KEEP INVESTIGATING", "callback": _close},
+		{"label": "CONFIRM / ARM REACTOR", "callback": func() -> void: _close(); request_action("start")}])
 
 
 func _show_terminal() -> void:
@@ -243,6 +257,7 @@ func _show_terminal() -> void:
 
 
 func _confirm_command(command: String) -> void:
+	_modal_kind = "terminal"
 	_show("LOCK PRIVATE MACHINE COMMAND?", command + "\n\nThis command cannot be changed during this attempt. Your partner sees only that you have locked in. The host resolves both commands together.", [
 		{"label": "BACK TO TERMINAL", "callback": _show_terminal},
 		{"label": "CONFIRM / " + command, "callback": func() -> void: _close(); request_action("choose", {"command": command})}])
@@ -260,7 +275,7 @@ func request_action(action: String, data: Dictionary = {}) -> Dictionary:
 func _near_station(actor_role: String, station: String) -> bool:
 	if not Rules.STATIONS.has(station): return false
 	var at: Vector3 = local_position() if actor_role == role else _poses[actor_role]
-	if networked and actor_role == "future" and _now() - _pose_at > 1.5: return false
+	if networked and actor_role == "future" and actor_role != role and _now() - _pose_at > 1.5: return false
 	return at.distance_to(Rules.STATIONS[station]) <= 1.85
 
 
@@ -279,7 +294,11 @@ func _process(delta: float) -> void:
 	var predicted: float = state.remaining
 	if state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"] and not disconnected:
 		predicted = maxf(0.0, predicted - (_now() - _snapshot_at))
-	ui.render(state, role, predicted)
+	var sync_left: float = state.sync_remaining
+	if state.stage == "STAGE_B" and (state.sync_past or state.sync_future):
+		# Display-only interpolation. The host remains the sole deadline owner.
+		sync_left = maxf(0.0, _confirmed_sync_remaining - (_now() - _snapshot_at))
+	ui.render(state, role, predicted, sync_left)
 	if predicted <= 10 and state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"] and not _warned:
 		_warned = true
 		sound.play("warning")
@@ -296,10 +315,15 @@ func _process(delta: float) -> void:
 
 func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 	if id != Rules.ID: return
+	var previous := state
 	var previous_stage: String = state.get("stage", "")
 	state = confirmed.duplicate(true)
+	_confirmed_sync_remaining = float(state.sync_remaining)
+	if state.stage == "STAGE_B" and (state.sync_past or state.sync_future) and state.sync_remaining <= 0:
+		_confirmed_sync_remaining = Rules.SYNC_WINDOW
 	_snapshot_at = _now()
 	if _last_attempt != state.attempt:
+		if devices != null: devices.close()
 		_last_attempt = state.attempt
 		_seq = {"past": 0, "future": 0}
 		_warned = false
@@ -319,6 +343,19 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 			player.velocity = Vector3.ZERO
 			camera_rig.snap_to_target()
 	for world: Node in worlds.values(): world.apply_state(state)
+	if devices != null: devices.refresh()
+	if (_modal_kind == "start" and state.stage != "DISCOVERY") or (_modal_kind == "terminal" and (state.stage != "STAGE_C" or state["locked_" + role])):
+		_close()
+	if reactor_bridge != null: reactor_bridge.apply_state(state, challenge_seconds)
+	if not previous.is_empty() and previous.get("attempt") == state.attempt:
+		var changed_device: bool = previous.coils != state.coils
+		for key in ["receiver", "anchor", "origin", "sync_past", "sync_future", "locked_past", "locked_future"]:
+			if previous.get(key) != state.get(key): changed_device = true
+		if changed_device: sound.get_node("AudioSystem").play_sfx(&"switch_toggle")
+		if previous.get("sync_past", false) and not state.sync_past and state.stage == "STAGE_B":
+			sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
+		elif previous.get("sync_future", false) and not state.sync_future and state.stage == "STAGE_B":
+			sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
 	if state.notice != _last_notice:
 		_last_notice = state.notice
 		ui.status.text = state.notice
@@ -326,6 +363,7 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 		if state.stage == "STAGE_A": sound.play("activate")
 		elif state.stage in ["STAGE_B", "STAGE_C"]: sound.play("phase")
 		elif state.stage == "OVERLOAD":
+			devices.close()
 			settings_overlay.hide()
 			ui.close_panel()
 			JournalManager.close_journal()
@@ -337,10 +375,13 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 func _on_rejected(id: String, _action: String, reason: String, actor_role: String) -> void:
 	if id == Rules.ID and actor_role == role:
 		var messages := {"too_far": "Move closer to the hardware and try again.", "partner_unavailable": "Waiting for both timelines to finish loading.", "stale_attempt": "That operation belongs to an earlier attempt.", "duplicate_request": "That operation was already received.", "wrong_stage": "That device is not enabled in this reactor phase.", "choice_locked": "Your private command is already locked.", "anchor_required": "The Professor must calibrate the Signal Anchor first."}
-		ui.status.text = messages.get(reason, "Operation refused: " + reason.replace("_", " "))
+		devices.reject()
+		ui.show_error(messages.get(reason, "Operation refused: " + reason.replace("_", " ")))
+		sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
 
 
 func _play_ending() -> void:
+	devices.close()
 	settings_overlay.hide()
 	_shown_ending = state.ending
 	JournalManager.close_journal()
@@ -414,12 +455,14 @@ func replay_attempt() -> void:
 
 
 func _show(title: String, body: String, options: Array) -> void:
+	if devices != null: devices.close()
 	if settings_overlay != null: settings_overlay.hide()
 	ui.show_panel(title, body, options)
 	_sync_controls()
 
 
 func _close() -> void:
+	if devices != null: devices.close()
 	settings_overlay.hide()
 	ui.close_panel()
 	_modal_kind = ""
@@ -442,19 +485,27 @@ func _unhandled_input(event: InputEvent) -> void:
 			settings_overlay.open()},
 		{"label": "REDUCE / RESTORE AMBIENT EFFECTS", "callback": func() -> void:
 			for world: Node in worlds.values(): world.effects_enabled = not world.effects_enabled
+			reactor_bridge.sync_preferences(worlds, role)
 			_close()},
 		{"label": "RETURN TO MAIN MENU", "callback": return_to_menu}])
 
 
 func is_gameplay_paused() -> bool:
-	return disconnected or not _configured or ui.visible_modal or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
+	return disconnected or not _configured or ui.visible_modal or (devices != null and devices.inspector.active) or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
 
 
 func _sync_controls() -> void:
 	if not is_instance_valid(player) or controller == null: return
 	var blocked := is_gameplay_paused() or state.is_empty()
+	if devices != null:
+		devices.inspector.suspended = disconnected or GameFlowManager.is_input_locked() or JournalManager.is_open() or ui.visible_modal
+		ui.device_panel.visible = devices.inspector.active and not devices.inspector.suspended
+	ui.debug_button.disabled = blocked
+	ui.journal_button.disabled = blocked
 	player.controls_enabled = not blocked
+	if blocked: player.velocity = Vector3.ZERO
 	controller.set_interaction_blocked(blocked)
+	prompt.set_interaction_blocked(blocked)
 
 
 func _on_lock_changed(_locked: bool) -> void:
@@ -494,12 +545,15 @@ func _now() -> float:
 func _hello(attempt: int) -> void:
 	if not _valid_guest() or attempt != state.get("attempt"): return
 	remote_ready = true
+	devices.refresh()
 	_ack_hello.rpc_id(NetworkManager.guest_id, attempt)
 
 
 @rpc("authority", "call_remote", "reliable")
 func _ack_hello(attempt: int) -> void:
-	if networked and multiplayer.get_remote_sender_id() == 1 and attempt == state.get("attempt"): remote_ready = true
+	if networked and multiplayer.get_remote_sender_id() == 1 and attempt == state.get("attempt"):
+		remote_ready = true
+		devices.refresh()
 
 
 func _valid_guest() -> bool:

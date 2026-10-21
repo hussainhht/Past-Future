@@ -20,11 +20,14 @@ def main():
     common = [godot, "--headless", "--path", str(project)]
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
     if "--peers-only" not in sys.argv:
-        result = subprocess.run(common + ["--script", "res://tests/level3_core.gd"],
-                                capture_output=True, text=True, timeout=120, creationflags=flags)
-        print(result.stdout)
-        if result.returncode or "SCRIPT ERROR:" in result.stdout + result.stderr or "LEVEL3 CORE: PASS" not in result.stdout:
-            raise SystemExit(result.stderr or "Core checks failed")
+        for script, marker in (("level3_core.gd", "LEVEL3 CORE: PASS"),
+                               ("level3_interactions.gd", "LEVEL3 INTERACTIONS: PASS")):
+            result = subprocess.run(common + ["--script", "res://tests/" + script],
+                                    capture_output=True, text=True, timeout=120, creationflags=flags)
+            output = result.stdout + result.stderr
+            print(output, flush=True)
+            if result.returncode or "SCRIPT ERROR:" in output or "ERROR:" in output or marker not in output:
+                raise SystemExit(script + " failed")
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
         probe.bind(("127.0.0.1", 0))
         port = probe.getsockname()[1]

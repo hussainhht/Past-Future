@@ -1,10 +1,10 @@
 extends Control
 
-const WARM := Color("d8ba89")
-const COOL := Color("86c6cd")
-const INK := Color("101c24")
-## Widest the two title lines may grow before they shrink to fit (the stamps start at x = 858).
-const TITLE_MAX_WIDTH := 640.0
+## Widest "THE OTHER" may grow before it shrinks to fit (the clock frame starts near x = 745).
+const TITLE_MAX_WIDTH := 620.0
+const TITLE_PAST_SIZE := 110
+## "ME" is drawn this many times larger than "THE OTHER".
+const TITLE_ME_SCALE := 1.9
 const InputManager := preload("res://scripts/input/input_manager.gd")
 
 var audio: AudioDirector
@@ -94,62 +94,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _apply_theme() -> void:
-	var menu_theme := Theme.new()
-	menu_theme.default_font_size = 18
-	for state in ["normal", "hover", "pressed", "disabled"]:
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color("15242b")
-		style.border_color = Color("3b4b4c")
-		style.set_border_width_all(1)
-		style.content_margin_left = 24
-		style.content_margin_right = 24
-		style.content_margin_top = 14
-		style.content_margin_bottom = 14
-		if state == "hover":
-			style.bg_color = Color("203338")
-			style.border_color = COOL
-		elif state == "pressed":
-			style.bg_color = Color("30464a")
-		elif state == "disabled":
-			style.bg_color = Color("131e25")
-			style.border_color = Color("2b393e")
-		menu_theme.set_stylebox(state, "Button", style)
-	var focus := StyleBoxFlat.new()
-	focus.bg_color = Color.TRANSPARENT
-	focus.border_color = COOL
-	focus.set_border_width_all(2)
-	focus.expand_margin_left = 4
-	focus.expand_margin_right = 4
-	focus.expand_margin_top = 4
-	focus.expand_margin_bottom = 4
-	menu_theme.set_stylebox("focus", "Button", focus)
-	menu_theme.set_stylebox("focus", "CheckButton", focus)
-	menu_theme.set_color("font_color", "Button", Color("dadcd2"))
-	menu_theme.set_color("font_hover_color", "Button", Color("f0e9d7"))
-	menu_theme.set_color("font_focus_color", "Button", Color("f0e9d7"))
-	menu_theme.set_color("font_disabled_color", "Button", Color("77868a"))
-	menu_theme.set_color("font_color", "CheckButton", Color("dadcd2"))
-	menu_theme.set_color("font_color", "Label", Color("bac5c2"))
-	menu_theme.set_font_size("font_size", "Button", 20)
-	menu_theme.set_font_size("font_size", "CheckButton", Typography.role_size(&"settings_label"))
-	menu_theme.set_font_size("font_size", "OptionButton", 20)
-	menu_theme.set_font_size("font_size", "LineEdit", Typography.role_size(&"settings_value"))
-	theme = menu_theme
-	var primary := StyleBoxFlat.new()
-	primary.bg_color = WARM
-	primary.border_color = WARM
-	primary.set_border_width_all(1)
-	primary.content_margin_left = 24
-	primary.content_margin_right = 24
-	var primary_hover := primary.duplicate() as StyleBoxFlat
-	primary_hover.bg_color = Color("efdab5")
-	var primary_pressed := primary.duplicate() as StyleBoxFlat
-	primary_pressed.bg_color = Color("baa077")
-	%PlayButton.add_theme_stylebox_override("normal", primary)
-	%PlayButton.add_theme_stylebox_override("hover", primary_hover)
-	%PlayButton.add_theme_stylebox_override("pressed", primary_pressed)
-	for state in ["font_color", "font_hover_color", "font_pressed_color", "font_focus_color"]:
-		%PlayButton.add_theme_color_override(state, INK)
+	# Button, label and toggle styling lives in resources/ui/menu_theme.tres (assigned on the scene root).
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color("122028")
 	panel_style.border_color = Color("627f80")
@@ -160,23 +105,18 @@ func _apply_theme() -> void:
 	_apply_title_typography()
 
 
-## Broken is reserved for the game name; menu controls use Oxanium.
+## Broken is reserved for the game name; menu controls take Oxanium from the theme.
+## "THE OTHER" fits the free column beside the clock; "ME" is set at a larger scale so the name reads as a lockup.
 func _apply_title_typography() -> void:
 	var title_font := Typography.font(&"menu_title")
-	var title_labels: Array[Label] = [$Layout/TitleBlock/Past, $Layout/TitleBlock/Future]
-	var title_px := Typography.role_size(&"game_title")
-	for label in title_labels:
-		title_px = mini(title_px, Typography.fit_size(title_font, label.text, title_px, TITLE_MAX_WIDTH, 40))
-	for label in title_labels:
+	var past: Label = $Layout/TitleBlock/Past
+	var future: Label = $Layout/TitleBlock/Future
+	var past_px := Typography.fit_size(title_font, past.text, TITLE_PAST_SIZE, TITLE_MAX_WIDTH, 40)
+	var future_px := roundi(past_px * TITLE_ME_SCALE)
+	for entry: Array in [[past, past_px], [future, future_px]]:
+		var label: Label = entry[0]
 		label.add_theme_font_override("font", title_font)
-		label.add_theme_font_size_override("font_size", title_px)
-	var button_font := Typography.font(&"menu_button")
-	var buttons: Array[Button] = [%PlayButton, %SettingsButton, %CreditsButton, %QuitButton]
-	for button in buttons:
-		var wanted := Typography.role_size(&"menu_button") + (1 if button == %PlayButton else -2)
-		var room := maxf(button.custom_minimum_size.x - 48.0, 120.0)
-		button.add_theme_font_override("font", button_font)
-		button.add_theme_font_size_override("font_size", Typography.fit_size(button_font, button.text, wanted, room, 22))
+		label.add_theme_font_size_override("font_size", entry[1])
 
 
 func _open_page(page_name: String) -> void:

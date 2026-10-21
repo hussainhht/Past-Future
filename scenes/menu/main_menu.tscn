@@ -4,18 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://cq63ai54uej4g" path="res://assets/ui/temporal_background.svg" id="2_background"]
 [ext_resource type="Script" uid="uid://dct502t6dqx4p" path="res://scripts/menu/temporal_backdrop.gd" id="3_atmosphere"]
 [ext_resource type="FontVariation" path="res://assets/themes/typography/heading_font.tres" id="4_heading"]
-[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_regular_font.tres" id="5_regular"]
 [ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="4_theme"]
 [ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="5_button"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty"]
-
-[sub_resource type="SystemFont" id="SystemFont_title"]
-font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
-
-[sub_resource type="SystemFont" id="SystemFont_italic"]
-font_names = PackedStringArray("Georgia", "DejaVu Serif", "Times New Roman")
-font_italic = true
+[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_regular_font.tres" id="5_regular"]
 
 [node name="MainMenu" type="Control" unique_id=791939971]
 layout_mode = 3
@@ -87,13 +78,14 @@ horizontal_alignment = 2
 
 [node name="TitleBlock" type="VBoxContainer" parent="Layout" unique_id=759534350]
 layout_mode = 0
-offset_left = 112.0
-offset_top = 192.0
-offset_right = 700.0
-offset_bottom = 482.0
-theme_override_constants/separation = 0
+offset_left = 108.0
+offset_top = 112.0
+offset_right = 740.0
+offset_bottom = 420.0
+theme_override_constants/separation = -48
 
 [node name="Eyebrow" type="Label" parent="Layout/TitleBlock" unique_id=1888590282]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.69, 0.59, 0.43, 1)
 theme_override_font_sizes/font_size = 14
@@ -111,6 +103,7 @@ theme_override_font_sizes/font_size = 94
 text = "ME"
 
 [node name="Tagline" type="Label" parent="Layout/TitleBlock" unique_id=1026876945]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.67, 0.71, 0.68, 1)
 theme_override_fonts/font = ExtResource("5_regular")
@@ -119,18 +112,19 @@ theme_override_font_sizes/font_size = 22
 [node name="Actions" type="VBoxContainer" parent="Layout" unique_id=610663681]
 layout_mode = 0
 offset_left = 112.0
-offset_top = 500.0
-offset_right = 472.0
-offset_bottom = 754.0
+offset_top = 452.0
+offset_right = 532.0
+offset_bottom = 666.0
 theme_override_constants/separation = 14
 
 [node name="PlayButton" type="Button" parent="Layout/Actions" unique_id=1798032236]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 66)
+custom_minimum_size = Vector2(420, 72)
 layout_mode = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 28
-text = "PLAY TOGETHER  →"
+theme_type_variation = &"PrimaryButton"
+text = "PLAY TOGETHER"
+script = ExtResource("5_button")
 
 [node name="SecondaryActions" type="HBoxContainer" parent="Layout/Actions" unique_id=1518126227]
 layout_mode = 2
@@ -138,43 +132,47 @@ theme_override_constants/separation = 12
 
 [node name="SettingsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=354479432]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(176, 54)
+custom_minimum_size = Vector2(204, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 25
+theme_type_variation = &"SecondaryButton"
 text = "SETTINGS"
 script = ExtResource("5_button")
 
 [node name="CreditsButton" type="Button" parent="Layout/Actions/SecondaryActions" unique_id=868646930]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(176, 54)
+custom_minimum_size = Vector2(204, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 25
+theme_type_variation = &"SecondaryButton"
 text = "CREDITS"
 script = ExtResource("5_button")
 
-[node name="QuitButton" type="Button" parent="Layout/Actions" unique_id=653793475]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 44)
+[node name="FooterActions" type="HBoxContainer" parent="Layout/Actions" unique_id=1299456971]
 layout_mode = 2
-size_flags_horizontal = 0
+theme_override_constants/separation = 12
+
+[node name="QuitButton" type="Button" parent="Layout/Actions/FooterActions" unique_id=653793475]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(204, 44)
+layout_mode = 2
+size_flags_horizontal = 3
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 25
-theme_override_styles/normal = SubResource("StyleBoxEmpty")
+theme_type_variation = &"TertiaryButton"
 text = "QUIT"
 script = ExtResource("5_button")
 
-[node name="LevelThreeTestButton" type="Button" parent="Layout/Actions"]
+[node name="LevelThreeTestButton" type="Button" parent="Layout/Actions/FooterActions" unique_id=1777524227]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 54)
+custom_minimum_size = Vector2(204, 44)
 layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-text = "PLAY LEVEL 3 — TEST"
+size_flags_horizontal = 3
 tooltip_text = "Start a fresh offline Final Fracture test. Use DEV: OTHER TIMELINE to play both roles."
+mouse_default_cursor_shape = 2
+theme_type_variation = &"TertiaryButton"
+text = "LEVEL 3 — TEST"
 script = ExtResource("5_button")
 
 [node name="PastStamp" type="Label" parent="Layout" unique_id=682961004]
@@ -196,17 +194,6 @@ offset_bottom = 770.0
 theme_override_colors/font_color = Color(0.44, 0.65, 0.69, 1)
 theme_override_font_sizes/font_size = 15
 text = "II   /   THE PROFESSOR"
-
-[node name="YearGap" type="Label" parent="Layout" unique_id=1232014485]
-layout_mode = 0
-offset_left = 965.0
-offset_top = 780.0
-offset_right = 1285.0
-offset_bottom = 806.0
-theme_override_colors/font_color = Color(0.36, 0.48, 0.49, 1)
-theme_override_font_sizes/font_size = 13
-text = "S E P A R A T E D  B Y  3 1  Y E A R S"
-horizontal_alignment = 1
 
 [node name="BottomLine" type="ColorRect" parent="Layout" unique_id=862381468]
 layout_mode = 0
@@ -285,21 +272,21 @@ theme_type_variation = &"SecondaryButton"
 text = "PLAY THE LAB     /     SOLO TEST"
 script = ExtResource("5_button")
 
-[node name="LevelTwoTestButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="LevelTwoTestButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1382887291]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Skip the laboratory and start a fresh Maintenance Corridor test. Press T to switch timelines."
 mouse_default_cursor_shape = 2
 text = "LEVEL 2     /     TEMPORARY SOLO TEST"
-tooltip_text = "Skip the laboratory and start a fresh Maintenance Corridor test. Press T to switch timelines."
 
-[node name="LevelThreeMultiplayerButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+[node name="LevelThreeMultiplayerButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=122958088]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
+tooltip_text = "Open the development launcher on both clients to host/join directly in The Final Fracture."
 mouse_default_cursor_shape = 2
 theme_type_variation = &"SecondaryButton"
 text = "LEVEL 3     /     MULTIPLAYER TEST"
-tooltip_text = "Open the development launcher on both clients to host/join directly in The Final Fracture."
 script = ExtResource("5_button")
 
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
