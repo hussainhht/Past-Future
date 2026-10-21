@@ -106,20 +106,27 @@ def instance(name,parent,pos,path,scale=(1,1,1),yaw=0):
     serial+=1;ext=f'asset_{serial}';exts.append(f'[ext_resource type="PackedScene" path="{path}" id="{ext}"]')
     nodes.append(f'[node name="{name}" parent="{parent}" instance=ExtResource("{ext}")]\nposition = {value(pos)}\nscale = {value(scale)}\nrotation_degrees = Vector3(0, {yaw}, 0)\n')
 
+# Put machinery beside the route, with both doorway approaches and the centre aisle clear.
+STORAGE_BAYS=[(-5.5,-3.8),(-5.5,-5.9),(-5.5,-8.0)]
+
 def storage_floor(name,y,height,material,left,right,near,far,solid=False):
-    # Boundaries subdivide the rectangle; cells inside the three hatch footprints are omitted.
-    xs=sorted({left,right,-2.43,-1.07,-.68,.68,1.07,2.43})
-    zs=sorted({near,far,-6.93,-5.57})
+    # Use the same bay coordinates for the floor openings and the gameplay placement markers.
+    holes=[(x-.68,x+.68,z-.68,z+.68) for x,z in STORAGE_BAYS]
+    xs=sorted({left,right,*[edge for h in holes for edge in h[:2] if left < edge < right]})
+    zs=sorted({near,far,*[edge for h in holes for edge in h[2:] if near < edge < far]})
     for xi,(x1,x2) in enumerate(zip(xs,xs[1:])):
         for zi,(z1,z2) in enumerate(zip(zs,zs[1:])):
             x,z=(x1+x2)/2,(z1+z2)/2
-            if -6.93 < z < -5.57 and any(abs(x-center)<.68 for center in [-1.75,0,1.75]):continue
+            if any(x0 < x < x3 and z0 < z < z3 for x0,x3,z0,z3 in holes):continue
             box(f'{name}_{xi}_{zi}','Shared',(x,y,z),(x2-x1,height,z2-z1),material,solid)
 
 exts=[]
 node('MaintenanceLayout',parent=None)
 for name in ['Shared','PastOnly','FutureOnly','Devices']:
     node(name,**({'visible':False} if name=='FutureOnly' else {}))
+node('StorageBays')
+for index,(x,z) in enumerate(STORAGE_BAYS):
+    node('Bay'+str(index),'Marker3D','StorageBays',position=(x,0,z),rotation_degrees=(0,90,0))
 # All floor tops are exactly y=0. Both eras have a continuous route to storage.
 box('SouthFloor','Shared',(0,-.2,4.85),(16,.4,8.1),'floor',True)
 storage_floor('NorthFloor',-.2,.4,'floor',-8,8,-9.6,-2.8,True)
@@ -139,30 +146,32 @@ floor_text('EntrySign','Shared',(0,.025,8.5),'02 / MAINTENANCE',58)
 label('NorthSign','Shared',(0,3.35,-9.5),'CORE / AUTHORIZED ACCESS',70)
 label('CoreSign','Shared',(0,2.8,-14.2),'ANCHOR 01',86)
 for z in [7.8,5.8,3.8,1.8,-3.6,-5.25,-7.6]:
-    box('FloorJoint'+str(z),'Shared',(0,.004,z),(15.7,.006,.025),'edge')
+    segments=[(-7.85,-6.23),(-4.77,7.85)] if any(abs(z-bz)<.68 for _,bz in STORAGE_BAYS) else [(-7.85,7.85)]
+    for i,(x0,x1) in enumerate(segments):
+        box('FloorJoint'+str(z)+'_'+str(i),'Shared',((x0+x1)/2,.004,z),(x1-x0,.006,.025),'edge')
 for side in [-1,1]:
     box('Lane'+str(side),'Shared',(side*2.5,.008,4.8),(.07,.009,8),'yellow')
     box('NorthLane'+str(side),'Shared',(side*2.5,.008,-6.1),(.07,.009,6.5),'yellow')
 # Grounded stations stay out of the central walking lane.
-device('Service',(-5.7,0,7.5),'SERVICE ISOLATOR')
-device('ReservePast',(-2.5,0,7.5),'LOCAL RESERVE / I')
-device('ReserveFuture',(2.5,0,7.5),'LOCAL RESERVE / II')
-device('Battery',(5.7,0,7.5),'EMERGENCY CELL')
+device('Service',(-5.8,0,7.0),'SERVICE ISOLATOR')
+device('ReservePast',(-5.8,0,4.3),'LOCAL RESERVE / I')
+device('ReserveFuture',(5.8,0,4.3),'LOCAL RESERVE / II')
+device('Battery',(5.8,0,7.0),'EMERGENCY CELL')
 wheel=res('TorusMesh','inner_radius = 0.22\nouter_radius = 0.29\nrings = 24\nring_segments = 8')
 crank=node('CrankWheel',parent='Shared/BatteryStand',position=(0,.95,.38))
 raw_node('Mesh','MeshInstance3D',crank,mesh=wheel,material_override=M['copper'],rotation_degrees=(90,0,0))
 box('CrankGrip',crank,(.25,.01,.09),(.10,.10,.28),'yellow')
-device('BypassPast',(-6.2,0,4.7),'BYPASS / I')
-device('BypassFuture',(6.2,0,4.7),'BYPASS / II')
-device('Archive',(-5.4,0,-5.8),'MAINTENANCE ARCHIVE','wood')
-device('Recorder',(5.4,0,-5.8),'INCIDENT RECORDER')
+device('BypassPast',(-5.8,0,1.6),'BYPASS / I')
+device('BypassFuture',(5.8,0,1.6),'BYPASS / II')
+device('Archive',(4.8,0,-3.4),'MAINTENANCE ARCHIVE','wood')
+device('Recorder',(4.9,0,-6.4),'INCIDENT RECORDER')
 for side in [-1,1]:
     reel=res('CylinderMesh','top_radius = 0.19\nbottom_radius = 0.19\nheight = 0.07\nradial_segments = 24')
     raw_node('Reel'+str(side),'MeshInstance3D','Shared/RecorderStand',mesh=reel,material_override=M['copper'],position=(side*.27,.6,.40),rotation_degrees=(90,0,0))
 box('Cell','Shared/RecorderStand',(0,.19,.39),(.35,.21,.10),'amber')
-device('Keypad',(2.6,0,-8.2),'CORE AUTHORIZATION')
-device('Release',(-2.6,0,-8.2),'MANUAL RELEASE')
-device('Anchor',(0,0,-12.8),'STABILIZATION CONTROL')
+device('Keypad',(3.3,0,-8.8),'CORE AUTHORIZATION')
+device('Release',(-3.0,0,-8.8),'MANUAL RELEASE')
+device('Anchor',(-2.0,0,-12.2),'STABILIZATION CONTROL')
 node('Audit','Marker3D','Devices',position=(2.4,0,-12.5))
 label('AuditLabel','Shared',(2.4,1.4,-12.5),'CORE AUDIT',40)
 for variant,color in [('PastOnly','amber'),('FutureOnly','cyan')]:
@@ -170,8 +179,8 @@ for variant,color in [('PastOnly','amber'),('FutureOnly','cyan')]:
     box('GateBand',variant,(0,1.8,-9.51),(2.8,.13,.04),color)
 # Reuse existing project models, preserving their authored asset provenance.
 for side in [-1,1]:
-    instance('Cabinet'+str(side),'Shared',(side*7.2,0,-6.6),'res://scenes/environment/props/cabinet_low.tscn',yaw=-side*90)
-    instance('PipeDebris'+str(side),'FutureOnly',(side*6,0,-3.7),'res://scenes/environment/props/pipe_broken.tscn',yaw=side*35)
+    instance('Cabinet'+str(side),'Shared',(7.1,0,-4.2 if side == -1 else -6.6),'res://scenes/environment/props/cabinet_low.tscn',yaw=-side*90)
+    instance('PipeDebris'+str(side),'FutureOnly',(side*7.1,0,-.5),'res://scenes/environment/props/pipe_broken.tscn',yaw=side*35)
     instance('Rubble'+str(side),'FutureOnly',(side*4.7,0,-1.2),'res://scenes/environment/props/debris_a.tscn')
 for i,z in enumerate([6,1,-5,-11]):
     for side in [-1,1]:
@@ -179,7 +188,7 @@ for i,z in enumerate([6,1,-5,-11]):
         box(f'LampLens_{i}_{side}','Shared',(side*7.51,2.65,z),(.06,.23,.48),'paper')
         node(f'Pool_{i}_{side}','OmniLight3D','Shared',position=(side*7,2.5,z),omni_range=4.2,light_energy=.22)
 # Future wear: broken tiles and boundary damage without randomizing the playable path.
-for i,(x,z) in enumerate([(-7,6.5),(7,2.4),(-6,-4.5),(6,-7.8)]):
+for i,(x,z) in enumerate([(-7,6.5),(7,2.4),(-7,-1.1),(6,-7.8)]):
     instance('BrokenTiles'+str(i),'FutureOnly',(x,.02,z),'res://scenes/environment/props/debris_tiles.tscn')
 # Architectural detail: service trenches, wainscoting, repeating expansion panels and roof ribs.
 # The roof stays open toward the camera; all set dressing stays outside the walking lane.
@@ -208,11 +217,11 @@ for name,z,text in [('PowerBayTitle',8.0,'01 / POWER DISTRIBUTION'),('StorageRou
 for z in [6,4.8,-3.5,-4.9,-7.4,-10.8,-11.7]: arrow('Route'+str(z),'Shared',0,z)
 # Surface-mounted conduits communicate the shared circuit; the controller changes current strips.
 node('PowerRoutes',parent='Shared')
-route('Main',[(-5.7,6.7),(-5.7,6.05),(5.7,6.05),(5.7,6.7)])
-route('PastFeed',[(-2.5,6.7),(-2.5,6.4),(-6.5,6.4),(-6.5,3.75),(-3.4,3.75)])
-route('FutureFeed',[(2.5,6.7),(2.5,6.4),(6.5,6.4),(6.5,3.75),(3.4,3.75)])
-route('Bypass',[(-6.2,4.0),(-7.0,4.0),(-7.0,5.65),(7.0,5.65),(7.0,4.0),(6.2,4.0)])
-floor_text('BypassStencil','Shared',(0,.09,5.60),'ISOLATED BYPASS',34,'b2bcac')
+route('Main',[(-5.8,6.2),(-5.8,5.7),(5.8,5.7),(5.8,6.2)])
+route('PastFeed',[(-5.8,3.5),(-6.7,3.5),(-6.7,.8),(-5.8,.8)])
+route('FutureFeed',[(5.8,3.5),(6.7,3.5),(6.7,.8),(5.8,.8)])
+route('Bypass',[(-5.8,.8),(-7.0,.8),(-7.0,.3),(7.0,.3),(7.0,.8),(5.8,.8)])
+floor_text('BypassStencil','Shared',(0,.09,.25),'ISOLATED BYPASS',34,'b2bcac')
 
 # Distinct terminal silhouettes: equipment explains function before the player opens a panel.
 service='Shared/ServiceStand'
@@ -286,7 +295,7 @@ box('AuditScreen','Shared',(2.4,1.18,-12.95),(.86,.55,.12),'cyan')
 for side in [-1,1]:
     instance('ToolCrate'+str(side),'PastOnly',(side*7.0,0,8.15),'res://scenes/environment/props/crate.tscn',scale=(.75,.75,.75))
     instance('CableReel'+str(side),'Shared',(side*7.15,0,5.0),'res://scenes/environment/props/cable_reel.tscn',yaw=side*65)
-    instance('StorageRack'+str(side),'Shared',(side*7.1,0,-8.0),'res://scenes/environment/props/signal_rack.tscn',scale=(.65,.65,.65),yaw=side*-90)
+    instance('StorageRack'+str(side),'Shared',(7.1,0,-7.9 if side == -1 else -2.9),'res://scenes/environment/props/signal_rack.tscn',scale=(.65,.65,.65),yaw=side*-90)
     for i in range(3):
         box('FallenPanel'+str(side)+str(i),'FutureOnly',(side*(6.9-i*.21),.06+i*.045,8.0-i*.31),(.8,.09,.65),'rust',rotation=(0,i*23,0))
     # Leaks stain the wall and spread into the edge trench, away from puzzle approaches.

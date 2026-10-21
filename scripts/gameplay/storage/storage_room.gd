@@ -112,9 +112,9 @@ func _case_model(id: String) -> Node3D:
 func _build_bay(index: int) -> void:
 	var bay := Node3D.new()
 	bay.name = "Bay%d" % index
-	bay.position = Vector3((index - 1) * 1.75, 0, -6.25)
+	bay.transform = room.get_node("Layout/StorageBays/Bay%d" % index).transform
 	bay.set_meta("inspection_bounds", AABB(Vector3(-0.85, -0.05, -1.20), Vector3(1.7, 1.65, 2.1)))
-	bay.set_meta("inspection_direction", Vector3(0, -3.6, -4.4))
+	bay.set_meta("inspection_direction", bay.basis * Vector3(0, -3.6, -4.4))
 	add_child(bay)
 	bays.append(bay)
 	motions.append(null)
@@ -156,14 +156,14 @@ func _build_bay(index: int) -> void:
 	_box(bay, "ComputerPedestal", Vector3(0, 0.48, -1.00), Vector3(0.60, 0.96, 0.38), "394d54", true)
 	_box(bay, "ComputerScreen", Vector3(0, 1.13, -0.96), Vector3(1.12, 0.52, 0.15), "172a30")
 	screens.append(_label(bay, Vector3(0, 1.20, -0.875), "0.0 kg", 44))
-	_label(bay, Vector3(0, 1.50, -0.96), "VAULT / %s" % ["A", "B", "C"][index], 34)
+	_label(bay, Vector3(0, 1.50, -0.96), "VAULT / %s" % ["A", "B", "C"][index], 34).billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	_label(bay, Vector3(0, 0.88, -0.86), "UNDERGROUND / DRY / SHIELDED", 18)
 	_box(bay, "ComputerKey", Vector3(0, 0.78, -0.69), Vector3(0.27, 0.13, 0.16), "d6ac63")
 	_box(bay, "LowerKey", Vector3(0.36, 0.78, -0.69), Vector3(0.22, 0.13, 0.16), "ae7e58")
 	_box(bay, "PlaceHandle", Vector3(-0.31, 0.61, 0.81), Vector3(0.26, 0.10, 0.12), "76b3ae")
 	_box(bay, "TakeHandle", Vector3(0.31, 0.61, 0.81), Vector3(0.26, 0.10, 0.12), "ae7e58")
 	var id := "StorageBay%d" % index
-	var target := _target(id, bay.position + Vector3(0, 0, 1.10))
+	var target := _target(id, bay.position + bay.basis * Vector3(0, 0, 1.10))
 	target.interaction_name = "Use underground storage computer " + ["A", "B", "C"][index]
 	target.interacted.connect(func(_actor: Node, _role: String) -> void: room._show_device(id))
 

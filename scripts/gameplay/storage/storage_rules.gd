@@ -1,13 +1,13 @@
 extends "res://scripts/puzzles/puzzle_base.gd"
 ## Generic preservation bays: weight and contents never determine whether a seal is accepted.
 const ITEMS := {
-	"r17": {"label": "R-17 / ochre case", "kg": 4.8, "part": "reader", "contents": "Optical archive reader", "color": "c89b4c", "home": Vector3(-5.8, 0, -3.65)},
-	"k04": {"label": "K-04 / blue case", "kg": 2.6, "part": "regulator", "contents": "Voltage regulator", "color": "57859f", "home": Vector3(5.8, 0, -4.0)},
-	"m22": {"label": "M-22 / red case", "kg": 7.2, "part": "memory", "contents": "Shielded memory module", "color": "ae6158", "home": Vector3(-4.1, 0, -7.9)},
-	"v09": {"label": "V-09 / green case", "kg": 3.4, "part": "", "contents": "Ventilation motor", "color": "6c8c68", "home": Vector3(4.3, 0, -7.1)},
-	"t31": {"label": "T-31 / cream case", "kg": 5.9, "part": "", "contents": "Survey instrument", "color": "c7bca0", "home": Vector3(-6.0, 0, -7.9)},
-	"h08": {"label": "H-08 / violet case", "kg": 1.8, "part": "", "contents": "Hydraulic gauge", "color": "887494", "home": Vector3(6.0, 0, -7.9)},
-	"spool": {"label": "Loose cable spool", "kg": 6.3, "part": "", "contents": "Cable spool — no archive component", "color": "815d43", "home": Vector3(3.4, 0, -3.7)}}
+	"r17": {"label": "R-17 / ochre case", "kg": 4.8, "part": "reader", "contents": "Optical archive reader", "color": "c89b4c", "home": Vector3(3.9, 0, -4.8)},
+	"k04": {"label": "K-04 / blue case", "kg": 2.6, "part": "regulator", "contents": "Voltage regulator", "color": "57859f", "home": Vector3(6.1, 0, -7.6)},
+	"m22": {"label": "M-22 / red case", "kg": 7.2, "part": "memory", "contents": "Shielded memory module", "color": "ae6158", "home": Vector3(3.8, 0, -7.3)},
+	"v09": {"label": "V-09 / green case", "kg": 3.4, "part": "", "contents": "Ventilation motor", "color": "6c8c68", "home": Vector3(6.0, 0, -4.9)},
+	"t31": {"label": "T-31 / cream case", "kg": 5.9, "part": "", "contents": "Survey instrument", "color": "c7bca0", "home": Vector3(4.2, 0, -8.1)},
+	"h08": {"label": "H-08 / violet case", "kg": 1.8, "part": "", "contents": "Hydraulic gauge", "color": "887494", "home": Vector3(6.3, 0, -3.5)},
+	"spool": {"label": "Loose cable spool", "kg": 6.3, "part": "", "contents": "Cable spool — no archive component", "color": "815d43", "home": Vector3(3.0, 0, -5.9)}}
 const PARTS := {"reader": "Optical archive reader", "regulator": "Voltage regulator", "memory": "Shielded memory module"}
 
 static func initial() -> Dictionary:
@@ -38,7 +38,8 @@ static func validate(action: String, payload: Dictionary, state: Dictionary) -> 
 	if action == "drop_storage_item":
 		if payload.size() != 1 or not payload.get("position") is Vector3: return "invalid_position"
 		var p: Vector3 = payload.position
-		if not p.is_finite() or absf(p.x) > 6.6 or p.z < -8.5 or p.z > -3.3 or p.y != 0: return "invalid_position"
+		# Vector3 coordinates use float32; allow rounding at the storage-room boundary.
+		if not p.is_finite() or absf(p.x) > 6.601 or p.z < -8.501 or p.z > -3.299 or p.y != 0: return "invalid_position"
 		return "" if not s.past_hand.is_empty() else "hands_empty"
 	if action == "install_component":
 		if payload.size() != 1 or not payload.get("part") is String or not PARTS.has(payload.part): return "invalid_part"

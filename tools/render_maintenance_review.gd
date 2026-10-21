@@ -76,7 +76,7 @@ func run() -> void:
 	preload("res://tests/storage_fixture.gd").repair(root.get_node("PuzzleManager"))
 	act("read_archive", "future")
 	await quiet()
-	room.player.position = Vector3(5.4,0,-5.2)
+	room.player.position = room.devices.Recorder.global_position + Vector3(0,0,.5)
 	room.get_node("CameraRig").snap_to_target()
 	room._show_device("Recorder")
 	await capture("recorder_choice")

@@ -66,6 +66,16 @@ func wait_lift(index: int) -> void:
 	check(not room.storage.busy[index], "Independent lift finishes its hatch/platform motion")
 	await tick(3)
 
+func walk_core_aisle() -> void:
+	room.ui.close_modal()
+	quiet()
+	room.player.position = Vector3(0, .05, 6.5)
+	room.player.velocity = Vector3.ZERO
+	Input.action_press("move_up")
+	await tick(400)
+	Input.action_release("move_up")
+	check(room.player.position.z < -10.6 and absf(room.player.position.x) < .5 and room.player.position.y > -.1, "The " + room.role + " player can walk the central aisle from the entrance through the open Core doorway")
+
 func switch() -> void:
 	room.ui.close_modal()
 	quiet()
@@ -199,9 +209,11 @@ func run() -> void:
 	room.ui.inspector.set_entry("3142")
 	await press("Authorize service entrance")
 	check(state().core_authorized, "The real code input opens the Student gate")
+	await walk_core_aisle()
 	await use("Anchor")
 	await press("Latch stabilization contact")
 	await switch()
+	await walk_core_aisle()
 	await use("Anchor")
 	await press("Latch stabilization contact")
 	check(puzzles.is_solved(Rules.ID) and room.ending_screen.visible, "Both anchors display the completed chapter")

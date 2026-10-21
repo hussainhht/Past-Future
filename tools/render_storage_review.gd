@@ -49,7 +49,7 @@ func run() -> void:
 	room.ui.close_modal()
 	room.switch_role()
 	quiet()
-	room.player.position = Vector3(-5.4, 0, -5.2)
+	room.player.position = room.devices.Archive.global_position + Vector3(0, 0, .5)
 	room.get_node("CameraRig").snap_to_target()
 	room._show_device("Archive")
 	await capture("storage_manifest")
