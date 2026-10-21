@@ -8,8 +8,10 @@ extends CanvasLayer
 ## The line is fully visible, whether it finished typing or was revealed early. Emitted once per line
 ## that completes. A line that is replaced or closed before it completes never emits it.
 signal typewriter_finished
-## The player clicked the dialogue panel.
+## The player clicked the dialogue panel to advance.
 signal advance_requested
+## The player requested skipping the active dialogue sequence.
+signal skip_requested
 
 ## Lines that would finish typing faster than this are shown at once.
 const MIN_TYPING_TIME := 0.02
@@ -68,6 +70,7 @@ func _ready() -> void:
 	_indicator.text = continue_symbol
 	_indicator.modulate.a = 0.0
 	_panel.gui_input.connect(_on_panel_gui_input)
+	_text_scroll.gui_input.connect(_on_panel_gui_input)
 	var style := _panel.get_theme_stylebox("panel") as StyleBoxFlat
 	if style != null: style.bg_color.a = 1.0
 	_layout_panel()
@@ -259,6 +262,10 @@ func _kill_tween(tween: Tween) -> void:
 
 
 func _on_panel_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		advance_requested.emit()
-		_panel.accept_event()
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			advance_requested.emit()
+			_panel.accept_event()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			skip_requested.emit()
+			_panel.accept_event()

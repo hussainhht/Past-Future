@@ -64,8 +64,4 @@ play_once = true
 
 playback_mode = 1
 
-auto_advance = true
-
-auto_advance_delay = 1.6
-
 typing_speed = 42.0
