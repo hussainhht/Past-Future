@@ -208,11 +208,8 @@ func set_category_volume_linear(category: StringName, value: float) -> void:
 		push_warning("AudioDirector: Cannot set volume on unknown bus '%s'" % category)
 		return
 	
-	if clamped_val <= 0.0001:
-		AudioServer.set_bus_mute(bus_idx, true)
-	else:
-		AudioServer.set_bus_mute(bus_idx, false)
-		AudioServer.set_bus_volume_db(bus_idx, linear_to_db(clamped_val))
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(maxf(clamped_val, 0.0001)))
+	AudioServer.set_bus_mute(bus_idx, clamped_val <= 0.0001)
 	_save_preferences()
 
 func get_category_volume_linear(category: StringName) -> float:

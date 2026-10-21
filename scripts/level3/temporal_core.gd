@@ -43,6 +43,7 @@ var _modal_kind: String = ""
 var _configured: bool = false
 var _last_attempt: int = -1
 var _hello_age: float = 0.0
+var settings_overlay: CanvasLayer
 
 
 func _ready() -> void:
@@ -91,6 +92,14 @@ func _ready() -> void:
 	sound = Sound.new()
 	sound.name = "CoreSound"
 	add_child(sound)
+	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
+	add_child(settings_overlay)
+	settings_overlay.configure(sound.get_node("AudioSystem"))
+	settings_overlay.closed.connect(func() -> void:
+		ui.modal.show()
+		ui.veil.show()
+		ui.modal_box.find_children("", "Button", true, false)[0].grab_focus()
+	)
 	_spawn_player()
 	_register_evidence()
 	rules = Rules.new()
@@ -317,6 +326,7 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 		if state.stage == "STAGE_A": sound.play("activate")
 		elif state.stage in ["STAGE_B", "STAGE_C"]: sound.play("phase")
 		elif state.stage == "OVERLOAD":
+			settings_overlay.hide()
 			ui.close_panel()
 			JournalManager.close_journal()
 			sound.play("overload")
@@ -331,6 +341,7 @@ func _on_rejected(id: String, _action: String, reason: String, actor_role: Strin
 
 
 func _play_ending() -> void:
+	settings_overlay.hide()
 	_shown_ending = state.ending
 	JournalManager.close_journal()
 	ui.close_panel()
@@ -403,17 +414,20 @@ func replay_attempt() -> void:
 
 
 func _show(title: String, body: String, options: Array) -> void:
+	if settings_overlay != null: settings_overlay.hide()
 	ui.show_panel(title, body, options)
 	_sync_controls()
 
 
 func _close() -> void:
+	settings_overlay.hide()
 	ui.close_panel()
 	_modal_kind = ""
 	_sync_controls()
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if settings_overlay.handle_input(event): return
 	if not event.is_action_pressed("ui_cancel") or event.is_echo() or JournalManager.is_open(): return
 	get_viewport().set_input_as_handled()
 	if disconnected: return
@@ -422,6 +436,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	_modal_kind = "pause"
 	_show("ROOM C / MENU", "The shared reactor clock continues while menus and journals are open.\n\nReturn to the room to continue your attempt.", [
 		{"label": "RESUME", "callback": _close},
+		{"label": "SETTINGS", "callback": func() -> void:
+			ui.modal.hide()
+			ui.veil.hide()
+			settings_overlay.open()},
 		{"label": "REDUCE / RESTORE AMBIENT EFFECTS", "callback": func() -> void:
 			for world: Node in worlds.values(): world.effects_enabled = not world.effects_enabled
 			_close()},
@@ -444,6 +462,7 @@ func _on_lock_changed(_locked: bool) -> void:
 
 
 func game_flow_suspend() -> void:
+	settings_overlay.hide()
 	_close()
 	JournalManager.close_journal()
 

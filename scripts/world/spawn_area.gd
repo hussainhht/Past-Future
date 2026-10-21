@@ -3,10 +3,12 @@ extends Node3D
 ## SpawnPoint and prop instances are editable in Godot.
 
 const InputManager := preload("res://scripts/input/input_manager.gd")
+const TemporalGhost := preload("res://scripts/world/temporal_ghost.gd")
 
 @export_enum("Past", "Future") var timeline: String = "Past"
 @export var pause_when_unfocused: bool = true
 @export var level_travel_enabled: bool = true
+@export var temporal_ghost_enabled: bool = true
 
 const CorridorRules := preload("res://scripts/puzzles/implementations/maintenance_corridor_puzzle.gd")
 
@@ -15,6 +17,8 @@ var _paused: bool = false
 var _disconnected: bool = false
 var _character_studio: Control
 var _leaving: bool = false
+var temporal_ghost: Node3D
+var settings_overlay: CanvasLayer
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -52,38 +56,48 @@ func _ready() -> void:
 	player.view_camera = camera
 	_apply_timeline()
 	gameplay.initialize(self)
+	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
+	add_child(settings_overlay)
+	settings_overlay.configure(gameplay.audio)
+	%SettingsButton.pressed.connect(func() -> void:
+		pause_panel.hide()
+		settings_overlay.open()
+	)
+	settings_overlay.closed.connect(func() -> void:
+		pause_panel.show()
+		%SettingsButton.grab_focus()
+	)
 	if not PuzzleManager.is_registered(CorridorRules.ID):
 		PuzzleManager.register_puzzle(CorridorRules.ID, CorridorRules.new())
 	lab.player_exited.connect(_on_laboratory_exit)
 	respawn()
+	if not _networked and temporal_ghost_enabled:
+		if not gameplay._positions.has("future"): gameplay._positions["future"] = $SpawnPoint.global_position
+		var roots: Array[Node3D] = [$SignalLab/Layout]
+		for prop in $Actors.get_children():
+			if prop != player: roots.append(prop.get_node("Visual"))
+		temporal_ghost = TemporalGhost.new()
+		add_child(temporal_ghost)
+		temporal_ghost.configure(self, roots, _temporal_ghost_context)
 	# Level flow: this scene is Room 01, and its controls follow the transition lock.
 	GameFlowManager.attach_room("room_01", self)
 	GameFlowManager.input_lock_changed.connect(func(_locked: bool) -> void: gameplay.sync_controls())
 	get_tree().auto_accept_quit = false
-	_update_footer_hint()
-	InputManager.get_instance().device_changed_signal.connect(func(_d: int, _c: int) -> void: _update_footer_hint())
 	# The scene can also run directly with F6, without a network session.
 	if _networked:
 		_on_network_changed()
 
 
-func _update_footer_hint() -> void:
-	var hint: Label = get_node_or_null("HUD/Interface/Footer/Hint")
-	if not is_instance_valid(hint):
-		return
-	var is_controller := InputManager.active_device_type == InputManager.DeviceType.CONTROLLER
-	var is_dualsense := InputManager.active_controller_type == InputManager.ControllerType.DUALSENSE
-	if is_controller:
-		var interact_btn := "✕" if is_dualsense else "A"
-		var sprint_btn := "L3" if is_dualsense else "LS"
-		var cancel_btn := "○" if is_dualsense else "B"
-		var pause_btn := "OPTIONS" if is_dualsense else "MENU"
-		hint.text = "LEFT STICK  ·  MOVE     %s  ·  RUN     %s  ·  INTERACT / ADVANCE DIALOGUE\n%s  ·  PAUSE / RESUME     %s  ·  CANCEL / BACK" % [sprint_btn, interact_btn, pause_btn, cancel_btn]
-	else:
-		hint.text = "WASD / ARROWS  ·  MOVE     SHIFT  ·  RUN     F  ·  INTERACT     ENTER / CLICK DIALOGUE  ·  CONTINUE\nT  ·  SWITCH SOLO ROLE     F2  ·  CHARACTER STUDIO     R  ·  RESPAWN     ESC  ·  PAUSE"
+func _temporal_ghost_context() -> Dictionary:
+	return {"role": "future" if timeline == "Future" else "past", "player": player,
+		"past_position": player.global_position if timeline == "Past" else gameplay._positions.get("past", $SpawnPoint.global_position),
+		"future_position": player.global_position if timeline == "Future" else gameplay._positions.get("future", $SpawnPoint.global_position),
+		"inspecting": gameplay.physical_devices != null and gameplay.physical_devices.inspector.active,
+		"blocked": is_gameplay_paused() or _leaving or JournalManager.is_open()}
 
 
 func _input(event: InputEvent) -> void:
+	if settings_overlay != null and settings_overlay.handle_input(event): return
 	if gameplay.configured and gameplay.has_modal() and not _paused:
 		return  # the terminal/document owns Escape and all gameplay input
 	if is_instance_valid(_character_studio):
@@ -164,7 +178,7 @@ func _apply_timeline() -> void:
 	%TimelineLabel.add_theme_color_override("font_color", accent)
 	%RoleLabel.text = "THE PROFESSOR" if future else "THE STUDENT"
 	%TimelineButton.text = "PLAY AS STUDENT" if future else "PLAY AS PROFESSOR"
-	%ConnectionLabel.text = "LAN CO-OP  ·  TWO TIMELINES" if _networked else "SOLO TEST  ·  T TO SWITCH ROLE"
+	%ConnectionLabel.text = "LAN CO-OP" if _networked else "SOLO EXPLORATION"
 	if not _networked:
 		PuzzleManager.offline_role = "future" if future else "past"
 	if gameplay.configured:
@@ -210,6 +224,7 @@ func _set_paused(paused: bool) -> void:
 	player.controls_enabled = not paused
 	player.velocity = Vector3.ZERO
 	pause_panel.visible = paused
+	if settings_overlay != null: settings_overlay.hide()
 	%PauseTitle.text = "A moment between years"
 	%PauseDescription.text = "Take your time. The lab will be here."
 	%QuitGameButton.hide()

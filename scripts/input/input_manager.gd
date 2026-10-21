@@ -122,6 +122,10 @@ static func setup_standard_actions() -> void:
 		_create_key_event(KEY_SHIFT),
 		_create_joy_button_event(JOY_BUTTON_LEFT_STICK) # L3 on PS5
 	], DEADZONE_DEFAULT)
+	_ensure_action("temporal_ghost", [
+		_create_key_event(KEY_G),
+		_create_joy_button_event(JOY_BUTTON_RIGHT_SHOULDER)
+	], DEADZONE_DEFAULT)
 
 	_ensure_action("cancel", [
 		_create_key_event(KEY_ESCAPE),
@@ -287,6 +291,8 @@ static func get_action_label(action: StringName) -> String:
 			if is_controller:
 				return "○" if is_dualsense else "B"
 			return "Esc"
+		&"temporal_ghost":
+			return ("R1" if is_dualsense else "RB") if is_controller else "G"
 		&"pause":
 			if is_controller:
 				return "Options" if is_dualsense else "Menu"

@@ -216,8 +216,7 @@ func _check_puzzle() -> void:
 	check(target != null and target.name == "Computer", "In the Past the console must offer the calibration computer")
 	await use("Computer")
 	check(terminal.visible and not player.controls_enabled, "The calibration terminal must open and hold the player still")
-	terminal.frequency_input.text = "67"
-	var early: Dictionary = terminal.submit_frequency()
+	var early: Dictionary = terminal.submit_frequency(67)
 	check(early.status == Status.REJECTED and early.reason == "student_radio_required", "Calibrating before taking the radio must be refused")
 	terminal.close()
 	await tick()
@@ -231,17 +230,11 @@ func _check_puzzle() -> void:
 	check(area.radio.owns_radio and player.skeleton.get_node("HeldRadioSocket/PlaceholderRadio").visible, "The Student must now hold a radio")
 	check(not lab.get_node("Layout/Interactive/PastRadio/Pickup/Model").visible, "The radio must leave the bench")
 
-	# Past: a wrong frequency is not found; 67 locks the array but the link still needs the other radio.
+	# A single handheld cannot unlock either live dial.
 	await stand(console_spot)
 	await use("Computer")
-	terminal.frequency_input.text = "66"
-	var miss: Dictionary = terminal.submit_frequency()
-	check(miss.status == Status.NO_CHANGE and not state().frequency_calibrated, "A wrong frequency must not calibrate the array")
-	check(console.readout.text == "SIGNAL UNSTABLE" and not lab.door.is_open, "A wrong frequency changes nothing in the room")
-	terminal.frequency_input.text = "67"
-	var hit: Dictionary = terminal.submit_frequency()
-	check(hit.status == Status.CHANGED and state().frequency_calibrated, "67 MHz must calibrate the array")
-	check(completions == 0 and console.readout.text == "SIGNAL LOCKED" and not lab.door.is_open, "Calibration alone must not open the door")
+	check(terminal.submit_frequency(67).reason == "professor_radio_required", "Frequency waits for both radios")
+	check(terminal.submit_amplitude(70).reason == "professor_radio_required", "Amplitude waits for both radios")
 	terminal.close()
 
 	# Future: the damaged console's recovered log gives the frequency; the Professor's radio is in the reading corner.
@@ -254,7 +247,15 @@ func _check_puzzle() -> void:
 	target = await stand(Vector3(-8.45, 0, 4.2))
 	check(target != null and target.get_parent().name == "FutureRadio", "The Professor's radio must be in the reading corner")
 	await use(target.name)
-	check(Rules.link_established(state()) and completions == 1, "The second radio must establish the link, once")
+	check(not Rules.link_established(state()) and completions == 0, "Second pickup unlocks tuning without solving")
+	await set_timeline("Past")
+	await stand(console_spot)
+	await use("Computer")
+	check(terminal.submit_frequency(66).status == Status.CHANGED, "Unmatched dial movement updates the live signal")
+	check(console.waveform.state.current_frequency == 66 and not lab.door.is_open, "Console receives the live signal while door stays locked")
+	check(terminal.submit_frequency(67).status == Status.CHANGED and not state().frequency_calibrated, "Frequency alone does not calibrate")
+	check(terminal.submit_amplitude(70).status == Status.COMPLETED, "Matching amplitude establishes the link once")
+	terminal.close()
 	check("Radio connection established" in lab.ui.toast_text(), "Connection guidance appears as explicitly separated player feedback")
 	check(lab.door.opening or lab.door.is_open, "The link must start opening the door")
 	check(await wait_until(func() -> bool: return lab.door.is_open, 4.0), "The door must finish opening")

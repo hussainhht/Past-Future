@@ -81,23 +81,8 @@ func _run() -> void:
 	check(controller.try_interact() and terminal.visible, "Computer opens actual terminal through interaction API")
 	check(not sandbox.player.controls_enabled and not controller.is_interaction_available(), "Modal blocks movement and underlying interaction")
 	await capture("02_terminal")
-	for text in ["", "0", "abc", "1.5", "-1"]:
-		terminal.frequency_input.text = text
-		terminal._validate_text(text)
-		check(terminal.calibrate_button.disabled, "Invalid numeric input disables calibration: %s" % text)
-	check(terminal.submit_frequency().status == Status.REJECTED, "Invalid text never submits an action")
-	terminal.frequency_input.text = "66"
-	terminal._validate_text("66")
-	check(not terminal.calibrate_button.disabled, "Whole-number input enables calibration")
-	var revision: int = manager.get_revision(Rules.ID)
-	check(terminal.submit_frequency().status == Status.NO_CHANGE, "Wrong frequency is retryable")
-	check("SIGNAL NOT FOUND" in terminal.feedback_label.text, "Wrong-frequency feedback is visible")
-	await capture("03_wrong_frequency")
-	check(manager.get_revision(Rules.ID) == revision, "Wrong frequency leaves revision unchanged")
-	terminal.frequency_input.text = "67"
-	terminal._validate_text("67")
-	check(terminal.submit_frequency().status == Status.CHANGED, "Correct calibration waits for second radio")
-	check(terminal.status_label.text == "SIGNAL LOCKED" and link_events == 0, "No completion before both pickups")
+	check(not terminal.frequency_dial.editable and not terminal.amplitude_dial.editable, "Both controls wait for second pickup")
+	check(terminal.submit_frequency(67).reason == "professor_radio_required", "Terminal cannot bypass radio gate")
 	var escape := InputEventKey.new()
 	escape.keycode = KEY_ESCAPE
 	escape.pressed = true
@@ -110,6 +95,11 @@ func _run() -> void:
 	await tick()
 	check(controller.get_current_interactable() == future_pickup, "Future detector selects its own radio")
 	check(controller.try_interact(), "Professor acquires own radio through interaction controller")
+	check(not manager.is_solved(Rules.ID) and terminal.frequency_dial.editable, "Both radios unlock live tuning without solving")
+	check(terminal.submit_frequency(66).status == Status.CHANGED, "Unmatched frequency still replicates")
+	check(sandbox.reader.waveform.state.current_frequency == 66, "Future view receives dial changes immediately")
+	check(terminal.submit_frequency(67).status == Status.CHANGED and link_events == 0, "Frequency alone cannot complete")
+	check(terminal.submit_amplitude(70).status == Status.COMPLETED, "Matching amplitude completes through real terminal")
 	check(manager.is_solved(Rules.ID) and radio.can_receive(), "Final prerequisite establishes confirmed link")
 	check(link_events == 1, "Confirmed completion exposes exactly one narrative hook")
 	check(cues.count(&"connected") == 1, "Confirmed completion requests one radio connection sound")
@@ -153,7 +143,7 @@ func _run() -> void:
 	check(adapter.present_line("Professor", "Reply supplied by the director."), "Alternating Professor line uses the same radio view")
 	check(view.speaker_label.text == "Professor" and radio.transmitting, "Alternating speaker is displayed with transmission animation")
 	check(cues.count(&"incoming") == 2, "Each incoming line requests a transmission cue")
-	revision = manager.get_revision(Rules.ID)
+	var revision: int = manager.get_revision(Rules.ID)
 	radio.interfere(0.05)
 	check(not radio.can_receive() and view.advance_button.disabled and &"static" in cues, "Temporary interference updates view and requests static")
 	await create_timer(0.12).timeout
@@ -186,13 +176,13 @@ func _run() -> void:
 	manager.offline_role = "past"
 	radio.set_player_role("past")
 	check(terminal.open_for(sandbox.player, "past"), "Student can reopen the completed terminal")
-	check(terminal.frequency_input.text == "67" and terminal.calibrate_button.disabled, "Reopening shows locked frequency")
+	check(terminal.frequency_dial.value == 67 and not terminal.amplitude_dial.editable, "Reopening shows locked frequency")
 	await capture("06_connected_terminal")
 	terminal.close()
 	# Destroy and recreate the terminal itself after success.
 	var other_terminal: Control = load("res://scenes/gameplay/frequency/frequency_terminal_ui.tscn").instantiate()
 	root.add_child(other_terminal)
-	check(other_terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and other_terminal.frequency_input.text == "67", "Fresh terminal queries confirmed state")
+	check(other_terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and other_terminal.frequency_dial.value == 67, "Fresh terminal queries confirmed state")
 	other_terminal.open_for(sandbox.player, "past")
 	other_terminal.free()
 	check(sandbox.player.controls_enabled, "Unloading an open modal restores controls")

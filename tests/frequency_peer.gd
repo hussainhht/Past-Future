@@ -97,15 +97,19 @@ func _host() -> void:
 	check(puzzles.get_revision(Rules.ID) == 1, "Unauthorized attempts create no canonical revision")
 	check(radio.request_acquisition().status == Status.CHANGED, "Host Student component requests its own radio")
 	var revision: int = puzzles.get_revision(Rules.ID)
-	check(puzzles.submit_action(Rules.ID, "tune_frequency", {"frequency": 66}).status == Status.NO_CHANGE, "Host wrong frequency cannot solve")
-	check(puzzles.get_revision(Rules.ID) == revision and completions == 0, "Incorrect tuning creates neither completion nor revision")
-	check(puzzles.submit_action(Rules.ID, "tune_frequency", {"frequency": 67}).status == Status.COMPLETED, "Host establishes link after all prerequisites")
+	check(puzzles.submit_action(Rules.ID, "tune_frequency", {"frequency": 66}).status == Status.CHANGED, "Unmatched frequency is replicated")
+	check(puzzles.get_revision(Rules.ID) == revision + 1 and completions == 0, "Live tuning creates a revision without completion")
+	check(puzzles.submit_action(Rules.ID, "tune_frequency", {"frequency": 67}).status == Status.CHANGED, "Frequency alone cannot establish link")
+	# Wait until the remote live receiver has seen an unmatched value.
+	if not await wait_for(func() -> bool: return step() >= 2, "Client did not observe live dials"):
+		return
+	check(puzzles.submit_action(Rules.ID, "tune_amplitude", {"amplitude": 70}).status == Status.COMPLETED, "Amplitude completes the matched signal")
 	check(completions == 1 and radio.can_receive() and presenter.connected, "Host presentation follows confirmed state")
 	check(puzzles.submit_action(Rules.ID, "tune_frequency", {"frequency": 67}).status == Status.NO_CHANGE, "Repeated host tuning is idempotent")
-	if not await wait_for(func() -> bool: return step() >= 2, "Guest did not verify connected state and snapshot"):
+	if not await wait_for(func() -> bool: return step() >= 3, "Guest did not verify connected state and snapshot"):
 		return
 	check(puzzles.reset_puzzle(Rules.ID), "Host can explicitly reset the radio puzzle")
-	if not await wait_for(func() -> bool: return step() >= 3, "Guest did not observe reset"):
+	if not await wait_for(func() -> bool: return step() >= 4, "Guest did not observe reset"):
 		return
 	puzzles.begin_session()
 	check(puzzles.get_session_id() != session, "New session receives new identity")
@@ -142,15 +146,19 @@ func _client() -> void:
 		return
 	check(radio.signal_state == 1, "Client searches until host calibration")
 	reach(1)
+	if not await wait_for(func() -> bool: return puzzles.get_state(Rules.ID).get("current_frequency") == 67, "Live dial update missing"):
+		return
+	check(not radio.can_receive() and puzzles.get_state(Rules.ID).current_amplitude == 35, "Client sees live unmatched signal before completion")
+	reach(2)
 	if not await wait_for(func() -> bool: return radio.can_receive(), "Confirmed link missing on client"):
 		return
-	check(puzzles.get_state(Rules.ID) == {"student_radio": true, "professor_radio": true, "frequency_calibrated": true}, "Client receives all confirmed prerequisites")
-	check(puzzles.get_revision(Rules.ID) == 4 and completions == 1 and presenter.connected, "Client applies canonical revision and completion exactly once")
+	check(puzzles.get_state(Rules.ID) == {"student_radio": true, "professor_radio": true, "frequency_calibrated": true, "current_frequency": 67, "current_amplitude": 70}, "Client receives all confirmed prerequisites")
+	check(puzzles.get_revision(Rules.ID) == 7 and completions == 1 and presenter.connected, "Client applies canonical revision and completion exactly once")
 	var before := announcements
 	puzzles.request_sync()
 	if not await wait_for(func() -> bool: return announcements > before, "Requested full snapshot missing"):
 		return
-	check(completions == 1 and radio.can_receive() and puzzles.get_revision(Rules.ID) == 4, "Resync restores state without replaying conversation trigger")
+	check(completions == 1 and radio.can_receive() and puzzles.get_revision(Rules.ID) == 7, "Resync restores state without replaying conversation trigger")
 	# A newly loaded presentation room and radio both query the existing replica.
 	presenter.free()
 	presenter = load("res://scenes/gameplay/frequency/temporal_link_indicator.tscn").instantiate()
@@ -161,15 +169,15 @@ func _client() -> void:
 	root.add_child(later_radio)
 	check(later_radio.owns_radio and later_radio.can_receive(), "New character radio rehydrates ownership and link")
 	later_radio.free()
-	reach(2)
+	reach(3)
 	if not await wait_for(func() -> bool: return not radio.owns_radio, "Host reset did not reach client"):
 		return
 	check(not presenter.connected and radio.signal_state == 0, "Host reset updates client component and rift")
-	reach(3)
+	reach(4)
 	if not await wait_for(func() -> bool: return puzzles.get_session_id() != session, "New session snapshot missing"):
 		return
 	check(puzzles.get_state(Rules.ID) == Rules.new().get_initial_state() and puzzles.get_latest_revision() == 0, "Fresh session inherits no ownership or calibration")
-	check(not puzzles._receive_update(session, Rules.ID, {"student_radio": true, "professor_radio": true, "frequency_calibrated": true}, true, 999, 0), "Old-session update cannot restore stale connection")
+	check(not puzzles._receive_update(session, Rules.ID, {"student_radio": true, "professor_radio": true, "frequency_calibrated": true, "current_frequency": 67, "current_amplitude": 70}, true, 999, 0), "Old-session update cannot restore stale connection")
 	check(not radio.can_receive() and completions == 1, "Stale updates and session start do not replay completion")
 	reach(1)
 	if not await wait_for(func() -> bool: return step() == 1, "New session checkpoint not confirmed"):

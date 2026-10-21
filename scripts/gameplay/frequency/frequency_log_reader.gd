@@ -2,17 +2,27 @@ extends "res://scripts/gameplay/frequency/frequency_modal.gd"
 
 const InputManager := preload("res://scripts/input/input_manager.gd")
 
+const Waveform := preload("res://scripts/gameplay/frequency/frequency_waveform.gd")
+const Rules := preload("res://scripts/puzzles/implementations/frequency_puzzle.gd")
+var waveform: Control
 var document_label: Label
 var close_button: Button
 
 
 func _ready() -> void:
 	super._ready()
-	content.add_child(UI.label("RECOVERED RESEARCH LOG", 24, UI.CYAN))
+	content.add_child(UI.label("LIVE SIGNAL RECEIVER", 24, UI.CYAN))
 	content.add_child(HSeparator.new())
+	waveform = Waveform.new()
+	waveform.custom_minimum_size = Vector2(640, 420)
+	content.add_child(waveform)
+	PuzzleManager.puzzle_state_changed.connect(func(id: String, state: Dictionary, _revision: int):
+		if id == Rules.ID: waveform.set_signal(state, true))
+	waveform.set_signal(PuzzleManager.get_state(Rules.ID), true)
 	document_label = UI.label("", 20, Color("d4e1e4"))
 	document_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	document_label.custom_minimum_size.x = 510
+	document_label.custom_minimum_size.x = 640
+	document_label.hide()
 	content.add_child(document_label)
 	close_button = UI.button("CLOSE  [ESC / ○]")
 	close_button.set_meta("audio_event", &"")

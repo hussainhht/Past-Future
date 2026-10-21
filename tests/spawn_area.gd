@@ -203,7 +203,7 @@ func _run() -> void:
 	check(camera.global_position.x > camera_position.x + 0.5, "Fixed-angle camera must still follow the moving player")
 	check(camera.global_basis.is_equal_approx(camera_basis), "Following the player must preserve the viewing angle")
 	area.respawn()
-	area._return_to_menu()
+	await area._return_to_menu()
 	await process_frame
 	await process_frame
 	check(current_scene.scene_file_path == "res://scenes/menu/main_menu.tscn", "Return to menu must load the title screen")
@@ -224,7 +224,7 @@ func _run() -> void:
 	await tick()
 	send_key(KEY_R, false)
 	check(area.player.position.distance_to(area.get_node("SpawnPoint").position) < 0.04, "Physical R key must respawn the student")
-	area._return_to_menu()
+	await area._return_to_menu()
 	await scene_changed
 	await create_timer(0.15).timeout
 	print("SPAWN AREA: ", "PASS" if failures == 0 else "FAIL", " (", failures, " failures)")

@@ -367,17 +367,8 @@ func test_14_terminal_frequency_input() -> void:
 	await tick(2)
 
 	check(terminal.visible, "Terminal modal must be open")
-	var input: LineEdit = terminal.frequency_input
-	var btn_6: Button = terminal.keypad_container.get_node("Keypad_6")
-	var btn_7: Button = terminal.keypad_container.get_node("Keypad_7")
-
-	# Press 6 and 7 using keypad buttons
-	btn_6.pressed.emit()
-	btn_7.pressed.emit()
-	await tick(2)
-
-	check(input.text == "67", "Keypad buttons must enter 67, got '%s'" % input.text)
-	check(terminal._valid_frequency(), "Frequency 67 must be valid")
+	check(terminal.frequency_dial is HSlider and terminal.amplitude_dial is HSlider, "Standalone terminal supplies both controller-focusable controls")
+	check(terminal.frequency_dial.max_value == 999 and terminal.amplitude_dial.max_value == 100, "The controls use the puzzle's ranges")
 
 	terminal.close()
 	await tick(2)

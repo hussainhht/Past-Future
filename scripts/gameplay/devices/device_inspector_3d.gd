@@ -1,16 +1,20 @@
 extends Node
 ## Local close-up of real equipment. All controls are ray-picked 3D parts; progression is external.
-## The only overlay is explicitly labelled player assistance, supplied by the room's LabUI.
+## Records stay readable in a compact foreground panel beside the framed equipment.
 
 signal action_requested(action: String, payload: Dictionary)
 signal active_changed(open: bool)
 signal entry_changed(text: String)
+signal dial_changed(parameter: String, value: int)
 
 const PICK_LAYER := 32
 var active := false
 var controls: Dictionary = {}
 var entry := ""
-var suspended := false
+var suspended := false:
+	set(value):
+		suspended = value
+		if _record_layer != null: _record_layer.visible = active and not value
 var mount: Node3D
 var camera: Camera3D
 var actor: Node3D
@@ -25,13 +29,24 @@ var _parts: Array[Node] = []
 var _readout: Label3D
 var _keypad_kind := ""
 var _keypad_action: Dictionary = {}
-var _surface: Node3D
+var _record_layer: CanvasLayer
+var _record_panel: PanelContainer
+var _record_title: Label
+var _record_body: Label
+var _record_scroll: ScrollContainer
+var _equipment_points: PackedVector3Array
+var _equipment_rect := Rect2()
 var _occluders: Dictionary = {}
 var _cutaway_bodies: Array[RID] = []
 var _view_origin: Vector3
 var _view_size := Vector2.ZERO
 var _dial_knob: Node3D
 var _dial_value := 50.0
+var amplitude := 35
+var _amplitude_value := 35.0
+var _amplitude_knob: Node3D
+var _amplitude_readout: Label3D
+var _selected_dial := "frequency"
 var _dial_enabled := false
 var _dragging_dial := false
 var _drag_angle := 0.0
@@ -59,21 +74,7 @@ func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String,
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		active = true
 		active_changed.emit(true)
-		_frame_device(true)
-	# A hinged service card lives beside the actual controls, in the scene's depth and lighting.
-	_surface = Node3D.new()
-	_surface.name = "OpenServiceCard"
-	mount.add_child(_surface)
-	_parts.append(_surface)
-	_surface.position = Vector3(1.50, 0.92, 0.95)
-	_mesh(_surface, Vector3.ZERO, Vector3(1.90, 1.85, 0.075), Color("253b40"))
-	var paper := _mesh(_surface, Vector3(0, 0, 0.047), Vector3(1.76, 1.70, 0.018), Color("e5ddbf"))
-	paper.material_override.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-	_mesh(_surface, Vector3(0, 0.86, 0.075), Vector3(0.40, 0.12, 0.035), Color("8b7854"))
-	var heading := _letter(_surface, title, Vector3(0, 0.67, 0.075), 0.0016, 38, Color("253b40"), 34)
-	var reading := _letter(_surface, text, Vector3(0, 0.47, 0.075), 0.00155, 33, Color("253b40"), 52, true)
-	_fit_letter(heading, Vector2(1.60, 0.14))
-	_fit_letter(reading, Vector2(1.58, 1.05))
+	_show_record(title, text, not reopening)
 	controls.clear()
 	if keypad_kind == "frequency_dial": _build_frequency_dial(options)
 	elif not keypad_kind.is_empty(): _build_keypad(options)
@@ -93,18 +94,116 @@ func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String,
 				if mesh == null: mesh = visual.get_node_or_null("Mesh") as MeshInstance3D
 				if mesh != null: bounds = mesh.get_aabb().size + Vector3.ONE * 0.10
 			_attach_control(option.label, visual, option, bounds, not bound)
+	_collect_equipment_points()
+	_frame_device(not reopening)
 	_cutaway()
+
+
+func _show_record(title: String, text: String, reset_scroll: bool) -> void:
+	if _record_layer == null:
+		_record_layer = CanvasLayer.new()
+		_record_layer.name = "InspectionRecord"
+		_record_layer.layer = 21
+		add_child(_record_layer)
+		_record_panel = PanelContainer.new()
+		_record_panel.name = "RecordPanel"
+		_record_layer.add_child(_record_panel)
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color("e5ddbf")
+		style.border_color = Color("8b7854")
+		style.set_border_width_all(2)
+		style.set_content_margin_all(18)
+		style.set_corner_radius_all(4)
+		_record_panel.add_theme_stylebox_override("panel", style)
+		var content := VBoxContainer.new()
+		content.add_theme_constant_override("separation", 14)
+		_record_panel.add_child(content)
+		_record_title = Label.new()
+		_record_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_record_title.add_theme_font_size_override("font_size", 18)
+		_record_title.add_theme_color_override("font_color", Color("253b40"))
+		_record_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		content.add_child(_record_title)
+		_record_scroll = ScrollContainer.new()
+		_record_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		_record_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		content.add_child(_record_scroll)
+		_record_body = Label.new()
+		_record_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_record_body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		_record_body.add_theme_font_size_override("font_size", 16)
+		_record_body.add_theme_color_override("font_color", Color("253b40"))
+		_record_body.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_record_scroll.add_child(_record_body)
+	_record_title.text = title
+	_record_body.text = text
+	if reset_scroll: _record_scroll.scroll_vertical = 0
+	_record_layer.show()
+
+
+func _layout_record() -> void:
+	var width := clampf(_view_size.x * 0.25, 250.0, 350.0)
+	var font := ThemeDB.fallback_font
+	var title_height := maxf(_record_title.get_minimum_size().y, font.get_multiline_string_size(_record_title.text, HORIZONTAL_ALIGNMENT_LEFT, width - 36.0, 18).y)
+	var body_height := maxf(_record_body.get_minimum_size().y, font.get_multiline_string_size(_record_body.text, HORIZONTAL_ALIGNMENT_LEFT, width - 52.0, 16).y)
+	# Leave the lower part of the view free for character thoughts and the footer.
+	var available_height := maxf(180.0, _view_size.y - 300.0)
+	_record_panel.position = Vector2(26, 26)
+	_record_panel.size = Vector2(width, minf(available_height, maxf(180.0, title_height + body_height + 58.0)))
+	var guide_left := _view_size.x - clampf(_view_size.x * 0.23, 280.0, 340.0) - 26.0
+	var equipment_left := _record_panel.get_rect().end.x + 24.0
+	_equipment_rect = Rect2(equipment_left, 26, guide_left - 24.0 - equipment_left, available_height)
+
+
+func _collect_equipment_points() -> void:
+	_equipment_points.clear()
+	var root := mount.get_meta("occlusion_body", mount) as Node3D
+	var pieces := root.find_children("*", "MeshInstance3D", true, false)
+	if root is MeshInstance3D: pieces.append(root)
+	# Laboratory controls live on the environment console, separate from its furniture body.
+	if root != mount: pieces.append_array(mount.find_children("*", "MeshInstance3D", true, false))
+	for piece: MeshInstance3D in pieces:
+		if not piece.is_visible_in_tree() or piece.is_queued_for_deletion(): continue
+		var bounds := piece.get_aabb()
+		for x in [0, 1]:
+			for y in [0, 1]:
+				for z in [0, 1]:
+					_equipment_points.append(piece.global_transform * (bounds.position + bounds.size * Vector3(x, y, z)))
+	if _equipment_points.is_empty(): _equipment_points.append(mount.global_position)
+
+
+func equipment_screen_rect() -> Rect2:
+	var bounds := Rect2(camera.unproject_position(_equipment_points[0]), Vector2.ZERO)
+	for point in _equipment_points: bounds = bounds.expand(camera.unproject_position(point))
+	return bounds
 
 
 func _frame_device(animate: bool) -> void:
 	_view_size = camera.get_viewport().get_visible_rect().size
-	var rail_width := clampf(_view_size.x * 0.23, 280.0, 340.0) + 26.0
-	var shift := maxf(0.0, rail_width / _view_size.x - 366.0 / 1600.0) * 8.0
-	var focus := mount.to_global(Vector3(1.05 + shift, 0.85, 0.32))
-	var destination := Transform3D(Basis.IDENTITY, focus + Vector3(0, 0.55, 4.4)).looking_at(focus)
+	_layout_record()
+	var bounds := AABB(_equipment_points[0], Vector3.ZERO)
+	for point in _equipment_points: bounds = bounds.expand(point)
+	var focus := bounds.get_center()
+	var basis := Basis.looking_at(Vector3(0, -0.55, -4.4))
+	var start := camera.global_transform
+	var start_fov := camera.fov
+	var destination := start
+	var distance := 3.4
+	camera.fov = 42.0
+	# Fit the complete machine, including its controls, into the space between record and guide.
+	for attempt in 24:
+		var units_per_pixel := 2.0 * distance * tan(deg_to_rad(21.0)) / _view_size.y
+		var offset := _view_size * 0.5 - _equipment_rect.get_center()
+		var origin := focus + basis.z * distance + (basis.x * offset.x - basis.y * offset.y) * units_per_pixel
+		destination = Transform3D(basis, origin)
+		camera.global_transform = destination
+		if _equipment_rect.encloses(equipment_screen_rect().grow(12.0)): break
+		distance *= 1.12
 	_view_origin = destination.origin
 	if _tween: _tween.kill()
 	if animate:
+		camera.global_transform = start
+		camera.fov = start_fov
 		_tween = create_tween().set_parallel(true)
 		_tween.tween_property(camera, "global_transform", destination, 0.30).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		_tween.tween_property(camera, "fov", 42.0, 0.30)
@@ -115,6 +214,8 @@ func _frame_device(animate: bool) -> void:
 
 func _process(_delta: float) -> void:
 	if suspended: _dragging_dial = false
+	if _record_layer != null: _record_layer.visible = active and not suspended
+	if active: _layout_record()
 	if active and camera.get_viewport().get_visible_rect().size != _view_size:
 		_frame_device(false)
 		_cutaway()
@@ -124,9 +225,11 @@ func _cutaway() -> void:
 	var exclusions: Array[RID] = _cutaway_bodies.duplicate()
 	var owner_body := mount.get_meta("occlusion_body", mount) as CollisionObject3D
 	if owner_body != null: exclusions.append(owner_body.get_rid())
-	for point in [Vector3(0, 0.9, 0.45), Vector3(0.75, 0.40, 0.95), Vector3(2.25, 0.40, 0.95), Vector3(1.5, 1.6, 0.95)]:
+	for body: CollisionObject3D in mount.find_children("*", "CollisionObject3D", true, false):
+		exclusions.append(body.get_rid())
+	for point in _equipment_points:
 		for attempt in 8:
-			var query := PhysicsRayQueryParameters3D.create(_view_origin, mount.to_global(point), 1)
+			var query := PhysicsRayQueryParameters3D.create(_view_origin, point, 1)
 			query.exclude = exclusions
 			var hit := mount.get_world_3d().direct_space_state.intersect_ray(query)
 			if hit.is_empty(): break
@@ -180,16 +283,6 @@ func _letter(parent: Node3D, text: String, at: Vector3, pixel_size: float, font_
 	return label
 
 
-func _fit_letter(label: Label3D, maximum: Vector2) -> void:
-	var font: Font = label.font if label.font != null else ThemeDB.fallback_font
-	var extent := font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.font_size) * label.pixel_size
-	while (extent.x > maximum.x or extent.y > maximum.y) and label.font_size > 20:
-		label.font_size -= 1
-		extent = font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT, -1, label.font_size) * label.pixel_size
-	if extent.x > maximum.x or extent.y > maximum.y:
-		label.pixel_size *= minf(maximum.x / maxf(extent.x, 0.001), maximum.y / maxf(extent.y, 0.001))
-
-
 func install_keypad(body: Node3D) -> Node3D:
 	if body.has_node("MountedKeypad"): return body.get_node("MountedKeypad")
 	var panel := Node3D.new()
@@ -228,29 +321,29 @@ func install_frequency_dial(body: Node3D) -> Node3D:
 	# Fit the controls below the console's screen and status readout.
 	panel.position = Vector3(0, .72, .47)
 	panel.scale = Vector3.ONE * .62
-	_mesh(panel, Vector3.ZERO, Vector3(1.15, 1.55, 0.12), Color("243a40"))
-	_mesh(panel, Vector3(0, .50, .075), Vector3(.94, .29, .025), Color("0c2025"))
-	var display := _letter(panel, "050 MHz", Vector3(0, .50, .10), .0021, 36, Color("91e3bd"), 12)
-	display.name = "EntryReadout"
-	for index in 36:
-		var angle := float(index) * TAU / 36.0
-		var tick := _mesh(panel, Vector3(sin(angle) * .43, -.08 + cos(angle) * .43, .115), Vector3(.018, .07 if index % 3 == 0 else .035, .025), Color("b9c8ad"))
-		tick.rotation.z = -angle
-	_dial_disk(panel, Vector3(0,-.08,.12), .36, .045, Color("95794f"))
-	var knob := Node3D.new()
-	knob.name = "TuningKnob"
-	panel.add_child(knob)
-	knob.position = Vector3(0,-.08,.20)
-	_dial_disk(knob, Vector3.ZERO, .31, .17, Color("496568"))
-	_dial_disk(knob, Vector3(0,0,.095), .26, .025, Color("263e43"))
-	for index in 24:
-		var angle := float(index) * TAU / 24.0
-		var grip := _mesh(knob, Vector3(sin(angle) * .30, cos(angle) * .30, .015), Vector3(.035,.065,.13), Color("68817c"))
-		grip.rotation.z = -angle
-	_mesh(knob, Vector3(0,.19,.12), Vector3(.045,.15,.025), Color("dfbd73"))
-	var button := _mesh(panel, Vector3(0,-.64,.12), Vector3(.78,.17,.12), Color("77ad98"))
-	button.name = "CalibrateButton"
-	_letter(button, "CALIBRATE", Vector3(0,0,.067), .0015, 28, Color("172d32"), 12)
+	_mesh(panel, Vector3.ZERO, Vector3(2.12, 1.32, 0.12), Color("243a40"))
+	for parameter in ["frequency", "amplitude"]:
+		var x := -.52 if parameter == "frequency" else .52
+		var display := _letter(panel, "050 MHz" if parameter == "frequency" else "35%", Vector3(x, .47, .10), .003, 40, Color("91e3bd"), 12)
+		display.name = "EntryReadout" if parameter == "frequency" else "AmplitudeReadout"
+		var caption := _letter(panel, parameter.to_upper(), Vector3(x, -.52, .10), .0028, 32, Color("dfbd73"), 12)
+		caption.name = parameter.capitalize() + "Caption"
+		for index in 36:
+			var angle := float(index) * TAU / 36.0
+			var tick := _mesh(panel, Vector3(x + sin(angle) * .43, -.02 + cos(angle) * .43, .115), Vector3(.018, .05 if index % 3 == 0 else .025, .025), Color("b9c8ad"))
+			tick.rotation.z = -angle
+		_dial_disk(panel, Vector3(x,-.02,.12), .36, .045, Color("95794f"))
+		var knob := Node3D.new()
+		knob.name = "TuningKnob" if parameter == "frequency" else "AmplitudeKnob"
+		panel.add_child(knob)
+		knob.position = Vector3(x,-.02,.20)
+		_dial_disk(knob, Vector3.ZERO, .31, .17, Color("496568"))
+		_dial_disk(knob, Vector3(0,0,.095), .26, .025, Color("263e43"))
+		for index in 24:
+			var angle := float(index) * TAU / 24.0
+			var grip := _mesh(knob, Vector3(sin(angle) * .30, cos(angle) * .30, .015), Vector3(.035,.065,.13), Color("68817c"))
+			grip.rotation.z = -angle
+		_mesh(knob, Vector3(0,.19,.12), Vector3(.045,.15,.025), Color("dfbd73"))
 	return panel
 
 
@@ -258,26 +351,53 @@ func _build_frequency_dial(options: Array) -> void:
 	var panel := install_frequency_dial(mount)
 	_readout = panel.get_node("EntryReadout")
 	_dial_knob = panel.get_node("TuningKnob")
-	_keypad_action = options[0]
-	_dial_enabled = not _keypad_action.get("disabled", false)
+	_amplitude_knob = panel.get_node("AmplitudeKnob")
+	_amplitude_readout = panel.get_node("AmplitudeReadout")
+	_dial_enabled = not options[0].get("disabled", false)
 	_attach_control("Rotate tuning dial", _dial_knob, {"action":"_rotate_dial", "disabled": not _dial_enabled}, Vector3(.70,.70,.32), false)
-	_attach_control(_keypad_action.label, panel.get_node("CalibrateButton"), _keypad_action, Vector3(.80,.19,.18))
-	set_entry(entry if not entry.is_empty() else "50")
+	_attach_control("Rotate amplitude dial", _amplitude_knob, {"action":"_rotate_dial", "disabled": not _dial_enabled}, Vector3(.70,.70,.32), false)
+	set_signal_values(entry.to_int() if not entry.is_empty() else 50, amplitude, _dial_enabled)
+
+
+func set_signal_values(frequency: int, strength: int, enabled: bool) -> void:
+	# Preserve fractional drag movement when a confirmed integer update echoes back.
+	if roundi(_dial_value) != frequency: _dial_value = frequency
+	if roundi(_amplitude_value) != strength: _amplitude_value = strength
+	_dial_enabled = enabled
+	for caption in ["Rotate tuning dial", "Rotate amplitude dial"]:
+		if controls.has(caption): controls[caption].option.disabled = not enabled
+	if not enabled: _dragging_dial = false
+	_update_dial()
 
 
 func _update_dial() -> void:
 	entry = str(roundi(_dial_value))
+	amplitude = roundi(_amplitude_value)
 	if is_instance_valid(_dial_knob): _dial_knob.rotation.z = -deg_to_rad((_dial_value - 1.0) * DIAL_DEGREES_PER_MHZ)
+	if is_instance_valid(_amplitude_knob): _amplitude_knob.rotation.z = -deg_to_rad((_amplitude_value - 1.0) * DIAL_DEGREES_PER_MHZ)
 	if is_instance_valid(_readout): _readout.text = "%03d MHz" % roundi(_dial_value)
+	if is_instance_valid(_amplitude_readout): _amplitude_readout.text = "%02d%%" % amplitude
+	if is_instance_valid(mount) and mount.has_node("MountedFrequencyDial"):
+		var panel := mount.get_node("MountedFrequencyDial")
+		for parameter in ["frequency", "amplitude"]:
+			panel.get_node(parameter.capitalize() + "Caption").text = ("> " if _selected_dial == parameter else "") + parameter.to_upper()
 
 
-func adjust_dial(change: float) -> bool:
+func adjust_dial(change: float, parameter: String = "") -> bool:
 	if not active or suspended or _keypad_kind != "frequency_dial" or not _dial_enabled: return false
-	var previous := entry
-	_dial_value = clampf(_dial_value + change, 1.0, 999.0)
+	if not parameter.is_empty(): _selected_dial = parameter
+	var previous := amplitude if _selected_dial == "amplitude" else entry.to_int()
+	if _selected_dial == "amplitude": _amplitude_value = clampf(_amplitude_value + change, 1.0, 100.0)
+	else: _dial_value = clampf(_dial_value + change, 1.0, 999.0)
 	_update_dial()
-	if entry != previous: entry_changed.emit(entry)
+	var value := amplitude if _selected_dial == "amplitude" else entry.to_int()
+	if value != previous:
+		dial_changed.emit(_selected_dial, value)
 	return true
+
+
+func _selected_knob() -> Node3D:
+	return _amplitude_knob if _selected_dial == "amplitude" else _dial_knob
 
 
 func _build_keypad(options: Array) -> void:
@@ -313,7 +433,6 @@ func set_entry(text: String) -> void:
 	if _keypad_kind == "frequency_dial":
 		_dial_value = clampf(float(text.to_int()), 1.0, 999.0)
 		_update_dial()
-		entry_changed.emit(entry)
 		return
 	entry = text.left(3 if _keypad_kind == "frequency" else 8)
 	if is_instance_valid(_readout): _readout.text = entry + (" MHz" if _keypad_kind == "frequency" else "")
@@ -325,7 +444,10 @@ func press_control(caption: String) -> bool:
 	var control: Dictionary = controls[caption]
 	var option: Dictionary = control.option
 	if option.get("disabled", false): return false
-	if option.get("action") == "_rotate_dial": return true
+	if option.get("action") == "_rotate_dial":
+		_selected_dial = "amplitude" if caption == "Rotate amplitude dial" else "frequency"
+		_update_dial()
+		return true
 	if control.button:
 		var press: Tween = control.visual.create_tween()
 		press.tween_property(control.visual, "position", control.rest - Vector3(0,0,0.035), 0.055)
@@ -343,6 +465,10 @@ func press_control(caption: String) -> bool:
 
 func _input(event: InputEvent) -> void:
 	if not active or suspended: return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_dragging_dial = false
+	# Let the record's scrollbar receive mouse events without operating the machine behind it.
+	if event is InputEventMouse and _record_panel.get_global_rect().has_point(event.position): return
 	if event.is_action_pressed("ui_cancel") or (event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F):
 		close()
 		get_viewport().set_input_as_handled()
@@ -352,7 +478,7 @@ func _input(event: InputEvent) -> void:
 		else: _dragging_dial = false
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion and _dragging_dial:
-		var offset: Vector2 = event.position - camera.unproject_position(_dial_knob.global_position)
+		var offset: Vector2 = event.position - camera.unproject_position(_selected_knob().global_position)
 		if not _dial_drag_linear and offset.length() > 8.0:
 			var angle: float = offset.angle()
 			adjust_dial(rad_to_deg(wrapf(angle - _drag_angle, -PI, PI)) / DIAL_DEGREES_PER_MHZ)
@@ -361,7 +487,9 @@ func _input(event: InputEvent) -> void:
 			adjust_dial((event.relative.x - event.relative.y) / 5.0)
 		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and _keypad_kind == "frequency_dial" and event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
-		if control_at(event.position) == "Rotate tuning dial":
+		var caption := control_at(event.position)
+		if caption in ["Rotate tuning dial", "Rotate amplitude dial"]:
+			_selected_dial = "amplitude" if caption == "Rotate amplitude dial" else "frequency"
 			adjust_dial((1.0 if event.button_index == MOUSE_BUTTON_WHEEL_UP else -1.0) * (10.0 if event.shift_pressed else 1.0))
 			get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo:
@@ -369,7 +497,9 @@ func _input(event: InputEvent) -> void:
 		if _keypad_kind == "frequency_dial":
 			if key in [KEY_LEFT, KEY_DOWN, KEY_RIGHT, KEY_UP]:
 				adjust_dial((-1.0 if key in [KEY_LEFT, KEY_DOWN] else 1.0) * (10.0 if event.shift_pressed else 1.0))
-			elif key == KEY_ENTER or key == KEY_KP_ENTER: press_control(_keypad_action.label)
+			elif key == KEY_TAB:
+				_selected_dial = "amplitude" if _selected_dial == "frequency" else "frequency"
+				_update_dial()
 		elif not _keypad_kind.is_empty():
 			if key >= KEY_0 and key <= KEY_9: press_control(str(key - KEY_0))
 			elif key == KEY_BACKSPACE: press_control("DEL")
@@ -383,10 +513,11 @@ func _input(event: InputEvent) -> void:
 func pick_at(screen_position: Vector2) -> bool:
 	if not active or suspended: return false
 	var caption := control_at(screen_position)
-	if caption == "Rotate tuning dial":
+	if caption in ["Rotate tuning dial", "Rotate amplitude dial"]:
+		_selected_dial = "amplitude" if caption == "Rotate amplitude dial" else "frequency"
 		if not _dial_enabled: return false
 		_dragging_dial = true
-		var offset := screen_position - camera.unproject_position(_dial_knob.global_position)
+		var offset := screen_position - camera.unproject_position(_selected_knob().global_position)
 		_drag_angle = offset.angle()
 		_dial_drag_linear = offset.length() < 12.0
 	return press_control(caption)
@@ -406,6 +537,7 @@ func control_at(screen_position: Vector2) -> String:
 func close() -> void:
 	if not active: return
 	active = false
+	if _record_layer != null: _record_layer.hide()
 	if _tween: _tween.kill()
 	if is_instance_valid(camera):
 		camera.global_transform = _camera_transform

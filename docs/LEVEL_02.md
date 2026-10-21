@@ -4,6 +4,8 @@ Implemented 2026-10-21. The Maintenance Gallery is now playable after the Signal
 
 ## Enter and play
 
+Temporary shortcut: select **Play → LEVEL 2 / TEMPORARY SOLO TEST** in the main menu. This starts a fresh offline corridor run with both radios acquired and linked at 67 MHz; Level 02 remains unsolved. Press **T** to switch timelines.
+
 Complete the existing laboratory: acquire both radios, calibrate 67 MHz, and leave through the north door. Walking through the exit or pressing **F** at the corridor exit marks readiness through `GameFlowManager`. LAN travel waits for both roles; solo travel proceeds after the local exit. Finish any active conversation before leaving. The manager fades, loads the gallery, waits for both peers and releases input without resetting the puzzle session or ENet connection. Press **T** or the role button to operate the other timeline in solo. Each role retains its position. The entrance offers **Return to Laboratory** through the same readiness flow.
 
 To test Level 02 directly, open `scenes/world/maintenance_corridor.tscn` and press **F6**. A fresh offline direct run seeds the completed radio prerequisite. Normal travel preserves the real puzzle session and never seeds or resets it. Running the static layout scene alone does not create gameplay.
@@ -11,6 +13,8 @@ To test Level 02 directly, open `scenes/world/maintenance_corridor.tscn` and pre
 Controls: WASD/arrows move, Shift runs, F interacts, Escape closes a device or opens pause, R returns to the entry landing. The pause screen offers Return to Menu and an offline Restart Chapter option. Losing the LAN connection blocks local gameplay and leaves the menu available.
 
 Equipment now opens a close-up of the actual 3D machine. Click its lever, wheel, fuse, selector or button; the authorization code is entered on the machine's physical keypad. Optional key shortcuts and objectives live in a separate right-side player guide. Story records and private character observations are distinct from this assistance. See [Discovery and physical interaction](PLAYER_EXPERIENCE.md) for controls and screenshots, including the laboratory console's rotatable frequency dial.
+
+Inspection records appear in a compact foreground card beside the machine, with scrolling for long text. The camera fits each device into its own area so the card stays readable without covering the equipment, including at smaller window sizes.
 
 ## Puzzle route and choices
 

@@ -159,21 +159,23 @@ func host_game() -> void:
 	await use_object(Vector3(0, 0, -5.6), "../SignalLab/Layout/Interactive/ConsoleTerminal/Computer")
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Host terminal failed to open"):
 		return
-	game.terminal.frequency_input.text = "67"
-	game.terminal._validate_text("67")
-	check(game.terminal.submit_frequency().status == 3, "Host validates actual terminal calibration")
+	var inspector = game.physical_devices.inspector
+	check(inspector.adjust_dial(17) and puzzles.get_state(FREQUENCY).current_frequency == 67, "The physical frequency dial broadcasts immediately")
+	if not await wait_for(func() -> bool: return step() >= 2, "Future receiver did not observe the live waveform"):
+		return
+	check(inspector.adjust_dial(35, "amplitude") and puzzles.is_solved(FREQUENCY), "The physical amplitude dial establishes the matched link")
 	check(link_cues == 1, "Host hears one confirmed radio connection cue")
 	check(game.terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and completions == 1, "Actual terminal displays confirmed outcome exactly once")
 	game.terminal.close()
 	check(game.director.get_current_sequence_id() == "laboratory.radio_link_established", "Host receives real radio DialogueSequence")
 	await finish_dialogue()
-	if not await wait_for(func() -> bool: return step() >= 2, "Guest did not verify radio/dialogue/snapshot"):
+	if not await wait_for(func() -> bool: return step() >= 3, "Guest did not verify radio/dialogue/snapshot"):
 		return
 	await use_object(Vector3(-9.9, 0, -2.5), "Props/ReceiverRelay")
 	if not await wait_for(func() -> bool: return puzzles.is_solved(RELAY), "Confirmed receiver relay action missing"):
 		return
 	await finish_dialogue()
-	if not await wait_for(func() -> bool: return step() >= 3, "Guest did not verify auxiliary puzzle and room reload"):
+	if not await wait_for(func() -> bool: return step() >= 4, "Guest did not verify auxiliary puzzle and room reload"):
 		return
 	var session: int = puzzles.get_session_id()
 	game.stop_audio()
@@ -219,9 +221,15 @@ func client_game() -> void:
 		return
 	check(game.radio.signal_state == 1, "Guest HUD searches while waiting for host calibration")
 	reach(1)
+	if not await wait_for(func() -> bool: return puzzles.get_state(FREQUENCY).get("current_frequency") == 67, "Live frequency never reached Future"):
+		return
+	var console = room.lab.get_node("Layout/Interactive/ConsoleTerminal")
+	check(console.waveform.show_target and console.waveform.state.current_frequency == 67 and console.waveform.state.current_amplitude == 35, "Future CRT updates while the Past is tuning, before completion")
+	check(not game.radio.can_receive(), "Matching frequency still waits for the amplitude dial")
+	reach(2)
 	if not await wait_for(func() -> bool: return game.radio.can_receive(), "Host calibration did not reach actual Future lab"):
 		return
-	check(puzzles.get_state(FREQUENCY) == {"student_radio": true, "professor_radio": true, "frequency_calibrated": true}, "Both actual labs share confirmed canonical prerequisites")
+	check(puzzles.get_state(FREQUENCY) == {"student_radio": true, "professor_radio": true, "frequency_calibrated": true, "current_frequency": 67, "current_amplitude": 70}, "Both actual labs share confirmed canonical prerequisites")
 	check(game.director.get_current_sequence_id() == "laboratory.radio_link_established" and game.director.dialogue_box.radio_mode, "Guest sees actual radio dialogue after host-confirmed completion")
 	check(game.get_node("GameplayHUD/RadioHUD").status_label.text == "CONNECTED", "Guest radio HUD displays connected state")
 	await finish_dialogue()
@@ -232,7 +240,7 @@ func client_game() -> void:
 		return
 	check(link_cues == 1, "Client snapshot does not replay connection audio")
 	check(puzzles.get_revision(FREQUENCY) == revision and completions == 1 and not game.director.is_dialogue_active(), "Full snapshot retains revision without replaying radio dialogue")
-	reach(2)
+	reach(3)
 	if not await wait_for(func() -> bool: return puzzles.is_solved(RELAY), "Shared receiver relay completion missing"):
 		return
 	check(game.director.get_current_sequence_id() == "laboratory.receiver_online", "Guest receives later confirmed-puzzle radio conversation")
@@ -246,7 +254,7 @@ func client_game() -> void:
 	check(game.radio.owns_radio and game.radio.can_receive() and puzzles.get_session_id() == session, "Guest actual-room reload retains radio and link")
 	check(not game.director.is_dialogue_active(), "Guest room reload does not replay first conversation")
 	check(link_cues == 1, "Room reload does not replay connection audio")
-	reach(3)
+	reach(4)
 	if not await wait_for(func() -> bool: return room._disconnected, "Partner departure did not reach actual gameplay"):
 		return
 	check(room.pause_panel.visible and not room.player.controls_enabled and not room.get_node("%ResumeButton").visible, "Disconnect shows actionable Return to Menu state and blocks local gameplay")

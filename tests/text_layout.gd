@@ -21,15 +21,18 @@ func capture(name: String) -> void:
 	check(root.get_texture().get_image().save_png(directory.path_join(name + ".png")) == OK, "Capture " + name)
 func separate(a: Control, b: Control, message: String) -> void:
 	check(not a.get_global_rect().intersects(b.get_global_rect()), message)
-func printed_rect(label: Label3D) -> Rect2:
-	var bounds := label.get_aabb()
-	var rect := Rect2(room.camera.unproject_position(label.global_transform * bounds.position), Vector2.ZERO)
-	for x in [0,1]:
-		for y in [0,1]:
-			for z in [0,1]:
-				var point: Vector3 = label.global_transform * (bounds.position + bounds.size * Vector3(x,y,z))
-				rect = rect.expand(room.camera.unproject_position(point))
-	return rect
+func check_inspection(inspector: Node, ui: LabUI, name: String) -> void:
+	var panel: Rect2 = inspector._record_panel.get_global_rect()
+	check(root.get_visible_rect().encloses(panel), name + ": record stays on screen")
+	check(inspector._record_layer.visible and inspector._record_layer.layer > 0, name + ": record renders in front of scene geometry")
+	check(not panel.intersects(inspector.equipment_screen_rect()), name + ": record never covers the equipment")
+	check(inspector._equipment_rect.encloses(inspector.equipment_screen_rect()), name + ": complete equipment fits its reserved view")
+	check(not panel.intersects(ui._sidebar.get_global_rect()), name + ": record stays clear of player help")
+	check(not panel.intersects(ui._observation_panel.get_global_rect()), name + ": record stays clear of character thoughts")
+	separate(inspector._record_title, inspector._record_scroll, name + ": title and scrollable text stay separate")
+	for control: Dictionary in inspector.controls.values():
+		var point: Vector2 = room.camera.unproject_position(control.visual.global_position)
+		check(not panel.has_point(point) and inspector._equipment_rect.has_point(point), name + ": physical control remains visible outside the record")
 func run() -> void:
 	root.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	root.content_scale_size = Vector2i.ZERO
@@ -45,6 +48,9 @@ func run() -> void:
 	room._pending_lines.clear()
 	for dimensions in [Vector2i(1600,900), Vector2i(1280,720), Vector2i(960,540)]:
 		root.size = dimensions
+		if room.role != "past": room.switch_role()
+		room.director.stop_dialogue()
+		room._pending_lines.clear()
 		await tick()
 		var ui = room.ui
 		ui.set_guidance("Check the service labels and compare the load readings before committing the support plan. ".repeat(5))
@@ -104,19 +110,32 @@ func run() -> void:
 		ui.set_guidance("Inspect the physical isolator before operating it.")
 		await create_timer(.4).timeout
 		await tick()
-		var letters: Array[Label3D] = []
 		check(not room.prompt.root_control.visible, "World interaction prompt cannot linger over the equipment close-up")
 		check(ui._sidebar.scroll_vertical == 0, "New equipment instructions start at the top of the message column")
-		for child in ui.inspector._surface.get_children():
-			if child is Label3D: letters.append(child)
-		check(letters.size() == 2, "Service card has separate title and body")
-		if letters.size() == 2:
-			check(not printed_rect(letters[0]).intersects(printed_rect(letters[1])), "Physical card heading and reading never intersect")
-			for letter in letters:
-				check(not printed_rect(letter).intersects(ui._sidebar.get_global_rect()), "Physical writing stays clear of help after resize")
-				check(not printed_rect(letter).intersects(ui._observation_panel.get_global_rect()), "Physical writing stays clear of the character thought")
+		check_inspection(ui.inspector, ui, "Service %d" % dimensions.x)
 		await capture("device_%d" % dimensions.x)
 		ui.close_modal()
+		var puzzles := root.get_node("PuzzleManager")
+		puzzles.submit_action("puzzle_02_maintenance", "isolate_service", {}, "past")
+		puzzles.submit_action("puzzle_02_maintenance", "charge_battery", {}, "future")
+		# Inspect every station in both roles, including the diagnostic shown in the reported image.
+		for role in ["past", "future"]:
+			if room.role != role: room.switch_role()
+			room.director.stop_dialogue()
+			room._pending_lines.clear()
+			for id in room.devices:
+				if not room.devices[id].is_timeline_allowed(role): continue
+				room._show_device(id)
+				await create_timer(.32).timeout
+				await tick(2)
+				check_inspection(ui.inspector, ui, "%s %s %d" % [role, id, dimensions.x])
+				if id == "Diagnostic": await capture("diagnostic_%d" % dimensions.x)
+				room.set_paused(true)
+				await tick(2)
+				check(not ui.inspector._record_layer.visible, "Paused inspection hides the record")
+				room.set_paused(false)
+				ui.close_modal()
+				check(not ui.inspector._record_layer.visible, "Closing inspection hides the record")
 		room.player.position = Vector3(0,0,2.6)
 		room.get_node("CameraRig").snap_to_target()
 		await tick()
@@ -139,6 +158,40 @@ func run() -> void:
 	room._set_paused(false)
 	var lab_ui = room.lab.ui
 	separate(room.gameplay.get_node("GameplayHUD/RadioHUD"), lab_ui._sidebar, "Laboratory radio status and guide use separate rows")
+	room.gameplay.director.stop_dialogue()
+	for dimensions in [Vector2i(1600,900), Vector2i(1280,720), Vector2i(960,540)]:
+		root.size = dimensions
+		await tick()
+		for role in ["past", "future"]:
+			room.timeline = "Past" if role == "past" else "Future"
+			room._apply_timeline()
+			room.gameplay.director.stop_dialogue()
+			var devices = room.gameplay.physical_devices
+			if role == "past": devices.open_frequency(room.player, role)
+			else: devices.open_log("RECOVERED RECORD\n" + "A retained calibration entry at 67 MHz. ".repeat(20), room.player, role)
+			await create_timer(.35).timeout
+			await tick()
+			check_inspection(devices.inspector, lab_ui, "Laboratory %s %d" % [role, dimensions.x])
+			await capture("console_%s_%d" % [role, dimensions.x])
+			if role == "future" and dimensions.x == 960:
+				var inspector = devices.inspector
+				root.gui_disable_input = false
+				inspector.set_process_input(true)
+				var revision: int = root.get_node("PuzzleManager").get_revision("puzzle_01_frequency")
+				var wheel := InputEventMouseButton.new()
+				wheel.position = inspector._record_scroll.get_global_rect().get_center()
+				wheel.button_index = MOUSE_BUTTON_WHEEL_DOWN
+				wheel.pressed = true
+				root.push_input(wheel, true)
+				await tick()
+				check(inspector._record_scroll.scroll_vertical > 0, "Mouse wheel scrolls the long record in the foreground card")
+				check(root.get_node("PuzzleManager").get_revision("puzzle_01_frequency") == revision, "Scrolling a record cannot operate the device")
+				root.gui_disable_input = true
+				inspector.set_process_input(false)
+				root.size = Vector2i(1280,720)
+				await tick()
+				check_inspection(inspector, lab_ui, "Laboratory live resize")
+			devices.inspector.close()
 	room.queue_free()
 	await tick(3)
 	# Allow the audio thread to release the final room's imported OGG playbacks.

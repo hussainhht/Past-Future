@@ -139,10 +139,12 @@ func dev_establish_link() -> void:
 		for radio_role in ["past", "future"]:
 			PuzzleManager.submit_action(Rules.ID, "acquire_radio", {"radio_role": radio_role}, radio_role)
 		PuzzleManager.submit_action(Rules.ID, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY}, "past")
+		PuzzleManager.submit_action(Rules.ID, "tune_amplitude", {"amplitude": 70}, "past")
 	else:
 		radio.request_acquisition()
 		if role == "past":
 			PuzzleManager.submit_action(Rules.ID, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY})
+			PuzzleManager.submit_action(Rules.ID, "tune_amplitude", {"amplitude": 70})
 
 
 func _on_puzzle_changed(puzzle_id: String, _state: Dictionary, _revision: int) -> void:

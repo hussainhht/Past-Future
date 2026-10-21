@@ -35,7 +35,7 @@ func initialize(laboratory: Node3D) -> void:
 	if configured:
 		return
 	room = laboratory
-	room.lab.ui.guide_top = 230.0  # The radio status panel owns the row above the message rail.
+	room.lab.ui.guide_top = 186.0  # The radio status panel owns the row above the message rail.
 	configured = true
 	if not PuzzleManager.is_registered(Relay.ID):
 		PuzzleManager.register_puzzle(Relay.ID, Relay.new())
@@ -231,13 +231,13 @@ func _refresh_state() -> void:
 	elif linked:
 		objective.text = "TEMPORAL RADIO LINK ESTABLISHED\nLeave through the north security door. The receiver relay is optional."
 	elif not radio.owns_radio:
-		objective.text = "THE LOST FREQUENCY\nFind the handheld radio %s." % ("in the reading corner" if radio.player_role == "future" else "on the left workbench")
+		objective.text = "THE LOST FREQUENCY\nFind the handheld radio in the reading corner." if radio.player_role == "future" else "THE LOST FREQUENCY\nFind the handheld radio."
+	elif not Rules.radios_ready(state):
+		objective.text = "THE LOST FREQUENCY\nWaiting for the other player to collect their handheld radio."
 	elif radio.player_role == "future":
-		objective.text = "THE LOST FREQUENCY\nRead the recovered log at the rear console. Help the Student calibrate."
-	elif state.get("frequency_calibrated", false):
-		objective.text = "SIGNAL LOCKED\nWaiting for the Professor's handheld radio."
+		objective.text = "THE LOST FREQUENCY\nWatch the live receiver. Guide the Student to match the green wave to the grey target."
 	else:
-		objective.text = "THE LOST FREQUENCY\nUse the rear main computer. The Professor's research log holds the frequency."
+		objective.text = "THE LOST FREQUENCY\nTurn the console's frequency and amplitude dials. The Professor sees the results."
 	objective.hide()
 	room.lab.ui.set_guidance(objective.text)
 	_sync_controls()
