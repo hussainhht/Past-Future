@@ -142,7 +142,7 @@ mouse_filter = 2
 
 [node name="Title" type="Label" parent="HUD/Margin/VBox/Header"]
 layout_mode = 2
-text = "PAST-FUTURE  |  3D INTERACTION SANDBOX"
+text = "THE OTHER ME  |  3D INTERACTION SANDBOX"
 
 [node name="Spacer" type="Control" parent="HUD/Margin/VBox/Header"]
 layout_mode = 2

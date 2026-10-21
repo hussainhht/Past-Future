@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/gameplay/frequency/frequency_clue.tscn" id="4"]
 [ext_resource type="Script" path="res://scripts/puzzles/puzzle_listener.gd" id="5"]
 [ext_resource type="Script" path="res://scripts/journal/journal_unlock.gd" id="journal"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/terminal_log_font.tres" id="f_terminal"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_1"]
 size = Vector2(1.16, 0.84)
@@ -44,6 +45,7 @@ cast_shadow = 0
 position = Vector3(0, 1.20, 0.5)
 text = "TX READY"
 font_size = 30
+font = ExtResource("f_terminal")
 pixel_size = 0.0034
 outline_size = 6
 outline_modulate = Color(0.02, 0.04, 0.05, 0.85)

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Past-Future"
+config/name="The Other Me"
 run/main_scene="res://scenes/menu/main_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -22,6 +22,10 @@ PuzzleManager="*res://scripts/puzzles/puzzle_manager.gd"
 GameFlowManager="*res://scripts/game_flow/game_flow_manager.gd"
 JournalManager="*res://scripts/journal/journal_manager.gd"
 CinematicTransitionManager="*res://scripts/cinematic/cinematic_transition_manager.gd"
+
+[gui]
+
+theme/custom="res://assets/themes/game_ui_theme.tres"
 
 [display]
 

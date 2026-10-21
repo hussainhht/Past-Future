@@ -26,7 +26,7 @@ func _ready() -> void:
 	center.add_child(box)
 	var title := Label.new()
 	title.text = "THE FINAL FRACTURE / DEVELOPMENT LAUNCHER"
-	title.add_theme_font_size_override("font_size", 30)
+	Typography.apply(title, &"chapter_name", 26)
 	box.add_child(title)
 	for timeline: String in ["past", "future"]:
 		_button(box, "SOLO / " + timeline.to_upper(), _solo.bind(timeline))

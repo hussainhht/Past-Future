@@ -1,0 +1,39 @@
+[gd_resource type="Theme" load_steps=7 format=3]
+
+[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_label_font.tres" id="1_label"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_regular_font.tres" id="2_regular"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/ui_button_font.tres" id="3_button"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/heading_font.tres" id="4_heading"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/dialogue_speaker_font.tres" id="5_speaker"]
+[ext_resource type="FontVariation" path="res://assets/themes/typography/section_heading_font.tres" id="6_section"]
+
+[resource]
+default_font = ExtResource("1_label")
+Button/fonts/font = ExtResource("3_button")
+CheckButton/fonts/font = ExtResource("1_label")
+CheckBox/fonts/font = ExtResource("1_label")
+OptionButton/fonts/font = ExtResource("3_button")
+LineEdit/fonts/font = ExtResource("2_regular")
+TabBar/fonts/font = ExtResource("3_button")
+TabContainer/fonts/font = ExtResource("3_button")
+PopupMenu/fonts/font = ExtResource("1_label")
+Label/fonts/font = ExtResource("1_label")
+RichTextLabel/fonts/normal_font = ExtResource("2_regular")
+RichTextLabel/fonts/bold_font = ExtResource("1_label")
+TooltipLabel/font_sizes/font_size = 19
+TooltipLabel/fonts/font = ExtResource("2_regular")
+HeadingLabel/base_type = &"Label"
+HeadingLabel/font_sizes/font_size = 36
+HeadingLabel/fonts/font = ExtResource("4_heading")
+SectionLabel/base_type = &"Label"
+SectionLabel/font_sizes/font_size = 24
+SectionLabel/fonts/font = ExtResource("6_section")
+SpeakerLabel/base_type = &"Label"
+SpeakerLabel/font_sizes/font_size = 22
+SpeakerLabel/fonts/font = ExtResource("5_speaker")
+SettingsLabel/base_type = &"Label"
+SettingsLabel/font_sizes/font_size = 22
+SettingsLabel/fonts/font = ExtResource("1_label")
+SettingsValueLabel/base_type = &"Label"
+SettingsValueLabel/font_sizes/font_size = 21
+SettingsValueLabel/fonts/font = ExtResource("2_regular")

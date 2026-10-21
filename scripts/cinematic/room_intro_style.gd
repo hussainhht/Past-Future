@@ -17,6 +17,8 @@ extends Resource
 @export var vignette_alpha: float = 0.45
 
 @export_group("Typography")
+## Superseded by Typography (assets/themes/typography): the card now uses Hubot Sans / Geist / Departure Mono.
+## Kept so existing presets still load.
 @export var title_fonts: PackedStringArray = PackedStringArray(["Georgia", "serif"])
 @export var label_fonts: PackedStringArray = PackedStringArray(["Segoe UI", "sans-serif"])
 ## Sizes are for a 1600 x 900 layout and scale with the window; long titles shrink to fit.

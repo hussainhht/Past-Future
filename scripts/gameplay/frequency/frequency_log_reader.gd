@@ -11,7 +11,7 @@ var close_button: Button
 
 func _ready() -> void:
 	super._ready()
-	content.add_child(UI.label("LIVE SIGNAL RECEIVER", 24, UI.CYAN))
+	content.add_child(UI.label("LIVE SIGNAL RECEIVER", 22, UI.CYAN))
 	content.add_child(HSeparator.new())
 	waveform = Waveform.new()
 	waveform.custom_minimum_size = Vector2(640, 420)
@@ -19,7 +19,7 @@ func _ready() -> void:
 	PuzzleManager.puzzle_state_changed.connect(func(id: String, state: Dictionary, _revision: int):
 		if id == Rules.ID: waveform.set_signal(state, true))
 	waveform.set_signal(PuzzleManager.get_state(Rules.ID), true)
-	document_label = UI.label("", 20, Color("d4e1e4"))
+	document_label = UI.label("", 22, Color("d4e1e4"), &"future_journal_body")
 	document_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	document_label.custom_minimum_size.x = 640
 	document_label.hide()

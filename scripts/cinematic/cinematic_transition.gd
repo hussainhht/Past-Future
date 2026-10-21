@@ -102,8 +102,9 @@ func is_ended() -> bool:
 
 func _build() -> void:
 	var s := _style
-	_title_font = _make_font(s.title_fonts, 0.0)
-	var label_font := _make_font(s.label_fonts, 0.0)
+	# Room names are Hubot Sans Bold; the Future card's small print is terminal Departure Mono.
+	_title_font = _make_font(Typography.font(&"heading"))
+	var label_font := _make_font(Typography.font(&"future_journal_title" if s.preset_id == &"future_signal" else &"ui_label"))
 
 	chapter.text = "%s  /  %s" % [_data.chapter_label, _data.chapter_title] if not _data.chapter_title.is_empty() else _data.chapter_label
 	title.text = _data.room_title
@@ -158,13 +159,10 @@ func _build() -> void:
 	stage.modulate = Color(1, 1, 1, 0)
 
 
-func _make_font(names: PackedStringArray, spacing_em: float) -> FontVariation:
-	var system := SystemFont.new()
-	system.font_names = names
-	system.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+func _make_font(base: Font) -> FontVariation:
+	# Own instance per card: the tracking tween changes spacing_glyph.
 	var variation := FontVariation.new()
-	variation.base_font = system
-	variation.spacing_glyph = int(spacing_em)
+	variation.base_font = base
 	return variation
 
 

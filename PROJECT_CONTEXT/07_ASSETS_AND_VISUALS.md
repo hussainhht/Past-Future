@@ -130,3 +130,9 @@ All UI and decals use scalable vector graphics (`.svg`) converted to textures vi
    - `assets/characters/student_v2.glb` was deleted in commit `4a1144d`.
    - `scenes/characters/student_model.tscn` fails to load due to missing resource.
 
+
+## Typography and title (added with the font pass)
+
+- The game is now titled **THE OTHER ME** (`config/name`, main menu, credits). Internal names are unchanged.
+- Fonts, roles and usage are documented in `docs/TYPOGRAPHY_SYSTEM.md`; font files and licenses in `assets/fonts/`.
+- Two font files are still to be installed by hand: `assets/fonts/handwriting/ToThePoint.ttf` and `assets/fonts/menu/Broken.otf` (see `assets/fonts/README.md`). The code falls back until then.

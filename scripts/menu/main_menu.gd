@@ -3,6 +3,8 @@ extends Control
 const WARM := Color("d8ba89")
 const COOL := Color("86c6cd")
 const INK := Color("101c24")
+## Widest the two title lines may grow before they shrink to fit (the stamps start at x = 858).
+const TITLE_MAX_WIDTH := 640.0
 const InputManager := preload("res://scripts/input/input_manager.gd")
 
 var audio: AudioDirector
@@ -125,6 +127,10 @@ func _apply_theme() -> void:
 	menu_theme.set_color("font_disabled_color", "Button", Color("77868a"))
 	menu_theme.set_color("font_color", "CheckButton", Color("dadcd2"))
 	menu_theme.set_color("font_color", "Label", Color("bac5c2"))
+	menu_theme.set_font_size("font_size", "Button", 20)
+	menu_theme.set_font_size("font_size", "CheckButton", Typography.role_size(&"settings_label"))
+	menu_theme.set_font_size("font_size", "OptionButton", 20)
+	menu_theme.set_font_size("font_size", "LineEdit", Typography.role_size(&"settings_value"))
 	theme = menu_theme
 	var primary := StyleBoxFlat.new()
 	primary.bg_color = WARM
@@ -148,6 +154,27 @@ func _apply_theme() -> void:
 	panel_style.shadow_color = Color(0, 0, 0, 0.45)
 	panel_style.shadow_size = 30
 	panel.add_theme_stylebox_override("panel", panel_style)
+	_apply_title_typography()
+
+
+## Broken is only used here, on the title and the main menu buttons. Without Broken.otf installed
+## these roles fall back to Hubot Sans Black / Geist SemiBold (see Typography).
+func _apply_title_typography() -> void:
+	var title_font := Typography.font(&"menu_title")
+	var title_labels: Array[Label] = [$Layout/TitleBlock/Past, $Layout/TitleBlock/Future]
+	var title_px := Typography.role_size(&"game_title")
+	for label in title_labels:
+		title_px = mini(title_px, Typography.fit_size(title_font, label.text, title_px, TITLE_MAX_WIDTH, 40))
+	for label in title_labels:
+		label.add_theme_font_override("font", title_font)
+		label.add_theme_font_size_override("font_size", title_px)
+	var button_font := Typography.font(&"menu_button")
+	var buttons: Array[Button] = [%PlayButton, %SettingsButton, %CreditsButton, %QuitButton]
+	for button in buttons:
+		var wanted := Typography.role_size(&"menu_button") + (1 if button == %PlayButton else -2)
+		var room := maxf(button.custom_minimum_size.x - 48.0, 120.0)
+		button.add_theme_font_override("font", button_font)
+		button.add_theme_font_size_override("font_size", Typography.fit_size(button_font, button.text, wanted, room, 22))
 
 
 func _open_page(page_name: String) -> void:

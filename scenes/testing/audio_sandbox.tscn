@@ -104,7 +104,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "PAST-FUTURE — AUDIO SYSTEM SANDBOX"
+text = "THE OTHER ME — AUDIO SYSTEM SANDBOX"
 
 [node name="ControlsInfo" type="Label" parent="UI/RootPanel/Layout/HeaderBox/VBox"]
 layout_mode = 2

@@ -29,7 +29,7 @@ func configure(audio: AudioDirector) -> void:
 	panel.add_child(box)
 	var title := Label.new()
 	title.text = "Settings"
-	title.add_theme_font_size_override("font_size", 30)
+	Typography.apply(title, &"settings_heading")
 	box.add_child(title)
 	content = preload("res://scripts/ui/settings_content.gd").new()
 	content.audio = audio
