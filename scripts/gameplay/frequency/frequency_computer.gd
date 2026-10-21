@@ -1,6 +1,7 @@
 extends "res://scripts/interaction/interactable_3d.gd"
 
 @export var terminal: Control
+var physical_handler: Node
 
 
 func _ready() -> void:
@@ -11,5 +12,7 @@ func _ready() -> void:
 
 
 func _execute_interaction(actor: Node, role: String) -> void:
-	if is_instance_valid(terminal):
+	if is_instance_valid(physical_handler):
+		physical_handler.open_frequency(actor, role)
+	elif is_instance_valid(terminal):
 		terminal.open_for(actor, role)

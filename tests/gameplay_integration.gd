@@ -145,16 +145,67 @@ func _run() -> void:
 		return
 	check(not room.player.controls_enabled and not game.controller.is_interaction_available(), "Console modal owns movement and interaction input")
 	var revision: int = puzzles.get_revision(FREQUENCY)
-	game.terminal.frequency_input.text = "66"
-	game.terminal._validate_text("66")
-	check(game.terminal.submit_frequency().status == 1 and "SIGNAL NOT FOUND" in game.terminal.feedback_label.text, "Incorrect frequency produces normal retry feedback in real lab")
+	var inspector = game.physical_devices.inspector
+	check(inspector.active and not game.terminal.is_visible_in_tree(), "Frequency controls are on the physical console, with the legacy screen absent from the HUD")
+	check(not game.computer.get_parent().has_node("MountedKeypad") and game.computer.get_parent().has_node("MountedFrequencyDial"), "The frequency device has a persistent dial and no keypad")
+	await tick(24)
+	check(inspector.adjust_dial(-5000) and inspector.entry == "1", "Dial clamps at 1 MHz")
+	check(inspector.adjust_dial(5000) and inspector.entry == "999", "Dial clamps at 999 MHz")
+	inspector.adjust_dial(-949)
+	var old_rotation: float = inspector._dial_knob.rotation.z
+	var center: Vector2 = room.camera.unproject_position(inspector._dial_knob.global_position)
+	# Derive the drag radius from the knob so this tests its actual world size.
+	var rim: Vector2 = room.camera.unproject_position(inspector._dial_knob.to_global(Vector3(.20, 0, 0)))
+	var drag_offset := Vector2(0, -center.distance_to(rim))
+	var start := center + drag_offset
+	var end := center + drag_offset.rotated(deg_to_rad(80.0))
+	var down := InputEventMouseButton.new()
+	down.button_index = MOUSE_BUTTON_LEFT
+	down.position = start
+	down.pressed = true
+	root.push_input(down, true)
+	await process_frame
+	check(inspector._dragging_dial, "A real mouse press picks the 3D tuning knob")
+	var motion := InputEventMouseMotion.new()
+	motion.position = end
+	motion.relative = end - start
+	motion.button_mask = MOUSE_BUTTON_MASK_LEFT
+	root.push_input(motion, true)
+	await process_frame
+	var up := InputEventMouseButton.new()
+	up.button_index = MOUSE_BUTTON_LEFT
+	up.position = end
+	root.push_input(up, true)
+	await tick(3)
+	check(inspector.entry == "66" and inspector._dial_knob.rotation.z != old_rotation, "Dragging clockwise rotates the physical knob and stages 66 MHz")
+	check(not inspector._dragging_dial and puzzles.get_revision(FREQUENCY) == revision, "Releasing the dial ends dragging without submitting puzzle state")
+	await press(KEY_9)
+	check(inspector.entry == "66", "Digit keys do not act as a hidden frequency keypad")
+	var enter_point: Vector2 = room.camera.unproject_position(inspector.controls["Calibrate signal"].visual.global_position)
+	check(inspector.pick_at(enter_point), "A camera ray presses the device's physical CALIBRATE button")
+	check(game.physical_devices.last_result.status == 1 and "SIGNAL NOT FOUND" in game.terminal.feedback_label.text, "Incorrect frequency produces normal retry feedback on the device")
 	check(puzzles.get_revision(FREQUENCY) == revision, "Incorrect attempt creates no authoritative revision")
 	check(&"computer_open" in audio_events and &"computer_calibrate" in audio_events and &"computer_invalid" in audio_events, "Actual terminal opening, calibration and failure play catalog cues")
 	check(&"radio_pickup" in audio_events, "Confirmed physical pickup plays tactile audio")
 	await capture("03_terminal_retry")
-	game.terminal.frequency_input.text = "67"
-	game.terminal._validate_text("67")
-	check(game.terminal.submit_frequency().status == 2 and not puzzles.is_solved(FREQUENCY), "Calibration waits for missing Professor radio")
+	await tick(3)
+	var wheel := InputEventMouseButton.new()
+	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
+	wheel.position = room.camera.unproject_position(inspector._dial_knob.global_position)
+	wheel.pressed = true
+	root.push_input(wheel, true)
+	await tick(2)
+	check(inspector.entry == "67", "Mouse wheel over the dial fine-tunes by one MHz")
+	await press(KEY_LEFT)
+	await press(KEY_RIGHT)
+	check(inspector.entry == "67", "Arrow keys turn the same dial for precise tuning")
+	inspector.suspended = true
+	check(not inspector.adjust_dial(10) and inspector.entry == "67", "A suspended inspection cannot turn the dial")
+	inspector.suspended = false
+	await press(KEY_ENTER)
+	check(game.physical_devices.last_result.status == 2 and not puzzles.is_solved(FREQUENCY), "Physical calibration waits for missing Professor radio")
+	check(not inspector.adjust_dial(1) and inspector.entry == "67", "The confirmed carrier locks the dial against further changes")
+
 	await press(KEY_ESCAPE)
 	check(not game.terminal.visible and not room._paused and room.player.controls_enabled, "Escape closes terminal without opening pause or leaving movement locked")
 	var radio_instance: int = game.radio.get_instance_id()

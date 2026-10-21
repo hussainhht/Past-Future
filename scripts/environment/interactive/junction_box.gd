@@ -20,8 +20,8 @@ func _show_state(_animate: bool) -> void:
 
 func _on_interacted(_actor: Node, _role: String, _interactable: Node) -> void:
 	if future:
-		toast("Breaker B tripped years ago and the lever is fused. The console still runs on its emergency cell.")
+		toast("The lever's fused solid. There's still a light on the console; it must have its own cell.")
 		sfx(&"interaction_denied", Vector3(0, 0.6, 0.25))
 	else:
-		toast("Breaker B: stable. Someone labelled it \"RECEIVER  ·  DO NOT CUT\".")
+		toast("The breaker light is steady. Someone labelled this line 'RECEIVER — DO NOT CUT'.")
 		sfx(&"switch_toggle", Vector3(0, 0.6, 0.25))

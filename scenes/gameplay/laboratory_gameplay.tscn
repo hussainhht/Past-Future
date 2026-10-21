@@ -92,7 +92,7 @@ play_interaction_animation = false
 shape = SubResource("RelayShape")
 
 [node name="LevelExit" type="Area3D" parent="Props"]
-position = Vector3(6.2, 0, -10.1)
+position = Vector3(6.2, 0, -8.7)
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("26")

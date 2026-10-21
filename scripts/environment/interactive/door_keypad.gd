@@ -26,13 +26,13 @@ func _show_state(_animate: bool) -> void:
 func _on_interacted(_actor: Node, _role: String, _interactable: Node) -> void:
 	_press_sequence()
 	if linked():
-		toast("Keypad: OPEN. The array released the seal.")
+		toast("OPEN. I heard the seal release when the carrier settled.")
 		sfx(&"computer_beep", Vector3(0, 0.4, 0.1))
 	elif future:
-		toast("Keypad: LOCK ERR. The door is slaved to the signal array. Only a stable temporal link can release it.")
+		toast("LOCK ERR. The little plate says the array has to hold a stable link before this seal releases.")
 		sfx(&"interaction_denied", Vector3(0, 0.4, 0.1))
 	else:
-		toast("Keypad: ACCESS DENIED. \"Seal releases when the array holds a temporal link.\" Codes will not help here.")
+		toast("ACCESS DENIED. This plate says the seal is wired to the array. A code won't do it.")
 		sfx(&"interaction_denied", Vector3(0, 0.4, 0.1))
 
 
