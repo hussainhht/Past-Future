@@ -143,7 +143,10 @@ def main():
         for record in records:
             record["sound_event_ids"] = [key for key, entry in events.items() if "res://" + record["imported_filename"] in entry["files"]]
             record["intended_game_usage"] = record["sound_event_ids"]
-    (OUT / "asset_provenance.json").write_text(json.dumps(records, indent=2) + "\n", encoding="utf8")
+    manifest = OUT / "asset_provenance.json"
+    if manifest.exists():
+        records += [r for r in json.loads(manifest.read_text(encoding="utf8")) if r.get("collection") == "level2_level3_audio"]
+    manifest.write_text(json.dumps(records, indent=2) + "\n", encoding="utf8")
     print(f"Prepared {len(records)} licensed audio assets.")
 
 
