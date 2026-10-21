@@ -27,6 +27,7 @@ var _notice_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group("game_flow_overlay")
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 100
 	fade.visible = false
@@ -44,6 +45,13 @@ func _ready() -> void:
 	title_label.add_theme_color_override("font_color", PAST_ACCENT)
 	status_label.add_theme_color_override("font_color", Color("bac5c2"))
 	clear_status()
+
+
+## Space used by ready/error notices, shared with the room's right-side message rail.
+func message_rect() -> Rect2:
+	if ready_panel.is_visible_in_tree() or notice_panel.is_visible_in_tree():
+		return $Dock.get_global_rect()
+	return Rect2()
 
 
 # --- Fade ----------------------------------------------------------------------------------
@@ -146,7 +154,7 @@ func _set_ready_line(label: Label, who: String, is_ready: bool, accent: Color) -
 
 # --- Notices -------------------------------------------------------------------------------
 
-## A short line near the bottom of the screen, for refused requests.
+## A short line in the right-side notice stack, for refused requests.
 func show_notice(text: String, seconds: float = 3.0) -> void:
 	if text.is_empty():
 		return

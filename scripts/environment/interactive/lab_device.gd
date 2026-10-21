@@ -76,7 +76,7 @@ func sfx(sound: StringName, offset: Vector3 = Vector3.ZERO) -> void:
 func toast(text: String) -> void:
 	var lab_ui := ui()
 	if lab_ui != null:
-		lab_ui.toast(text)
+		lab_ui.observe("Professor" if future else "Student", text)
 
 
 ## Give one mesh a palette slot regardless of what it was imported with.

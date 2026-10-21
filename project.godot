@@ -21,6 +21,7 @@ NetworkManager="*res://scripts/network/network_manager.gd"
 PuzzleManager="*res://scripts/puzzles/puzzle_manager.gd"
 GameFlowManager="*res://scripts/game_flow/game_flow_manager.gd"
 JournalManager="*res://scripts/journal/journal_manager.gd"
+CinematicTransitionManager="*res://scripts/cinematic/cinematic_transition_manager.gd"
 
 [display]
 

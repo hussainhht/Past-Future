@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="RoomIntroStyle" format=3]
+
+[ext_resource type="Script" path="res://scripts/cinematic/room_intro_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+preset_id = &"future_signal"
+text_color = Color(0.8078, 0.8745, 0.8863, 1)
+accent_color = Color(0.5255, 0.7882, 0.8196, 1)
+secondary_color = Color(0.5020, 0.8510, 0.8941, 1)
+shade_color = Color(0.0824, 0.1412, 0.1686, 1)
+scrim_alpha = 0.68
+vignette_alpha = 0.45
+title_fonts = PackedStringArray("Bahnschrift", "Segoe UI Semibold", "Segoe UI", "DejaVu Sans", "sans-serif")
+label_fonts = PackedStringArray("Consolas", "Cascadia Mono", "DejaVu Sans Mono", "Courier New", "monospace")
+title_size = 70
+label_size = 16
+detail_size = 20
+tracking_start = 0.2
+tracking_end = 0.07
+timeline_numeral = "II / FUTURE"
+role_line = "FUTURE — THE PROFESSOR"
+timeline_line = "02 / FUTURE — 31 YEARS LATER"
+scanline = true
+glitch = true
+interface_lines = true
+overlay_in = 0.25
+chapter_start = 0.25
+chapter_duration = 0.4
+title_start = 0.55
+title_duration = 0.6
+accent_start = 0.85
+accent_duration = 0.45
+detail_start = 1.0
+detail_duration = 0.4
+out_start = 2.2
+out_duration = 0.8

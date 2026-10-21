@@ -1,5 +1,7 @@
 # Room 02 production placeholder
 
+> Historical implementation report. Production Room 02 now loads the playable [Maintenance Gallery](LEVEL_02.md) through the same GameFlowManager. The placeholder scene remains available as a development asset; it is no longer the registered destination. Current production tests exercise the gallery, its entry markers, radio status and return exit.
+
 Implemented and verified on 21 October 2026. The existing game-flow implementation is merged into `main` (`fb8def5`, including `a1586cd`); the working tree was clean before this change. No commits or pushes were made.
 
 ## Integration

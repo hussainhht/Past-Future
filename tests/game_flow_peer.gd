@@ -137,7 +137,7 @@ func verify_room(room_id: String, scene_path: String, label: String) -> void:
 	var expected_body := "student_3d_player.tscn" if is_host() else "professor_3d_player.tscn"
 	check(current_scene.player.scene_file_path.ends_with(expected_body), "%s: this peer plays its own timeline's character" % label)
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "%s: one character, one radio, one controller" % label)
-	check(current_scene.find_children("StatusHUD", "CanvasLayer", true, false).size() == 1 and root.get_child_count() == 4, "%s: one HUD and no stray scenes" % label)
+	check(current_scene.find_children("StatusHUD", "CanvasLayer", true, false).size() == 1 and root.get_child_count() == 5, "%s: one HUD and no stray scenes" % label)
 	check(network.in_game and network.state == network.State.CONNECTED and get_multiplayer().multiplayer_peer.get_instance_id() == peer_object_id, "%s: the same ENet connection is still in the game" % label)
 	check(puzzles.get_session_id() == session and sessions_started == 1, "%s: still the same puzzle session, never restarted" % label)
 
@@ -568,11 +568,11 @@ func scenario_host_leaves() -> void:
 	partner = await barrier()
 	var failures_before := failed.size()
 	if is_host():
-		check(flow.request_transition("test_room_b") == "", "The Student is ready")
-		partner = await barrier()
 		flow.transition_started.connect(func(_from: String, _to: String) -> void:
 			await create_timer(0.3).timeout  # let the begin message reach the guest first
 			network.leave_game(), CONNECT_ONE_SHOT)
+		check(flow.request_transition("test_room_b") == "", "The Student is ready")
+		partner = await barrier()
 		if not await wait_for(func() -> bool: return failed.size() > failures_before, "The host never recovered", 30.0):
 			return
 		check(failed.back() == "peer_disconnected" or failed.back() == "session_ended", "The host recovers after dropping the session, got %s" % failed.back())
@@ -639,14 +639,17 @@ func scenario_production() -> void:
 	await tick(4)
 	var room: Node3D = current_scene
 	var timeline := "past" if is_host() else "future"
-	check(room.scene_file_path == "res://scenes/world/room_02_placeholder.tscn" and room.role == timeline, "Production placeholder configures the local timeline")
+	check(room.scene_file_path == "res://scenes/world/maintenance_corridor.tscn" and room.role == timeline, "Production Maintenance Gallery configures the local timeline")
+	room.pause_when_unfocused = false
+	room.director.stop_dialogue()
+	room._pending_lines.clear()
 	check(room.player.scene_file_path.ends_with("student_3d_player.tscn" if is_host() else "professor_3d_player.tscn"), "Correct production character spawned")
 	var marker: Marker3D = flow.find_spawn_point(flow.get_entry_spawn_id(timeline))
 	check(room.player.global_position.distance_to(marker.global_position) < 0.1 and room.player.is_on_floor(), "Correct grounded timeline marker used")
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("Camera3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "No duplicate players, cameras, radios or interaction rigs")
-	check(room.find_children("RadioHUD", "", true, false).size() == 1 and count_nodes("AudioDirector") == 0, "One radio HUD; no additional audio manager")
+	check("67 MHz" in room.radio_label.text and count_nodes("AudioDirector") == 1, "The gallery owns one radio status display and one audio director")
 	check(not flow.is_input_locked() and not flow.overlay.is_covering() and room.player.controls_enabled, "Fade clears and movement controls unlock")
-	check(room.radio.can_receive() and room.radio.owns_radio and room.radio.get_calibrated_frequency() == 67, "Established radio state restores in the placeholder")
+	check(room.radio.can_receive() and room.radio.owns_radio and room.radio.get_calibrated_frequency() == 67, "Established radio state restores in the gallery")
 	var before: Vector3 = room.player.position
 	var camera_before: Vector3 = room.camera.global_position
 	Input.action_press("move_right")
@@ -656,5 +659,5 @@ func scenario_production() -> void:
 	check(room.player.position.x > before.x + 0.2 and room.camera.global_position.x > camera_before.x + 0.1, "Normal movement and the existing follow camera work")
 	check(network.in_game and network.state == network.State.CONNECTED and get_multiplayer().multiplayer_peer.get_instance_id() == peer_object_id, "The same ENet connection survives")
 	check(puzzles.get_session_id() == session and puzzles.get_revision(FREQ) == revision and puzzles.get_state(FREQ) == state and link_completions == 1 and sessions_started == 1, "Puzzle session, state, revision and one completion survive unchanged")
-	await shot("room_02_placeholder")
+	await shot("room_02_gallery")
 	await barrier({"room": flow.get_current_room_id(), "revision": revision})

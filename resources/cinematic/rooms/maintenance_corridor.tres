@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RoomIntroData" format=3]
+
+[ext_resource type="Script" path="res://scripts/cinematic/room_intro_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+room_id = "room_02"
+chapter_label = "CHAPTER 0"
+chapter_title = "THE FIRST FRACTURE"
+room_title = "MAINTENANCE CORRIDOR"
+location_index = 2
+past_preset = &"past_memory"
+future_preset = &"future_signal"

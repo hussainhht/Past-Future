@@ -103,7 +103,7 @@ Receiver bank B  ·  recovered calibration record #01
 23:43  Both handheld radios must be on the carrier.
 23:44  CORE CONTAINMENT FAILURE.
 
-Margin, handwritten: \"Tell him 67. He calibrates it from the Past.\"
+Margin, handwritten: \"The transmitter needs 67. Tell the voice on the radio.\"
 "
 highlight_target = NodePath("Highlight")
 

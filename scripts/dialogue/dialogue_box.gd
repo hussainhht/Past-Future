@@ -8,8 +8,10 @@ extends CanvasLayer
 ## The line is fully visible, whether it finished typing or was revealed early. Emitted once per line
 ## that completes. A line that is replaced or closed before it completes never emits it.
 signal typewriter_finished
-## The player clicked the dialogue panel.
+## The player clicked the dialogue panel to advance.
 signal advance_requested
+## The player requested skipping the active dialogue sequence.
+signal skip_requested
 
 ## Lines that would finish typing faster than this are shown at once.
 const MIN_TYPING_TIME := 0.02
@@ -37,6 +39,7 @@ var _accent: Color = past_accent
 var _typewriter_tween: Tween
 var _fade_tween: Tween
 var _indicator_tween: Tween
+var _text_scroll: ScrollContainer
 
 @onready var _root: Control = %RootControl
 @onready var _panel: PanelContainer = %DialoguePanel
@@ -49,11 +52,51 @@ var _indicator_tween: Tween
 
 
 func _ready() -> void:
+	add_to_group("dialogue_box")
+	process_priority = 90
+	_text_scroll = ScrollContainer.new()
+	_text_scroll.name = "DialogueScroll"
+	_text_scroll.mouse_filter = Control.MOUSE_FILTER_PASS
+	_text_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_text_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_text_scroll.custom_minimum_size.y = 36
+	var content := _text.get_parent()
+	var index := _text.get_index()
+	content.add_child(_text_scroll)
+	content.move_child(_text_scroll, index)
+	_text.reparent(_text_scroll)
 	_root.visible = false
 	_root.modulate.a = 0.0
 	_indicator.text = continue_symbol
 	_indicator.modulate.a = 0.0
 	_panel.gui_input.connect(_on_panel_gui_input)
+	_text_scroll.gui_input.connect(_on_panel_gui_input)
+	var style := _panel.get_theme_stylebox("panel") as StyleBoxFlat
+	if style != null: style.bg_color.a = 1.0
+	_layout_panel()
+
+
+func is_presented() -> bool:
+	return visible and _root.visible
+
+
+func _process(_delta: float) -> void:
+	if _root.visible: _layout_panel()
+
+
+func _layout_panel() -> void:
+	var screen := get_viewport().get_visible_rect().size
+	var width := minf(1080.0, screen.x - clampf(screen.x * 0.23, 280.0, 340.0) - 112.0)
+	_panel.anchor_left = 0.0
+	_panel.anchor_right = 0.0
+	_panel.offset_left = 42.0
+	_panel.offset_right = 42.0 + width
+	var overhead := maxf(64.0, _panel.get_combined_minimum_size().y - _text_scroll.custom_minimum_size.y)
+	var max_height := minf(340.0, screen.y - 306.0)
+	_text_scroll.custom_minimum_size.y = clampf(float(_text.get_content_height()), 36.0, maxf(36.0, max_height - overhead))
+	var height := overhead + _text_scroll.custom_minimum_size.y
+	_panel.offset_bottom = -150.0
+	_panel.offset_top = -150.0 - height
 
 
 func _exit_tree() -> void:
@@ -71,6 +114,7 @@ func present_line(line: DialogueLine, characters_per_second: float, show_continu
 	_show_continue = show_continue
 	_apply_speaker(line)
 	_text.text = line.text
+	_text_scroll.scroll_vertical = 0
 	_text.visible_characters = 0
 	_open()
 	if line.voice != null:
@@ -218,6 +262,10 @@ func _kill_tween(tween: Tween) -> void:
 
 
 func _on_panel_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		advance_requested.emit()
-		_panel.accept_event()
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			advance_requested.emit()
+			_panel.accept_event()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			skip_requested.emit()
+			_panel.accept_event()

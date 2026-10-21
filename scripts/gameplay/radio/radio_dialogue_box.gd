@@ -44,6 +44,7 @@ func close(immediately: bool = false) -> void:
 
 
 func _process(delta: float) -> void:
+	super._process(delta)
 	if radio_mode and radio != null and radio.transmitting:
 		_phase += delta
 		channel_label.modulate.a = 0.7 + 0.3 * absf(sin(_phase * 5.0))

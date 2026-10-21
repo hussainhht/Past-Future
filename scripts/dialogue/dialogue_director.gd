@@ -130,10 +130,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Engine.get_process_frames() == _start_frame:
 		return
 	var viewport := get_viewport()
-	if _is_pressed(event, advance_action):
+	var is_click: bool = event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT
+	var is_right_click: bool = event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT
+	var is_advance: bool = is_click or _is_pressed(event, advance_action) or _is_pressed(event, &"interact")
+	if is_advance:
 		advance_dialogue()
 		viewport.set_input_as_handled()
-	elif _sequence != null and _sequence.allow_skip and _is_pressed(event, skip_action):
+	elif _sequence != null and _sequence.allow_skip and (_is_pressed(event, skip_action) or is_right_click):
 		skip_dialogue()
 		viewport.set_input_as_handled()
 
@@ -581,6 +584,8 @@ func _connect_box() -> void:
 		dialogue_box.typewriter_finished.connect(_on_typewriter_finished)
 	if not dialogue_box.advance_requested.is_connected(advance_dialogue):
 		dialogue_box.advance_requested.connect(advance_dialogue)
+	if dialogue_box.has_signal("skip_requested") and not dialogue_box.skip_requested.is_connected(skip_dialogue):
+		dialogue_box.skip_requested.connect(skip_dialogue)
 	if not dialogue_box.tree_exiting.is_connected(_on_box_tree_exiting):
 		dialogue_box.tree_exiting.connect(_on_box_tree_exiting)
 
@@ -592,6 +597,8 @@ func _disconnect_box() -> void:
 		dialogue_box.typewriter_finished.disconnect(_on_typewriter_finished)
 	if dialogue_box.advance_requested.is_connected(advance_dialogue):
 		dialogue_box.advance_requested.disconnect(advance_dialogue)
+	if dialogue_box.has_signal("skip_requested") and dialogue_box.skip_requested.is_connected(skip_dialogue):
+		dialogue_box.skip_requested.disconnect(skip_dialogue)
 	if dialogue_box.tree_exiting.is_connected(_on_box_tree_exiting):
 		dialogue_box.tree_exiting.disconnect(_on_box_tree_exiting)
 
