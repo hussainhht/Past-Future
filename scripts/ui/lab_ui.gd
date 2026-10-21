@@ -207,7 +207,7 @@ func _build_toast() -> void:
 	_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_toast.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_toast.visible = false
-	_toast_label = _label("", 17)
+	_toast_label = _label("", 19)
 	_toast_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -225,11 +225,11 @@ func _build_guide() -> void:
 	_guide.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.045, 0.055, 1.0), Color("627e87"), 1))
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 10)
-	box.add_child(_label("OBJECTIVE", 12, Color("99b0b7")))
-	_guide_goal = _label("", 17)
+	box.add_child(_label("OBJECTIVE", 15, Color("99b0b7"), &"button"))
+	_guide_goal = _label("", 19)
 	_guide_goal.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_guide_goal)
-	_guide_controls = _label("", 15, Color("9fc6cc"))
+	_guide_controls = _label("", 17, Color("9fc6cc"), &"settings_value")
 	_guide_controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_guide_controls)
 	_guide.add_child(_margin(box, 16, 14))
@@ -244,7 +244,7 @@ func _build_guide() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_observation = _label("", 20)
+	_observation = _label("", 22, Color(0.85, 0.88, 0.86), &"dialogue_body")
 	_observation.name = "CharacterObservation"
 	_observation.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_observation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -289,10 +289,10 @@ func _build_banner() -> void:
 	_banner.visible = false
 	var box := VBoxContainer.new()
 	box.alignment = BoxContainer.ALIGNMENT_CENTER
-	_banner_title = _label("", 22)
+	_banner_title = _label("", 24, Color(0.85, 0.88, 0.86), &"chapter_name")
 	_banner_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_banner_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_banner_subtitle = _label("", 17)
+	_banner_subtitle = _label("", 18, Color(0.85, 0.88, 0.86), &"settings_value")
 	_banner_subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_banner_subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner_subtitle.add_theme_color_override("font_color", Color(0.85, 0.88, 0.85))
@@ -307,15 +307,16 @@ func _build_banner() -> void:
 func open_document(title: String, body: String, footer: String = "") -> void:
 	var panel := _open_modal("document", Vector2(980, 640))
 	var box: VBoxContainer = panel.get_meta("content")
-	var heading := _label(title, 32)
+	# Past paper is handwritten; Future documents are terminal records.
+	var heading := _label(title, 33 if future else 34, Color(0.85, 0.88, 0.86), &"future_journal_header" if future else &"past_note")
 	heading.add_theme_color_override("font_color", INK if not future else Color("d8e6e4"))
 	box.add_child(heading)
 	box.add_child(_rule())
-	var text := _label(body, 22)
+	var text := _label(body, 22 if future else 26, Color(0.85, 0.88, 0.86), &"future_journal_body" if future else &"past_note")
 	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	text.add_theme_color_override("font_color", Color("2b3434") if not future else Color("c6d4d2"))
-	text.add_theme_constant_override("line_spacing", 6)
+	text.add_theme_constant_override("line_spacing", 6 if future else 8)
 	box.add_child(text)
 	box.add_child(_hint(footer if not footer.is_empty() else "ESC / F  ·  CLOSE"))
 	panel.add_theme_stylebox_override("panel", _panel_style(Color("efe4c8") if not future else Color("1d3138"), accent(), 2))
@@ -376,16 +377,16 @@ func _input(event: InputEvent) -> void:
 
 # --- Widgets -------------------------------------------------------------------------------
 
-func _label(text: String, size: int, color: Color = Color(0.85, 0.88, 0.86)) -> Label:
+func _label(text: String, size: int, color: Color = Color(0.85, 0.88, 0.86), role: StringName = &"settings_label") -> Label:
 	var label := Label.new()
 	label.text = text
-	label.add_theme_font_size_override("font_size", size)
+	Typography.apply(label, role, size)
 	label.add_theme_color_override("font_color", color)
 	return label
 
 
 func _hint(text: String) -> Label:
-	var label := _label(text, 16, Color(0.55, 0.62, 0.62) if future else Color(0.42, 0.42, 0.36))
+	var label := _label(text, 17, Color(0.55, 0.62, 0.62) if future else Color(0.42, 0.42, 0.36), &"settings_value")
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	return label
 

@@ -25,15 +25,15 @@ func _ready() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 10)
 	add_child(column)
-	connection_label = UI.label("RADIO / DISCONNECTED", 14, UI.CYAN)
+	connection_label = UI.label("RADIO / DISCONNECTED", 20, UI.CYAN)
 	column.add_child(connection_label)
-	speaker_label = UI.label("", 22)
+	speaker_label = UI.label("", 22, UI.AMBER, &"dialogue_speaker")
 	column.add_child(speaker_label)
 	text_label = RichTextLabel.new()
 	text_label.bbcode_enabled = false
 	text_label.fit_content = true
 	text_label.custom_minimum_size = Vector2(0, 65)
-	text_label.add_theme_font_size_override("normal_font_size", 21)
+	Typography.style_rich(text_label, &"dialogue_body", 24)
 	column.add_child(text_label)
 	advance_button = UI.button("CONTINUE")
 	advance_button.pressed.connect(request_advance)

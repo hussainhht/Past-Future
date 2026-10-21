@@ -105,6 +105,12 @@ License texts are preserved in `assets/audio/licenses/` (`kenney_impact_sounds.t
 
 ## 5. 2D Vector Assets & UI Resources
 
+
+## Typography and title (added with the font pass)
+
+- The game is now titled **THE OTHER ME** (`config/name`, main menu, credits). Internal names are unchanged.
+- Fonts, roles and usage are documented in `docs/TYPOGRAPHY_SYSTEM.md`; font files and licenses in `assets/fonts/`.
+- Two font files are still to be installed by hand: `assets/fonts/handwriting/ToThePoint.ttf` and `assets/fonts/menu/Broken.otf` (see `assets/fonts/README.md`). The code falls back until then.
 - [assets/ui/temporal_background.svg](../assets/ui/temporal_background.svg): High-resolution split temporal clock dial used on main menu.
 - [assets/world/spawn_ring.svg](../assets/world/spawn_ring.svg): Floor decal marker indicating spawn coordinates.
 - [resources/ui/menu_theme.tres](../resources/ui/menu_theme.tres): Shared UI theme defining button styles (`PrimaryButton`, `SecondaryButton`), panel containers, font variations, and margins across all menus and HUDs.
