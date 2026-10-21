@@ -28,9 +28,11 @@ func wave_points(frequency: int, amplitude: int) -> PackedVector2Array:
 
 func _draw() -> void:
 	if size.x < 100 or size.y < 220: return
-	var font := Typography.font(&"terminal_log")
-	var digits := Typography.font(&"digital_display")
+	var font := Typography.display_font(show_target)
+	var digits := Typography.display_font(show_target, true)
 	var text_px := Typography.fit_size(font, "CURRENT  000 MHz  /  00%", 33, size.x - 60.0, 18)
+	while text_px > 14 and _readout_width(font, digits, text_px) > size.x - 60.0:
+		text_px -= 1
 	var frequency: int = state.get("current_frequency", Rules.INITIAL_FREQUENCY)
 	var amplitude: int = state.get("current_amplitude", Rules.INITIAL_AMPLITUDE)
 	draw_rect(Rect2(Vector2.ZERO, size), Color("081b20"))
@@ -55,7 +57,11 @@ func _draw() -> void:
 	draw_string(font, Vector2(30, size.y - 17), "GREEN: CURRENT    GREY: TARGET" if show_target else "PAST CONTROLS / FUTURE OBSERVES", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, TARGET)
 
 
-## "CURRENT  075 MHz  /  70%": the words in the terminal font, the numbers as a seven-segment readout.
+func _readout_width(font: Font, digits: Font, px: int) -> float:
+	return font.get_string_size("CURRENT   MHz  /  %", HORIZONTAL_ALIGNMENT_LEFT, -1, px).x + digits.get_string_size("00000", HORIZONTAL_ALIGNMENT_LEFT, -1, px).x
+
+
+## Past uses segmented letters/digits; Future uses a standard computer monospace.
 func _draw_readout(font: Font, digits: Font, px: int, baseline: float, label: String, frequency: int, amplitude: int, color: Color) -> void:
 	var pieces: Array = [[label, font], ["%03d" % frequency, digits], [" MHz  /  ", font], ["%02d" % amplitude, digits], ["%", font]]
 	var x := 30.0

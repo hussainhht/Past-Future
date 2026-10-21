@@ -198,6 +198,10 @@ func switch_role() -> void:
 
 
 func _apply_variants() -> void:
+	for label in $Layout.find_children("*", "Label3D", true, false):
+		label.font = Typography.display_font(role == "future") if String(label.name).begins_with("Stage_") or label.name == &"RecorderPlaque" else Typography.font(&"ui_label")
+	var keypad := $Layout/Shared/KeypadStand.get_node_or_null("MountedKeypad/EntryReadout")
+	if keypad != null: keypad.font = Typography.display_font(role == "future")
 	for prop in $Layout.find_children("*", "Node3D", true, false):
 		if prop is TimelineProp: prop.future = role == "future"
 	for name in ["PastOnly", "FutureOnly"]:

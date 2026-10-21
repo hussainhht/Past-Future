@@ -76,7 +76,7 @@ func refresh() -> void:
 	var options := [{"disabled": not Rules.radios_ready(state) or Rules.link_established(state)}]
 	inspector.open_device(game.computer.get_parent(), game.room.camera, game.room.player,
 		"PAST / LIVE TRANSMITTER" if mode == "frequency" else "FUTURE / LIVE RECEIVER",
-		_record_text(), options if mode == "frequency" else [], {}, "frequency_dial" if mode == "frequency" else "")
+		_record_text(), options if mode == "frequency" else [], {}, "frequency_dial" if mode == "frequency" else "", game.room.timeline == "Future")
 	apply_timeline()
 	game.room.lab.ui.set_control_hint("Drag either dial clockwise to increase; counterclockwise to decrease. Wheel / arrows: fine tune. Tab: switch dial. Shift: 10 steps. Esc / F: step back." if mode == "frequency" else "Green: current signal. Grey: target. Guide the Student until frequency and amplitude match. Esc / F: step back.")
 

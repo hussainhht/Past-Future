@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func open_device(title: String, body: String, actions: Array, code_entry: bool = false) -> void:
 	if code_entry: inspector.entry = code_text
-	inspector.open_device(device_mount, camera, actor, title, body, actions, device_bindings, "code" if code_entry else "")
+	inspector.open_device(device_mount, camera, actor, title, body, actions, device_bindings, "code" if code_entry else "", future)
 	var controls := "Click a physical control. "
 	if code_entry: controls += "Number keys also press the keypad; Enter submits."
 	else:

@@ -4,9 +4,8 @@ extends RefCounted
 ## res://assets/themes/typography/ (FontVariation .tres wrapping the files in res://assets/fonts/);
 ## the game-wide default lives in res://assets/themes/game_ui_theme.tres. See docs/TYPOGRAPHY_SYSTEM.md.
 ##
-## Two fonts are optional files that may not be present yet: To The Point (handwriting) and Broken
-## (main menu only). When a file is missing the role falls back to a sensible font instead of
-## failing, so dropping the file into place is all that is needed to switch to it.
+## Broken is bundled for the main-menu game name; Oxanium supplies general UI.
+## To The Point handwriting remains optional, with a system handwriting fallback.
 
 const TYPOGRAPHY_DIR := "res://assets/themes/typography/"
 const TO_THE_POINT_PATH := "res://assets/fonts/handwriting/ToThePoint.ttf"
@@ -49,13 +48,20 @@ static func font(id: StringName) -> Font:
 		&"menu_title":
 			result = _broken_or(&"display_title")
 		&"menu_button":
-			result = _broken_or(&"ui_button")
+			result = font(&"ui_button")
 		&"past_journal":
 			result = _handwriting()
 		_:
 			result = load(TYPOGRAPHY_DIR + String(id) + "_font.tres") as Font
 	_cache[id] = result
 	return result
+
+
+## Electronic screen text follows the era; ordinary UI keeps Oxanium.
+static func display_font(future: bool, numeric: bool = false) -> Font:
+	if future:
+		return font(&"terminal_log")
+	return font(&"digital_display" if numeric else &"past_display")
 
 
 ## The font of a role.

@@ -54,7 +54,7 @@ var _dial_drag_linear := false
 const DIAL_DEGREES_PER_MHZ := 5.0
 
 
-func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String, text: String, options: Array, bindings: Dictionary = {}, keypad_kind: String = "") -> void:
+func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String, text: String, options: Array, bindings: Dictionary = {}, keypad_kind: String = "", future: bool = false) -> void:
 	var reopening := active and mount == body
 	if active and not reopening: close()
 	_clear_parts()
@@ -94,6 +94,8 @@ func open_device(body: Node3D, view: Camera3D, character: Node3D, title: String,
 				if mesh == null: mesh = visual.get_node_or_null("Mesh") as MeshInstance3D
 				if mesh != null: bounds = mesh.get_aabb().size + Vector3.ONE * 0.10
 			_attach_control(option.label, visual, option, bounds, not bound)
+	for display in mount.find_children("*Readout", "Label3D", true, false):
+		display.font = Typography.display_font(future)
 	_collect_equipment_points()
 	_frame_device(not reopening)
 	_cutaway()
@@ -274,6 +276,7 @@ func _letter(parent: Node3D, text: String, at: Vector3, pixel_size: float, font_
 	label.position = at
 	label.pixel_size = pixel_size
 	label.font_size = font_size
+	label.font = Typography.font(&"ui_label")
 	label.modulate = color
 	label.outline_size = 0
 	label.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS_ANISOTROPIC
@@ -293,6 +296,7 @@ func install_keypad(body: Node3D) -> Node3D:
 	_mesh(panel, Vector3(0, 0.50, 0.075), Vector3(0.90, 0.29, 0.025), Color("0c2025"))
 	var display := _letter(panel, "---", Vector3(0, 0.50, 0.10), 0.0021, 42, Color("91e3bd"), 12)
 	display.name = "EntryReadout"
+	display.font = Typography.display_font(false)
 	for index in 12:
 		var stamp: String = str(index + 1) if index < 9 else ["DEL", "0", "ENTER"][index - 9]
 		var key := _mesh(panel, Vector3(-0.32 + (index % 3) * 0.32, 0.20 - floori(index / 3.0) * 0.25, 0.10), Vector3(0.27, 0.20, 0.12), Color("a7b4a5"))
@@ -326,6 +330,7 @@ func install_frequency_dial(body: Node3D) -> Node3D:
 		var x := -.52 if parameter == "frequency" else .52
 		var display := _letter(panel, "050 MHz" if parameter == "frequency" else "35%", Vector3(x, .47, .10), .003, 40, Color("91e3bd"), 12)
 		display.name = "EntryReadout" if parameter == "frequency" else "AmplitudeReadout"
+		display.font = Typography.display_font(false)
 		var caption := _letter(panel, parameter.to_upper(), Vector3(x, -.52, .10), .0028, 32, Color("dfbd73"), 12)
 		caption.name = parameter.capitalize() + "Caption"
 		for index in 36:

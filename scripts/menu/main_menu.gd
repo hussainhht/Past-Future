@@ -160,8 +160,7 @@ func _apply_theme() -> void:
 	_apply_title_typography()
 
 
-## Broken is only used here, on the title and the main menu buttons. Without Broken.otf installed
-## these roles fall back to Hubot Sans Black / Geist SemiBold (see Typography).
+## Broken is reserved for the game name; menu controls use Oxanium.
 func _apply_title_typography() -> void:
 	var title_font := Typography.font(&"menu_title")
 	var title_labels: Array[Label] = [$Layout/TitleBlock/Past, $Layout/TitleBlock/Future]

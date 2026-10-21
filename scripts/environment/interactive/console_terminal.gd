@@ -56,6 +56,7 @@ func _state_changed(previous: Dictionary) -> void:
 
 
 func _show_state(_animate: bool) -> void:
+	readout.font = Typography.display_font(future)
 	var calibrated: bool = state.get("frequency_calibrated", false)
 	var link := linked()
 	screen.set_surface_override_material(0, _screen_material)

@@ -145,6 +145,8 @@ func build(timeline: String, operate: Callable) -> void:
 		area.highlight_changed.connect(func(on: bool) -> void: plate.material_override.albedo_color = accent if on else accent.darkened(0.45))
 		var title := label(specs[id], area.position + Vector3(0, 1.65, 0), 22)
 		area.set_meta("title", title)
+		if id.begins_with("coil") or id.begins_with("terminal"):
+			title.font = Typography.display_font(future)
 		if not id.begins_with("evidence") and not id in ["warning", "routing"]:
 			if id.begins_with("coil"):
 				cylinder(area.position + Vector3(0, 0.45, 0), 0.45, 0.9, wall, true)
@@ -157,6 +159,7 @@ func build(timeline: String, operate: Callable) -> void:
 				add_child(visual)
 				box(area.position + Vector3(0, 0.4, 0), Vector3(0.7, 0.8, 0.45), wall, true)
 	waveform = label("", Vector3(6 if future else -3, 2, -3), 24)
+	waveform.font = Typography.display_font(future)
 	label("III / THE FINAL FRACTURE\n" + ("31 YEARS LATER" if future else "PROJECT CONTINUITY"), Vector3(0, 1.5, -6.7), 32)
 
 
@@ -275,6 +278,7 @@ func label(text: String, at: Vector3, font_size: int) -> Label3D:
 	l.text = text
 	l.position = at
 	l.font_size = font_size
+	l.font = Typography.font(&"ui_label")
 	l.pixel_size = 0.006
 	l.outline_size = 6
 	l.billboard = BaseMaterial3D.BILLBOARD_ENABLED

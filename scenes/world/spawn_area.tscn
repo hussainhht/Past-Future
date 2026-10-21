@@ -11,6 +11,9 @@
 [ext_resource type="PackedScene" path="res://scenes/environment/rooms/signal_lab.tscn" id="8"]
 [ext_resource type="FontVariation" path="res://assets/themes/typography/heading_font.tres" id="hud_heading"]
 
+[ext_resource type="Theme" path="res://resources/ui/menu_theme.tres" id="menu_theme"]
+[ext_resource type="Script" path="res://scripts/menu/menu_button.gd" id="menu_button"]
+
 [sub_resource type="BoxShape3D" id="HorizontalWall"]
 size = Vector3(25.44, 1, 0.32)
 

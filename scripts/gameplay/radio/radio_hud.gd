@@ -10,10 +10,10 @@ var _phase: float = 0.0
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	# DSEG has no usable "M" or "z", so the "MHz" unit stays in the terminal font; seven-segment digits are drawn by the waveform.
-	Typography.apply(frequency_label, &"terminal_log", 22)
-	Typography.apply(status_label, &"terminal_log", 20)
-	Typography.apply(signal_label, &"terminal_log", 22)
+	# Overlay labels use the shared in-game UI family.
+	Typography.apply(frequency_label, &"settings_value", 22)
+	Typography.apply(status_label, &"settings_value", 20)
+	Typography.apply(signal_label, &"settings_value", 22)
 	if radio != null:
 		radio.status_changed.connect(_on_status_changed)
 		_on_status_changed(radio.signal_state, radio.owns_radio, radio.presentation_active)

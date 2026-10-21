@@ -37,6 +37,9 @@ func _ready() -> void:
 	content.add_child(close_button)
 	PuzzleManager.puzzle_state_changed.connect(func(id: String, _state: Dictionary, _revision: int):
 		if id == Rules.ID: refresh())
+	for child in content.get_children():
+		if child is Label and child != feedback_label:
+			child.add_theme_font_override("font", Typography.display_font(false))
 	refresh()
 
 

@@ -9,6 +9,7 @@ var _pressing: bool = false
 
 
 func _show_state(_animate: bool) -> void:
+	display.font = Typography.display_font(future)
 	var unlocked := linked()
 	paint(find_mesh("StatusLed"), "led_go" if unlocked else "led_red")
 	if unlocked:

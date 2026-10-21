@@ -18,24 +18,15 @@ Only the weights the game uses were copied (no archives, no web fonts, no other 
 collections). Each file was checked for a valid TrueType/OpenType header, and Godot 4.7.2 imports and
 renders all of them.
 
-## NOT installed yet (blocked at download time)
+## Requested typography (2026-10-21)
 
-The session that did this work could not reach `fontspace.com` or `dafont.com` (the network policy refused
-the connection), so these two files were **not** downloaded and nothing was substituted for them:
+- `menu/Broken.otf`: Broken by Picatype Design Studio, downloaded from https://www.dafont.com/broken-3.font. Used only for the game name on the main menu. The archive has no license file; the author's usage/payment terms are recorded in `licenses/Broken-NOTICE.txt`.
+- `interface/Oxanium-Variable.ttf`: Google Fonts Oxanium, weights 200-800, from https://github.com/google/fonts/tree/main/ofl/oxanium. Used for general UI, settings, HUD, headings and dialogue. SIL OFL 1.1 in `licenses/Oxanium-OFL.txt`.
+- `future/DSEG14Classic-Regular.ttf`: DSEG 0.46.0 from the official npm package, under the existing `licenses/DSEG-OFL.txt`. Alphabetic digital text for Past electronic displays. DSEG7 remains reserved for numeric Past readouts.
+- Monaspace Krypton Regular is the standard computer monospace used for Future screens, including their numeric readings.
 
-| Font | Put the file at | Download | Notes |
-|---|---|---|---|
-| To The Point (handwriting) | `handwriting/ToThePoint.ttf` | https://www.fontspace.com/to-the-point-font-f25644 | Stated to be SIL OFL; confirm on the download page and add its license text to `licenses/`. Small glyph set: missing characters fall back to Mona Sans. |
-| Broken, by Picatype Design Studio | `menu/Broken.otf` | https://www.dafont.com/broken-3.font | **Check the license before commercial distribution.** dafont lists many fonts as "personal use only"; if this one is, buy or request a commercial license, or the menu title will have to ship in the fallback font. |
-
-Until they are installed the code falls back automatically and nothing breaks: the journal handwriting uses
-the system handwriting fonts it used before, and the main-menu title/buttons use Hubot Sans Black / Geist
-SemiBold. Drop the files in, let Godot import them (open the editor once, or run
-`godot --headless --import`), and `Typography` picks them up with no code change. Add their license texts
-to `licenses/` at the same time.
-
-After importing, commit the generated `*.import` files next to the fonts (the project already tracks
-`*.import` files): exported builds need them.
+To The Point (`handwriting/ToThePoint.ttf`) is still optional and absent. Student paper notes and the notebook retain the existing system handwriting fallback.
+All bundled fonts load locally and work offline. Run Godot import after adding new font files.
 
 ## Glyph coverage notes
 

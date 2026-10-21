@@ -102,9 +102,9 @@ func is_ended() -> bool:
 
 func _build() -> void:
 	var s := _style
-	# Room names are Hubot Sans Bold; the Future card's small print is terminal Departure Mono.
+	# Chapter cards use the shared Oxanium UI family.
 	_title_font = _make_font(Typography.font(&"heading"))
-	var label_font := _make_font(Typography.font(&"future_journal_title" if s.preset_id == &"future_signal" else &"ui_label"))
+	var label_font := _make_font(Typography.font(&"ui_label"))
 
 	chapter.text = "%s  /  %s" % [_data.chapter_label, _data.chapter_title] if not _data.chapter_title.is_empty() else _data.chapter_label
 	title.text = _data.room_title
