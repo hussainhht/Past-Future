@@ -415,3 +415,9 @@ static func _panel_style(background: Color, border: Color, width: int) -> StyleB
 	style.set_border_width_all(width)
 	style.set_corner_radius_all(6)
 	return style
+
+
+## Rooms may add confirmed device information to the shared objective presentation.
+func add_status_control(control: Control) -> void:
+	var box := _guide_goal.get_parent()
+	box.add_child(control)

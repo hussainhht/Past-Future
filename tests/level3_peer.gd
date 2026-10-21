@@ -54,6 +54,19 @@ func host_at(station: String) -> void:
 	await _tick()
 
 
+func use_device(station: String, caption: String, confirm: bool = false) -> void:
+	room._close()
+	room.operate(station)
+	check(room.devices.inspector.active, "networked physical inspection: " + station)
+	check(room.devices.inspector.press_control(caption), "networked physical control: " + caption)
+	if confirm:
+		check(room.ui.visible_modal, "networked operation requires confirmation")
+		var buttons: Array[Node] = room.ui.modal_box.find_children("*", "Button", true, false)
+		buttons[1].pressed.emit()
+	await _tick()
+	room._close()
+
+
 ## Future travels with the actual CharacterBody collision and a legal speed envelope.
 func walk(at: Vector3) -> void:
 	var target: Vector3 = room.worlds.future.global_position + at
@@ -96,8 +109,8 @@ func _run() -> void:
 	await wait_for(func() -> bool: return room.remote_ready, "role handshake")
 	check(room.networked and room.role == ("past" if host else "future"), "correct locked timeline")
 	check(room.player.get_node("Visual/Student").scene_file_path.contains("student_3d/student.glb" if host else "professor_3d/professor.glb"), "correct role avatar")
-	room.switch_debug_role()
-	check(room.role == ("past" if host else "future"), "debug switch cannot bypass live role")
+	room.switch_role()
+	check(room.role == ("past" if host else "future"), "solo switch cannot bypass live role")
 	if host:
 		check(not room.accept_future_pose(Vector3(7, 0, -5)), "host refuses remote teleport")
 	else:
@@ -112,42 +125,49 @@ func _run() -> void:
 		if host:
 			await create_timer(0.5).timeout
 			await host_at("start")
-			room.request_action("start")
+			await use_device("start", "ARM REACTOR...", true)
 			await host_at("coil_0")
-			room.request_action("coil", {"index": 0})
-			room.request_action("coil", {"index": 0})
+			await use_device("coil_0", "SET POSITION 2")
+			await wait_for(func() -> bool: return room.state.coils[0] == 2, "physical coil selector reaches confirmed stop 2")
 			await host_at("coil_2")
-			room.request_action("coil", {"index": 2})
+			await use_device("coil_2", "SET POSITION 1")
 		else:
 			await wait_for(func() -> bool: return room.state.stage == "STAGE_A", "reactor starts on client")
 			await walk(Vector3(6, 0, 4.1))
-			room.request_action("receiver")
+			await use_device("receiver", "RECONNECT BATTERY")
 		await wait_for(func() -> bool: return room.state.stage == "STAGE_B", "both see Stage B")
 		check(room.state.remaining > 100 and room.state.remaining <= 150, "host timer resyncs on both peers")
+		var before_pause: float = room._clock()
+		room.set_paused(true)
+		room.switch_role()
+		await create_timer(.6).timeout
+		check(room._clock() >= before_pause + .5 and room.state.stage == "STAGE_B", "LAN pause leaves the authoritative clock running")
+		check(room.temporal_ghost == null and room.role == ("past" if host else "future"), "LAN keeps role ownership and solo ghost restrictions")
+		room.set_paused(false)
 		if not host:
 			await walk(Vector3(4.8, 0, 4.1))
 			await walk(Vector3(4.8, 0, -1.9))
 			await walk(Vector3(6, 0, -1.9))
-			room.request_action("anchor")
+			await use_device("anchor", "CALIBRATE SIGNAL ANCHOR")
 		else:
 			await wait_for(func() -> bool: return room.state.anchor, "Future calibrates anchor")
 			await host_at("origin")
-			room.request_action("origin")
+			await use_device("origin", "STABILIZE ORIGIN CORE")
 		await wait_for(func() -> bool: return room.state.origin, "Past stabilizes Origin")
 		if not host:
 			await walk(Vector3(4.8, 0, -1.9))
 			await walk(Vector3(4.8, 0, 1))
 			await walk(Vector3(2.5, 0, 1))
-			room.request_action("sync")
+			await use_device("sync_future", "ENGAGE PHASE SWITCH")
 		else:
 			await wait_for(func() -> bool: return room.state.sync_future, "Future presses its physical switch")
 			check(room.state.stage == "STAGE_B", "one peer cannot synchronize alone")
 			await host_at("sync_past")
-			room.request_action("sync")
+			await use_device("sync_past", "ENGAGE PHASE SWITCH")
 		await wait_for(func() -> bool: return room.state.stage == "STAGE_C", "both see identity lock")
 		if host:
 			await host_at("terminal_past")
-			room.request_action("choose", {"command": row[0]})
+			await use_device("terminal_past", row[0], true)
 			check(not str(room.state).contains(row[0]), "host public state excludes private choice")
 		else:
 			await walk(Vector3(4.8, 0, 1))
@@ -159,7 +179,7 @@ func _run() -> void:
 			pm.submit_action(Rules.ID, "choose", {"attempt": attempt, "seq": 501, "command": row[1], "role": "past"})
 			await create_timer(0.15).timeout
 			check(room.state.stage == "STAGE_C" and room.state.coils == old_coils, "spoofed and malformed votes refused")
-			room.request_action("choose", {"command": row[1]})
+			await use_device("terminal_future", row[1], true)
 		await wait_for(func() -> bool: return room.state.stage == "ENDING", "both reach ending")
 		check(room.state.ending == row[2], "matching shared ending " + row[2])
 		check(pm.is_solved(Rules.ID), "ending marks canonical puzzle solved")
@@ -188,5 +208,9 @@ func _run() -> void:
 	else:
 		await wait_for(func() -> bool: return room.disconnected, "host disconnect suspends client")
 		check(room.ui.visible_modal and not room.player.controls_enabled, "client gets usable disconnect recovery")
+	room.queue_free()
+	await process_frame
+	await process_frame
+	await create_timer(.2).timeout
 	print("LEVEL3 %s: %s (%d checks, %d failures)" % ["host" if host else "client", "PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)

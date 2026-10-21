@@ -1,0 +1,46 @@
+{
+	"adapter": "AMD Radeon(TM) Graphics",
+	"future_core": {
+		"camera_position": "(39.6, 12.17153, 17.08304)",
+		"decoration_draw_calls": 64.0,
+		"draw_calls": 369.0,
+		"instanced_boxes": 928,
+		"player_local_position": "(-0.400002, 0.0, 2.7)",
+		"primitives": 267530.0,
+		"procedural_triangles": 11296
+	},
+	"future_entry": {
+		"camera_position": "(40.0, 12.17153, 20.28304)",
+		"draw_calls": 366.0,
+		"player_local_position": "(0.0, 0.0, 5.9)",
+		"primitives": 265914.0
+	},
+	"future_rear": {
+		"camera_position": "(40.0, 12.17153, 10.58304)",
+		"draw_calls": 316.0,
+		"player_local_position": "(0.0, 0.0, -3.8)",
+		"primitives": 266500.0
+	},
+	"past_core": {
+		"camera_position": "(-0.4, 12.17153, 17.08304)",
+		"decoration_draw_calls": 55.0,
+		"draw_calls": 362.0,
+		"instanced_boxes": 827,
+		"player_local_position": "(-0.4, 0.0, 2.7)",
+		"primitives": 72832.0,
+		"procedural_triangles": 10084
+	},
+	"past_entry": {
+		"camera_position": "(0.0, 12.17153, 20.28304)",
+		"draw_calls": 364.0,
+		"player_local_position": "(0.0, 0.0, 5.9)",
+		"primitives": 72060.0
+	},
+	"past_rear": {
+		"camera_position": "(0.0, 12.17153, 10.58304)",
+		"draw_calls": 307.0,
+		"player_local_position": "(0.0, 0.0, -3.8)",
+		"primitives": 72252.0
+	},
+	"renderer": "gl_compatibility"
+}

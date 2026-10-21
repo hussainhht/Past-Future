@@ -18,10 +18,12 @@ var _networked: bool = false
 var _paused: bool = false
 var _disconnected: bool = false
 var _character_studio: Control
+var _studio_from_pause := false
 var _leaving: bool = false
 var temporal_ghost: Node3D
 var settings_overlay: CanvasLayer
 var tutorial: TutorialPopup
+@onready var pause_menu: CanvasLayer = $PauseLayer
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -46,36 +48,19 @@ func _ready() -> void:
 		timeline = "Future" if PuzzleManager.get_local_role() == "future" else "Past"
 	NetworkManager.state_changed.connect(_on_network_changed)
 	%PauseButton.pressed.connect(_set_paused.bind(true))
-	%ResumeButton.pressed.connect(_set_paused.bind(false))
-	%MenuButton.pressed.connect(_return_to_menu)
-	%QuitGameButton.pressed.connect(func() -> void: get_tree().quit())
 	%TimelineButton.pressed.connect(_switch_preview_timeline)
-	%CharacterButton.pressed.connect(_open_character_studio)
-	%ResetSoloButton.pressed.connect(reset_solo_session)
-	%InterferenceButton.pressed.connect(_test_interference)
 	%TimelineButton.visible = not _networked
 	%ResetSoloButton.visible = not _networked
-	%InterferenceButton.visible = not _networked
 	player.view_camera = camera
 	_apply_timeline()
 	gameplay.initialize(self)
-	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
-	add_child(settings_overlay)
-	settings_overlay.configure(gameplay.audio)
-	%SettingsButton.pressed.connect(func() -> void:
-		pause_panel.hide()
-		settings_overlay.open()
-	)
-	settings_overlay.closed.connect(func() -> void:
-		pause_panel.show()
-		%SettingsButton.grab_focus()
-	)
 	tutorial = load("res://scenes/ui/tutorial_popup.tscn").instantiate()
 	add_child(tutorial)
 	tutorial.configure(gameplay.audio)
 	tutorial.closed.connect(_on_tutorial_closed)
 	tutorial.opened.connect(gameplay.sync_controls)
-	%HowToPlayButton.pressed.connect(_open_tutorial.bind(true))
+	pause_menu.configure(self, gameplay.audio, func() -> String: return "future" if timeline == "Future" else "past", _set_paused, reset_solo_session, _return_to_menu, tutorial, _open_character_studio)
+	settings_overlay = pause_menu.settings
 	if not PuzzleManager.is_registered(CorridorRules.ID):
 		PuzzleManager.register_puzzle(CorridorRules.ID, CorridorRules.new())
 	lab.player_exited.connect(_on_laboratory_exit)
@@ -108,7 +93,7 @@ func _temporal_ghost_context() -> Dictionary:
 
 
 func _input(event: InputEvent) -> void:
-	if settings_overlay != null and settings_overlay.handle_input(event): return
+	if pause_menu != null and pause_menu.handle_input(event): return
 	if tutorial != null and tutorial.handle_input(event): return  # owns Escape / back while open
 	if gameplay.configured and gameplay.has_modal() and not _paused:
 		return  # the terminal/document owns Escape and all gameplay input
@@ -125,6 +110,9 @@ func _input(event: InputEvent) -> void:
 		if not _disconnected:
 			_set_paused(not _paused)
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("switch_role") and not event.is_echo() and not is_gameplay_paused():
+		_switch_preview_timeline()
+		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo and not _paused:
 		if event.physical_keycode == KEY_F2:
 			_open_character_studio()
@@ -132,9 +120,6 @@ func _input(event: InputEvent) -> void:
 		elif event.physical_keycode == KEY_R:
 			if not player.is_action_active() and not gameplay.director.is_gameplay_input_blocked():
 				respawn()
-			get_viewport().set_input_as_handled()
-		elif event.physical_keycode == KEY_T:
-			_switch_preview_timeline()
 			get_viewport().set_input_as_handled()
 
 
@@ -182,13 +167,15 @@ func _show_first_time_tutorial() -> void:
 func _open_character_studio() -> void:
 	if _disconnected or is_instance_valid(_character_studio) or player.is_action_active() or (gameplay.configured and (gameplay.has_modal() or gameplay.director.is_dialogue_active())):
 		return
+	_studio_from_pause = _paused
 	_set_paused(true)
 	pause_panel.hide()
 	_character_studio = load("res://scenes/characters/%s_3d_studio.tscn" % ("professor" if timeline == "Future" else "student")).instantiate()
 	$HUD/Interface.add_child(_character_studio)
 	_character_studio.close_requested.connect(func() -> void:
 		_character_studio = null
-		_set_paused(false)
+		_set_paused(_studio_from_pause)
+		if _studio_from_pause: %CharacterButton.grab_focus()
 	)
 	gameplay.sync_controls()
 
@@ -265,7 +252,7 @@ func _set_paused(paused: bool) -> void:
 	_paused = paused
 	player.controls_enabled = not paused
 	player.velocity = Vector3.ZERO
-	pause_panel.visible = paused
+	pause_menu.present(paused)
 	if settings_overlay != null: settings_overlay.hide()
 	%PauseTitle.text = "A moment between years"
 	%PauseDescription.text = "Take your time. The lab will be here."

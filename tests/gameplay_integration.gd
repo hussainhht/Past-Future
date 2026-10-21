@@ -13,6 +13,7 @@ var failures: int = 0
 
 
 func _initialize() -> void:
+	Engine.set_meta("development_tools_enabled", true)
 	_run.call_deferred()
 
 
@@ -114,7 +115,7 @@ func _run() -> void:
 	current_scene = menu
 	await tick()
 	menu.get_node("%PlayButton").pressed.emit()
-	check(menu.get_node("Overlay").visible and "SOLO TEST" in menu.get_node("%PreviewButton").text, "Existing Play page offers a clearly labelled Solo Test")
+	check(menu.get_node("Overlay").visible and "SOLO EXPLORATION" in menu.get_node("%PreviewButton").text, "Play page offers solo exploration")
 	await capture("01_main_menu_play")
 	menu.get_node("%PreviewButton").pressed.emit()
 	if not await wait_for(func() -> bool: return current_scene != null and current_scene.scene_file_path == "res://scenes/world/spawn_area.tscn", "Solo menu failed to enter actual laboratory"):

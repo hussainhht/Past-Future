@@ -1,0 +1,13 @@
+{
+	"adapter": "AMD Radeon(TM) Graphics",
+	"draw_calls": 94.0,
+	"frame_median_ms": 1.581,
+	"frame_p95_ms": 2.874,
+	"module_update_median_ms": 0.216,
+	"module_update_p95_ms": 0.325,
+	"primitives": 30110.0,
+	"renderer": "gl_compatibility",
+	"resolution": "1600x900",
+	"sample_count": 150,
+	"scenario": "Future overload, standalone preview floor and station proxies, controls hidden, uncapped"
+}

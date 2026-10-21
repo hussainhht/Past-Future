@@ -112,7 +112,7 @@ func run() -> void:
 			escape.action = "ui_cancel"
 			escape.pressed = true
 			room._unhandled_input(escape)
-			for button in room.ui.modal_box.find_children("", "Button", true, false):
+			for button in room.pause_menu.panel.find_children("", "Button", true, false):
 				if button.text == "SETTINGS": button.pressed.emit()
 		else:
 			room.set_paused(true)

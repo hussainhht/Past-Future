@@ -1,0 +1,86 @@
+{
+	"adapter": "AMD Radeon(TM) Graphics",
+	"captures": {
+		"ending_paradox": {
+			"draw_calls": 100.0,
+			"ending": "paradox",
+			"node_count": 9,
+			"phase": "ending",
+			"rendered_primitives": 30598.0,
+			"timeline": "future"
+		},
+		"ending_professor_override": {
+			"draw_calls": 99.0,
+			"ending": "professor_override",
+			"node_count": 9,
+			"phase": "ending",
+			"rendered_primitives": 30404.0,
+			"timeline": "future"
+		},
+		"ending_student_override": {
+			"draw_calls": 100.0,
+			"ending": "student_override",
+			"node_count": 9,
+			"phase": "ending",
+			"rendered_primitives": 30616.0,
+			"timeline": "future"
+		},
+		"ending_trust": {
+			"draw_calls": 99.0,
+			"ending": "trust",
+			"node_count": 9,
+			"phase": "ending",
+			"rendered_primitives": 30376.0,
+			"timeline": "future"
+		},
+		"future_gameplay_entry": {
+			"draw_calls": 101.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "discovery",
+			"rendered_primitives": 27822.0,
+			"timeline": "future"
+		},
+		"future_gameplay_phase_switch": {
+			"draw_calls": 101.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "discovery",
+			"rendered_primitives": 28926.0,
+			"timeline": "future"
+		},
+		"future_overload_detail": {
+			"draw_calls": 100.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "overload",
+			"rendered_primitives": 30588.0,
+			"timeline": "future"
+		},
+		"past_discovery_detail": {
+			"draw_calls": 101.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "discovery",
+			"rendered_primitives": 29974.0,
+			"timeline": "past"
+		},
+		"past_gameplay_entry": {
+			"draw_calls": 103.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "discovery",
+			"rendered_primitives": 27400.0,
+			"timeline": "past"
+		},
+		"past_synchronization_detail": {
+			"draw_calls": 101.0,
+			"ending": "",
+			"node_count": 9,
+			"phase": "synchronization",
+			"rendered_primitives": 29986.0,
+			"timeline": "past"
+		}
+	},
+	"renderer": "gl_compatibility"
+}

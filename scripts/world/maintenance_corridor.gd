@@ -49,6 +49,7 @@ var _floating_labels: Array[Label3D] = []
 var _equipment_tween: Tween
 var storage: Node3D
 var settings_overlay: CanvasLayer
+var pause_menu: CanvasLayer
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -577,17 +578,19 @@ func _sync_controls() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if settings_overlay != null and settings_overlay.handle_input(event): return
+	if pause_menu != null and pause_menu.handle_input(event): return
 	if not _initialized or ui.is_modal_open() or GameFlowManager.is_input_locked(): return
-	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause"):
 		if ending_screen.visible:
 			ending_screen.hide()
 			_ending_dismissed = true
 		else: set_paused(not _paused)
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("switch_role") and not event.is_echo() and not _paused:
+		switch_role()
+		get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo and not _paused:
-		if event.physical_keycode == KEY_T: switch_role()
-		elif event.physical_keycode == KEY_R and not player.is_action_active(): respawn()
+		if event.physical_keycode == KEY_R and not player.is_action_active(): respawn()
 		elif event.physical_keycode == KEY_E and player.controls_enabled and role == "past" and not state.storage.past_hand.is_empty() and not player.is_action_active():
 			if player.position.z <= -3.3 and player.position.z >= -8.5:
 				var drop := Vector3(clampf(player.position.x, -6.6, 6.6), 0, clampf(player.position.z + 0.5, -8.5, -3.3))
@@ -604,8 +607,9 @@ func respawn() -> void:
 
 func set_paused(value: bool) -> void:
 	if _disconnected and not value: return
+	if _paused != value: audio.play_ui(&"ui_pause" if value else &"ui_unpause")
 	_paused = value
-	pause_screen.visible = value
+	pause_menu.present(value)
 	if settings_overlay != null: settings_overlay.hide()
 	_sync_controls()
 
@@ -627,8 +631,8 @@ func _on_network_changed() -> void:
 		ui.close_modal()
 		director.stop_dialogue()
 		set_paused(true)
-		pause_screen.get_node("Panel/Box/Title").text = "The connection was lost"
-		pause_screen.get_node("Panel/Box/Resume").disabled = true
+		pause_menu.label("PauseTitle").text = "The connection was lost"
+		pause_menu.button("ResumeButton").disabled = true
 
 
 func return_to_menu() -> void:
@@ -721,7 +725,7 @@ func _build_hud() -> void:
 	room_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	room_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	row.add_child(room_title)
-	role_button = _button(row, "SWITCH TIMELINE", switch_role)
+	role_button = _button(row, "SWITCH [T]", switch_role)
 	role_button.visible = not NetworkManager.in_game
 	pause_button = _button(row, "PAUSE", func() -> void: set_paused(true))
 	for button in [role_button, pause_button]:
@@ -732,38 +736,11 @@ func _build_hud() -> void:
 	overlays.name = "Overlays"
 	overlays.layer = 30
 	add_child(overlays)
-	pause_screen = _overlay(overlays, "Pause")
-	# The pause menu hugs its buttons like the other levels; only the ending summary needs the wide panel.
-	var pause_panel := pause_screen.get_node("Panel") as Control
-	pause_panel.offset_left = -240.0
-	pause_panel.offset_right = 240.0
-	pause_panel.offset_top = -10.0
-	pause_panel.offset_bottom = 10.0
-	pause_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	pause_panel.grow_vertical = Control.GROW_DIRECTION_BOTH
-	var box := pause_screen.get_node("Panel/Box")
-	var title := _hud_label("A moment between years", 34)
-	title.name = "Title"
-	box.add_child(title)
-	_menu_button(box, "RESUME", func() -> void: set_paused(false), &"PrimaryButton").name = "Resume"
-	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
-	add_child(settings_overlay)
-	settings_overlay.configure(audio)
-	var settings_button := _menu_button(box, "SETTINGS", func() -> void:
-		pause_screen.hide()
-		settings_overlay.open()
-	)
-	settings_overlay.closed.connect(func() -> void:
-		pause_screen.show()
-		settings_button.grab_focus()
-	)
-	_menu_button(box, "RETURN TO MAIN MENU", return_to_menu)
-	if not NetworkManager.in_game:
-		_menu_button(box, "RESTART CHAPTER FROM LABORATORY", func() -> void:
-			PuzzleManager.begin_session()
-			PuzzleManager.offline_role = "past"
-			get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
-		)
+	pause_menu = load("res://scenes/ui/pause_menu.tscn").instantiate()
+	add_child(pause_menu)
+	pause_menu.configure(self, audio, func() -> String: return role, set_paused, reset_solo_session, return_to_menu)
+	pause_screen = pause_menu.panel
+	settings_overlay = pause_menu.settings
 	ending_screen = _overlay(overlays, "Ending")
 
 
@@ -845,3 +822,10 @@ func _refresh_hud() -> void:
 	ui.set_guidance(message)
 	timeline_label.text = role.to_upper()
 	timeline_label.add_theme_color_override("font_color", LabUI.FUTURE_ACCENT if role == "future" else LabUI.PAST_ACCENT)
+
+
+func reset_solo_session() -> void:
+	if NetworkManager.in_game: return
+	PuzzleManager.begin_session()
+	PuzzleManager.offline_role = "past"
+	get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")

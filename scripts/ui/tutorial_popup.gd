@@ -18,8 +18,6 @@ const TemporalButton := preload("res://scripts/menu/menu_button.gd")
 const CONFIG_PATH := "user://tutorial.cfg"
 const CONFIG_SECTION := "tutorial"
 const CONFIG_KEY := "dismissed"
-const TITLE := "WELCOME TO THE OTHER ME"
-const SUBTITLE := "Two timelines. One identity. Your choices shape the future."
 const BUTTON_TEXT := "GOT IT — LET'S PLAY"
 const TIP_TITLE := "WORK TOGETHER"
 const TIP_TEXT := "Neither timeline has all the answers. Share what you discover. What changes in the past can transform the future."
@@ -148,16 +146,6 @@ func _build() -> void:
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 16)
 	margin.add_child(column)
-
-	var title := _label(TITLE, 40, TEXT_COLOR, &"chapter_name")
-	title.name = "Title"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	column.add_child(title)
-	var subtitle := _label(SUBTITLE, 21, MUTED_COLOR, &"settings_value")
-	subtitle.name = "Subtitle"
-	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	column.add_child(subtitle)
 
 	_scroll = ScrollContainer.new()
 	_scroll.name = "Body"

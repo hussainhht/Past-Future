@@ -122,6 +122,7 @@ static func setup_standard_actions() -> void:
 		_create_key_event(KEY_SHIFT),
 		_create_joy_button_event(JOY_BUTTON_LEFT_STICK) # L3 on PS5
 	], DEADZONE_DEFAULT)
+	_ensure_action("switch_role", [_create_key_event(KEY_T)], DEADZONE_DEFAULT)
 	_ensure_action("temporal_ghost", [
 		_create_key_event(KEY_G),
 		_create_joy_button_event(JOY_BUTTON_RIGHT_SHOULDER)

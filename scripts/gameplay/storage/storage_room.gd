@@ -113,7 +113,7 @@ func _build_bay(index: int) -> void:
 	var bay := Node3D.new()
 	bay.name = "Bay%d" % index
 	bay.transform = room.get_node("Layout/StorageBays/Bay%d" % index).transform
-	bay.set_meta("inspection_bounds", AABB(Vector3(-0.85, -0.05, -1.20), Vector3(1.7, 1.65, 2.1)))
+	bay.set_meta("inspection_bounds", AABB(Vector3(-0.85, -0.05, -1.20), Vector3(1.7, 1.65, 2.25)))
 	bay.set_meta("inspection_direction", bay.basis * Vector3(0, -3.6, -4.4))
 	add_child(bay)
 	bays.append(bay)
@@ -157,15 +157,71 @@ func _build_bay(index: int) -> void:
 	_box(bay, "ComputerScreen", Vector3(0, 1.13, -0.96), Vector3(1.12, 0.52, 0.15), "172a30")
 	screens.append(_label(bay, Vector3(0, 1.20, -0.875), "0.0 kg", 44))
 	_label(bay, Vector3(0, 1.50, -0.96), "VAULT / %s" % ["A", "B", "C"][index], 34).billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	_label(bay, Vector3(0, 0.88, -0.86), "UNDERGROUND / DRY / SHIELDED", 18)
-	_box(bay, "ComputerKey", Vector3(0, 0.78, -0.69), Vector3(0.27, 0.13, 0.16), "d6ac63")
-	_box(bay, "LowerKey", Vector3(0.36, 0.78, -0.69), Vector3(0.22, 0.13, 0.16), "ae7e58")
-	_box(bay, "PlaceHandle", Vector3(-0.31, 0.61, 0.81), Vector3(0.26, 0.10, 0.12), "76b3ae")
-	_box(bay, "TakeHandle", Vector3(0.31, 0.61, 0.81), Vector3(0.26, 0.10, 0.12), "ae7e58")
+	_label(bay, Vector3(0, 1.0, -0.86), "UNDERGROUND / DRY / SHIELDED", 18)
+	_box(bay, "ControlPanel", Vector3(0, 0.74, -0.80), Vector3(1.12, 0.40, 0.22), "263b42")
+	_marked_button(bay, "RaiseButton", Vector3(-0.30, 0.76, -0.64), Vector3(0.48, 0.26, 0.15), "↑ RAISE", "76c9a1")
+	_marked_button(bay, "LowerButton", Vector3(0.30, 0.76, -0.64), Vector3(0.48, 0.26, 0.15), "↓ LOWER", "d6ac63")
+	_marked_button(bay, "PlaceHandle", Vector3(-0.42, 0.57, 0.88), Vector3(0.55, 0.26, 0.18), "RETURN", "c8986a")
+	_marked_button(bay, "TakeHandle", Vector3(0.32, 0.57, 0.88), Vector3(0.70, 0.26, 0.18), "UNLOAD", "7dccdf")
 	var id := "StorageBay%d" % index
 	var target := _target(id, bay.position + bay.basis * Vector3(0, 0, 1.10))
 	target.interaction_name = "Use underground storage computer " + ["A", "B", "C"][index]
-	target.interacted.connect(func(_actor: Node, _role: String) -> void: room._show_device(id))
+	target.interacted.connect(func(_actor: Node, _role: String) -> void: _interact_bay(index))
+
+func _marked_button(parent: Node3D, id: String, pos: Vector3, size: Vector3, text: String, color: String) -> void:
+	var button := _box(parent, id, pos, size, color)
+	button.set_meta("active_color", color)
+	var caption := _label(button, Vector3(0, 0, size.z / 2 + 0.012), text, 30)
+	caption.name = "Caption"
+	caption.pixel_size = 0.0025
+	caption.font = Typography.font(&"ui_button")
+	caption.font_size = Typography.fit_size(caption.font, text, 48, (size.x - 0.06) / caption.pixel_size, 28)
+	caption.outline_size = 0
+
+func _control_for(action: String) -> String:
+	if action in ["unseal_bay", "raise_storage_tray"]: return "RaiseButton"
+	if action in ["seal_bay", "lower_storage_tray"]: return "LowerButton"
+	if action in ["remove_storage_item", "retrieve_storage_item"]: return "TakeHandle"
+	return "PlaceHandle"
+
+func _bay_options(index: int) -> Array:
+	var bay: Dictionary = room.state.storage.bays[index]
+	var s: Dictionary = room.state.storage
+	var options: Array
+	if room.role == "past":
+		options = [room._option("Unload item", "remove_storage_item", {"bay": index}, bay.sealed or bay.item.is_empty() or not s.past_hand.is_empty()),
+			room._option("Raise tray" if bay.sealed else "Lower tray and store", "unseal_bay" if bay.sealed else "seal_bay", {"bay": index}, bay.retrieved or bay.raised)]
+	else:
+		var occupied: bool = bay.sealed and not bay.item.is_empty() and not bay.retrieved
+		options = [room._option("Raise tray", "raise_storage_tray", {"bay": index}, not occupied or bay.raised),
+			room._option("Unload item", "retrieve_storage_item", {"bay": index}, not occupied or not bay.raised or not s.future_hand.is_empty()),
+			room._option("Return item and lower tray", "return_storage_item", {"bay": index}, s.future_hand.is_empty() or s.future_hand != bay.item),
+			room._option("Lower tray", "lower_storage_tray", {"bay": index}, not bay.raised or bay.retrieved)]
+	for option in options: option.disabled = option.disabled or busy[index] or not room.state.battery_ready
+	return options
+
+func _mark_controls(index: int, options: Array) -> void:
+	var available := {}
+	for option in options:
+		if not option.disabled: available[_control_for(option.action)] = true
+	for id in ["RaiseButton", "LowerButton", "TakeHandle", "PlaceHandle"]:
+		var button: MeshInstance3D = bays[index].get_node(id)
+		var enabled: bool = available.has(id)
+		button.material_override = _material(button.get_meta("active_color") if enabled else "48565a")
+		button.get_node("Caption").modulate = Color("10252b" if enabled else "a0acad")
+
+func _can_load(index: int) -> bool:
+	if room.role != "past" or room.state.is_empty() or not room.state.battery_ready or busy[index]: return false
+	var storage: Dictionary = room.state.storage
+	var bay: Dictionary = storage.bays[index]
+	return not storage.past_hand.is_empty() and bay.item.is_empty() and not bay.sealed
+
+func _interact_bay(index: int) -> void:
+	if _can_load(index):
+		# Loading leaves the tray at the surface. Operating the computer is a separate interaction.
+		room._request("place_storage_item", {"bay": index})
+	else:
+		room._show_device("StorageBay%d" % index)
 
 func _build_archive() -> void:
 	var archive: Node3D = room.get_node("Layout/Shared/ArchiveStand")
@@ -211,36 +267,24 @@ func open_device(id: String) -> void:
 	var index := int(id.trim_prefix("StorageBay"))
 	var bay: Dictionary = room.state.storage.bays[index]
 	var s: Dictionary = room.state.storage
-	var options: Array = []
+	var options := _bay_options(index)
 	var body := "UNDERGROUND PRESERVATION LIFT\nDry atmosphere / radiation shielding / independent floor hatch.\n"
 	if busy[index]: body += "\nLIFT MOVING / STAND CLEAR\n"
 	if room.role == "past":
 		body += "\nPRESSURE PLATE: " + _weight(bay) + "\n" + ("STORED BELOW FLOOR" if bay.sealed else "LOADING TRAY AT SURFACE")
-		body += "\nLoad any object. The computer opens the floor hatch, lowers the tray and seals the vault."
-		options = [room._option("Place carried object", "place_storage_item", {"bay": index}, bay.sealed or not bay.item.is_empty() or s.past_hand.is_empty()),
-			room._option("Remove stored object", "remove_storage_item", {"bay": index}, bay.sealed or bay.item.is_empty() or not s.past_hand.is_empty()),
-			room._option("Raise loading tray" if bay.sealed else "Lower and store tray", "unseal_bay" if bay.sealed else "seal_bay", {"bay": index}, bay.retrieved or bay.raised)]
+		body += "\nCarry an object to the tray and press F to load it. Read its weight before using the computer to lower and seal the vault."
 		if bay.retrieved or bay.raised:
 			body += "\nPreserved component installed. Keep this source sealed." if bay.item in s.installed.values() else "\nFuture tray is in use. Return or lower it there before changing this source."
 	else:
 		var occupied: bool = bay.sealed and not bay.item.is_empty() and not bay.retrieved
 		body += "\n" + ("PRESERVED EQUIPMENT BELOW" if occupied and not bay.raised else ("EQUIPMENT AT SURFACE" if occupied else "NO STORED EQUIPMENT"))
 		body += "\nUse the computer to open the hatch and raise the preserved tray. Collect the equipment once the lift stops."
-		options = [room._option("Raise preserved tray", "raise_storage_tray", {"bay": index}, not occupied or bay.raised),
-			room._option("Collect raised contents", "retrieve_storage_item", {"bay": index}, not occupied or not bay.raised or not s.future_hand.is_empty()),
-			room._option("Return and lower contents", "return_storage_item", {"bay": index}, s.future_hand.is_empty() or s.future_hand != bay.item),
-			room._option("Lower preserved tray", "lower_storage_tray", {"bay": index}, not bay.raised or bay.retrieved)]
 		if not s.future_hand.is_empty():
 			body += "\n\nProfessor: Inside this case — " + Rules.ITEMS[s.future_hand].contents + "."
 			if Rules.ITEMS[s.future_hand].part.is_empty(): body += " This is the wrong equipment. I'll return it so you can replace it."
+	_mark_controls(index, options)
 	var bindings := {}
-	for option in options:
-		option.disabled = option.disabled or busy[index] or not room.state.battery_ready
-		var control := "ComputerKey"
-		if option.action in ["place_storage_item", "return_storage_item"]: control = "PlaceHandle"
-		elif option.action in ["remove_storage_item", "retrieve_storage_item"]: control = "TakeHandle"
-		elif option.action == "lower_storage_tray": control = "LowerKey"
-		bindings[option.label] = bays[index].get_node(control)
+	for option in options: bindings[option.label] = bays[index].get_node(_control_for(option.action))
 	_open(bays[index], "UNDERGROUND VAULT " + ["A", "B", "C"][index], body, options, bindings)
 
 func _open(mount: Node3D, title: String, body: String, options: Array, bindings: Dictionary) -> void:
@@ -270,6 +314,9 @@ func refresh(animate: bool = false) -> void:
 		var pose := "up_open" if future and bay.raised else ("down" if future or bay.sealed else "up_closed")
 		if poses[index] != pose or _display_role != room.role:
 			_move_lift(index, pose, animate and _display_role == room.role)
+		var target: Interactable3D = room.devices["StorageBay%d" % index]
+		target.interaction_name = "Load %s into vault %s" % [Rules.ITEMS[s.past_hand].label, ["A", "B", "C"][index]] if _can_load(index) else "Use underground storage computer " + ["A", "B", "C"][index]
+		_mark_controls(index, _bay_options(index))
 		var content: Node3D = stored[index]
 		var shown: String = bay.item if (not future or bay.sealed and not bay.retrieved) else ""
 		if content.get_meta("item", "") != shown:
@@ -311,6 +358,7 @@ func _move_lift(index: int, pose: String, animate: bool) -> void:
 	tween.finished.connect(func() -> void:
 		busy[index] = false
 		motions[index] = null
+		refresh()
 		if room._active_device == "StorageBay%d" % index: room._refresh_panel.call_deferred())
 
 func update_carry() -> void:

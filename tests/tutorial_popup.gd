@@ -101,7 +101,7 @@ func _run() -> void:
 	var text := popup.role_text()
 	check("STUDENT — THE PAST" in text and "You can change the past." in text, "Student content shown")
 	check(not ("PROFESSOR" in text), "No Professor content for the Student")
-	check(popup.find_child("Title", true, false).text == "WELCOME TO THE OTHER ME", "Heading")
+	check(popup.find_child("Title", true, false) == null, "No heading above the role card")
 	check(popup.confirm_button.text == "GOT IT — LET'S PLAY", "Confirm button label")
 	check(popup.control_texts() == ["W A S D", "F", "I", "Shift", "J", "Esc"], "Keyboard glyphs: " + str(popup.control_texts()))
 	check(popup.confirm_button.has_focus(), "Confirm button has gamepad/keyboard focus")

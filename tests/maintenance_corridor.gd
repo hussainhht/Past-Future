@@ -47,6 +47,37 @@ func pickup(item: String) -> void:
 	await tick(3)
 	check(state().storage.past_hand == item and room.player.carrying, "Confirmed pickup carries the actual case")
 
+func load_carried_item(index: int, animate: bool = false) -> void:
+	room.ui.close_modal()
+	quiet()
+	var id := "StorageBay%d" % index
+	var item: String = state().storage.past_hand
+	room.player.global_position = room.devices[id].global_position + Vector3(0, 0, .3)
+	room.player.velocity = Vector3.ZERO
+	await tick(5)
+	room.controller.detector.refresh_target()
+	check(room.controller.get_current_interactable() == room.devices[id], "Carried-item approach targets the storage unit")
+	check(room.devices[id].interaction_name.begins_with("Load "), "Floating F prompt offers direct loading while carrying an item")
+	room.devices[id].play_interaction_animation = animate
+	var event := InputEventKey.new()
+	event.keycode = KEY_F
+	event.physical_keycode = KEY_F
+	event.pressed = true
+	Input.parse_input_event(event)
+	await tick(2)
+	event.pressed = false
+	Input.parse_input_event(event)
+	if animate: check(room.player.is_action_active() and state().storage.past_hand == item, "Real F input starts the load animation before confirmed inventory transfer")
+	var deadline := Time.get_ticks_msec() + 4000
+	while state().storage.past_hand == item and Time.get_ticks_msec() < deadline: await process_frame
+	await tick(3)
+	room.devices[id].play_interaction_animation = false
+	check(state().storage.past_hand.is_empty() and state().storage.bays[index].item == item, "F directly loads the actual carried object onto the tray")
+	check(not room.ui.is_modal_open() and room.player.controls_enabled, "Direct loading keeps the player in the world without opening the computer")
+	check(not state().storage.bays[index].sealed and not room.storage.busy[index] and is_equal_approx(room.storage.lifts[index].position.y, room.storage.TOP), "Loading does not lower or seal the tray")
+	check(room.storage.screens[index].text == "%.1f kg" % Rules.Storage.ITEMS[item].kg, "The measured weight is shown immediately after loading")
+	check(room.devices[id].interaction_name.begins_with("Use underground"), "After loading, F offers the separate computer interaction")
+
 func press(text: String, settle: bool = true) -> void:
 	var inspector = room.ui.inspector
 	check(inspector.controls.has(text), "Missing physical control: " + text)
@@ -131,9 +162,9 @@ func run() -> void:
 	room.ui.close_modal()
 	await switch()
 	await pickup("v09")
+	await load_carried_item(0, true)
 	await use("StorageBay0")
-	await press("Place carried object")
-	await press("Lower and store tray", false)
+	await press("Lower tray and store", false)
 	check(room.storage.busy[0], "Storage command starts a physical hatch/lift sequence")
 	await create_timer(.45).timeout
 	check(room.storage.doors[0].get_node("LeftHinge").rotation_degrees.z > 80, "Floor hatch opens before the item descends")
@@ -147,22 +178,22 @@ func run() -> void:
 	check(not shaft_hit.is_empty() and shaft_hit.position.y < -2.0, "Shaft has a real floor opening and a physical bottom below the lowered tray")
 	await switch()
 	await use("StorageBay0")
-	await press("Raise preserved tray", false)
+	await press("Raise tray", false)
 	check(state().storage.bays[0].raised and room.storage.busy[0], "Future computer starts the reverse lift sequence")
-	check(room.ui.inspector.controls["Collect raised contents"].option.disabled, "Collection stays disabled while the platform is moving")
+	check(room.ui.inspector.controls["Unload item"].option.disabled, "Collection stays disabled while the platform is moving")
 	await wait_lift(0)
 	check(is_equal_approx(room.storage.lifts[0].position.y, room.storage.TOP), "Preserved equipment is raised to the surface")
-	await press("Collect raised contents")
+	await press("Unload item")
 	check(state().storage.future_hand == "v09", "Wrong equipment survives in Future exactly like a replacement")
 	await use("Archive")
 	await press("Install " + Rules.Storage.PARTS.reader)
 	check(state().storage.installed.reader.is_empty() and state().storage.future_hand == "v09", "Wrong component stays in hand after the Professor reports the mismatch")
 	await use("StorageBay0")
-	await press("Return and lower contents")
+	await press("Return item and lower tray")
 	await switch()
 	await use("StorageBay0")
-	await press("Raise loading tray")
-	await press("Remove stored object")
+	await press("Raise tray")
+	await press("Unload item")
 	room.ui.close_modal()
 	quiet()
 	var drop_event := InputEventKey.new()
@@ -174,15 +205,15 @@ func run() -> void:
 	for index in 3:
 		var item: String = ["r17", "k04", "m22"][index]
 		await pickup(item)
+		await load_carried_item(index)
 		await use("StorageBay%d" % index)
-		await press("Place carried object")
 		check(room.storage.screens[index].text == ["4.8 kg", "2.6 kg", "7.2 kg"][index], "Past screen only reports the measured shipping weight")
-		await press("Lower and store tray")
+		await press("Lower tray and store")
 		await switch()
 		await use("StorageBay%d" % index)
 		check(room.storage.screens[index].text == "OCCUPIED", "Future sees preserved contents as soon as one bay is sealed")
-		await press("Raise preserved tray")
-		await press("Collect raised contents")
+		await press("Raise tray")
+		await press("Unload item")
 		await use("Archive")
 		await press("Install " + Rules.Storage.PARTS[["reader", "regulator", "memory"][index]])
 		if index < 2: await switch()

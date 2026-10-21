@@ -1,0 +1,145 @@
+[gd_scene format=3]
+
+[ext_resource type="FontVariation" path="res://assets/themes/typography/heading_font.tres" id="hud_heading"]
+[ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="menu_theme"]
+[ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="menu_button"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="pause_script"]
+
+[sub_resource type="StyleBoxFlat" id="PanelStyle"]
+bg_color = Color(0.065, 0.11, 0.135, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.37, 0.48, 0.48, 1)
+content_margin_left = 40.0
+content_margin_top = 36.0
+content_margin_right = 40.0
+content_margin_bottom = 36.0
+
+[node name="PauseLayer" type="CanvasLayer"]
+script = ExtResource("pause_script")
+layer = 60
+
+[node name="Interface" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="PausePanel" type="ColorRect" parent="Interface"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("menu_theme")
+color = Color(0.015, 0.035, 0.05, 0.86)
+
+[node name="Center" type="CenterContainer" parent="Interface/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Scroll" type="ScrollContainer" parent="Interface/PausePanel/Center"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Panel" type="PanelContainer" parent="Interface/PausePanel/Center/Scroll"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("PanelStyle")
+
+[node name="Content" type="VBoxContainer" parent="Interface/PausePanel/Center/Scroll/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PauseTitle" type="Label" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("hud_heading")
+theme_override_font_sizes/font_size = 34
+text = "A moment between years"
+
+[node name="PauseDescription" type="Label" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Take your time. The lab will be here."
+
+[node name="ResumeButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"PrimaryButton"
+script = ExtResource("menu_button")
+text = "RESUME"
+
+[node name="SettingsButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "SETTINGS"
+
+[node name="HowToPlayButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "HOW TO PLAY"
+
+[node name="CharacterButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "CHARACTER STUDIO"
+
+[node name="ResetSoloButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "RESET SOLO SESSION"
+
+[node name="InterferenceButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "TEST RADIO INTERFERENCE"
+visible = false
+
+[node name="MenuButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "RETURN TO MAIN MENU"
+
+[node name="QuitGameButton" type="Button" parent="Interface/PausePanel/Center/Scroll/Panel/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "QUIT GAME"
