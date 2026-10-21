@@ -1,220 +1,195 @@
 # 13 AI HANDOVER: Master Engineering Briefing & Architecture Invariants
 
 > [!IMPORTANT]
-> **READ THIS FIRST IF YOU ARE AN AI ASSISTANT STARTING A NEW TURN OR SESSION.**  
-> This document is designed to give you a complete, self-contained understanding of **Past-Future** without needing access to previous conversations. Read this document thoroughly before inspecting or writing any code.
+> **READ THIS FIRST IF YOU ARE AN INCOMING AI ASSISTANT STARTING A FRESH SESSION.**  
+> This document provides a self-contained, technically precise briefing on **Past-Future**. It assumes you have no access to previous conversation history. Read this document thoroughly before inspecting, proposing, or modifying any code.
 
 ---
 
-## 1. Executive Summary: What We Are Building
+## 1. Executive Summary: What Past-Future Is
 
-- **Game Title**: **Past-Future**
+- **Project Name**: **Past-Future**
 - **Event**: Reboot CHECKPOINT Game Jam 2026 (Theme: **"TWO"**)
-- **Genre**: Two-player Asymmetric Cooperative Mystery / Puzzle Adventure
-- **Duration**: $5 - 10$ minute vertical slice (*Chapter 0: The First Fracture*)
-- **Core Hook**: Two players control different temporal versions of the same person separated by **31 years**:
-  - **The Student (Age 18)** in the intact, pristine university laboratory of the **Past**.
-  - **The Professor (Age 49)** in the decayed, catastrophic ruins of the **Future**.
-- **The Mystery**: The experimental core fracture was not an accident—the Professor deliberately triggered it. The players must cooperate across time to stabilize reality before total collapse occurs, culminating in a dramatic cliffhanger reveal.
-- **Asymmetric Dynamic**: Neither player has enough information to solve puzzles alone. The Future player reads surviving logs and structural diagrams; the Past player manipulates intact equipment and hydraulic supports. Changes in the past physically reconstruct the future.
+- **Genre**: Two-Player Asymmetric Cooperative Mystery / Puzzle Adventure
+- **Format**: Complete 5-to-10 minute vertical slice (*Chapter 0: The First Fracture*)
+- **Core Hook**: Two players control different temporal versions of the exact same individual, separated by **31 years**:
+  - **The Student (Age 18)**: Investigating an intact university research facility in the **Past**.
+  - **The Professor (Age 49)**: Navigating the catastrophic, decayed ruins of the same building in the **Future**.
+- **The Core Mystery**: The catastrophic temporal rupture was not an accident—the Professor deliberately activated the experimental core, disabled the containment abort, and initiated the collapse for unknown reasons. The two players must cooperate across time to contain the fracture, culminating in four distinct narrative endings.
+- **Asymmetric Principle**: Neither player can solve puzzles alone. The Future player reads surviving logs and structural diagrams; the Past player manipulates intact equipment and hydraulic jacks. Changes in the past physically reshape the future world.
 
 ---
 
-## 2. Complete Technology Stack Reference
+## 2. What the Current Build Actually Does
 
-| Layer | Component / Tech | Details / Configuration |
+Contrary to older documentation versions, the project is **not** a bare greybox sandbox—it is a **feature-complete 3-room cooperative campaign**:
+1. **Room 01: Signal Laboratory** (`scenes/world/spawn_area.tscn`):
+   - Assembled 3D lab environment with radio transceiver equipment.
+   - Puzzle 01 ("Lost Frequency"): Future player recovers the transmission log; Past player uses the 3D device inspector to tune the physical dials to **67 MHz** and **70% amplitude**.
+   - Stabilizing the radio link unlocks character dialogue, records notebook entries, and animates the North security door open.
+2. **Room 02: Maintenance Corridor** (`scenes/world/maintenance_corridor.tscn`):
+   - Industrial utility passage connecting the lab to the core.
+   - Puzzle 02 ("Broken Corridor / What We Leave Standing"): SERVICE bypass electrical isolation, battery crank charging, and structural support reconfiguration (**Circle 3, Triangle 2, Square 1**), physically shifting a collapsed ceiling slab into a walkable bridge in the Future.
+   - Personnel records archive, service code `3142`, and two private shortcut dilemmas (Local Reserve allocation and Incident Recorder cell extraction).
+3. **Room 03: The Final Fracture / Temporal Research Core** (`scenes/rooms/temporal_core.tscn`):
+   - Climax reactor chamber with a **150-second countdown challenge** initiated via ARM REACTOR.
+   - West-bank coil cycling (2, 0, 1), receiver battery reconnection, Signal Anchor calibration, and Origin Core stabilization.
+   - **5-second phase switch window**: Both players must hit their switches within 5 seconds of each other.
+   - **Stage C Identity Terminals**: Origin Terminal (Past) and Continuity Terminal (Future) resolve into **four distinct narrative endings**:
+     - `trust` (Last Goodbye): Professor voluntarily fades; world stabilized.
+     - `student_override` (Erased Future): Future timeline erased; forbidden protocol exposed.
+     - `professor_override` (Stolen Tomorrow): Student fades; altered future and Professor survive.
+     - `paradox` (Iteration 02): Both identities dissolve; simulation restarts at first contact.
+
+---
+
+## 3. Technology Stack Reference
+
+| Component | Specification | Repository Source |
 |---|---|---|
-| **Engine** | Godot Engine | `4.7.2.stable.official` (Windows x86_64) |
-| **Renderer** | `gl_compatibility` | D3D12 driver on Windows (`rendering_device/driver.windows="d3d12"`) |
-| **Physics** | Godot Jolt Physics 3D | Configured in `project.godot`: `3d/physics_engine="Jolt Physics"` |
-| **Networking** | High-Level Multiplayer (`ENetMultiplayerPeer`) | Raw UDP on port `7000`. Server = Past, Client = Future. |
-| **WAN Remote** | Tailscale Virtual Mesh | Relayed/direct UDP 7000 connectivity |
-| **Viewport** | $1600 \times 900$ Canvas Items | Window override $1280 \times 720$, min $960 \times 540$ |
-| **Scripting** | GDScript 2.0 | Static typing conventions, signals, RPCs |
-| **External Tools** | Python 3.11 / 3.13 | `numpy==2.5.4`, `Pillow==13.0.0`, `bpy==5.2.2` (Blender API) |
+| **Engine** | Godot Engine `4.7.2.stable.official.ed1daf0bf` | `project.godot` |
+| **Renderer** | `gl_compatibility` (D3D12 driver on Windows) | `project.godot` |
+| **Physics** | Godot Jolt Physics 3D (`3d/physics_engine="Jolt Physics"`) | `project.godot` |
+| **Multiplayer** | High-Level Multiplayer (`ENetMultiplayerPeer`) on UDP port `7000` | `scripts/network/network_manager.gd` |
+| **Viewports** | $1600 \times 900$ virtual canvas, $1280 \times 720$ window override | `project.godot` |
+| **Scripting** | GDScript 2.0 (Static typing, signals, RPCs) | Entire codebase |
+| **Gamepad** | DualSense (PS5) & Xbox auto-detection, glyphs, rumble haptics | `scripts/input/input_manager.gd` |
 
 ---
 
-## 3. Current Development State: The Honest Reality
+## 4. Architectural Hierarchy & Active Autoload Singletons
 
-```text
-+---------------------------------------------------------------------------------------+
-|                                    CURRENT STATE                                      |
-+---------------------------------------------------------------------------------------+
-|  [WHAT WORKS - 100% VERIFIED]               |  [WHAT IS MISSING - ZERO CODE EXISTS]   |
-|  - Title screen, settings, LAN lobby UI     |  - ZERO gameplay puzzles implemented    |
-|  - ENet LAN Host/Join & handshake on 7000   |  - NO PuzzleManager or state sync       |
-|  - Skinned 3D Student model (71k verts)     |  - NO interaction system (Area3D)       |
-|  - 77 imported KayKit animation clips       |  - NO Professor model (reuses Student)  |
-|  - Camera-relative 8-direction locomotion   |  - NO split-screen mode (button disabled)|
-|  - Fixed perspective camera (pitch 35 deg)  |  - NO Room B (Corridor) or Room C (Core)|
-|  - Solid 3D props with painted face shader  |  - NO narrative dialogue UI or ending   |
-|  - Greybox testbed room (spawn_area.tscn)   |                                         |
-+---------------------------------------------------------------------------------------+
-```
+The engine configuration (`project.godot`) registers **5 global Autoload singletons** in exact execution priority order:
 
-You are inheriting a project with a **robust engine foundation** (networking, 3D locomotion, skeletal animation, fixed follow camera, custom shaders, and automated tests), but **zero gameplay mechanics**.
-
----
-
-## 4. Key Architecture & File Relationships
-
-### 4.1 Autoload Singleton: `NetworkManager`
-- **File**: [scripts/network/network_manager.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/network/network_manager.gd)
-- **Role**: Registered as global autoload `NetworkManager` in `project.godot`.
-- **Key Fields**:
-  - `state`: `State.IDLE`, `State.HOSTING`, `State.CONNECTING`, `State.CONNECTED`
-  - `role`: `"past"` on Host, `"future"` on Guest
-  - `guest_ready`: `bool` indicating client readiness
-  - `in_game`: `bool` indicating active gameplay scene
-- **Handshake Flow**:
-  - Host binds port 7000 $\rightarrow$ Guest connects $\rightarrow$ `_register_client.rpc_id(1, PROTOCOL_VERSION)` $\rightarrow$ Host acknowledges via `_apply_lobby.rpc_id(guest_id)` $\rightarrow$ Guest requests ready $\rightarrow$ Host calls `start_game()` $\rightarrow$ Host broadcasts `_begin_game.rpc()` $\rightarrow$ Both peers load `scenes/world/spawn_area.tscn`.
-
-### 4.2 The Active Gameplay Scene: `scenes/world/spawn_area.tscn`
-- **Script**: [scripts/world/spawn_area.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/spawn_area.gd)
-- **Node Tree**:
-  - `WorldEnvironment`: Cool ambient light (`#d6e6ff`, energy $0.65$).
-  - `CharacterKeyLight`: Directional light pitched at $(-40^\circ, -32^\circ, 0^\circ)$, energy $1.15$.
-  - `Floor` (`lab_floor.gd`): $24.8 \times 15.6\text{ m}$ plane running `shaders/lab_floor.gdshader`. Sets tile grid and past/future albedo.
-  - `Bounds`: `StaticBody3D` with low ($1.0\text{ m}$) perimeter walls on North, South, West, East.
-  - `Actors`: Reusable furniture instances (`lab_prop.tscn`) and the player (`student_3d_player.tscn`).
-  - `CameraRig` (`follow_camera.gd`): Maintains perspective `Camera3D` at $35^\circ$ downward pitch and smooths following.
-  - `HUD`: CanvasLayer with header info, solo preview timeline toggle, and pause modal.
-
-### 4.3 The Active Character Controller: `scenes/characters/student_3d_player.tscn`
-- **Script**: [scripts/characters/student_3d_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_3d_player.gd)
-- **Model**: `Visual/Student` instantiating `assets/characters/student_3d/student.glb`.
-- **Physics**: `CharacterBody3D` with cylinder collision ($r = 0.28\text{ m}, h = 0.4\text{ m}$).
-- **Key Logic**:
-  - Input vector from WASD/arrows is unprojected into ground basis of `view_camera`.
-  - Velocity calculated with optional sprint (`run_multiplier = 1.55`).
-  - Smooth rotation via `rotate_toward(..., delta * 12.0)`.
-  - Duplicates `AnimationLibrary` in `_ready()` to isolate per-player animation state.
-  - Actions (`interact`, `inspect`, `pick_up`, `put_down`) lock movement until clip finishes.
+1. **`NetworkManager`** ([scripts/network/network_manager.gd](../scripts/network/network_manager.gd)):
+   - ENet multiplayer transport on UDP 7000.
+   - Manages connection lifecycle (`IDLE`, `HOSTING`, `CONNECTING`, `CONNECTED`).
+   - Host = Peer 1 (Student / Past); Client = Peer > 1 (Professor / Future).
+2. **`PuzzleManager`** ([scripts/puzzles/puzzle_manager.gd](../scripts/puzzles/puzzle_manager.gd)):
+   - Central host-authoritative state dictionary and monotonic revision tracker.
+   - RPC submission pipeline: `submit_action` $\rightarrow$ Host validation $\rightarrow$ confirmed broadcast.
+   - Hook `refresh_puzzle(id)` for timed challenges.
+3. **`GameFlowManager`** ([scripts/game_flow/game_flow_manager.gd](../scripts/game_flow/game_flow_manager.gd)):
+   - Decoupled room transitions, fade-out/fade-in, and multi-peer readiness synchronization.
+   - Loads rooms via `RoomDefinition` resources (`resources/levels/room_01.tres`, etc.).
+   - Persists network connections and puzzle sessions across room changes.
+4. **`JournalManager`** ([scripts/journal/journal_manager.gd](../scripts/journal/journal_manager.gd)):
+   - Session-long investigation evidence tracker (`scenes/journal/journal_ui.tscn`).
+   - Role-segregated: Student paper notebook vs. Professor electronic DataPad (`J` hotkey).
+5. **`CinematicTransitionManager`** ([scripts/cinematic/cinematic_transition_manager.gd](../scripts/cinematic/cinematic_transition_manager.gd)):
+   - CanvasLayer 40 room introduction title cards (`scenes/cinematic/cinematic_transition.tscn`).
+   - Automated presentation trigger on room arrival.
 
 ---
 
-## 5. Non-Negotiable Invariants: WHAT MUST NOT BE BROKEN
+## 5. Non-Negotiable Engineering Invariants
 
-When modifying or adding code, you must strictly respect these rules:
+When adding, fixing, or modifying code, you must strictly preserve these principles:
 
 1. **Floor-Contact Root Convention ($Y = 0$)**:
-   - All character scenes, furniture props, and room boundaries have their root node at floor level ($Y = 0$).
-   - Collision shapes and visual meshes are offset upward from this anchor.
-   - **Never shift scene roots away from ground level.**
-
+   - All character scenes, static furniture props, and room boundaries have their root node position at floor contact ($Y = 0$).
+   - Collision shapes, visuals, and raycasts offset upward from this ground anchor. Never move scene roots away from ground level.
 2. **Fixed Perspective Camera**:
-   - The game uses a `Camera3D` with **perspective projection**, a **fixed $35^\circ$ downward pitch**, and a **$48^\circ$ field of view**.
-   - There are **no camera rotation or projection toggle controls for the player**.
-   - Low room perimeter walls ($1.0\text{ m}$) exist specifically to prevent occluding this high-angle view.
-
+   - The camera uses `Camera3D.PROJECTION_PERSPECTIVE` with a fixed $35^\circ$ downward pitch, $48^\circ$ field of view, and smooth asymptotic follow smoothing.
+   - **There are no camera rotation controls for players.** Perimeter walls are kept low ($1.0\text{ m}$) specifically to prevent occluding this perspective.
 3. **Strict Host-Authoritative Puzzle State**:
-   - **Clients must NEVER mutate puzzle state optimistically.**
-   - All puzzle actions must flow: `Client Request (RPC)` $\rightarrow$ `Host Validation` $\rightarrow$ `Host Canonical Mutation` $\rightarrow$ `Host Broadcast (RPC)` $\rightarrow$ `Both Clients Render`.
-   - The host is Peer 1; clients are Peer $> 1$.
-
-4. **Resource Duplication for Multi-Instance Isolation**:
-   - When instantiating characters or props, materials and animation libraries must be duplicated (`.duplicate(true)`).
-   - In Godot, imported GLBs share resource references across instances by default. If you do not duplicate them, tinting the Future character will inadvertently tint the Past character.
-
+   - **Clients must NEVER mutate puzzle or progression state optimistically.**
+   - All actions must flow: `Client Action Request (RPC)` $\rightarrow$ `Host Validation` $\rightarrow$ `State Revision Increment` $\rightarrow$ `Broadcast Confirmed State (RPC)`.
+4. **Multi-Instance Resource Duplication**:
+   - Skinned meshes and furniture duplicate their materials and `AnimationLibrary` instances in `_ready()` (`.duplicate(true)`).
+   - In Godot, imported GLBs share resource references across instances. Failure to duplicate results in timeline tints bleeding between the Past and Future characters.
 5. **GL Compatibility Constraints**:
-   - The project uses `gl_compatibility`. Do not introduce Vulkan/Forward+ specific rendering features (e.g. SDFGI, volumetric fog, GPU compute shaders, decal nodes) without fallbacks.
+   - Do not introduce Vulkan-only or Forward+ features (SDFGI, volumetric fog, GPU compute shaders). All shaders must run in `gl_compatibility`.
 
 ---
 
-## 6. Technical Traps & Broken Legacy Areas (DO NOT TOUCH)
+## 6. Active Characters Reference
 
-1. **DO NOT attempt to use `scenes/characters/student_paper_rig.tscn` or `student_2d_player.tscn`**:
-   - Commit `4a1144d` deleted the directional PNG atlases (`east_parts.png`, etc.).
-   - These scripts will fail to compile due to missing preloaded assets. The 2D version is preserved in Git commit `244b42a` for historical reference only.
-2. **DO NOT attempt to use `scenes/characters/student_model.tscn` or `student_player.tscn`**:
-   - `assets/characters/student_v2.glb` was deleted in commit `4a1144d`.
-   - The active 3D character is exclusively [scenes/characters/student_3d_player.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_3d_player.tscn).
-3. **DO NOT run `tools/render_student_review.gd` with `--headless`**:
-   - This script requires a display graphics device to capture subviewport textures. Use `tests/student_3d.gd` for automated headless testing.
+- **Student (Age 18)**:
+  - Model: `assets/characters/student_3d/student.glb` ($90,881$ vertices, 23 bones, 77 KayKit clips).
+  - Scene: `scenes/characters/student_3d_player.tscn`.
+  - Landmarks: Ochre jacket, cream shirt, messenger bag on right hip, watch on left wrist.
+- **Professor (Age 49)**:
+  - Model: `assets/characters/professor_3d/professor.glb` ($113,143$ vertices, 23 bones, 77 KayKit clips).
+  - Scene: `scenes/characters/professor_3d_player.tscn`.
+  - Landmarks: Long dark navy formal coat, dark waistcoat, slate shirt, gray hair temples, short beard, same watch on left wrist.
+- **In-Game Studios**: Press `F2` to open the 3D Animation Review Studio (`scenes/characters/student_3d_studio.tscn` or `professor_3d_studio.tscn`).
 
 ---
 
-## 7. How to Verify Your Work
+## 7. Known Issues & Test Caveats
 
-Before declaring any task done, run these four non-destructive verification commands:
+1. **`tests/game_flow_system.gd` Assertion Mismatch**:
+   - Line 277 asserts `root.get_child_count() == 5` (expecting 4 autoloads + 1 room). Because `CinematicTransitionManager` was added as a 5th autoload, `root.get_child_count()` is 6. Needs assertion update to 6.
+2. **`tests/maintenance_peer.gd` LAN Timeout**:
+   - In `run_maintenance_tests.py`, the single-process checks pass 100%, but the two-peer LAN check times out waiting for the radio prerequisite because the laboratory now requires device inspector interaction steps. Line 52 also needs an `await` on the async `wait_for`.
+3. **`tests/lan_peer.gd` Transient Null Reference**:
+   - Line 127 checks `current_scene.scene_file_path` during async scene unloading before checking `is_instance_valid(current_scene)`.
+4. **`tests/run_cinematic_tests.py` on Windows**:
+   - Requires `$env:DISPLAY = "1"` in PowerShell to prevent it from attempting to invoke `xvfb-run`.
+5. **Legacy Deprecated Files (Do Not Touch)**:
+   - `student_paper_rig.gd` and `tests/student_2d.gd`: Legacy 2D prototype (PNG atlases deleted in `4a1144d`; preserved in `244b42a`).
+   - `student_model.tscn`: Legacy articulated 3D model (Missing deleted `student_v2.glb`).
+
+---
+
+## 8. Verification & Test Commands
+
+Before committing or declaring a task complete, run these verified commands:
 
 ```powershell
-# 1. Verify 3D Character Asset integrity & inverse bind matrices
+# Set environment
+$env:GODOT_BIN = "C:\Users\hanwd\OneDrive\Desktop\Godot_v4.7.2-stable_win64.exe"
+$env:DISPLAY = "1"
+
+# 1. Verify Character Asset Provenance & Rig Bindings
 python tests/student_3d_assets.py
-# Expected: STUDENT 3D ASSETS: PASS
+python tests/student_3d_assets.py --character professor
 
-# 2. Verify Godot headless skeletal animation and action locking
-& "C:\Users\hanwd\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --script res://tests/student_3d.gd
-# Expected: STUDENT 3D: PASS (0 failures; 77 animation clips)
+# 2. Verify Main Menu Navigation
+python tests/run_menu_tests.py
 
-# 3. Verify Headless Level Simulation & Physics Collisions
-& "C:\Users\hanwd\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe" --headless --path . --script res://tests/spawn_area.gd
-# Expected: SPAWN AREA: PASS (0 failures)
+# 3. Verify Authoritative Puzzle System
+python tests/run_puzzle_tests.py
 
-# 4. Verify Multi-Process LAN Host/Join & Loopback Transitions
-$env:GODOT_BIN = "C:\Users\hanwd\Downloads\Godot_v4.7.2-stable_win64.exe\Godot_v4.7.2-stable_win64_console.exe"
-python tests/run_lan_smoke.py
-# Expected: busy: PASS, host: PASS, client: PASS
+# 4. Verify Level 1 Frequency Puzzle
+python tests/run_frequency_tests.py
+
+# 5. Verify Dialogue System (382 checks)
+python tests/run_dialogue_tests.py
+
+# 6. Verify Gamepad Controllers & Haptics
+python tests/run_controller_tests.py
+
+# 7. Verify Cinematic Room Introductions
+python tests/run_cinematic_tests.py
+
+# 8. Verify Level 3 The Final Fracture Suite (101 core checks, 4 endings across ENet peers)
+python tests/run_level3_tests.py
+
+# 9. Verify Audio, Journal, Settings, and Interaction
+& $env:GODOT_BIN --headless --path . --script res://tests/audio_system.gd | Out-String
+& $env:GODOT_BIN --headless --path . --script res://tests/journal_system.gd | Out-String
+& $env:GODOT_BIN --headless --path . --script res://tests/interaction_system.gd | Out-String
 ```
 
 ---
 
-## 8. Immediate Next Implementation Task: TASK P0.1
+## 9. Immediate Recommended Next Task
 
-When you are ready to begin writing code, **implement Task P0.1: The Host-Authoritative `PuzzleManager` Autoload**:
+```text
+================================================================================
+>>> RECOMMENDED NEXT TASK: IMPLEMENT SAME-PC SPLIT-SCREEN MODE (TASK P0.1)
+================================================================================
+Enable the disabled `SAME-PC SPLIT-SCREEN` button on `scenes/menu/main_menu.tscn`.
+Create `scenes/world/split_screen_game.tscn` using dual `SubViewportContainer`
+nodes (Left = Past / Student, Right = Future / Professor) and route input
+locally to `PuzzleManager`.
 
-### Architectural Blueprints for Task P0.1:
-1. Create `scripts/puzzles/puzzle_manager.gd`.
-2. Register it as an Autoload named `PuzzleManager` in `project.godot`:
-   ```ini
-   [autoload]
-   NetworkManager="*res://scripts/network/network_manager.gd"
-   PuzzleManager="*res://scripts/puzzles/puzzle_manager.gd"
-   ```
-3. Implement the core state dictionary:
-   ```gdscript
-   extends Node
-
-   signal puzzle_state_updated(puzzle_id: String, state: Dictionary)
-
-   var puzzle_states: Dictionary = {
-       "puzzle_01_frequency": {
-           "solved": false,
-           "past_frequency": 0.0,
-           "target_frequency": 142.8,
-           "power_restored": false
-       },
-       "puzzle_02_corridor": {
-           "solved": false,
-           "supports": [1, 1, 1], # Jack positions
-           "target_supports": [2, 0, 3]
-       }
-   }
-   var state_revision: int = 0
-
-   # Client -> Host action submission
-   @rpc("any_peer", "call_remote", "reliable")
-   func request_puzzle_action(puzzle_id: String, action: String, payload: Variant) -> void:
-       if not multiplayer.is_server():
-           return
-       var sender_id := multiplayer.get_remote_sender_id()
-       if not _validate_action(sender_id, puzzle_id, action, payload):
-           return
-       _execute_action(puzzle_id, action, payload)
-       state_revision += 1
-       _broadcast_state.rpc(puzzle_id, puzzle_states[puzzle_id], state_revision)
-
-   # Host -> All peers state broadcast
-   @rpc("authority", "call_local", "reliable")
-   func _broadcast_state(puzzle_id: String, new_state: Dictionary, revision: int) -> void:
-       if revision <= state_revision and multiplayer.get_remote_sender_id() != 1:
-           return
-       state_revision = revision
-       puzzle_states[puzzle_id] = new_state
-       puzzle_state_updated.emit(puzzle_id, new_state)
-   ```
-4. Follow this with **Task P0.2** (`InteractableArea3D` proximity triggers) and **Task P0.3** (Connecting the Console in `spawn_area.tscn` to solve Puzzle 01).
-
-You now possess everything required to carry **Past-Future** forward to a complete, stable, and award-winning Game Jam release!
-
+WHY THIS IS CRITICAL:
+The game already has 3 fully playable rooms, 2 complete character models, and
+4 narrative endings. However, it requires two PCs or Tailscale networking to play.
+Building the offline Same-PC Split-Screen mode guarantees that any Game Jam
+judge can experience the full cooperative campaign on a single computer.
+================================================================================
+```

@@ -1,166 +1,140 @@
 # 12 ROADMAP AND NEXT STEPS: Prioritized Task Backlog & Implementation Plan
 
-This document outlines the engineering and design roadmap for taking **Past-Future** from its current prototype state to a complete, winning Game Jam submission for the **Reboot CHECKPOINT Game Jam 2026**.
+This document provides a prioritized, actionable engineering roadmap for taking **Past-Future** to a finalized, winning Game Jam release for the **Reboot CHECKPOINT Game Jam 2026**.
 
 ---
 
-## 1. Priority Tiers Overview
+## 1. Status of Previously Planned Tasks
 
-- **P0: Critical Playable Prototype**: The minimal set of features required to transform the current greybox sandbox into a functioning, verifiable cooperative game.
-- **P1: Game Jam Submission Scope**: Content, assets, and level design required for a polished Chapter 0 demo submission.
-- **P2: Polish & Extended Experience**: Audio, particle effects, countdown puzzles, and export packaging.
+Every major gameplay, character, and puzzle system from earlier roadmap iterations has been **fully implemented and verified**:
+
+- [x] **P0.1: Host-Authoritative PuzzleManager Autoload** — *COMPLETED & VERIFIED* (`puzzle_manager.gd`)
+- [x] **P0.2: Proximity Interaction System & Device Inspector** — *COMPLETED & VERIFIED* (`interactable_3d.gd`, `device_inspector_3d.gd`)
+- [x] **P0.3: Puzzle 01 ("Lost Frequency" in Signal Lab)** — *COMPLETED & VERIFIED* (`frequency_puzzle.gd`)
+- [x] **P1.1: Maintenance Corridor Level Layout (Room 02)** — *COMPLETED & VERIFIED* (`maintenance_corridor.tscn`)
+- [x] **P1.2: Puzzle 02 ("Broken Corridor") & Private Choices** — *COMPLETED & VERIFIED* (`maintenance_corridor_puzzle.gd`)
+- [x] **P1.3: Professor Character 3D Model & Authoring Tools** — *COMPLETED & VERIFIED* (`professor.glb`, `build_professor.py`)
+- [x] **P1.4: Narrative Dialogue & Investigation Journal** — *COMPLETED & VERIFIED* (`dialogue_director.gd`, `journal_manager.gd`)
+- [x] **P2.1: Puzzle 03 ("The Final Fracture") & 4 Endings** — *COMPLETED & VERIFIED* (`temporal_core.tscn`, `core_rules.gd`)
+- [x] **P2.2: Solo Temporal Ghost Prototype** — *COMPLETED & VERIFIED* (`temporal_ghost.gd`)
+- [x] **P2.3: Audio Subsystem & Sound Catalog** — *COMPLETED & VERIFIED* (`audio_director.gd`, Kenney CC0 audio)
+- [x] **P2.4: Gamepad & DualSense Haptics Support** — *COMPLETED & VERIFIED* (`input_manager.gd`)
+
+---
+
+## 2. Priority Tiers for Remaining Work
+
+- **P0: Immediate Critical Tasks**: Essential playable fallback and test regression fixes.
+- **P1: Game Jam Submission Polish**: Multi-device verification, release packaging, and judging documentation.
+- **P2: Quality of Life & Visual Polish**: LOD mesh decimation and wall transparency dither.
+- **P3: Post-Jam Expansion**: Extended chapters, larger campus areas, and full timeline simulation.
 
 ```mermaid
 graph TD
-    subgraph P0_Critical [P0: Playable Core]
-        T_P0_1[P0.1: Host PuzzleManager Autoload]
-        T_P0_2[P0.2: InteractableArea3D & UI Prompt]
-        T_P0_3[P0.3: Puzzle 01 - Lost Frequency]
-        T_P0_4[P0.4: Same-PC Split-Screen Fallback]
-        T_P0_1 --> T_P0_3
-        T_P0_2 --> T_P0_3
+    subgraph P0_Blockers [P0: Critical Fallbacks & Fixes]
+        T_P0_1[P0.1: Same-PC Split-Screen Fallback]
+        T_P0_2[P0.2: Test Regression Fixes - game_flow & lan_peer]
     end
 
-    subgraph P1_Submission [P1: Game Jam Scope]
-        T_P1_1[P1.1: Maintenance Corridor Level]
-        T_P1_2[P1.2: Puzzle 02 - Broken Corridor]
-        T_P1_3[P1.3: Professor Character Visuals]
-        T_P1_4[P1.4: Narrative Dialogue & Ending]
-        T_P0_3 --> T_P1_1
-        T_P1_1 --> T_P1_2
-        T_P1_2 --> T_P1_4
+    subgraph P1_Submission [P1: Submission & Release]
+        T_P1_1[P1.1: Physical Two-Computer Wi-Fi / Tailscale Test]
+        T_P1_2[P1.2: Windows Release Export & Judging PDF Package]
+        T_P0_1 --> T_P1_2
+        T_P0_2 --> T_P1_2
     end
 
-    subgraph P2_Polish [P2: Polish & Packaging]
-        T_P2_1[P2.1: Puzzle 03 - Temporal Anchor]
-        T_P2_2[P2.2: Temporal Rift Particles & Shaders]
-        T_P2_3[P2.3: Audio Design & Ambience]
-        T_P2_4[P2.4: Windows Build & Tailscale Guide]
-        T_P1_4 --> T_P2_1
-        T_P1_4 --> T_P2_4
+    subgraph P2_Polish [P2: Polish & Optimization]
+        T_P2_1[P2.1: Character LOD Mesh Decimation]
+        T_P2_2[P2.2: Wall Occlusion Dither Transparency]
+        T_P1_2 --> T_P2_1
     end
 ```
 
 ---
 
-## 2. P0: Critical Prototype Tasks (Immediate Focus)
+## 3. P0: Critical Fallback & Bug Tasks
 
-### Task P0.1: Host-Authoritative `PuzzleManager` Autoload
-- **Description**: Implement `scripts/puzzles/puzzle_manager.gd` as an Autoload singleton. The host (Peer 1) owns the authoritative state dictionary. Clients submit action requests via reliable RPC; the host validates player roles, prerequisites, and parameters, mutates canonical state, and broadcasts state revisions to all peers.
+### Task P0.1: Same-PC Split-Screen Fallback Mode
+- **Priority**: **P0 (Highest-Impact Next Development Task)**
+- **Description**: Enable the disabled `SAME-PC SPLIT-SCREEN` button on `scenes/menu/main_menu.tscn`. Implement an offline split-screen mode running two side-by-side `SubViewportContainer` viewports on a single machine:
+  - Left Viewport: Student / Past Timeline (routed to WASD + `F` keys or Controller 1).
+  - Right Viewport: Professor / Future Timeline (routed to Arrow keys + `Enter` or Controller 2).
+  - Both viewports feed action submissions into the local authoritative `PuzzleManager` instance without requiring network packets.
 - **Relevant Files**:
-  - `scripts/puzzles/puzzle_manager.gd` (New)
-  - `project.godot` (Register Autoload)
-  - `scripts/network/network_manager.gd` (Coordinate session resets)
-- **Dependencies**: `NetworkManager`
-- **Estimated Difficulty**: **Medium**
+  - [scenes/menu/main_menu.tscn](../scenes/menu/main_menu.tscn) (Enable button)
+  - `scenes/world/split_screen_game.tscn` (New dual-viewport container scene)
+  - `scripts/world/split_screen_game.gd` (New input routing controller)
+  - [project.godot](../project.godot) (Add `player2_*` actions to InputMap)
+- **Dependencies**: None (`PuzzleManager` already supports local offline submissions).
 - **Acceptance Criteria**:
-  1. Central state dictionary tracks puzzle IDs, completion flags, and revision counter.
-  2. Client calls `request_action(puzzle_id, action, payload)` via RPC to host (Peer 1).
-  3. Host validates sender ID, confirms role matches action permissions, increments revision, and calls `apply_puzzle_state.rpc(puzzle_id, new_state, revision)`.
-  4. Client updates local visual world only upon receiving confirmed state from host (no optimistic mutations).
-  5. Full state snapshot sent to joining client upon session start.
+  1. Clicking `SAME-PC SPLIT-SCREEN` launches immediately with internet disconnected.
+  2. Both players can move, inspect equipment, and solve Puzzles 01, 02, and 03 simultaneously.
+  3. Solving a puzzle in one viewport immediately updates the linked environment in the other.
+  4. Both viewports reach the Stage C finale and display the chosen narrative ending.
 
 ---
 
-### Task P0.2: Proximity Interaction System (`InteractableArea3D` & HUD Prompt)
-- **Description**: Replace hardcoded keyboard animation triggers with a proper spatial interaction detector. Interactive objects define an `Area3D` footprint with collision layer 4. The player character has an interaction raycast or detection sphere that identifies the nearest interactable and displays a contextual HUD prompt (e.g. `[F] Calibrate Console`).
+### Task P0.2: Test Regression Clean-Up
+- **Priority**: **P0**
+- **Description**: Resolve the two minor automated test regressions identified during the audit:
+  1. `tests/game_flow_system.gd`: Update line 277 from `check(root.get_child_count() == 5, ...)` to `check(root.get_child_count() == 6, ...)` to account for the addition of `CinematicTransitionManager`.
+  2. `tests/lan_peer.gd`: Guard line 127 with `is_instance_valid(current_scene)` to prevent transient null reference errors during scene unload.
 - **Relevant Files**:
-  - `scripts/interaction/interactable_3d.gd` (New)
-  - `scripts/characters/student_3d_player.gd` (Add interaction detection)
-  - `scenes/world/spawn_area.tscn` (Add HUD prompt widget)
-  - `project.godot` (Add `interact` action to Input Map)
-- **Dependencies**: None
-- **Estimated Difficulty**: **Low / Medium**
+  - [tests/game_flow_system.gd](../tests/game_flow_system.gd#L277)
+  - [tests/lan_peer.gd](../tests/lan_peer.gd#L127)
 - **Acceptance Criteria**:
-  1. Walking within $1.5\text{ m}$ of an interactable displays a floating or HUD prompt with customized action text.
-  2. Pressing `F` triggers the interaction and plays `Interact` animation.
-  3. Walking away hides the prompt.
-  4. Movement is cleanly locked during interaction and restored upon completion.
+  1. `python tests/run_game_flow_tests.py` reports `GAME FLOW SYSTEM: PASS (0 failures)`.
+  2. `python tests/run_lan_smoke.py` reports `LAN client: PASS` without script errors.
 
 ---
 
-### Task P0.3: Puzzle 01 Implementation ("Lost Frequency" in Signal Lab)
-- **Description**: Connect the `Console` prop in `spawn_area.tscn` to `PuzzleManager`. In the Past, the student must tune three frequency dials. In the Future, the professor inspects a surviving terminal log to read the target frequency sequence (e.g. `142.8`). When entered in the past, the communication array stabilizes, opening the exit door.
-- **Relevant Files**:
-  - `scenes/props/console_visual.tscn`
-  - `scenes/puzzles/frequency_puzzle_ui.tscn` (New UI popup)
-  - `scripts/puzzles/frequency_puzzle.gd` (New)
-  - `scenes/world/spawn_area.tscn` (Add exit security door)
-- **Dependencies**: Task P0.1, Task P0.2
-- **Estimated Difficulty**: **Medium**
+## 4. P1: Game Jam Submission Tasks
+
+### Task P1.1: Physical Cross-Device Wi-Fi & Tailscale Verification
+- **Priority**: **P1**
+- **Description**: While multi-process ENet loopback testing is fully verified, physical execution across two distinct computers on an active Wi-Fi router (and across separate networks using Tailscale) must be validated.
 - **Acceptance Criteria**:
-  1. Future player approaches damaged console, presses `F`, and views a readable transmission log showing the required frequency code.
-  2. Past player approaches active console, presses `F`, opens the tuning UI, and enters the frequency.
-  3. Host validates the input. When correct, both players see the signal LEDs turn green.
-  4. The security door in the North wall animates open in both timelines.
+  1. Two separate Windows laptops connect over standard home Wi-Fi on UDP 7000.
+  2. Two machines connect across mobile hotspot / external network via Tailscale mesh IP.
+  3. All three levels, transitions, and audio synchronize without desync.
 
 ---
 
-### Task P0.4: Same-PC Split-Screen Fallback Mode
-- **Description**: Implement the offline split-screen mode for two players on one computer. Enables the "SAME-PC SPLIT-SCREEN" button on the main menu. Spawns two side-by-side `SubViewportContainer` nodes: Left viewport displays Past world (WASD + F controls); Right viewport displays Future world (Arrow keys + Enter controls). Both route actions to the local `PuzzleManager`.
-- **Relevant Files**:
-  - `scenes/menu/main_menu.tscn` (Enable button)
-  - `scenes/world/split_screen_game.tscn` (New)
-  - `scripts/world/split_screen_game.gd` (New)
-  - `project.godot` (Configure Player 2 input actions)
-- **Dependencies**: Task P0.1, Task P0.3
-- **Estimated Difficulty**: **Medium / High**
+### Task P1.2: Windows Release Export & Judge Documentation Package
+- **Priority**: **P1**
+- **Description**: Create `export_presets.cfg` for Godot 4.7.2 Windows Desktop (x86_64). Produce a standalone `.zip` containing the executable, `.pck`, and a 1-page PDF setup guide detailing:
+  - How to play in Same-PC Split-Screen (no network required).
+  - How to play over Wi-Fi LAN.
+  - How to connect via Tailscale for remote judging.
 - **Acceptance Criteria**:
-  1. Clicking "SAME-PC SPLIT-SCREEN" launches directly without network connectivity.
-  2. Left screen displays Student (Past) with independent camera; Right screen displays Professor (Future).
-  3. Both players can move and interact simultaneously without input ghosting or focus loss.
-  4. Solving Puzzle 01 updates both viewports in sync.
+  1. Exported `.exe` boots cleanly on a fresh Windows PC without Godot installed.
+  2. All audio, shaders, and animations load from the packed data archive.
 
 ---
 
-## 3. P1: Game Jam Submission Tasks
+## 5. P2: Polish & Extended Quality of Life
 
-### Task P1.1: Maintenance Corridor Level Layout (Room B)
-- **Description**: Build the second playable room: a long university corridor connecting the Signal Lab to the Temporal Core. Includes doorway transition triggers between rooms.
-- **Relevant Files**: `scenes/rooms/corridor.tscn` (New)
-- **Difficulty**: **Medium**
-
-### Task P1.2: Puzzle 02 Implementation ("Broken Corridor")
-- **Description**: In the Past, the corridor contains 3 adjustable hydraulic ceiling supports. In the Future, the ceiling has collapsed into an impassable chasm. The Future player reads an architectural stress blueprint showing the correct support configuration. When the Past player adjusts the supports, the collapsed slab in the Future shifts into a walkable ramp.
-- **Relevant Files**: `scripts/puzzles/corridor_puzzle.gd` (New)
-- **Difficulty**: **Medium / High**
-
-### Task P1.3: The Professor Character Visual Differentiation
-- **Description**: Create a visually distinct mesh for the 49-year-old Professor sharing the KayKit skeleton. Add formal coat geometry, mature facial features, and subtle grey hair highlights.
-- **Relevant Files**: `tools/build_professor_kaykit.py`, `scenes/characters/professor_3d_player.tscn`
-- **Difficulty**: **Medium**
-
-### Task P1.4: Narrative Dialogue & Cliffhanger Ending
-- **Description**: Implement an atmospheric dialogue overlay for character communication. Add the ending sequence in the Temporal Core where the recovered log reveals the Professor caused the collapse.
-- **Relevant Files**: `scenes/ui/dialogue_overlay.tscn`, `scripts/ui/dialogue_overlay.gd`
-- **Difficulty**: **Low / Medium**
+- **Task P2.1: Character LOD Mesh Decimation**: Author automated decimation passes in `tools/build_student_kaykit.py` and `tools/build_professor.py` (LOD0: full 90k/113k; LOD1: 15k triangles) for improved performance on low-end integrated graphics.
+- **Task P2.2: Wall Occlusion Dither Fading**: Add height-based dither alpha fade to interior corridor walls so players remain visible when walking behind tall structures.
 
 ---
 
-## 4. P2: Polish & Extended Experience
-
-- **Task P2.1: Puzzle 03 ("Temporal Anchor")**: Climax stabilization sequence in the Temporal Core with an optional 90-second countdown.
-- **Task P2.2: Temporal Fracture VFX**: Add `GPUParticles3D` energy streams and subtle screen distortion around the temporal rifts.
-- **Task P2.3: Atmospheric Audio & Ambience**: Add warm hum and distant campus tones for Past; cold wind and electrical buzz for Future. Add temporal chime for puzzle solves.
-- **Task P2.4: Windows Export & Tailscale Documentation Package**: Configure `export_presets.cfg` for Windows x86_64 and package a 1-page PDF setup guide for judges.
-
----
-
-## 5. The Single Best Immediate Next Action
+## 6. The Single Best Immediate Next Action
 
 ```text
 ================================================================================
->>> RECOMMENDED IMMEDIATE ACTION: IMPLEMENT TASK P0.1 (PUZZLE MANAGER AUTOLOAD)
+>>> RECOMMENDED IMMEDIATE ACTION: IMPLEMENT TASK P0.1 (SAME-PC SPLIT-SCREEN)
 ================================================================================
-Create `scripts/puzzles/puzzle_manager.gd` and register it in `project.godot`.
-Establish the central host-authoritative state dictionary and the
-`request_action(id, action, payload)` -> `apply_puzzle_state(id, state, rev)`
-RPC synchronization pipeline.
+Implement the Same-PC Split-Screen mode (`split_screen_game.tscn`) and enable
+the button on `main_menu.tscn`.
 
 WHY THIS FIRST?
-Without this authority foundation, any UI, interaction, or puzzle trigger
-built today would have to be completely rewritten to work over LAN networking.
-Establishing the state replication contract unlocks all subsequent puzzle work.
+The game already has a fully functioning 3-level cooperative campaign with
+authoritative puzzles, both character models, and 4 endings. However, it currently
+requires two computers or virtual networking (Tailscale) to play.
+
+Providing an offline split-screen mode on a single PC completely eliminates
+WAN/NAT judging risk, guaranteeing that any Game Jam evaluator can immediately
+boot and experience the entire game with zero network configuration.
 ================================================================================
 ```
-
