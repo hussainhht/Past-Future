@@ -23,7 +23,7 @@ var proximity: Callable
 var available: Callable
 var _deadline: float = 0.0
 var _sync_deadline: float = 0.0
-var _restart_at: float = 0.0
+var _meltdown_at: float = 0.0
 var _choices: Dictionary = {}
 var _sequences: Dictionary = {PAST: 0, FUTURE: 0}
 # Shared across rules replacements, so returning from another room cannot reuse
@@ -37,7 +37,9 @@ func get_initial_state() -> Dictionary:
 	_sequences = {PAST: 0, FUTURE: 0}
 	_deadline = 0.0
 	_sync_deadline = 0.0
+	_meltdown_at = 0.0
 	return {"stage": "DISCOVERY", "attempt": _attempt_serial, "remaining": challenge_seconds,
+		"meltdown_elapsed": 0.0,
 		"coils": [0, 0, 0], "receiver": false, "anchor": false, "origin": false,
 		"sync_past": false, "sync_future": false, "sync_remaining": 0.0,
 		"locked_past": false, "locked_future": false, "ending": "", "solved": false,
@@ -142,19 +144,19 @@ func apply_action(action: String, payload: Dictionary, role: String, state: Dict
 
 ## Invoked through PuzzleManager's host-only refresh hook, also before every action.
 func refresh_state(state: Dictionary) -> Dictionary:
+	if not clock.is_valid(): return no_change()
 	var now: float = clock.call()
 	if state.stage == "OVERLOAD":
-		if now >= _restart_at:
-			var fresh := get_initial_state()
-			fresh.notice = "Overload contained. Room C reset. Your earlier rooms and evidence are safe."
-			return change(fresh)
-		return no_change()
+		# Latched failure: only GameFlowManager may start the next campaign.
+		state.meltdown_elapsed = clampf(now - _meltdown_at, 0.0, 5.0)
+		return change(state)
 	if not state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"]: return no_change()
 	state.remaining = maxf(0.0, _deadline - now)
 	if state.remaining <= 0.0:
 		state.stage = "OVERLOAD"
-		state.notice = "OVERLOAD / Attempt lost. Reactor reset in three seconds."
-		_restart_at = now + 3.0
+		state.notice = "CONTAINMENT LOST / Both timelines are collapsing."
+		_meltdown_at = now
+		state.meltdown_elapsed = 0.0
 		_choices.clear()
 		return change(state)
 	if state.stage == "STAGE_B" and _sync_deadline > 0.0:

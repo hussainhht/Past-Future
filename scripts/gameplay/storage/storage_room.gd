@@ -349,10 +349,14 @@ func _move_lift(index: int, pose: String, animate: bool) -> void:
 	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	motions[index] = tween
 	# Open the floor doors before the platform passes through the floor plane.
+	tween.tween_callback(room.sound.on_lift.bind(&"maint_hatch_open", index))
 	tween.tween_property(left, "rotation_degrees:z", 100.0, 0.35)
 	tween.parallel().tween_property(right, "rotation_degrees:z", -100.0, 0.35)
+	tween.tween_callback(room.sound.on_lift.bind(&"maint_lift_move", index))
 	tween.tween_property(lifts[index], "position:y", height, 1.15)
+	tween.tween_callback(room.sound.on_lift.bind(&"maint_lift_stop", index))
 	if pose != "up_open":
+		tween.tween_callback(room.sound.on_lift.bind(&"maint_hatch_close", index))
 		tween.tween_property(left, "rotation_degrees:z", 0.0, 0.35)
 		tween.parallel().tween_property(right, "rotation_degrees:z", 0.0, 0.35)
 	tween.finished.connect(func() -> void:

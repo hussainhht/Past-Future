@@ -10,11 +10,17 @@ const Story := preload("res://scripts/level3/core_story.gd")
 const Inputs := preload("res://scripts/input/input_manager.gd")
 const Devices := preload("res://scripts/level3/core_devices.gd")
 const ReactorBridge := preload("res://scripts/level3/core_reactor_bridge.gd")
+const ExplosionDirector := preload("res://scripts/level3/reactor_explosion_director.gd")
 
 @export var pause_when_unfocused := true
 @export var challenge_seconds: float = Rules.CHALLENGE_SECONDS
 ## Assign only a completed, verified module. Null keeps the stock assembly.
 @export var reactor_visual_scene: PackedScene
+## Explosion-only events supplied by the audio catalog. Empty entries disable a cue.
+@export var explosion_audio_cues: Dictionary = {"impact": "core_overload_impact", "rupture": "core_overload_rupture", "shockwave": "core_overload_shockwave"}
+var explosion: Node
+var _meltdown_started := false
+var _meltdown_attempt := -1
 var devices: Node
 var reactor_bridge: Node
 var player: CharacterBody3D
@@ -105,6 +111,8 @@ func _ready() -> void:
 	sound = Sound.new()
 	sound.name = "CoreSound"
 	add_child(sound)
+	sound.bind(self)
+	if explosion_audio_cues.is_empty(): explosion_audio_cues = Sound.EXPLOSION_CUES.duplicate()
 	pause_menu = load("res://scenes/ui/pause_menu.tscn").instantiate()
 	add_child(pause_menu)
 	pause_menu.configure(self, sound.director, func() -> String: return role, set_paused, reset_solo_session, return_to_menu)
@@ -132,11 +140,17 @@ func _ready() -> void:
 	devices.name = "CoreDevices"
 	add_child(devices)
 	devices.setup(self)
+	devices.inspector.active_changed.connect(sound.on_inspect)
 	reactor_bridge = ReactorBridge.new()
 	add_child(reactor_bridge)
 	if reactor_visual_scene == null: reactor_visual_scene = reactor_bridge.verified_scene()
 	reactor_bridge.setup(worlds, reactor_visual_scene)
 	reactor_bridge.sync_preferences(worlds, role)
+	explosion = ExplosionDirector.new()
+	add_child(explosion)
+	explosion.setup(self)
+	explosion.finished.connect(_on_explosion_finished)
+	explosion.explosion_audio_cue_requested.connect(_explosion_audio_cue)
 	_register_evidence()
 	rules = Rules.new()
 	rules.challenge_seconds = challenge_seconds
@@ -298,7 +312,7 @@ func _confirm_command(command: String) -> void:
 
 
 func request_action(action: String, data: Dictionary = {}) -> Dictionary:
-	if state.is_empty() or disconnected: return {}
+	if state.is_empty() or disconnected or _meltdown_started: return {}
 	_seq[role] += 1
 	var payload := data.duplicate(true)
 	payload.attempt = state.attempt
@@ -335,10 +349,9 @@ func _process(delta: float) -> void:
 		sync_left = maxf(0.0, _confirmed_sync_remaining - (_clock() - _snapshot_at))
 	ui.render(state, role, predicted, sync_left)
 	ui.set_radio_status(radio)
-	if predicted <= 10 and state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"] and not _warned:
-		_warned = true
-		sound.play("warning")
-	if networked and not disconnected and NetworkManager.in_game:
+	sound.tick(delta, predicted, sync_left)
+	# Stop scene-bound pose/hello RPCs before either peer unloads this room.
+	if networked and not disconnected and NetworkManager.in_game and not _meltdown_started:
 		_sync_age += delta
 		_hello_age += delta
 		if role == "future" and _hello_age > 0.5:
@@ -351,6 +364,9 @@ func _process(delta: float) -> void:
 
 func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 	if id != Rules.ID: return
+	# A fresh campaign snapshot arrives before the room swap. Keep the black frame
+	# and input lock intact until this scene is actually removed.
+	if _meltdown_started and confirmed.get("stage") != "OVERLOAD": return
 	var previous := state
 	var previous_stage: String = state.get("stage", "")
 	state = confirmed.duplicate(true)
@@ -359,7 +375,6 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 		_confirmed_sync_remaining = Rules.SYNC_WINDOW
 	_snapshot_at = _clock()
 	if _last_attempt != state.attempt:
-		sound.reactor_ambience.stop_ambience(0.0)
 		if devices != null: devices.close()
 		_last_attempt = state.attempt
 		_seq = {"past": 0, "future": 0}
@@ -384,32 +399,44 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 	if (_modal_kind == "start" and state.stage != "DISCOVERY") or (_modal_kind == "terminal" and (state.stage != "STAGE_C" or state["locked_" + role])):
 		_close()
 	if reactor_bridge != null: reactor_bridge.apply_state(state, challenge_seconds)
-	if not previous.is_empty() and previous.get("attempt") == state.attempt:
-		if previous.coils != state.coils: sound.director.play_sfx(&"switch_electrical")
-		var events := {"receiver": &"equipment_activate", "anchor": &"computer_calibrate", "origin": &"rift_stabilize", "sync_past": &"switch_toggle", "sync_future": &"switch_toggle", "locked_past": &"computer_success", "locked_future": &"computer_success"}
-		for key: String in events:
-			if previous.get(key) != state.get(key) and state.get(key): sound.director.play_sfx(events[key])
-		if previous.get("sync_past", false) and not state.sync_past and state.stage == "STAGE_B":
-			sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
-		elif previous.get("sync_future", false) and not state.sync_future and state.stage == "STAGE_B":
-			sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
+	sound.on_state(previous, state)
 	if state.notice != _last_notice:
 		_last_notice = state.notice
 		ui.status.text = state.notice
 	if previous_stage != state.stage:
 		if state.stage in ["STAGE_A", "STAGE_C"]: _play_radio_notice(state.notice)
-		if state.stage == "STAGE_A": sound.play("activate")
-		elif state.stage in ["STAGE_B", "STAGE_C"]: sound.play("phase")
-		elif state.stage == "OVERLOAD":
-			devices.close()
-			set_paused(false)
-			director.stop_dialogue()
-			settings_overlay.hide()
-			ui.close_panel()
-			JournalManager.close_journal()
-			sound.play("overload")
+		if state.stage == "OVERLOAD":
+			_start_meltdown()
+	if state.stage == "OVERLOAD": explosion.confirm_time(float(state.get("meltdown_elapsed", 0.0)))
 	if state.stage == "ENDING" and state.ending != _shown_ending: _play_ending()
 	_sync_controls()
+
+
+func _start_meltdown() -> void:
+	if _meltdown_started or not state.ending.is_empty(): return
+	_meltdown_started = true
+	_meltdown_attempt = state.attempt
+	PuzzleManager.gameplay_suspended = true
+	game_flow_suspend()
+	JournalManager.dismiss_notifications()
+	for world: Node3D in worlds.values():
+		for label: Label3D in world.find_children("*", "Label3D", true, false): label.hide()
+	ui.root.hide()
+	prompt.hide()
+	explosion.begin(float(state.get("meltdown_elapsed", 0.0)))
+
+
+func _explosion_audio_cue(cue: StringName) -> void:
+	sound.explosion_cue(cue, explosion_audio_cues)
+
+
+func _on_explosion_finished() -> void:
+	if disconnected:
+		explosion.release_cover()
+		ui.root.show()
+		_on_connection()
+		return
+	GameFlowManager.reactor_cinematic_finished(_meltdown_attempt)
 
 
 func _on_rejected(id: String, _action: String, reason: String, actor_role: String) -> void:
@@ -417,7 +444,7 @@ func _on_rejected(id: String, _action: String, reason: String, actor_role: Strin
 		var messages := {"too_far": "Move closer to the hardware and try again.", "partner_unavailable": "Waiting for both timelines to finish loading.", "stale_attempt": "That operation belongs to an earlier attempt.", "duplicate_request": "That operation was already received.", "wrong_stage": "That device is not enabled in this reactor phase.", "choice_locked": "Your private command is already locked.", "anchor_required": "The Professor must calibrate the Signal Anchor first."}
 		devices.reject()
 		ui.show_error(messages.get(reason, "Operation refused: " + reason.replace("_", " ")))
-		sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
+		sound.on_rejected()
 
 
 func _play_ending() -> void:
@@ -513,6 +540,7 @@ func _close() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _meltdown_started: return
 	if pause_menu.handle_input(event): return
 	if event.is_echo() or JournalManager.is_open(): return
 	if event.is_action_pressed("switch_role"):
@@ -528,6 +556,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func set_paused(value: bool) -> void:
+	if value and _meltdown_started: return
 	if disconnected and not value: return
 	if value and devices != null and devices.inspector.active: devices.close()
 	if _paused != value: sound.director.play_ui(&"ui_pause" if value else &"ui_unpause")
@@ -577,7 +606,7 @@ func _clock() -> float:
 
 
 func is_gameplay_paused() -> bool:
-	return _paused or disconnected or not _configured or director.is_gameplay_input_blocked() or ui.visible_modal or (devices != null and devices.inspector.active) or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
+	return _meltdown_started or _paused or disconnected or not _configured or director.is_gameplay_input_blocked() or ui.visible_modal or (devices != null and devices.inspector.active) or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
 
 
 func _sync_controls() -> void:

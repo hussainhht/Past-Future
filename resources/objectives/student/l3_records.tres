@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "student_l3_records"
+role = "past"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 10
+title = "Examine the Surviving Records"
+summary = "Read the documents in the chamber before arming."
+description = "The reactor is idle and there is no time limit yet. Read the documents left in the chamber before you arm it."
+hint = "Each document you read is saved to your notebook."
+icon = &"document"
+secret = false
+conditions = Array[Dictionary]([{"kind": "journal", "entry": "l3_authorization"}, {"kind": "journal", "entry": "l3_warning"}])
+expires = Array[Dictionary]([{"kind": "at_least", "puzzle": "puzzle_03_final_fracture", "path": "stage", "order": ["DISCOVERY", "STAGE_A", "STAGE_B", "STAGE_C", "ENDING"], "value": "STAGE_A"}])
+progress = Array[Dictionary]([{"kind": "journal", "entry": "l3_authorization"}, {"kind": "journal", "entry": "l3_warning"}])
+attempt_puzzle = "puzzle_03_final_fracture"

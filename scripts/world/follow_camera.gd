@@ -6,6 +6,9 @@ extends Node3D
 @export var pitch_degrees: float = 35.0
 @export var field_of_view: float = 48.0
 @export var look_ahead: float = 2.0
+## Local presentation offsets; no effect on the followed body or normal view angle.
+var cinematic_focus: Vector3
+var cinematic_weight: float = 0.0
 
 @onready var target: Node3D = get_node(target_path)
 @onready var camera: Camera3D = $Camera3D
@@ -29,4 +32,5 @@ func snap_to_target() -> void:
 
 
 func _focus_position() -> Vector3:
-	return target.global_position + Vector3.UP * 0.7 - global_basis.z * look_ahead
+	var normal := target.global_position + Vector3.UP * 0.7 - global_basis.z * look_ahead
+	return normal.lerp(cinematic_focus, cinematic_weight)

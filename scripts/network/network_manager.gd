@@ -5,7 +5,7 @@ signal state_changed
 signal game_started
 
 const PORT: int = 7000
-const PROTOCOL_VERSION: int = 2
+const PROTOCOL_VERSION: int = 3 # Puzzle actions now carry their gameplay session ID.
 enum State { IDLE, HOSTING, CONNECTING, CONNECTED }
 
 var state: State = State.IDLE

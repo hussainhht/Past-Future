@@ -50,6 +50,7 @@ var _equipment_tween: Tween
 var storage: Node3D
 var settings_overlay: CanvasLayer
 var pause_menu: CanvasLayer
+var sound: Node
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -73,6 +74,10 @@ func _ready() -> void:
 	role = PuzzleManager.get_local_role()
 	state = PuzzleManager.get_state(Rules.ID)
 	audio.add_to_group("lab_audio")
+	sound = preload("res://scripts/world/maintenance_sound.gd").new()
+	sound.name = "MaintenanceSound"
+	add_child(sound)
+	sound.bind(self, audio)
 	_build_hud()
 	_create_devices()
 	storage = preload("res://scripts/gameplay/storage/storage_room.gd").new()
@@ -187,6 +192,7 @@ func _spawn_role() -> void:
 	director.set_local_timeline(role)
 	if not NetworkManager.in_game: PuzzleManager.offline_role = role
 	audio.start_soundscape(StringName(role))
+	sound.set_role(role)
 	_apply_variants()
 	_refresh_wayfinding(1.0)
 
@@ -248,7 +254,7 @@ func _apply_state(animate: bool) -> void:
 	if powered and state.priority == role: $KeyLight.light_energy *= 1.2
 	if _last_power and not powered and state.battery_ready:
 		ui.toast("Auxiliary voltage dropped. Inspect the distribution meter at your reserve station.")
-		if _initialized: audio.play_sfx(&"interaction_denied")
+		if _initialized: sound.on_power_lost()
 	_last_power = powered
 	storage.refresh(animate)
 	_refresh_equipment(animate)
@@ -477,7 +483,7 @@ func _request(action: String, payload: Dictionary = {}) -> void:
 	elif result.status == PuzzleManager.Status.NO_CHANGE and not result.get("message", "").is_empty():
 		ui.toast(result.message)
 	elif result.status in [PuzzleManager.Status.CHANGED, PuzzleManager.Status.COMPLETED]:
-		audio.play_sfx(&"switch_toggle")
+		if not sound.owns_action(action): audio.play_sfx(&"switch_toggle")
 
 
 func _on_rejected(id: String, _action: String, reason: String, actor_role: String) -> void:
@@ -500,6 +506,7 @@ func _on_state_changed(id: String, next: Dictionary, _revision: int) -> void:
 	var previous := state
 	state = next
 	if not _initialized: return
+	sound.on_state(previous, state)
 	if state.archive_read and not previous.get("archive_read", false): _queue_line("identity")
 	if state.recording != "pending" and previous.get("recording", "pending") == "pending": _queue_line(String(state.recording))
 	if state.anchor_past and state.anchor_future and not (previous.get("anchor_past", false) and previous.get("anchor_future", false)):

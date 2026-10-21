@@ -22,6 +22,8 @@ def fetch(url):
 def main():
     CACHE.mkdir(parents=True, exist_ok=True)
     records = json.loads((ROOT / "assets/audio/asset_provenance.json").read_text(encoding="utf8"))
+    # Level 2/3 records list several sources; tools/prepare_level_audio.py --fetch handles those.
+    records = [r for r in records if "sources" not in r]
     downloads = {}
     pages = set()
     for record in records:

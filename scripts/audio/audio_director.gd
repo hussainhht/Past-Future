@@ -111,13 +111,14 @@ func _get_available_3d_player(priority: int = 60) -> AudioStreamPlayer3D:
 func has_sound(sound_id: StringName) -> bool:
 	return _catalog.has(sound_id)
 
-func play_sfx(sound_id: StringName) -> bool:
-	return _play_2d(sound_id, &"SFX")
+## `pitch` scales the event's own pitch (used for rising countdown pulses).
+func play_sfx(sound_id: StringName, pitch: float = 1.0) -> bool:
+	return _play_2d(sound_id, &"SFX", pitch)
 
 func play_ui(sound_id: StringName) -> bool:
 	return _play_2d(sound_id, &"UI")
 
-func _play_2d(sound_id: StringName, fallback_bus: StringName) -> bool:
+func _play_2d(sound_id: StringName, fallback_bus: StringName, pitch: float = 1.0) -> bool:
 	var entry: Dictionary = _catalog.get(sound_id, {})
 	if entry.is_empty():
 		if not _warned_ids.has(sound_id):
@@ -138,10 +139,10 @@ func _play_2d(sound_id: StringName, fallback_bus: StringName) -> bool:
 	
 	var variance: float = entry.get("pitch_variance", 0.0)
 	if variance > 0.0:
-		player.pitch_scale = 1.0 + randf_range(-variance, variance)
+		player.pitch_scale = (1.0 + randf_range(-variance, variance)) * pitch
 	else:
-		player.pitch_scale = 1.0
-	
+		player.pitch_scale = pitch
+
 	# The headless Dummy driver cannot output sound. Avoid native one-shot
 	# playbacks that can outlive its shutdown; still report accepted event hooks.
 	if AudioServer.get_driver_name() != "Dummy":
@@ -149,7 +150,7 @@ func _play_2d(sound_id: StringName, fallback_bus: StringName) -> bool:
 	sound_played.emit(sound_id, false, Vector3.ZERO)
 	return true
 
-func play_world_sfx(sound_id: StringName, world_position: Vector3) -> bool:
+func play_world_sfx(sound_id: StringName, world_position: Vector3, pitch: float = 1.0) -> bool:
 	var entry: Dictionary = _catalog.get(sound_id, {})
 	if entry.is_empty():
 		if not _warned_ids.has(sound_id):
@@ -170,10 +171,10 @@ func play_world_sfx(sound_id: StringName, world_position: Vector3) -> bool:
 	
 	var variance: float = entry.get("pitch_variance", 0.0)
 	if variance > 0.0:
-		player.pitch_scale = 1.0 + randf_range(-variance, variance)
+		player.pitch_scale = (1.0 + randf_range(-variance, variance)) * pitch
 	else:
-		player.pitch_scale = 1.0
-	
+		player.pitch_scale = pitch
+
 	player.unit_size = float(entry.get("unit_size", 8.0))
 	player.max_distance = float(entry.get("max_distance", 24.0))
 	player.global_position = world_position

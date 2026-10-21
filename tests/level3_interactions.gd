@@ -226,12 +226,13 @@ func _run() -> void:
 	check(room.state.stage == "OVERLOAD" and not room.devices.inspector.active, "timeout closes inspection and overloads through host deadline")
 	now += 3.0
 	pm.refresh_puzzle(Rules.ID)
-	await tick()
-	check(room.state.stage == "DISCOVERY" and room.state.coils == [0, 0, 0] and room.player.controls_enabled, "timeout retry restores room and controls")
 	room.rules.clock = Callable()
-	for event in [&"equipment_activate", &"switch_electrical", &"computer_calibrate", &"rift_stabilize", &"computer_success", &"equipment_deactivate", &"puzzle_success", &"puzzle_failure", &"rift_activate", &"radio_incoming"]:
+	await create_timer(5.3).timeout
+	while root.get_node("GameFlowManager").is_transitioning(): await process_frame
+	check(root.get_node("GameFlowManager").get_current_room_id() == "room_01" and current_scene.player.controls_enabled, "timeout restores Room 1 and controls")
+	for event in [&"core_arm_confirm", &"core_coil_surge", &"core_battery_connect", &"core_anchor_lock", &"core_origin_stabilize", &"core_sync_engage", &"core_sync_success", &"core_command_lock", &"core_power_restore", &"core_ending_trust", &"core_ending_student_override", &"core_ending_professor_override", &"core_ending_paradox"]:
 		check(event in audio_events, "Confirmed gameplay reaches shared audio: " + String(event))
-	room.queue_free()
+	current_scene.queue_free()
 	await tick()
 	await create_timer(.2).timeout
 	print("LEVEL3 INTERACTIONS: %s (%d checks, %d failures)" % ["PASS" if failures == 0 else "FAIL", checks, failures])

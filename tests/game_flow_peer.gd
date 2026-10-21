@@ -183,6 +183,7 @@ func _run() -> void:
 	for property in ProjectSettings.get_property_list():
 		if String(property.name).begins_with("autoload/"):
 			expected_root_nodes += 1
+	expected_root_nodes += 1  # the Mission Log layer, which ObjectiveManager keeps last under root
 	var arguments := OS.get_cmdline_user_args()
 	role = arguments[0]
 	port = int(arguments[1])

@@ -330,7 +330,7 @@ func test_replica_sync() -> void:
 	check(not replica._receive_update(session, "power", {"solved": true, "power_on": true}, true, 99, 0), "Updates from a finished session must not reach the new one")
 	check(not replica.is_solved("power") and not replica.get_state("bridge").support_repaired, "The new session's state must be untouched by the old one")
 	# Remote entry points refuse callers they cannot identify (no real peer behind these direct calls).
-	host._rpc_request_action("power", "activate_power", {})
+	host._rpc_request_action(host.get_session_id(), "power", "activate_power", {})
 	check(not host.is_solved("power"), "A request without a verified remote peer must be ignored")
 	replica._rpc_apply_update(new_session, "power", {"solved": true, "power_on": true}, true, 99, 0)
 	replica._rpc_apply_snapshot(new_session, 99, {"power": {"state": {"solved": true}, "solved": true, "revision": 99}}, 0)

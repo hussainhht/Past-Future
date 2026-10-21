@@ -46,6 +46,9 @@ var _color: Color = Color("efb85e")
 var _startup_progress: float = 1.0
 var _sequence: Tween
 var _built: bool = false
+var _failure_intensity := 0.0
+var _failure_time := -1.0
+var _reduced_motion := false
 
 
 func _ready() -> void:
@@ -186,6 +189,12 @@ func set_charge_ratio(value: float) -> void:
 	charge_ratio = clampf(value, 0.0, 1.0)
 
 
+func set_instability(value: float, cinematic_time: float, reduced: bool) -> void:
+	_failure_intensity = clampf(value, 0.0, 1.0)
+	_failure_time = cinematic_time
+	_reduced_motion = reduced
+
+
 func trigger_overload() -> void:
 	set_reactor_phase("overload")
 	charge_ratio = 1.0
@@ -322,6 +331,11 @@ func _update_visuals(delta: float) -> void:
 					target_energy = 1.20
 					instability = 0.85
 					target_color = Color("bd88ef")
+	if reactor_phase != "ending" and _failure_intensity > 0.0:
+		target_speed = maxf(target_speed, 0.22 + pow(_failure_intensity, 1.7) * 5.8)
+		target_energy = maxf(target_energy, 0.55 + _failure_intensity * 1.6)
+		instability = maxf(instability, _failure_intensity)
+		target_color = Color("69e5ee").lerp(Color("b79aff"), smoothstep(0.3, 1.0, _failure_intensity))
 	_speed = lerpf(_speed, target_speed, smoothing)
 	_energy = lerpf(_energy, target_energy, smoothing)
 	_instability = lerpf(_instability, instability, smoothing)
@@ -343,13 +357,27 @@ func _update_visuals(delta: float) -> void:
 		if ending_id == "paradox":
 			tilt.z += sin(_clock*0.7+i)*12.0
 			lift = sin(_clock*0.8+i)*0.12
+		if _failure_intensity > 0.0 and reactor_phase != "ending":
+			var motion_scale := 0.12 if _reduced_motion else 1.0
+			tilt += Vector3(sin(_clock*4+i), 0, cos(_clock*3+i))*_failure_intensity*9.0*motion_scale
+		if _failure_time >= 0.0:
+			lift += sin(_clock*8+i)*0.12*minf(_failure_time, 0.8)
+			var disruption := maxf(0.0, _failure_time - 0.8)
+			lift += disruption * (i - 0.5) * 1.4
+			tilt.z += disruption * (i - 1) * 32
 		axes[i].rotation = axes[i].rotation.lerp(tilt*PI/180.0, smoothing)
 		axes[i].position.y = lerpf(axes[i].position.y, 3.05+lift, smoothing)
 		_hoops[i].position.y = 2.25+i*0.65+sin(_clock*1.2+i)*0.12
 		_hoops[i].rotation_degrees = Vector3(sin(_clock*0.4+i)*12, 0, cos(_clock*0.4+i)*12)
 		_hoops[i].visible = effects_enabled and brightness > 0.025
-	var wobble := _instability*0.012 if motion_enabled else 0.0
+	var wobble := _instability * (0.008 if _reduced_motion else 0.07) if motion_enabled else 0.0
 	assembly.position = Vector3(sin(_clock*7.0)*wobble, 0, cos(_clock*5.0)*wobble)
+	for i in range(_covers.size()):
+		var separation := maxf(0.0, _failure_time - 0.85)
+		if separation > 0.0:
+			var angle := i * TAU / 4.0
+			_covers[i].position = Vector3(cos(angle)*separation*2, 3 + separation*1.8 - separation*separation, sin(angle)*separation*2)
+			_covers[i].rotation = Vector3(separation, angle, separation*0.7)
 	for slot: String in ENERGIES:
 		var luminous := _materials[slot] as ShaderMaterial
 		var base: Color = ENERGIES[slot]
@@ -362,7 +390,9 @@ func _update_visuals(delta: float) -> void:
 	_shell_material.set_shader_parameter("clock", _clock)
 	_shell_material.set_shader_parameter("primary_color", _color)
 	_shell_material.set_shader_parameter("secondary_color", Color("aa80ed") if ending_id.is_empty() else _color.lightened(0.15))
-	_shell_material.set_shader_parameter("intensity", brightness if effects_enabled else 0.0)
+	var shell_energy := brightness
+	if _failure_time >= 0.8: shell_energy *= (1.0 - smoothstep(1.05, 2.6, _failure_time)) * 0.7
+	_shell_material.set_shader_parameter("intensity", shell_energy if effects_enabled else 0.0)
 	_shell_material.set_shader_parameter("instability", _instability)
 	_shell_material.set_shader_parameter("flow_speed", -1.4 if ending_id in ["student_override", "paradox"] else 1.0)
 	_shell.visible = effects_enabled and brightness > 0.025
@@ -371,7 +401,18 @@ func _update_visuals(delta: float) -> void:
 	_plasma.visible = brightness > 0.025
 	_plasma.rotation.y += motion_delta*mechanical_speed*0.35
 	var heart_scale := 0.92+_charge*0.15+sin(_clock*1.8)*0.035
+	heart_scale += _failure_intensity * pow(maxf(0.0, sin(_clock*5)), 6.0) * 0.22
+	if _failure_time < 0.0:
+		heart_scale *= 1.0 - smoothstep(0.945, 1.0, _failure_intensity) * (0.28 + sin(_clock*3)*0.12)
+	if _failure_time >= 0.0:
+		if _failure_time < 0.8: heart_scale *= lerpf(1.0, 0.12, smoothstep(0.0, 0.8, _failure_time))
+		else: heart_scale *= 0.1 + sin(clampf((_failure_time-0.8)/1.0, 0, 1)*PI)*4.5
 	_plasma.scale = Vector3.ONE*heart_scale
+	if _failure_time >= 0.8: _plasma.scale.y *= 0.35
+	var shell_scale := 1.0 + _failure_intensity*0.12
+	if _failure_time >= 0.0:
+		shell_scale = lerpf(1.0, 0.18, smoothstep(0.0, 0.8, _failure_time)) if _failure_time < 0.8 else 0.3 + (_failure_time-0.8)*8.0
+	_shell.scale = Vector3(shell_scale, minf(shell_scale, 2.2), shell_scale)
 	_plasma.position.y = 3.0 + (0.22 if ending_id == "professor_override" else -0.18 if ending_id == "student_override" else 0.0)
 	_light.light_color = _color
 	_light.light_energy = brightness*0.85*pulse if effects_enabled else 0.0

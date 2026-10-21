@@ -1,0 +1,720 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 25.8.1.250617 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+ERROR: Failed loading resource: res://assets/audio/level3/music/core_music_lead.ogg.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: No loader found for resource: res://assets/audio/level3/sfx/overload_impact.wav (expected type: AudioStream)
+   at: _load (core/io/resource_loader.cpp:332)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: No loader found for resource: res://assets/audio/level3/sfx/overload_rupture.wav (expected type: AudioStream)
+   at: _load (core/io/resource_loader.cpp:332)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: No loader found for resource: res://assets/audio/level3/sfx/overload_shockwave.wav (expected type: AudioStream)
+   at: _load (core/io/resource_loader.cpp:332)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: res://resources/audio/level_sound_events.tres:1210 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/audio/level3/music/core_music_lead.ogg.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: res://resources/audio/level_sound_events.tres:1210 - Parse Error: [ext_resource] referenced non-existent resource at: res://assets/audio/level3/music/core_music_lead.ogg.
+   at: _printerr (scene/resources/resource_format_text.cpp:41)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: Failed loading resource: res://resources/audio/level_sound_events.tres.
+   at: _load (core/io/resource_loader.cpp:317)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Parse Error: Could not preload resource file "res://resources/audio/level_sound_events.tres".
+   at: GDScript::reload (res://scripts/audio/sound_catalog.gd:7)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Parse Error: Cannot infer the type of "LEVEL_LIBRARY" constant because the value doesn't have a set type.
+   at: GDScript::reload (res://scripts/audio/sound_catalog.gd:7)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/audio/audio_director.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/level3/core_sound.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Compile Error: Failed to compile depended scripts.
+   at: GDScript::reload (res://scripts/level3/temporal_core.gd:0)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+ERROR: Failed to load script "res://scripts/level3/temporal_core.gd" with error "Compilation failed".
+   at: load (modules/gdscript/gdscript_resource_format.cpp:46)
+   GDScript backtrace (most recent call first):
+       [0] start_room (res://scripts/game_flow/game_flow_manager.gd:260)
+       [1] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/level3/core_sound.gd:10)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [6] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AudioDirector._build_catalog (res://scripts/audio/audio_director.gd:65)
+   GDScript backtrace (most recent call first):
+       [0] _build_catalog (res://scripts/audio/audio_director.gd:65)
+       [1] _ready (res://scripts/audio/audio_director.gd:32)
+       [2] _ready (res://scripts/level3/core_sound.gd:10)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [6] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/audio/audio_director.gd:38)
+       [3] _ready (res://scripts/level3/core_sound.gd:10)
+       [4] _ready (res://scripts/level3/temporal_core.gd:113)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [7] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/level3/core_sound.gd:13)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [6] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] _ready (res://scripts/audio/footstep_emitter_3d.gd:36)
+       [2] _spawn_player (res://scripts/level3/temporal_core.gd:218)
+       [3] _ready (res://scripts/level3/temporal_core.gd:136)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [6] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] _spawn_player (res://scripts/level3/temporal_core.gd:219)
+       [4] _ready (res://scripts/level3/temporal_core.gd:136)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [7] _run (res://tests/reactor_meltdown.gd:71)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:132)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] _ready (res://scripts/level3/temporal_core.gd:136)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [8] _run (res://tests/reactor_meltdown.gd:71)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] _ready (res://scripts/level3/temporal_core.gd:136)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] start_room (res://scripts/game_flow/game_flow_manager.gd:266)
+       [8] _run (res://tests/reactor_meltdown.gd:71)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] _ready (res://scripts/audio/footstep_emitter_3d.gd:36)
+       [2] _spawn_player (res://scripts/level3/temporal_core.gd:218)
+       [3] switch_role (res://scripts/level3/temporal_core.gd:240)
+       [4] _run (res://tests/reactor_meltdown.gd:87)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] _spawn_player (res://scripts/level3/temporal_core.gd:219)
+       [4] switch_role (res://scripts/level3/temporal_core.gd:240)
+       [5] _run (res://tests/reactor_meltdown.gd:87)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:134)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] switch_role (res://scripts/level3/temporal_core.gd:240)
+       [6] _run (res://tests/reactor_meltdown.gd:87)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] switch_role (res://scripts/level3/temporal_core.gd:240)
+       [6] _run (res://tests/reactor_meltdown.gd:87)
+WARNING: AudioDirector: Sound ID 'radio_incoming' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] <anonymous lambda> (res://scripts/level3/temporal_core.gd:128)
+       [4] _begin_sequence (res://scripts/dialogue/dialogue_director.gd:417)
+       [5] play_dialogue (res://scripts/dialogue/dialogue_director.gd:156)
+       [6] _play_radio_notice (res://scripts/level3/temporal_core.gd:612)
+       [7] _on_state (res://scripts/level3/temporal_core.gd:415)
+       [8] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [9] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [10] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [11] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [12] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [13] request_action (res://scripts/level3/temporal_core.gd:317)
+       [14] _run (res://tests/reactor_meltdown.gd:118)
+       [15] screenshot (res://tests/reactor_meltdown.gd:44)
+WARNING: AmbientAudioController: Unknown ambience ID 'rift_hum'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] play (res://scripts/level3/core_sound.gd:19)
+       [2] _on_state (res://scripts/level3/temporal_core.gd:416)
+       [3] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [4] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [5] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [6] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [7] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [8] request_action (res://scripts/level3/temporal_core.gd:317)
+       [9] _run (res://tests/reactor_meltdown.gd:118)
+       [10] screenshot (res://tests/reactor_meltdown.gd:44)
+WARNING: AudioDirector: Sound ID 'equipment_activate' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] _on_state (res://scripts/level3/temporal_core.gd:416)
+       [4] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [5] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [6] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [7] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [8] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [9] request_action (res://scripts/level3/temporal_core.gd:317)
+       [10] _run (res://tests/reactor_meltdown.gd:118)
+       [11] screenshot (res://tests/reactor_meltdown.gd:44)
+WARNING: AudioDirector: Sound ID 'ui_pause' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] set_paused (res://scripts/level3/temporal_core.gd:573)
+       [3] _run (res://tests/reactor_meltdown.gd:122)
+WARNING: AudioDirector: Sound ID 'ui_hover' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] <anonymous lambda> (res://scripts/audio/audio_director.gd:321)
+       [3] present (res://scripts/ui/pause_menu.gd:81)
+       [4] set_paused (res://scripts/level3/temporal_core.gd:575)
+       [5] _run (res://tests/reactor_meltdown.gd:122)
+WARNING: AudioDirector: Sound ID 'ui_unpause' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] set_paused (res://scripts/level3/temporal_core.gd:573)
+       [3] _run (res://tests/reactor_meltdown.gd:123)
+WARNING: AudioDirector: Sound ID 'computer_invalid' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] _process (res://scripts/level3/temporal_core.gd:351)
+WARNING: AudioDirector: Sound ID 'interaction_denied' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] _on_rejected (res://scripts/level3/temporal_core.gd:458)
+       [3] _handle_request (res://scripts/puzzles/puzzle_manager.gd:302)
+       [4] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [5] _run (res://tests/reactor_meltdown.gd:129)
+       [6] wait_for (res://tests/reactor_meltdown.gd:36)
+MELTDOWN_IMPACT future 0
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [3] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [4] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [5] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AudioDirector._build_catalog (res://scripts/audio/audio_director.gd:65)
+   GDScript backtrace (most recent call first):
+       [0] _build_catalog (res://scripts/audio/audio_director.gd:65)
+       [1] _ready (res://scripts/audio/audio_director.gd:32)
+       [2] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [3] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [4] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [5] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/audio/audio_director.gd:38)
+       [3] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [4] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [5] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [6] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: _ready (res://scripts/environment/temporal_rift.gd:38)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/environment/temporal_rift.gd:38)
+       [1] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [2] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [3] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [4] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:132)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] _ready (res://scripts/environment/signal_lab.gd:55)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] _ready (res://scripts/environment/signal_lab.gd:55)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:134)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] @future_setter (res://scripts/environment/signal_lab.gd:24)
+       [5] _apply_timeline (res://scripts/world/spawn_area.gd:208)
+       [6] _ready (res://scripts/world/spawn_area.gd:55)
+       [7] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [8] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [9] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [10] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] @future_setter (res://scripts/environment/signal_lab.gd:24)
+       [5] _apply_timeline (res://scripts/world/spawn_area.gd:208)
+       [6] _ready (res://scripts/world/spawn_area.gd:55)
+       [7] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [8] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [9] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [10] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] _ready (res://scripts/audio/footstep_emitter_3d.gd:36)
+       [2] bind_player (res://scripts/gameplay/laboratory_gameplay.gd:103)
+       [3] initialize (res://scripts/gameplay/laboratory_gameplay.gd:73)
+       [4] _ready (res://scripts/world/spawn_area.gd:56)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] bind_player (res://scripts/gameplay/laboratory_gameplay.gd:105)
+       [4] initialize (res://scripts/gameplay/laboratory_gameplay.gd:73)
+       [5] _ready (res://scripts/world/spawn_area.gd:56)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] apply_timeline (res://scripts/gameplay/laboratory_gameplay.gd:131)
+       [4] initialize (res://scripts/gameplay/laboratory_gameplay.gd:78)
+       [5] _ready (res://scripts/world/spawn_area.gd:56)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+MELTDOWN_RESTART future 0
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/level3/core_sound.gd:10)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [6] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [7] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AudioDirector._build_catalog (res://scripts/audio/audio_director.gd:65)
+   GDScript backtrace (most recent call first):
+       [0] _build_catalog (res://scripts/audio/audio_director.gd:65)
+       [1] _ready (res://scripts/audio/audio_director.gd:32)
+       [2] _ready (res://scripts/level3/core_sound.gd:10)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [6] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [7] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/audio/audio_director.gd:38)
+       [3] _ready (res://scripts/level3/core_sound.gd:10)
+       [4] _ready (res://scripts/level3/temporal_core.gd:113)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/level3/core_sound.gd:13)
+       [3] _ready (res://scripts/level3/temporal_core.gd:113)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [6] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [7] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] _ready (res://scripts/audio/footstep_emitter_3d.gd:36)
+       [2] _spawn_player (res://scripts/level3/temporal_core.gd:218)
+       [3] _ready (res://scripts/level3/temporal_core.gd:136)
+       [4] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [5] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [6] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [7] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] _spawn_player (res://scripts/level3/temporal_core.gd:219)
+       [4] _ready (res://scripts/level3/temporal_core.gd:136)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:134)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] _ready (res://scripts/level3/temporal_core.gd:136)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] set_role (res://scripts/level3/core_sound.gd:16)
+       [4] _spawn_player (res://scripts/level3/temporal_core.gd:225)
+       [5] _ready (res://scripts/level3/temporal_core.gd:136)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AudioDirector: Sound ID 'radio_incoming' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] <anonymous lambda> (res://scripts/level3/temporal_core.gd:128)
+       [4] _begin_sequence (res://scripts/dialogue/dialogue_director.gd:417)
+       [5] play_dialogue (res://scripts/dialogue/dialogue_director.gd:156)
+       [6] _play_radio_notice (res://scripts/level3/temporal_core.gd:612)
+       [7] _on_state (res://scripts/level3/temporal_core.gd:415)
+       [8] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [9] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [10] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [11] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [12] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [13] request_action (res://scripts/level3/temporal_core.gd:317)
+       [14] _run (res://tests/reactor_meltdown.gd:118)
+       [15] wait_for (res://tests/reactor_meltdown.gd:36)
+WARNING: AmbientAudioController: Unknown ambience ID 'rift_hum'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] play (res://scripts/level3/core_sound.gd:19)
+       [2] _on_state (res://scripts/level3/temporal_core.gd:416)
+       [3] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [4] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [5] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [6] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [7] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [8] request_action (res://scripts/level3/temporal_core.gd:317)
+       [9] _run (res://tests/reactor_meltdown.gd:118)
+       [10] wait_for (res://tests/reactor_meltdown.gd:36)
+WARNING: AudioDirector: Sound ID 'equipment_activate' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] _on_state (res://scripts/level3/temporal_core.gd:416)
+       [4] _announce (res://scripts/puzzles/puzzle_manager.gd:410)
+       [5] _commit_record (res://scripts/puzzles/puzzle_manager.gd:360)
+       [6] _run_action (res://scripts/puzzles/puzzle_manager.gd:348)
+       [7] _handle_request (res://scripts/puzzles/puzzle_manager.gd:299)
+       [8] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [9] request_action (res://scripts/level3/temporal_core.gd:317)
+       [10] _run (res://tests/reactor_meltdown.gd:118)
+       [11] wait_for (res://tests/reactor_meltdown.gd:36)
+WARNING: AudioDirector: Sound ID 'computer_invalid' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] play (res://scripts/level3/core_sound.gd:26)
+       [3] _process (res://scripts/level3/temporal_core.gd:351)
+WARNING: AudioDirector: Sound ID 'ui_pause' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] set_paused (res://scripts/level3/temporal_core.gd:573)
+       [3] _run (res://tests/reactor_meltdown.gd:122)
+WARNING: AudioDirector: Sound ID 'ui_hover' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] <anonymous lambda> (res://scripts/audio/audio_director.gd:321)
+       [3] present (res://scripts/ui/pause_menu.gd:81)
+       [4] set_paused (res://scripts/level3/temporal_core.gd:575)
+       [5] _run (res://tests/reactor_meltdown.gd:122)
+WARNING: AudioDirector: Sound ID 'ui_unpause' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_ui (res://scripts/audio/audio_director.gd:119)
+       [2] set_paused (res://scripts/level3/temporal_core.gd:573)
+       [3] _run (res://tests/reactor_meltdown.gd:123)
+WARNING: AudioDirector: Sound ID 'interaction_denied' not found in catalog
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] _play_2d (res://scripts/audio/audio_director.gd:126)
+       [1] play_sfx (res://scripts/audio/audio_director.gd:116)
+       [2] _on_rejected (res://scripts/level3/temporal_core.gd:458)
+       [3] _handle_request (res://scripts/puzzles/puzzle_manager.gd:302)
+       [4] submit_action (res://scripts/puzzles/puzzle_manager.gd:174)
+       [5] _run (res://tests/reactor_meltdown.gd:129)
+       [6] wait_for (res://tests/reactor_meltdown.gd:36)
+MELTDOWN_IMPACT future 1
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [3] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [4] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [5] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AudioDirector._build_catalog (res://scripts/audio/audio_director.gd:65)
+   GDScript backtrace (most recent call first):
+       [0] _build_catalog (res://scripts/audio/audio_director.gd:65)
+       [1] _ready (res://scripts/audio/audio_director.gd:32)
+       [2] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [3] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [4] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [5] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: AmbientAudioController._load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+   GDScript backtrace (most recent call first):
+       [0] _load_streams (res://scripts/audio/ambient_audio_controller.gd:48)
+       [1] _ready (res://scripts/audio/ambient_audio_controller.gd:26)
+       [2] _ready (res://scripts/audio/audio_director.gd:38)
+       [3] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [4] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [5] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [6] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: _ready (res://scripts/environment/temporal_rift.gd:38)
+   GDScript backtrace (most recent call first):
+       [0] _ready (res://scripts/environment/temporal_rift.gd:38)
+       [1] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [2] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [3] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [4] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:132)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] _ready (res://scripts/environment/signal_lab.gd:55)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_past'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] _ready (res://scripts/environment/signal_lab.gd:55)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'lab_ambience_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] switch_timeline (res://scripts/audio/ambient_audio_controller.gd:134)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:256)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] @future_setter (res://scripts/environment/signal_lab.gd:24)
+       [5] _apply_timeline (res://scripts/world/spawn_area.gd:208)
+       [6] _ready (res://scripts/world/spawn_area.gd:55)
+       [7] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [8] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [9] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [10] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+WARNING: AmbientAudioController: Unknown ambience ID 'music_future'
+   at: push_warning (core/variant/variant_utility.cpp:1033)
+   GDScript backtrace (most recent call first):
+       [0] start_ambience (res://scripts/audio/ambient_audio_controller.gd:69)
+       [1] start_music (res://scripts/audio/audio_director.gd:248)
+       [2] start_soundscape (res://scripts/audio/audio_director.gd:257)
+       [3] _apply (res://scripts/environment/signal_lab.gd:101)
+       [4] @future_setter (res://scripts/environment/signal_lab.gd:24)
+       [5] _apply_timeline (res://scripts/world/spawn_area.gd:208)
+       [6] _ready (res://scripts/world/spawn_area.gd:55)
+       [7] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [8] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [9] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [10] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] _ready (res://scripts/audio/footstep_emitter_3d.gd:36)
+       [2] bind_player (res://scripts/gameplay/laboratory_gameplay.gd:103)
+       [3] initialize (res://scripts/gameplay/laboratory_gameplay.gd:73)
+       [4] _ready (res://scripts/world/spawn_area.gd:56)
+       [5] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [6] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [7] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [8] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] bind_player (res://scripts/gameplay/laboratory_gameplay.gd:105)
+       [4] initialize (res://scripts/gameplay/laboratory_gameplay.gd:73)
+       [5] _ready (res://scripts/world/spawn_area.gd:56)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+SCRIPT ERROR: Invalid call. Nonexistent function 'definitions' in base 'GDScript'.
+   at: FootstepEmitter3D._load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+   GDScript backtrace (most recent call first):
+       [0] _load_default_footsteps (res://scripts/audio/footstep_emitter_3d.gd:44)
+       [1] set_surface (res://scripts/audio/footstep_emitter_3d.gd:54)
+       [2] set_timeline (res://scripts/audio/footstep_emitter_3d.gd:58)
+       [3] apply_timeline (res://scripts/gameplay/laboratory_gameplay.gd:131)
+       [4] initialize (res://scripts/gameplay/laboratory_gameplay.gd:78)
+       [5] _ready (res://scripts/world/spawn_area.gd:56)
+       [6] _swap_in (res://scripts/game_flow/game_flow_manager.gd:692)
+       [7] _enter_room (res://scripts/game_flow/game_flow_manager.gd:671)
+       [8] _poll_load (res://scripts/game_flow/game_flow_manager.gd:662)
+       [9] _process (res://scripts/game_flow/game_flow_manager.gd:893)
+MELTDOWN_RESTART future 1
+MELTDOWN solo: PASS (47 checks)
+WARNING: 4 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)

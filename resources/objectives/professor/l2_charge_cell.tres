@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l2_charge_cell"
+role = "future"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 10
+title = "Charge the Emergency Cell"
+summary = "Charge the emergency cell with its hand crank."
+description = "Read the charging instructions at the emergency cell, then turn the hand crank once it is safe to do so."
+hint = "The instructions say what has to happen before the crank can charge it."
+icon = &"power"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "battery_ready"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

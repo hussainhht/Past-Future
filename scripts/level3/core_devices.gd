@@ -230,7 +230,7 @@ func _on_action(action: String, payload: Dictionary) -> void:
 	for option: Dictionary in actions:
 		if option.action == action and option.payload == payload and _enabled(active_id, option): allowed = true
 	if not allowed: return
-	room.sound.get_node("AudioSystem").play_sfx(&"switch_toggle")
+	room.sound.on_device_action(active_id, action)
 	Inputs.trigger_haptic(&"interaction")
 	match action:
 		"_arm": close(); room.confirm_arming()
