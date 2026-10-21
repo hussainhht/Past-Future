@@ -1,5 +1,5 @@
 # PAST & FUTURE
-## Game Design Document — Version 0.16
+## Game Design Document — Version 0.17
 
 **Project:** CHECKPOINT — Reboot Game Jam 2026  
 **Status:** Visual Direction Approved / Technical Risk Mitigations Defined\
@@ -11,6 +11,8 @@
 **Multiplayer:** Two-Computer LAN Co-op; Remote Play via Tailscale; Same-PC Split-Screen Fallback\
 **Demo Duration:** 5–10 minutes  
 **Demo Chapter:** Chapter 0 — The First Fracture
+
+**Story continuation:** [Chapter 0 story and Level 02](docs/STORY_AND_LEVEL_02.md) contains the current runtime audit, detailed Maintenance Corridor design, dialogue beats, and the required ending. Level 02 and the compact Core finale are now implemented; see [Level 02 implementation and tests](docs/LEVEL_02.md) for the playable route, private choices and evidence-dependent endings. Earlier implementation summaries below describe older development milestones.
 
 ---
 
@@ -347,26 +349,36 @@ Teach asymmetric cooperation and information exchange.
 
 ### Puzzle 02 — Broken Corridor
 
-**Location:** Maintenance Corridor  
-**Estimated Duration:** 2–3 minutes
+**Location:** Maintenance Corridor / service gallery\
+**Subtitle:** What We Leave Standing\
+**Estimated Duration:** 3–4 minutes
 
-**Past Player:**
-- Finds three adjustable support mechanisms.
-- Changes their configuration.
-- Confirms the maintenance setup.
+After the Signal Laboratory's north door, both players enter their own version of the maintenance gallery. Public exits are sealed by containment shutters. The Professor's route to the Core is blocked by a fallen slab; the Student has intact service controls but no Core authorization.
 
-**Future Player:**
-- Finds a structural diagram showing the correct configuration.
-- Communicates the sequence to the past.
-- Watches the collapsed corridor change.
-- Crosses the restored passage.
-- Finds an access code required by the past player.
+**Phase 1 — Restore service power:**
+- The Professor reads the surviving isolation plate and directs the Student to the SERVICE loop.
+- The Student isolates and latches that circuit in the Past, preserving a usable bypass in the Future.
+- The Professor charges a local emergency battery with a hand crank and switches it on. Power is generated locally, not sent across time.
 
-**Result:**
-Both players gain access to the Temporal Research Core.
+**Phase 2 — Brace the future:**
+- The Professor reads the newly powered diagnostic diagram and observes the broken structure.
+- The Student reads the intact stage legend and sets three symbol-marked supports.
+- Their combined information yields Circle 3 / Triangle 2 / Square 1: BRACE / PIN / RETRACT.
+- A confirmed safe plan secures the slab as a broad crossing. Invalid plans are refused without resetting earlier progress.
+- The Professor crosses to the maintenance archive. Solved supports lock so the crossing cannot be removed underneath him.
 
-**Purpose:**
-Introduce delayed environmental changes with a visible consequence.
+**Phase 3 — Recover Core access:**
+- A surviving personnel record and a private detail about their shared watch confirm the Professor is the Student, 31 years later.
+- The Professor supplies the archive's service code, 3142. The Student authorizes the intact Core entrance; the Professor operates the damaged door's manual release.
+- A partial audit indicates an acknowledged containment warning and a manual override. The full operator record is inside the Core.
+
+**Result:** Both roles can enter the Temporal Research Core. Their radios and Level 01 completion persist; the optional laboratory receiver relay is not an exit prerequisite.
+
+**Purpose:** Deliver a visible Past-to-Future change, give both players essential physical actions, and turn the anonymous radio partnership into a personal conflict.
+
+**Implemented choices:** Either character can claim a local reserve that benefits their equipment while disrupting the remote auxiliary feed. The Professor can extract the recorder battery for early Core-door power, erasing evidence. Repairing both bypass ends restores shared power and permits preservation. The final audit reflects the recording decision; shortcut history persists. See [Level 02](docs/LEVEL_02.md).
+
+The exact layout, authored clue table, dialogue, failure behavior, transition requirements, and finale are specified in [Story and Level 02](docs/STORY_AND_LEVEL_02.md). For the required two-level jam build, a compact Core control alcove supplies the stabilization and cliffhanger below; the optional full Puzzle 03 can expand that finale later.
 
 ### Puzzle 03 — Temporal Anchor
 
@@ -375,7 +387,7 @@ Introduce delayed environmental changes with a visible consequence.
 
 **Past Player:**
 - Configures energy output.
-- Activates the experimental prototype.
+- Activates the anchor transmitter in stabilization mode.
 
 **Future Player:**
 - Repairs the temporal stabilizer.
@@ -706,51 +718,39 @@ Use lighting, overlays, particles, and sound to differentiate the timelines.
 
 ## 12. Narrative Structure
 
+The complete beat-by-beat continuation is in [Chapter 0 story and Level 02](docs/STORY_AND_LEVEL_02.md). This section defines its chapter arc.
+
 ### Opening — The Signal
 
-The student is studying in the university research wing when an unusual signal appears on a nearby instrument.
+The Student investigates an unusual signal in the working university laboratory. The Professor searches its ruined counterpart, 31 years later. Acquiring both radios and calibrating the array to 67 MHz establishes their connection and releases the north containment door.
 
-The professor receives the same signal from the destroyed future laboratory.
+Existing blackboard and notebook clues suggest deliberate involvement. Neither the Student nor the player should treat the later discovery of an override as the first hint that this was not an accident.
 
-The characters begin communicating.
+### Discovery — What We Leave Standing
 
-A temporal fracture briefly allows them to see one another.
+The door leads to the maintenance gallery. The Professor cannot cross the ruined walkway; the Student cannot authorize the Core entrance. The Professor explains that the Core anchor must be stabilized to hold their connection and contain the spreading instability.
 
-### Discovery
+Together they restore the service bypass and secure the structural supports. The Professor watches the Student's actions change what survived. An archive record and their shared watch confirm they are the same person. His old memories do not predict this newly altered route, so cooperation remains necessary.
 
-The players discover that they are the same individual at different points in time.
+### Escalation — The Override
 
-They begin using information from the future and objects in the past to move through the university.
+The archive provides Core access and a partial incident record: someone acknowledged a containment warning and overrode automatic shutdown. The Professor insists the complete audit is inside. The Student follows because they need the anchor and because he now wants an answer from his future self.
 
-### Escalation
+### Climax — The First Fracture
 
-The environment becomes increasingly unstable.
+Both characters reach the Core. The Student arms its intact transmitter; the Professor connects his local emergency receiver. Their confirmed actions stabilize the local fracture.
 
-The professor insists that restoring the temporal system is necessary.
+In the required two-level jam build, this is a short finale in a Core control alcove, with latched actions and no narrow synchronization window. The optional full Temporal Anchor puzzle can add the coil/receiver challenge without changing the ending. The ending must remain deliverable without the optional room or timer.
 
-He avoids revealing the full history of the experiment.
+### Cliffhanger — Who Authorized It
 
-### Climax
+When the recording is preserved, stabilization recovers the Future terminal's activation audit and makes the same authenticated record readable to both characters through the link. It identifies the Professor as the operator who authorized activation, acknowledged containment-failure risk, and disabled automatic abort. It does not place the 49-year-old Professor on the Student's calendar date.
 
-The players stabilize the first temporal fracture.
+With preserved evidence, the Student asks: **“You knew. Why did you do it?”** If the Professor extracted the recorder cell, the authorization remains erased and the Student instead confronts him about the extraction log. The Professor does not explain.
 
-### Cliffhanger
+The recovered monitoring map reveals other unresolved fractures and a second signal. Their local success remains intact; the map exposes a larger existing crisis rather than undoing their work.
 
-A recovered research record identifies the professor as the person who deliberately activated the original device.
-
-The record indicates that he understood the risks.
-
-However, the section explaining his motive is missing or encrypted.
-
-The young student confronts his future self.
-
-The professor does not explain.
-
-Additional fractures appear on the remaining monitoring system.
-
-**End of Demo.**
-
-The professor's reason for activating the device remains a mystery for the full game.
+**END OF CHAPTER 0.** The Professor's motive remains a mystery for the full game.
 
 ---
 
@@ -965,9 +965,9 @@ The Game Jam prototype is the opening chapter of a larger story.
 
 ---
 
-**Document Version:** 0.16\
-**Narrative:** Approved  
+**Document Version:** 0.17\
+**Narrative:** Established premise retained; detailed Level 02 continuation authored for review\
 **Visual Direction:** Original Skinned 3D Student with KayKit Animations and Painted Furniture\
 **Gameplay and Level Scope:** Updated for Two Developers  
 **Technical Risk Plan:** Tailscale Remote Play / Required Local Split-Screen / Grounded Character/Prop Meshes / Fixed Perspective Camera / Host-Authoritative Puzzle State\
-**Next Milestone:** Verify Cross-Network Play, Shared Puzzle Authority, and the Local Co-op Foundation
+**Next Milestone:** Playtest the connected two-level chapter, private choices, recovery and finale

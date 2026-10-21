@@ -30,8 +30,8 @@ scripts/game_flow/
 scenes/game_flow/transition_overlay.tscn
 resources/levels/room_01.tres                      production: the Signal Laboratory
 resources/levels/room_02.tres                      production: Maintenance Corridor placeholder
-scenes/world/room_02_placeholder.tscn              shared, configured for the local timeline
-scripts/world/room_02_placeholder.gd
+scenes/world/maintenance_corridor.tscn              shared, configured for the local timeline
+scripts/world/maintenance_corridor.gd
 resources/levels/test/test_room_a.tres, test_room_b.tres   sandbox rooms (not auto-registered)
 scenes/testing/transition_flow_sandbox.tscn        launcher
 scenes/testing/transition_room_a.tscn              Room A, shared by both timelines
@@ -392,17 +392,21 @@ local player; the offline path currently treats the single local player as suffi
 | `project.godot`: autoload `GameFlowManager` after `NetworkManager` and `PuzzleManager`. | The manager depends on both. |
 | `resources/levels/room_01.tres` | Registers the lab: shared scene, `SpawnPoint` as entry, gated on `puzzle_01_frequency`, next room `room_02`. |
 | `scripts/world/spawn_area.gd`: `attach_room("room_01", self)`, resync controls on `input_lock_changed`, `is_gameplay_paused()` includes `is_input_locked()`, and a `game_flow_suspend()` that closes overlays. | The lab is entered by the menu, and it manages its own controls. |
-| `scenes/gameplay/laboratory_gameplay.tscn`: a `Props/LevelExit` interactable in the corridor beyond the security door, at (6.2, 0, -10.1). | The door is already the room's exit; its corridor is unreachable until the link opens it. |
+| `scenes/gameplay/laboratory_gameplay.tscn`: a `Props/LevelExit` interactable just beyond the security door, at (6.2, 0, -8.7). | Press F to mark ready, or keep walking to the door's automatic exit zone. Both use the same manager. |
 
-`room_02` is now registered in production by `resources/levels/room_02.tres`. It uses one
-primitive 14 ? 10 metre placeholder scene, `scenes/world/room_02_placeholder.tscn`, configured by the
-local role for warm Past / Student or cool Future / Professor. Its `past_entry` and `future_entry`
-markers select the spawn. No new puzzle or session is created when it loads.
+`room_02` is registered by `resources/levels/room_02.tres` and loads the playable
+`scenes/world/maintenance_corridor.tscn`, configured by the local role for Past / Student or
+Future / Professor. Its `past_entry` and `future_entry` markers select the spawn. The gallery
+registers its puzzle without resetting the existing session, frequency state or connection.
 
 The existing corridor exit now reaches this room after the unchanged Lost Frequency prerequisite
-and cooperative readiness. The placeholder has no next room, and its clearly marked temporary return
-exit reaches `room_01` through `allowed_exits` and the same readiness system. GameFlowManager and the
-Room 01 resource/exit did not need changes. See [ROOM_02_PLACEHOLDER.md](ROOM_02_PLACEHOLDER.md).
+and cooperative readiness. Walking through the laboratory door uses the same manager as the
+existing F interaction; neither path changes scenes independently. The gallery has no next room;
+its entrance return exit reaches `room_01` through `allowed_exits` and the same readiness system.
+Gallery control synchronization includes the manager's input lock, so role switching, interaction
+and movement remain suspended during fades. Arrival dialogue starts after the fade completes.
+See [LEVEL_02.md](LEVEL_02.md) for puzzles and [ROOM_02_PLACEHOLDER.md](ROOM_02_PLACEHOLDER.md)
+for the superseded placeholder report.
 
 `tests/game_flow_system.gd` uses the production resource for its real-laboratory round trip.
 `tests/run_game_flow_tests.py --production-only` checks the actual forward transition on two ENet peers.
@@ -470,4 +474,4 @@ Frames captured by `run_game_flow_render.py` with a real renderer (software GL, 
   build.
 * A room is expected to be the only scene with gameplay in the tree. Two rooms alive at once (which the
   manager never does) would both react to the same puzzle events.
-* Room 02 is a playable production placeholder only. Its detailed Maintenance Corridor design, new puzzles, music and dialogue remain future work.
+* Room 02 is the playable Maintenance Gallery. Room 03 and the full Temporal Anchor countdown remain unimplemented.

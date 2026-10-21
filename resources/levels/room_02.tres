@@ -6,7 +6,7 @@
 script = ExtResource("1")
 room_id = "room_02"
 display_name = "Maintenance Corridor"
-shared_scene = "res://scenes/world/room_02_placeholder.tscn"
+shared_scene = "res://scenes/world/maintenance_corridor.tscn"
 past_spawn_id = &"past_entry"
 future_spawn_id = &"future_entry"
 next_room_id = ""

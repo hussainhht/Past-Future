@@ -6,6 +6,9 @@ const InputManager := preload("res://scripts/input/input_manager.gd")
 
 @export_enum("Past", "Future") var timeline: String = "Past"
 @export var pause_when_unfocused: bool = true
+@export var level_travel_enabled: bool = true
+
+const CorridorRules := preload("res://scripts/puzzles/implementations/maintenance_corridor_puzzle.gd")
 
 var _networked: bool = false
 var _paused: bool = false
@@ -49,6 +52,9 @@ func _ready() -> void:
 	player.view_camera = camera
 	_apply_timeline()
 	gameplay.initialize(self)
+	if not PuzzleManager.is_registered(CorridorRules.ID):
+		PuzzleManager.register_puzzle(CorridorRules.ID, CorridorRules.new())
+	lab.player_exited.connect(_on_laboratory_exit)
 	respawn()
 	# Level flow: this scene is Room 01, and its controls follow the transition lock.
 	GameFlowManager.attach_room("room_01", self)
@@ -104,6 +110,14 @@ func _input(event: InputEvent) -> void:
 		elif event.physical_keycode == KEY_T:
 			_switch_preview_timeline()
 			get_viewport().set_input_as_handled()
+
+
+func _on_laboratory_exit(body: Node3D) -> void:
+	if not level_travel_enabled or body != player or _leaving:
+		return
+	PuzzleManager.submit_action(CorridorRules.ID, "arrive")
+	# Walking through the door and using the exit share the same host-authoritative flow.
+	GameFlowManager.request_transition("room_02")
 
 
 func _open_character_studio() -> void:

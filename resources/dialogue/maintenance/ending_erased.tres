@@ -1,0 +1,71 @@
+[gd_resource type="Resource" script_class="DialogueSequence" format=3]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_sequence.gd" id="1"]
+
+[ext_resource type="Script" path="res://scripts/dialogue/dialogue_line.gd" id="2"]
+
+[sub_resource type="Resource" id="Line0"]
+
+script = ExtResource("2")
+
+speaker_id = "student"
+
+speaker_name = "The Student"
+
+text = "The operator field is gone. But the removal command came from your terminal."
+
+timeline = 0
+
+[sub_resource type="Resource" id="Line1"]
+
+script = ExtResource("2")
+
+speaker_id = "professor"
+
+speaker_name = "The Professor"
+
+text = "The fracture here is stable."
+
+timeline = 1
+
+[sub_resource type="Resource" id="Line2"]
+
+script = ExtResource("2")
+
+speaker_id = "student"
+
+speaker_name = "The Student"
+
+text = "That is not what I asked."
+
+timeline = 0
+
+[sub_resource type="Resource" id="Line3"]
+
+script = ExtResource("2")
+
+speaker_id = ""
+
+speaker_name = ""
+
+text = "The Professor says nothing. The damaged audit remains incomplete. Elsewhere on the map, another signal answers."
+
+timeline = 0
+
+[resource]
+
+script = ExtResource("1")
+
+sequence_id = "maintenance.ending_erased"
+
+lines = Array[ExtResource("2")]([SubResource("Line0"), SubResource("Line1"), SubResource("Line2"), SubResource("Line3")])
+
+play_once = true
+
+playback_mode = 1
+
+auto_advance = true
+
+auto_advance_delay = 1.6
+
+typing_speed = 42.0

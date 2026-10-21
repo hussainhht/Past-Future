@@ -12,7 +12,7 @@ const TEST_ROOMS := "res://resources/levels/test"
 const ROOM_A_SCENE := "res://scenes/testing/transition_room_a.tscn"
 const ROOM_B_SCENE := "res://scenes/testing/transition_room_b.tscn"
 const ROOM_B_FUTURE_SCENE := "res://scenes/testing/transition_room_b_future.tscn"
-const ROOM_02_SCENE := "res://scenes/world/room_02_placeholder.tscn"
+const ROOM_02_SCENE := "res://scenes/world/maintenance_corridor.tscn"
 const LAB_SCENE := "res://scenes/world/spawn_area.tscn"
 ## Written by the test and removed afterwards. A dot-prefixed folder is invisible to the editor,
 ## so the deliberately unparsable scene never shows up as an import error.
@@ -144,6 +144,7 @@ func _run() -> void:
 	if current_scene != null:
 		current_scene.free()
 	await process_frame
+	await create_timer(.2).timeout
 	print("GAME FLOW SYSTEM: %s (%d checks, %d failures)" % ["PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)
 
@@ -273,7 +274,7 @@ func test_solo_flow() -> void:
 	check(room.radio.owns_radio and room.radio.can_receive(), "The re-created TemporalRadio restores the connected link from PuzzleManager")
 	check(network.state == network.State.IDLE and not network.in_game, "The network layer was never involved")
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("TemporalRadio") == 1, "Exactly one character and one radio exist")
-	check(root.get_child_count() == 4, "Only the autoloads and the room are under root, got %d" % root.get_child_count())
+	check(root.get_child_count() == 5, "Only the autoloads and the room are under root, got %d" % root.get_child_count())
 	var before: Vector3 = room.player.global_position
 	Input.action_press("move_right")
 	await tick(20)
@@ -342,7 +343,7 @@ func test_repeated_transitions() -> void:
 		check(flow.get_current_room_id() == target, "Trip %d arrives in %s" % [trip, target])
 		check(count_nodes("CharacterBody3D") == 1 and count_nodes("TemporalRadio") == 1 and count_nodes("InteractionController") == 1, "Trip %d leaves one character, one radio, one controller" % trip)
 		check(current_scene.find_children("StatusHUD", "CanvasLayer", true, false).size() == 1 and current_scene.get_node("Actors").get_child_count() == 1, "Trip %d leaves one HUD and one actor" % trip)
-		check(root.get_child_count() == 4, "Trip %d leaves only the autoloads and the room under root" % trip)
+		check(root.get_child_count() == 5, "Trip %d leaves only the autoloads and the room under root" % trip)
 		var nodes := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
 		if trip == 0:
 			baseline = nodes
@@ -456,12 +457,16 @@ func test_signal_laboratory() -> void:
 	await tick(2)
 	check(not lab.player.controls_enabled, "The lab's own control sync does not release the character during the transition")
 	check(await move_to_idle("Leaving the laboratory did not finish"), "The transition out of the laboratory finishes")
-	check(flow.get_current_room_id() == "room_02" and current_scene.scene_file_path == ROOM_02_SCENE, "The players are in the placeholder Room 02")
-	check(get_nodes_in_group("dialogue_director").is_empty() and not is_instance_valid(lab), "The laboratory, its audio and its dialogue are gone")
+	check(flow.get_current_room_id() == "room_02" and current_scene.scene_file_path == ROOM_02_SCENE, "The players are in the playable Maintenance Gallery")
+	check(get_nodes_in_group("dialogue_director").size() == 1 and not is_instance_valid(lab), "The gallery replaces the laboratory and owns one dialogue director")
+	current_scene.pause_when_unfocused = false
+	await tick(4)
+	await finish_dialogue(current_scene)
+	await tick(8)
 	check(current_scene.radio.can_receive() and current_scene.radio.owns_radio, "The radio link is connected in Room 02")
 	check(count_nodes("CharacterBody3D") == 1 and count_nodes("Camera3D") == 1, "Room 02 has one character and one existing fixed camera")
 	check(current_scene.player.is_on_floor() and absf(current_scene.player.position.y) < 0.1, "Room 02 spawn is grounded on its floor")
-	check(current_scene.get_node("HUD/Root/RadioHUD").frequency_label.text == "67 MHz", "Room 02 HUD restores the 67 MHz link")
+	check("67 MHz" in current_scene.radio_label.text and current_scene.radio.get_calibrated_frequency() == 67, "Room 02 HUD restores the 67 MHz link")
 	var position_before: Vector3 = current_scene.player.position
 	Input.action_press("move_right")
 	await tick(15)
@@ -485,7 +490,7 @@ func test_signal_laboratory() -> void:
 	check(lab.get_node("Actors").find_children("*", "CharacterBody3D", false, false).size() == 1, "Still exactly one character")
 	check(get_nodes_in_group("dialogue_director").size() == 1 and game.get_node_or_null("GameplayHUD") != null, "One director and one gameplay HUD")
 	check(count_nodes("InteractionController") == 1 and lab.find_children("RadioHUD", "", true, false).size() == 1, "One interaction controller and one radio HUD")
-	check(root.get_child_count() == 4, "Only the autoloads and the lab are under root")
+	check(root.get_child_count() == 5, "Only the autoloads and the lab are under root")
 	# The new lab's exit works too.
 	var exit_again: Area3D = game.get_node("Props/LevelExit")
 	lab.player.global_position = exit_again.global_position
@@ -495,6 +500,8 @@ func test_signal_laboratory() -> void:
 	check(await move_to_idle("Leaving through the corridor exit did not finish"), "The corridor exit transition finishes")
 	check(flow.get_current_room_id() == "room_02", "The corridor exit led to Room 02")
 	check(flow.unregister_room("room_02") == false, "A room in use cannot be unregistered")
+	await tick(4)
+	await finish_dialogue(current_scene)
 	check(flow.begin_transition("room_01") == "" and await move_to_idle("Final return did not finish"), "Back to the lab once more")
 	await create_timer(1.0).timeout  # a conversation replayed on entry would start shortly after it
 	check(not current_scene.gameplay.director.is_dialogue_active(), "A third visit to the lab still plays no conversation (%s)" % current_scene.gameplay.director.get_current_sequence_id())
@@ -617,4 +624,4 @@ func check_still_in_room_a(session: int, state: Dictionary, revision: int, when:
 	check(not flow.is_transitioning() and not flow.is_input_locked() and not flow.overlay.is_covering(), "Nothing is locked or black " + when)
 	check(current_scene.player.controls_enabled, "The player can move again " + when)
 	check(puzzles.get_session_id() == session and puzzles.get_state(FREQ) == state and puzzles.get_revision(FREQ) == revision, "Session and puzzle progress are untouched " + when)
-	check(count_nodes("CharacterBody3D") == 1 and root.get_child_count() == 4, "No duplicate characters or scenes " + when)
+	check(count_nodes("CharacterBody3D") == 1 and root.get_child_count() == 5, "No duplicate characters or scenes " + when)
