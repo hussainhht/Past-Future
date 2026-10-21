@@ -128,6 +128,13 @@ static func setup_standard_actions() -> void:
 		_create_joy_button_event(JOY_BUTTON_RIGHT_SHOULDER)
 	], DEADZONE_DEFAULT)
 
+	# View / Create and the DualSense touchpad: no other action uses them.
+	_ensure_action("mission_log", [
+		_create_key_event(KEY_M),
+		_create_joy_button_event(JOY_BUTTON_BACK),
+		_create_joy_button_event(JOY_BUTTON_TOUCHPAD)
+	], DEADZONE_DEFAULT)
+
 	_ensure_action("cancel", [
 		_create_key_event(KEY_ESCAPE),
 		_create_joy_button_event(JOY_BUTTON_B) # Circle (○) on PS5
@@ -298,6 +305,10 @@ static func get_action_label(action: StringName) -> String:
 			return "Left Stick" if is_controller else "W A S D"
 		&"journal":
 			return "J"  # Keyboard only: the journal has no gamepad binding in project.godot.
+		&"mission_log":
+			if is_controller:
+				return "Create" if is_dualsense else "View"
+			return "M"
 		&"pause":
 			if is_controller:
 				return "Options" if is_dualsense else "Menu"

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l1_exit"
+role = "future"
+chapter = "room_01"
+chapter_order = 1
+sort_order = 40
+title = "Leave Through the Security Door"
+summary = "Go through the north security door with your younger self."
+description = "The temporal link holds. Go through the north security door together with your younger self."
+hint = "Both of you confirm before the door opens the way forward."
+icon = &"door"
+secret = false
+conditions = Array[Dictionary]([{"kind": "room", "room": "room_02"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

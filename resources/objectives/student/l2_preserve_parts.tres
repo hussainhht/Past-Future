@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "student_l2_preserve_parts"
+role = "past"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 30
+title = "Preserve the Replacement Parts"
+summary = "Store the right equipment in the underground vaults."
+description = "Carry equipment cases from the storage room into the underground vaults and store them for the future. Your partner needs the right components."
+hint = "Each vault plate shows the weight of what sits on it. Compare notes with your partner before you decide what to store."
+icon = &"vault"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.reader", "value": "*"}, {"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.regulator", "value": "*"}, {"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.memory", "value": "*"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.reader", "value": "*"}, {"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.regulator", "value": "*"}, {"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "storage.installed.memory", "value": "*"}])
+attempt_puzzle = ""

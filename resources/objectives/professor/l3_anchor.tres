@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l3_anchor"
+role = "future"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 50
+title = "Calibrate the Signal Anchor"
+summary = "Calibrate the Signal Anchor."
+description = "Beyond the rebuilt conduit, calibrate the Signal Anchor so the Student can stabilize the origin core."
+hint = "The Student cannot continue until you do."
+icon = &"dial"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_03_final_fracture", "path": "anchor"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = "puzzle_03_final_fracture"

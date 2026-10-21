@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l3_routing"
+role = "future"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 40
+title = "Read the Routing Diagram"
+summary = "Read the routing diagram and pass it on."
+description = "With the receiver restored, read the damaged diagram and pass what it shows to the Student."
+hint = "The settings are for equipment on the other timeline. Be precise."
+icon = &"document"
+secret = false
+conditions = Array[Dictionary]([{"kind": "journal", "entry": "l3_routing"}])
+expires = Array[Dictionary]([{"kind": "at_least", "puzzle": "puzzle_03_final_fracture", "path": "stage", "order": ["DISCOVERY", "STAGE_A", "STAGE_B", "STAGE_C", "ENDING"], "value": "STAGE_B"}])
+progress = Array[Dictionary]([])
+attempt_puzzle = "puzzle_03_final_fracture"

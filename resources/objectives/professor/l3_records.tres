@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l3_records"
+role = "future"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 10
+title = "Examine the Recovered Recording"
+summary = "Inspect the recovered recording before arming."
+description = "The reactor is idle and there is no time limit yet. Inspect the recovered recording before you arm it."
+hint = "Each document you read is saved to your DataPad."
+icon = &"document"
+secret = false
+conditions = Array[Dictionary]([{"kind": "journal", "entry": "l3_continuity"}])
+expires = Array[Dictionary]([{"kind": "at_least", "puzzle": "puzzle_03_final_fracture", "path": "stage", "order": ["DISCOVERY", "STAGE_A", "STAGE_B", "STAGE_C", "ENDING"], "value": "STAGE_A"}])
+progress = Array[Dictionary]([{"kind": "journal", "entry": "l3_continuity"}])
+attempt_puzzle = "puzzle_03_final_fracture"
