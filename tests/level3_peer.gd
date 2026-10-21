@@ -109,8 +109,8 @@ func _run() -> void:
 	await wait_for(func() -> bool: return room.remote_ready, "role handshake")
 	check(room.networked and room.role == ("past" if host else "future"), "correct locked timeline")
 	check(room.player.get_node("Visual/Student").scene_file_path.contains("student_3d/student.glb" if host else "professor_3d/professor.glb"), "correct role avatar")
-	room.switch_debug_role()
-	check(room.role == ("past" if host else "future"), "debug switch cannot bypass live role")
+	room.switch_role()
+	check(room.role == ("past" if host else "future"), "solo switch cannot bypass live role")
 	if host:
 		check(not room.accept_future_pose(Vector3(7, 0, -5)), "host refuses remote teleport")
 	else:
@@ -137,6 +137,13 @@ func _run() -> void:
 			await use_device("receiver", "RECONNECT BATTERY")
 		await wait_for(func() -> bool: return room.state.stage == "STAGE_B", "both see Stage B")
 		check(room.state.remaining > 100 and room.state.remaining <= 150, "host timer resyncs on both peers")
+		var before_pause: float = room._clock()
+		room.set_paused(true)
+		room.switch_role()
+		await create_timer(.6).timeout
+		check(room._clock() >= before_pause + .5 and room.state.stage == "STAGE_B", "LAN pause leaves the authoritative clock running")
+		check(room.temporal_ghost == null and room.role == ("past" if host else "future"), "LAN keeps role ownership and solo ghost restrictions")
+		room.set_paused(false)
 		if not host:
 			await walk(Vector3(4.8, 0, 4.1))
 			await walk(Vector3(4.8, 0, -1.9))
@@ -201,5 +208,9 @@ func _run() -> void:
 	else:
 		await wait_for(func() -> bool: return room.disconnected, "host disconnect suspends client")
 		check(room.ui.visible_modal and not room.player.controls_enabled, "client gets usable disconnect recovery")
+	room.queue_free()
+	await process_frame
+	await process_frame
+	await create_timer(.2).timeout
 	print("LEVEL3 %s: %s (%d checks, %d failures)" % ["host" if host else "client", "PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)

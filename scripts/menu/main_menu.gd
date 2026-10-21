@@ -7,6 +7,9 @@ const TITLE_PAST_SIZE := 110
 const TITLE_ME_SCALE := 1.9
 const InputManager := preload("res://scripts/input/input_manager.gd")
 
+## Explicit opt-in keeps direct room launchers available to test scenes.
+var development_tools_enabled := "--development-tools" in OS.get_cmdline_user_args() or bool(Engine.get_meta("development_tools_enabled", false))
+
 var audio: AudioDirector
 
 var settings_path: String = "user://menu_settings.cfg"
@@ -47,8 +50,11 @@ func _ready() -> void:
 	%PreviewButton.pressed.connect(_preview_spawn_area)
 	%LevelTwoTestButton.pressed.connect(_preview_maintenance_corridor)
 	%LevelThreeTestButton.pressed.connect(_preview_temporal_core)
-	%LevelThreeMultiplayerButton.pressed.connect(_open_temporal_core_multiplayer)
-	%LevelThreeMultiplayerButton.visible = OS.is_debug_build()
+	%LevelTwoTestButton.visible = development_tools_enabled
+	%LevelThreeTestButton.show()
+	%LevelThreeTestButton.text = "LEVEL 3 / SOLO TEST"
+	%PreviewButton.text = "SOLO EXPLORATION"
+	%LevelThreeTestButton.tooltip_text = "Start an isolated Final Fracture session. Press T to switch roles."
 	NetworkManager.state_changed.connect(_refresh_lan)
 	NetworkManager.game_started.connect(_enter_spawn_area)
 	fullscreen_toggle.toggled.connect(_set_fullscreen)
@@ -247,13 +253,6 @@ func _preview_temporal_core() -> void:
 	PuzzleManager.offline_role = "past"
 	PuzzleManager.begin_session()
 	GameFlowManager.start_room.call_deferred("room_03")
-
-
-func _open_temporal_core_multiplayer() -> void:
-	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
-		return
-	_entering_game = true
-	get_tree().change_scene_to_file.call_deferred("res://scenes/testing/temporal_core_sandbox.tscn")
 
 
 func _enter_spawn_area() -> void:

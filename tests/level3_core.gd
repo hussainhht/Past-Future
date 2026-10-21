@@ -108,6 +108,7 @@ func _run() -> void:
 	pm.log_rejections = false
 	flow = root.get_node("GameFlowManager")
 	rendered = "--render-review" in OS.get_cmdline_user_args()
+	Engine.set_meta("development_tools_enabled", true)
 	check(change_scene_to_file("res://scenes/menu/main_menu.tscn") == OK, "main menu loads")
 	await scene_changed
 	await tick()
@@ -134,7 +135,7 @@ func _run() -> void:
 	pause.action = &"ui_cancel"
 	pause.pressed = true
 	root.push_input(pause)
-	check(room.ui.visible_modal and not room.player.controls_enabled, "Escape opens the room menu and stops player input")
+	check(room.pause_menu.panel.visible and room._paused and not room.player.controls_enabled, "Escape opens the shared pause menu and stops player input")
 	room._close()
 	await shot("past_discovery")
 	# Use the real interaction detector/controller and verify deliberate confirmation.
@@ -245,5 +246,8 @@ func _run() -> void:
 	check(room.state.coils == [0, 0, 0] and not room.state.receiver and not room.state.anchor and not room.state.origin and not room.state.sync_past and not room.state.sync_future, "relaunch resets real puzzles and temporary interactions")
 	check(not room.state.locked_past and not room.state.locked_future and room.state.ending.is_empty() and not room.disconnected and not room.ui.visible_modal, "relaunch clears decisions, ending and modal state")
 	check(not root.get_node("JournalManager").is_unlocked("l3_authorization"), "new test session clears prior evidence")
+	room.queue_free()
+	await tick()
+	await create_timer(.2).timeout
 	print("LEVEL3 CORE: %s (%d checks, %d failures)" % ["PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)

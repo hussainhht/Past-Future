@@ -9,6 +9,7 @@ var checks := 0
 var failures := 0
 var now := 100.0
 var rendered := false
+var audio_events: Array[StringName] = []
 
 
 func _initialize() -> void:
@@ -52,6 +53,7 @@ func open(id: String) -> void:
 	check(room.controller.try_interact(), id + " opens through InteractionController")
 	check(room.devices.inspector.active and not room.player.controls_enabled, id + " opens an inspection and locks movement")
 	check(room.devices.active_id == id and room.ui.device_panel.visible, id + " shows its actual controls")
+	check(room.ui.timer.is_visible_in_tree(), id + " keeps the reactor countdown visible during inspection")
 
 
 func press(caption: String) -> void:
@@ -173,6 +175,7 @@ func _run() -> void:
 	await tick()
 	room = current_scene
 	room.player.set_physics_process(false)
+	room.sound.director.sound_played.connect(func(id: StringName, _spatial: bool, _at: Vector3) -> void: audio_events.append(id))
 	room.rules.clock = func() -> float: return now
 	await shot("discovery")
 	for role in ["past", "future"]:
@@ -226,5 +229,10 @@ func _run() -> void:
 	await tick()
 	check(room.state.stage == "DISCOVERY" and room.state.coils == [0, 0, 0] and room.player.controls_enabled, "timeout retry restores room and controls")
 	room.rules.clock = Callable()
+	for event in [&"equipment_activate", &"switch_electrical", &"computer_calibrate", &"rift_stabilize", &"computer_success", &"equipment_deactivate", &"puzzle_success", &"puzzle_failure", &"rift_activate", &"radio_incoming"]:
+		check(event in audio_events, "Confirmed gameplay reaches shared audio: " + String(event))
+	room.queue_free()
+	await tick()
+	await create_timer(.2).timeout
 	print("LEVEL3 INTERACTIONS: %s (%d checks, %d failures)" % ["PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)

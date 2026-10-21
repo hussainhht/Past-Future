@@ -151,7 +151,11 @@ func _tutorial_open() -> bool:
 
 
 func can_switch_role() -> bool:
-	return configured and not _shutting_down and not has_modal() and not director.is_dialogue_active() and not room.player.is_action_active() and not room.is_gameplay_paused()
+	return can_open_character_studio() and not room.is_gameplay_paused()
+
+
+func can_open_character_studio() -> bool:
+	return configured and not _shutting_down and not has_modal() and not director.is_dialogue_active() and not room.player.is_action_active() and not room._disconnected
 
 
 func sync_controls() -> void:
@@ -213,7 +217,7 @@ func _sync_controls() -> void:
 	binding.set_suspended(overlay)
 	radio_audio.set_suspended(overlay)
 	room.get_node("%TimelineButton").disabled = not can_switch_role()
-	room.get_node("%CharacterButton").disabled = not can_switch_role()
+	room.get_node("%CharacterButton").disabled = not can_open_character_studio()
 	room.get_node("%InterferenceButton").disabled = not radio.has_established_link()
 	$Props/RadioCheck.set_interaction_enabled(radio.can_receive() and not director.is_dialogue_active())
 
@@ -309,7 +313,7 @@ func _process(delta: float) -> void:
 			_refresh_state()
 	# Re-enable role/studio buttons after one-shot interaction animations end.
 	room.get_node("%TimelineButton").disabled = not can_switch_role()
-	room.get_node("%CharacterButton").disabled = not can_switch_role()
+	room.get_node("%CharacterButton").disabled = not can_open_character_studio()
 
 
 func _exit_tree() -> void:

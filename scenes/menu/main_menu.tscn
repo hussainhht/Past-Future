@@ -169,7 +169,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(204, 44)
 layout_mode = 2
 size_flags_horizontal = 3
-tooltip_text = "Start a fresh offline Final Fracture test. Use DEV: OTHER TIMELINE to play both roles."
+tooltip_text = "Start a fresh offline Final Fracture session. Press T to switch roles."
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TertiaryButton"
 text = "LEVEL 3 — TEST"
@@ -278,16 +278,6 @@ layout_mode = 2
 tooltip_text = "Skip the laboratory and start a fresh Maintenance Corridor test. Press T to switch timelines."
 mouse_default_cursor_shape = 2
 text = "LEVEL 2     /     TEMPORARY SOLO TEST"
-
-[node name="LevelThreeMultiplayerButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=122958088]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 54)
-layout_mode = 2
-tooltip_text = "Open the development launcher on both clients to host/join directly in The Final Fracture."
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-text = "LEVEL 3     /     MULTIPLAYER TEST"
-script = ExtResource("5_button")
 
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
 unique_name_in_owner = true

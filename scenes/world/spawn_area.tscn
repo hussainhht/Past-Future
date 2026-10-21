@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/world/spawn_area.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="shared_pause"]
 [ext_resource type="Script" path="res://scripts/world/lab_floor.gd" id="2"]
 [ext_resource type="PackedScene" path="res://scenes/characters/student_3d_player.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/props/lab_prop.tscn" id="4"]
@@ -259,7 +260,7 @@ size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 16
-text = "SWITCH TIMELINE"
+text = "SWITCH [T]"
 
 [node name="PauseButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
 unique_name_in_owner = true
@@ -271,124 +272,4 @@ mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 16
 text = "PAUSE"
 
-[node name="PauseLayer" type="CanvasLayer" parent="."]
-layer = 60
-
-[node name="Interface" type="Control" parent="PauseLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-theme = SubResource("WorldTheme")
-
-[node name="PausePanel" type="ColorRect" parent="PauseLayer/Interface"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("menu_theme")
-color = Color(0.015, 0.035, 0.05, 0.86)
-
-[node name="Center" type="CenterContainer" parent="PauseLayer/Interface/PausePanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="Panel" type="PanelContainer" parent="PauseLayer/Interface/PausePanel/Center"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("PanelStyle")
-
-[node name="Content" type="VBoxContainer" parent="PauseLayer/Interface/PausePanel/Center/Panel"]
-layout_mode = 2
-theme_override_constants/separation = 22
-
-[node name="PauseTitle" type="Label" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_fonts/font = ExtResource("hud_heading")
-theme_override_font_sizes/font_size = 34
-text = "A moment between years"
-
-[node name="PauseDescription" type="Label" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "Take your time. The lab will be here."
-
-[node name="ResumeButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 60)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"PrimaryButton"
-script = ExtResource("menu_button")
-text = "RESUME"
-
-[node name="SettingsButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "SETTINGS"
-
-[node name="HowToPlayButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "HOW TO PLAY"
-
-[node name="CharacterButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "CHARACTER STUDIO"
-
-[node name="ResetSoloButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "RESET SOLO SESSION"
-
-[node name="InterferenceButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "TEST RADIO INTERFERENCE"
-
-[node name="MenuButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "RETURN TO MAIN MENU"
-
-[node name="QuitGameButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-custom_minimum_size = Vector2(0, 54)
-mouse_default_cursor_shape = 2
-theme_type_variation = &"SecondaryButton"
-script = ExtResource("menu_button")
-text = "QUIT GAME"
+[node name="PauseLayer" parent="." instance=ExtResource("shared_pause")]

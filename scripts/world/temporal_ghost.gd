@@ -11,6 +11,7 @@ var enabled := true
 var echo_position := Vector3.ZERO
 var character: Node3D
 var _room: Node3D
+var _timeline_roots: Dictionary = {}
 var _context: Callable
 var _sources: Array[MeshInstance3D] = []
 var _copies: Dictionary = {}
@@ -45,6 +46,7 @@ func configure(room: Node3D, roots: Array[Node3D], context: Callable) -> void:
 	_room = room
 	_camera = room.get("camera") as Camera3D
 	_context = context
+	_timeline_roots = context.call().get("timeline_roots", {})
 	name = "TemporalGhost"
 	process_priority = 110
 	_shared_material = _material(0.19, 10)
@@ -133,6 +135,7 @@ func _input(event: InputEvent) -> void:
 func _process(delta: float) -> void:
 	if _context.is_null(): return
 	var context: Dictionary = _context.call()
+	_camera = _room.get("camera") as Camera3D
 	_role_yaws[context.role] = context.player.get_node("Visual").global_rotation.y
 	var opposite := "past" if context.role == "future" else "future"
 	if _echo_role != opposite: _select_timeline(opposite)
@@ -368,6 +371,8 @@ func _clip_mesh(copy: MeshInstance3D) -> ArrayMesh:
 
 
 func _echo_transform(node: Node3D) -> Transform3D:
+	if node in _timeline_roots.values():
+		return _timeline_roots["past" if _echo_role == "future" else "future"].global_transform
 	if node == _room: return _room.global_transform
 	if _transforms.has(node): return _transforms[node]
 	var local := node.transform
@@ -383,6 +388,7 @@ func _echo_transform(node: Node3D) -> Transform3D:
 
 
 func _echo_visible(node: Node3D) -> bool:
+	if node in _timeline_roots.values(): return node == _timeline_roots[_echo_role]
 	if node == _room: return true
 	if _visibility.has(node): return _visibility[node]
 	var shown := node.visible

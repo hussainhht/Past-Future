@@ -198,8 +198,7 @@ func run() -> void:
 		room.queue_free()
 		await process_frame
 		change_scene_to_file(Rules.DESTINATION)
-		await process_frame
-		await process_frame
+		await scene_changed
 		check(is_corridor() and state() == final_state, "Client room reload must restore the storage progress and evidence branch")
 	else:
 		await create_timer(1.4).timeout

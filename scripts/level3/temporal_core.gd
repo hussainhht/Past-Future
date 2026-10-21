@@ -11,6 +11,7 @@ const Inputs := preload("res://scripts/input/input_manager.gd")
 const Devices := preload("res://scripts/level3/core_devices.gd")
 const ReactorBridge := preload("res://scripts/level3/core_reactor_bridge.gd")
 
+@export var pause_when_unfocused := true
 @export var challenge_seconds: float = Rules.CHALLENGE_SECONDS
 ## Assign only a completed, verified module. Null keeps the stock assembly.
 @export var reactor_visual_scene: PackedScene
@@ -51,6 +52,14 @@ var _configured: bool = false
 var _last_attempt: int = -1
 var _hello_age: float = 0.0
 var settings_overlay: CanvasLayer
+var pause_menu: CanvasLayer
+var temporal_ghost: Node3D
+var director: DialogueDirector
+var radio: TemporalRadio
+var radio_audio: Node
+var _paused := false
+var _simulation_time := 0.0
+
 
 
 func _ready() -> void:
@@ -93,20 +102,31 @@ func _ready() -> void:
 	add_child(ui)
 	prompt = load("res://scenes/ui/interaction_prompt.tscn").instantiate()
 	add_child(prompt)
-	# Keep the existing contextual prompt clear of the taller Room C objective strip.
-	prompt.get_node("Root/PromptPanel").offset_top = -255
-	prompt.get_node("Root/PromptPanel").offset_bottom = -205
 	sound = Sound.new()
 	sound.name = "CoreSound"
 	add_child(sound)
-	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
-	add_child(settings_overlay)
-	settings_overlay.configure(sound.get_node("AudioSystem"))
-	settings_overlay.closed.connect(func() -> void:
-		ui.modal.show()
-		ui.veil.show()
-		ui.modal_box.find_children("", "Button", true, false)[0].grab_focus()
-	)
+	pause_menu = load("res://scenes/ui/pause_menu.tscn").instantiate()
+	add_child(pause_menu)
+	pause_menu.configure(self, sound.director, func() -> String: return role, set_paused, reset_solo_session, return_to_menu)
+	settings_overlay = pause_menu.settings
+	ui.pause_button.pressed.connect(set_paused.bind(true))
+	ui.switch_button.pressed.connect(switch_role)
+	ui.switch_button.visible = not networked
+	director = DialogueDirector.new()
+	director.name = "DialogueDirector"
+	director.dialogue_box = load("res://scenes/dialogue/dialogue_box.tscn").instantiate()
+	director.add_child(director.dialogue_box)
+	add_child(director)
+	director.set_local_timeline(role)
+	director.gameplay_input_block_changed.connect(func(_blocked: bool) -> void: _sync_controls())
+	director.dialogue_started.connect(func(_id: String) -> void: sound.play("signal"))
+	radio = preload("res://scripts/gameplay/radio/temporal_radio.gd").new()
+	add_child(radio)
+	radio.set_player_role(role)
+	radio_audio = preload("res://scripts/gameplay/radio/radio_audio.gd").new()
+	radio_audio.audio_director = sound.director
+	radio_audio.radio = radio
+	add_child(radio_audio)
 	_spawn_player()
 	devices = Devices.new()
 	devices.name = "CoreDevices"
@@ -122,6 +142,9 @@ func _ready() -> void:
 	rules.challenge_seconds = challenge_seconds
 	# WeakRef prevents persistent PuzzleManager rules from retaining a freed room.
 	var weak: WeakRef = weakref(self)
+	rules.clock = func() -> float:
+		var room: Node = weak.get_ref()
+		return room._clock() if room != null else 0.0
 	rules.proximity = func(actor_role: String, station: String) -> bool:
 		var room: Node = weak.get_ref()
 		return room != null and room._near_station(actor_role, station)
@@ -133,17 +156,21 @@ func _ready() -> void:
 	PuzzleManager.action_rejected.connect(_on_rejected)
 	NetworkManager.state_changed.connect(_on_connection)
 	GameFlowManager.input_lock_changed.connect(_on_lock_changed)
-	JournalManager.journal_opened.connect(_sync_controls)
-	JournalManager.journal_closed.connect(_sync_controls)
+	JournalManager.journal_opened.connect(func() -> void: sound.director.play_ui(&"document_open"); _sync_controls())
+	JournalManager.journal_closed.connect(func() -> void: sound.director.play_ui(&"document_close"); _sync_controls())
 	if PuzzleManager.is_authority():
 		PuzzleManager.reset_puzzle(Rules.ID)
 	else:
 		PuzzleManager.request_sync()
 	state = PuzzleManager.get_state(Rules.ID)
 	if not state.is_empty(): _on_state(Rules.ID, state, PuzzleManager.get_revision(Rules.ID))
-	ui.debug_button.visible = OS.is_debug_build() and not networked
-	ui.debug_button.pressed.connect(switch_debug_role)
 	_configured = true
+	if not networked:
+		temporal_ghost = load("res://scripts/world/temporal_ghost.gd").new()
+		add_child(temporal_ghost)
+		var roots: Array[Node3D] = [worlds.past, worlds.future]
+		temporal_ghost.configure(self, roots, _temporal_ghost_context)
+	sound.director.bind_ui(ui.root)
 	_sync_controls()
 
 
@@ -179,15 +206,19 @@ func _spawn_player() -> void:
 	var footsteps: Node = load("res://scenes/audio/footstep_emitter_3d.tscn").instantiate()
 	player.add_child(footsteps)
 	footsteps.set_timeline(StringName(role))
+	var listener := AudioListener3D.new()
+	listener.name = "LocalAudioListener"
+	listener.position.y = 1.4
+	player.add_child(listener)
+	listener.make_current()
 	sound.set_role(role)
 	for timeline in worlds:
 		worlds[timeline].visible = timeline == role
 
 
-func switch_debug_role() -> void:
-	if networked or NetworkManager.state != NetworkManager.State.IDLE or not OS.is_debug_build(): return
+func switch_role() -> void:
+	if networked or NetworkManager.state != NetworkManager.State.IDLE or is_gameplay_paused() or player.is_action_active(): return
 	if ui.visible_modal or devices.inspector.active or JournalManager.is_open() or state.get("stage") == "ENDING": return
-	var old_role := role
 	_poses[role] = local_position()
 	role = "future" if role == "past" else "past"
 	PuzzleManager.offline_role = role
@@ -201,7 +232,10 @@ func switch_debug_role() -> void:
 	key_light.light_color = Color("b5d9ec") if role == "future" else Color("ffe2b8")
 	environment.background_color = Color("15212c") if role == "future" else Color("353832")
 	JournalManager.state_changed.emit()
-	ui.status.text = "DEV / " + old_role.to_upper() + " -> " + role.to_upper() + ". The other role keeps its position."
+	director.set_local_timeline(role)
+	radio.set_player_role(role)
+	if temporal_ghost != null: temporal_ghost.refresh()
+	ui.status.text = "Professor / Future" if role == "future" else "Student / Past"
 	_sync_controls()
 
 
@@ -237,7 +271,7 @@ func operate(id: String) -> void:
 
 func confirm_arming() -> void:
 	_modal_kind = "start"
-	_show("ARM TEMPORAL CORE?", "This confirmed operation starts the shared 150-second reactor challenge.\n\nBoth timelines must restore power, align the core, engage phase switches within five seconds, then lock private identity commands.\n\nMenus and journals do not pause an active challenge.", [
+	_show("ARM TEMPORAL CORE?", "This confirmed operation starts the shared 150-second reactor challenge.\n\nBoth timelines must restore power, align the core, engage phase switches within five seconds, then lock private identity commands.\n\nSolo pause suspends the clock. In LAN play the shared clock continues through menus. Journals and devices keep the challenge running.", [
 		{"label": "KEEP INVESTIGATING", "callback": _close},
 		{"label": "CONFIRM / ARM REACTOR", "callback": func() -> void: _close(); request_action("start")}])
 
@@ -280,11 +314,12 @@ func _near_station(actor_role: String, station: String) -> bool:
 
 
 func _can_operate() -> bool:
-	return _configured and not disconnected and not GameFlowManager.is_input_locked() and (not networked or (NetworkManager.in_game and remote_ready))
+	return _configured and not disconnected and (networked or not _paused) and not GameFlowManager.is_input_locked() and (not networked or (NetworkManager.in_game and remote_ready))
 
 
 func _process(delta: float) -> void:
 	if not _configured: return
+	if networked or not _paused: _simulation_time += delta
 	_sync_controls()
 	_refresh_age += delta
 	if PuzzleManager.is_authority() and not disconnected and not GameFlowManager.is_input_locked() and _refresh_age >= 0.2:
@@ -293,12 +328,13 @@ func _process(delta: float) -> void:
 	if state.is_empty(): return
 	var predicted: float = state.remaining
 	if state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"] and not disconnected:
-		predicted = maxf(0.0, predicted - (_now() - _snapshot_at))
+		predicted = maxf(0.0, predicted - (_clock() - _snapshot_at))
 	var sync_left: float = state.sync_remaining
 	if state.stage == "STAGE_B" and (state.sync_past or state.sync_future):
 		# Display-only interpolation. The host remains the sole deadline owner.
-		sync_left = maxf(0.0, _confirmed_sync_remaining - (_now() - _snapshot_at))
+		sync_left = maxf(0.0, _confirmed_sync_remaining - (_clock() - _snapshot_at))
 	ui.render(state, role, predicted, sync_left)
+	ui.set_radio_status(radio)
 	if predicted <= 10 and state.stage in ["STAGE_A", "STAGE_B", "STAGE_C"] and not _warned:
 		_warned = true
 		sound.play("warning")
@@ -321,8 +357,9 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 	_confirmed_sync_remaining = float(state.sync_remaining)
 	if state.stage == "STAGE_B" and (state.sync_past or state.sync_future) and state.sync_remaining <= 0:
 		_confirmed_sync_remaining = Rules.SYNC_WINDOW
-	_snapshot_at = _now()
+	_snapshot_at = _clock()
 	if _last_attempt != state.attempt:
+		sound.reactor_ambience.stop_ambience(0.0)
 		if devices != null: devices.close()
 		_last_attempt = state.attempt
 		_seq = {"past": 0, "future": 0}
@@ -348,10 +385,10 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 		_close()
 	if reactor_bridge != null: reactor_bridge.apply_state(state, challenge_seconds)
 	if not previous.is_empty() and previous.get("attempt") == state.attempt:
-		var changed_device: bool = previous.coils != state.coils
-		for key in ["receiver", "anchor", "origin", "sync_past", "sync_future", "locked_past", "locked_future"]:
-			if previous.get(key) != state.get(key): changed_device = true
-		if changed_device: sound.get_node("AudioSystem").play_sfx(&"switch_toggle")
+		if previous.coils != state.coils: sound.director.play_sfx(&"switch_electrical")
+		var events := {"receiver": &"equipment_activate", "anchor": &"computer_calibrate", "origin": &"rift_stabilize", "sync_past": &"switch_toggle", "sync_future": &"switch_toggle", "locked_past": &"computer_success", "locked_future": &"computer_success"}
+		for key: String in events:
+			if previous.get(key) != state.get(key) and state.get(key): sound.director.play_sfx(events[key])
 		if previous.get("sync_past", false) and not state.sync_past and state.stage == "STAGE_B":
 			sound.get_node("AudioSystem").play_sfx(&"interaction_denied")
 		elif previous.get("sync_future", false) and not state.sync_future and state.stage == "STAGE_B":
@@ -360,10 +397,13 @@ func _on_state(id: String, confirmed: Dictionary, _revision: int) -> void:
 		_last_notice = state.notice
 		ui.status.text = state.notice
 	if previous_stage != state.stage:
+		if state.stage in ["STAGE_A", "STAGE_C"]: _play_radio_notice(state.notice)
 		if state.stage == "STAGE_A": sound.play("activate")
 		elif state.stage in ["STAGE_B", "STAGE_C"]: sound.play("phase")
 		elif state.stage == "OVERLOAD":
 			devices.close()
+			set_paused(false)
+			director.stop_dialogue()
 			settings_overlay.hide()
 			ui.close_panel()
 			JournalManager.close_journal()
@@ -382,6 +422,8 @@ func _on_rejected(id: String, _action: String, reason: String, actor_role: Strin
 
 func _play_ending() -> void:
 	devices.close()
+	set_paused(false)
+	director.stop_dialogue()
 	settings_overlay.hide()
 	_shown_ending = state.ending
 	JournalManager.close_journal()
@@ -462,6 +504,7 @@ func _show(title: String, body: String, options: Array) -> void:
 
 
 func _close() -> void:
+	if _paused: set_paused(false)
 	if devices != null: devices.close()
 	settings_overlay.hide()
 	ui.close_panel()
@@ -470,38 +513,85 @@ func _close() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if settings_overlay.handle_input(event): return
-	if not event.is_action_pressed("ui_cancel") or event.is_echo() or JournalManager.is_open(): return
+	if pause_menu.handle_input(event): return
+	if event.is_echo() or JournalManager.is_open(): return
+	if event.is_action_pressed("switch_role"):
+		switch_role()
+		get_viewport().set_input_as_handled()
+		return
+	if not (event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause")): return
 	get_viewport().set_input_as_handled()
 	if disconnected: return
 	if state.get("stage") == "ENDING": _show_conclusion(); return
 	if ui.visible_modal: _close(); return
-	_modal_kind = "pause"
-	_show("ROOM C / MENU", "The shared reactor clock continues while menus and journals are open.\n\nReturn to the room to continue your attempt.", [
-		{"label": "RESUME", "callback": _close},
-		{"label": "SETTINGS", "callback": func() -> void:
-			ui.modal.hide()
-			ui.veil.hide()
-			settings_overlay.open()},
-		{"label": "REDUCE / RESTORE AMBIENT EFFECTS", "callback": func() -> void:
-			for world: Node in worlds.values(): world.effects_enabled = not world.effects_enabled
-			reactor_bridge.sync_preferences(worlds, role)
-			_close()},
-		{"label": "RETURN TO MAIN MENU", "callback": return_to_menu}])
+	set_paused(not _paused)
+
+
+func set_paused(value: bool) -> void:
+	if disconnected and not value: return
+	if value and devices != null and devices.inspector.active: devices.close()
+	if _paused != value: sound.director.play_ui(&"ui_pause" if value else &"ui_unpause")
+	_paused = value
+	pause_menu.present(value)
+	_sync_controls()
+
+
+func reset_solo_session() -> void:
+	if networked: return
+	set_paused(false)
+	PuzzleManager.begin_session()
+	PuzzleManager.offline_role = "past"
+	get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
+
+
+# Compatibility for the existing isolated reactor test scenes.
+func switch_debug_role() -> void:
+	switch_role()
+
+
+func _temporal_ghost_context() -> Dictionary:
+	return {"role": role, "player": player, "timeline_roots": worlds,
+		"past_position": worlds[role].global_position + (local_position() if role == "past" else _poses.past),
+		"future_position": worlds[role].global_position + (local_position() if role == "future" else _poses.future),
+		"inspecting": devices.inspector.active, "blocked": is_gameplay_paused()}
+
+
+func _play_radio_notice(message: String) -> void:
+	if not message.begins_with("Professor:"): return
+	var sequence := DialogueSequence.new()
+	sequence.sequence_id = "core.%d.%s" % [state.attempt, state.stage]
+	sequence.playback_mode = DialogueSequence.PlaybackMode.NON_BLOCKING
+	sequence.auto_advance = true
+	sequence.auto_advance_delay = 2.0
+	var line := DialogueLine.new()
+	line.speaker_id = "professor"
+	line.speaker_name = "Professor"
+	line.timeline = DialogueLine.Timeline.FUTURE
+	line.text = message.trim_prefix("Professor: ")
+	sequence.lines.append(line)
+	director.play_dialogue(sequence)
+
+
+func _clock() -> float:
+	return _now() if networked else _simulation_time
 
 
 func is_gameplay_paused() -> bool:
-	return disconnected or not _configured or ui.visible_modal or (devices != null and devices.inspector.active) or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
+	return _paused or disconnected or not _configured or director.is_gameplay_input_blocked() or ui.visible_modal or (devices != null and devices.inspector.active) or JournalManager.is_open() or GameFlowManager.is_input_locked() or state.get("stage", "DISCOVERY") in ["ENDING", "OVERLOAD"]
 
 
 func _sync_controls() -> void:
 	if not is_instance_valid(player) or controller == null: return
 	var blocked := is_gameplay_paused() or state.is_empty()
 	if devices != null:
-		devices.inspector.suspended = disconnected or GameFlowManager.is_input_locked() or JournalManager.is_open() or ui.visible_modal
+		devices.inspector.suspended = _paused or disconnected or GameFlowManager.is_input_locked() or JournalManager.is_open() or ui.visible_modal
 		ui.device_panel.visible = devices.inspector.active and not devices.inspector.suspended
-	ui.debug_button.disabled = blocked
+	ui.switch_button.disabled = blocked
 	ui.journal_button.disabled = blocked
+	ui.set_overlay_blocked(blocked)
+	if radio_audio != null: radio_audio.set_suspended(blocked)
+	director.process_mode = Node.PROCESS_MODE_DISABLED if _paused else Node.PROCESS_MODE_INHERIT
+	director.dialogue_box.visible = not _paused
 	player.controls_enabled = not blocked
 	if blocked: player.velocity = Vector3.ZERO
 	controller.set_interaction_blocked(blocked)
@@ -513,6 +603,8 @@ func _on_lock_changed(_locked: bool) -> void:
 
 
 func game_flow_suspend() -> void:
+	set_paused(false)
+	director.stop_dialogue()
 	settings_overlay.hide()
 	_close()
 	JournalManager.close_journal()
@@ -601,3 +693,18 @@ func accept_future_pose(at: Vector3) -> bool:
 	_pose_budget = maxf(0.0, _pose_budget - distance)
 	_poses.future = at
 	return true
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(director): director.stop_dialogue()
+	if _ending_tween != null and _ending_tween.is_valid(): _ending_tween.kill()
+
+
+func _notification(what: int) -> void:
+	if not is_node_ready() or not _configured: return
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		set_paused(true)
+		pause_menu.label("PauseTitle").text = "Leave this timeline?"
+		pause_menu.button("QuitGameButton").show()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT and pause_when_unfocused:
+		set_paused(true)

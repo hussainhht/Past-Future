@@ -81,5 +81,7 @@ func run() -> void:
 		await create_timer(0.5).timeout
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png("res://docs/assets/screenshots/level3/integrated_reactor_future.png")
+	room.queue_free()
+	await tick()
 	print("LEVEL3 SMOKE: %s" % ("PASS" if failures == 0 else "FAIL"))
 	quit(0 if failures == 0 else 1)

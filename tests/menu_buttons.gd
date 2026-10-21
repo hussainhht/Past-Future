@@ -109,7 +109,7 @@ func test_structure() -> void:
 	for node_name in WIRED_BUTTONS:
 		check(btn(node_name).pressed.get_connections().size() >= 1, "%s keeps its pressed connection" % node_name)
 	check(btn("PlayButton").has_focus(), "Play grabs focus when the menu opens")
-	check(btn("PreviewButton").text == "PLAY THE LAB     /     SOLO TEST", "Submenu labels are unchanged")
+	check(btn("PreviewButton").text == "SOLO EXPLORATION", "Solo campaign entry has a player-facing label")
 	check(menu.get_node("Overlay/Center/Panel/Margin/Pages/PlayPage/LocalButton").disabled, "Split-screen stays disabled (coming soon)")
 
 	var play := btn("PlayButton")
@@ -189,7 +189,8 @@ func test_keyboard_navigation() -> void:
 	check(menu.get_node("Overlay").visible and menu.get_node("Overlay/Center/Panel/Margin/Pages/PlayPage").visible, "Enter activates Play")
 	check(btn("PreviewButton").has_focus(), "Submenu focus starts on the first live option")
 	await tap(KEY_DOWN)
-	check(btn("LevelTwoTestButton").has_focus(), "Down moves through the mode list")
+	check(btn("HostButton").has_focus(), "Down skips hidden development launchers and reaches LAN host")
+	check(not btn("LevelTwoTestButton").visible and btn("LevelThreeTestButton").visible and menu.get_node_or_null("%LevelThreeMultiplayerButton") == null, "Level 3 offers only its solo test entry")
 	await tap(KEY_ESCAPE)
 	await wait(0.1)
 	check(not menu.get_node("Overlay").visible and btn("PlayButton").has_focus(), "Escape closes the page and returns focus to Play")
