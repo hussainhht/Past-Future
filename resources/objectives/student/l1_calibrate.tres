@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "student_l1_calibrate"
+role = "past"
+chapter = "room_01"
+chapter_order = 1
+sort_order = 20
+title = "Calibrate the Signal"
+summary = "Tune the signal at the calibration console."
+description = "Use the calibration console to tune the incoming signal. The dials only respond once both of you hold a radio."
+hint = "Your partner sees the result of every change you make. Describe the signal and listen to what they tell you."
+icon = &"dial"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_01_frequency", "path": "frequency_calibrated"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "student_l2_isolate_service"
+role = "past"
+chapter = "room_02"
+chapter_order = 2
+sort_order = 10
+title = "Isolate the Service Circuit"
+summary = "Disconnect the service circuit at its panel."
+description = "The corridor has no mains power. Disconnect the service circuit from the research array at its panel so an emergency cell can be charged safely."
+hint = "Read the facilities notice at the SERVICE panel before pulling the lever."
+icon = &"power"
+secret = false
+conditions = Array[Dictionary]([{"kind": "flag", "puzzle": "puzzle_02_maintenance", "path": "service_isolated"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = ""

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ObjectiveDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/objectives/objective_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+objective_id = "professor_l3_sync"
+role = "future"
+chapter = "room_03"
+chapter_order = 3
+sort_order = 60
+title = "Engage the Phase Switch"
+summary = "Press your phase switch with your partner."
+description = "Press your phase switch within five seconds of your partner's. A missed window resets both switches, so try again together."
+hint = "Count it out loud so you press together."
+icon = &"link"
+secret = false
+conditions = Array[Dictionary]([{"kind": "at_least", "puzzle": "puzzle_03_final_fracture", "path": "stage", "order": ["DISCOVERY", "STAGE_A", "STAGE_B", "STAGE_C", "ENDING"], "value": "STAGE_C"}])
+expires = Array[Dictionary]([])
+progress = Array[Dictionary]([])
+attempt_puzzle = "puzzle_03_final_fracture"
