@@ -46,6 +46,9 @@ func _ready() -> void:
 	%StartGameButton.pressed.connect(func() -> void: NetworkManager.start_game())
 	%PreviewButton.pressed.connect(_preview_spawn_area)
 	%LevelTwoTestButton.pressed.connect(_preview_maintenance_corridor)
+	%LevelThreeTestButton.pressed.connect(_preview_temporal_core)
+	%LevelThreeMultiplayerButton.pressed.connect(_open_temporal_core_multiplayer)
+	%LevelThreeMultiplayerButton.visible = OS.is_debug_build()
 	NetworkManager.state_changed.connect(_refresh_lan)
 	NetworkManager.game_started.connect(_enter_spawn_area)
 	fullscreen_toggle.toggled.connect(_set_fullscreen)
@@ -295,6 +298,23 @@ func _preview_maintenance_corridor() -> void:
 	PuzzleManager.submit_action(frequency.ID, "tune_frequency", {"frequency": 67}, "past")
 	PuzzleManager.submit_action(frequency.ID, "tune_amplitude", {"amplitude": 70}, "past")
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/maintenance_corridor.tscn")
+
+
+## Reuse Room C's offline role switch and real rules; no earlier puzzles are marked solved.
+func _preview_temporal_core() -> void:
+	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
+		return
+	_entering_game = true
+	PuzzleManager.offline_role = "past"
+	PuzzleManager.begin_session()
+	GameFlowManager.start_room.call_deferred("room_03")
+
+
+func _open_temporal_core_multiplayer() -> void:
+	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
+		return
+	_entering_game = true
+	get_tree().change_scene_to_file.call_deferred("res://scenes/testing/temporal_core_sandbox.tscn")
 
 
 func _enter_spawn_area() -> void:

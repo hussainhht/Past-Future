@@ -1,63 +1,41 @@
-# 04 GAMEPLAY SYSTEMS: Controls, Physics, Cameras & Networking
+# 04 GAMEPLAY SYSTEMS: Controls, Physics, Cameras & Gameplay Subsystems
 
-This document provides a technical breakdown of all functioning and partially implemented gameplay systems within the repository.
+This document provides a comprehensive technical breakdown of all active gameplay systems implemented in **Past-Future**.
 
 ---
 
-## 1. Character Locomotion & Physics
+## 1. Character Locomotion & Physics Simulation
 
-- **Source Code**: [scripts/characters/student_3d_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_3d_player.gd)
-- **Scene File**: [scenes/characters/student_3d_player.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_3d_player.tscn)
+- **Source Code**: [scripts/characters/student_3d_player.gd](../scripts/characters/student_3d_player.gd)
+- **Scene Files**: [scenes/characters/student_3d_player.tscn](../scenes/characters/student_3d_player.tscn), [scenes/characters/professor_3d_player.tscn](../scenes/characters/professor_3d_player.tscn)
 - **Base Node**: `CharacterBody3D`
-- **Physics Engine**: Godot Jolt Physics 3D (`3d/physics_engine="Jolt Physics"` in `project.godot`)
-- **Status**: **COMPLETE & VERIFIED**
+- **Physics Engine**: Godot Jolt Physics 3D (`3d/physics_engine="Jolt Physics"`)
+- **Status**: **COMPLETE — VERIFIED**
 
-### 1.1 Collision Footprint & Ground Anchoring
-To avoid sprite clipping or uneven floor collisions, the character root is anchored at floor level ($Y = 0$).
+### 1.1 Collision Footprint & Ground Contact Anchor
+All characters and physical entities maintain their root origin at floor level ($Y = 0$):
 - **Collision Shape**: Cylinder shape with radius $0.28\text{ m}$ and height $0.4\text{ m}$, centered at $Y = 0.2\text{ m}$.
-  ```gdscript
-  [node name="Footprint" type="CollisionShape3D" parent="."]
-  position = Vector3(0, 0.2, 0)
-  shape = SubResource("Footprint")
-  ```
-- **Floor Snapping**: `floor_snap_length = 0.25` ensures smooth travel over minor seams.
-- **Shadow**: A flat cylinder mesh ($0.43\text{ m}$ radius, $0.006\text{ m}$ height) positioned at $Y = 0.012\text{ m}$ casts a faux circular shadow on the floor without requiring dynamic shadow mapping.
+- **Floor Snapping**: `floor_snap_length = 0.25` ensures smooth traversal over minor seams and dynamic geometry ramps.
+- **Faux Shadow**: A flat circular mesh ($r = 0.43\text{ m}, h = 0.006\text{ m}$) at $Y = 0.012\text{ m}$ casts a lightweight floor shadow without runtime dynamic shadow map cost.
 
 ### 1.2 Movement Calculation & Camera-Relative Vectors
-Movement is processed in `_physics_process(delta)`. The system combines UI arrow keys and WASD actions:
-
+Movement is processed in `_physics_process(delta)`. Input from WASD and arrow keys is unprojected into the camera's ground basis:
 ```gdscript
-var direction := Vector2.ZERO
-if controls_enabled and _action.is_empty():
-    direction = (Input.get_vector("move_left", "move_right", "move_up", "move_down") 
-               + Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")).limit_length(1.0)
-```
+var right := view_camera.global_basis.x
+right.y = 0.0
+right = right.normalized()
 
-To maintain consistent orientation regardless of camera placement, input is unprojected into the camera's ground-projected horizontal basis vectors:
-```gdscript
-var right := Vector3.RIGHT
-var down := Vector3.BACK
-if is_instance_valid(view_camera):
-    right = view_camera.global_basis.x
-    right.y = 0.0
-    right = right.normalized()
-    down = view_camera.global_basis.z
-    down.y = 0.0
-    down = down.normalized()
+var down := view_camera.global_basis.z
+down.y = 0.0
+down = down.normalized()
+
 var ground_direction := right * direction.x + down * direction.y
 ```
 
-### 1.3 Speeds, Sprinting & Turning
-- **Base Walk Speed**: `speed = 2.8` m/s.
-- **Sprint Modifier**: Sprinting is enabled by holding `Shift` (`run_multiplier = 1.55`), yielding a run speed of $\approx 4.34\text{ m/s}$. Sprinting is disabled while carrying items.
-- **Velocity & Gravity**:
-  ```gdscript
-  velocity.x = ground_direction.x * movement_speed
-  velocity.z = ground_direction.z * movement_speed
-  velocity.y = -0.5 if is_on_floor() else velocity.y - 9.8 * delta
-  move_and_slide()
-  ```
-- **Smooth Rotation**: When moving, the character's visual child (`$Visual`) smoothly rotates toward the travel angle:
+### 1.3 Velocity, Sprinting & Turning
+- **Base Walk Speed**: $2.8\text{ m/s}$.
+- **Sprint Modifier**: Sprinting is activated via `sprint` action (`Shift` or gamepad trigger), increasing speed to $\approx 4.34\text{ m/s}$ ($1.55\times$). Sprinting is disabled while carrying items.
+- **Smooth Visual Rotation**: The visual child node (`$Visual`) smoothly interpolates toward the travel heading:
   ```gdscript
   if not ground_direction.is_zero_approx():
       $Visual.rotation.y = rotate_toward($Visual.rotation.y, atan2(ground_direction.x, ground_direction.z), delta * 12.0)
@@ -65,144 +43,154 @@ var ground_direction := right * direction.x + down * direction.y
 
 ---
 
-## 2. Animation & Action State Machine
+## 2. Animation System & Action State Machine
 
-- **Source Code**: [scripts/characters/student_3d_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_3d_player.gd)
-- **Model Scene**: [assets/characters/student_3d/student.glb](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/assets/characters/student_3d/student.glb)
-- **Status**: **COMPLETE & VERIFIED**
+- **Source Code**: [scripts/characters/student_3d_player.gd](../scripts/characters/student_3d_player.gd)
+- **Models**: [student.glb](../assets/characters/student_3d/student.glb), [professor.glb](../assets/characters/professor_3d/professor.glb)
+- **Status**: **COMPLETE — VERIFIED**
 
-### 2.1 Animation Library Isolation
-In Godot, imported GLB animations share resource instances by default. To prevent animation conflicts in multiplayer or studio inspection, `student_3d_player.gd` duplicates the library at runtime:
+### 2.1 Multi-Instance Animation Isolation
+To prevent shared GLB resources from cross-contaminating between timelines, `student_3d_player.gd` duplicates the animation library at runtime:
 ```gdscript
 var library: AnimationLibrary = animator.get_animation_library("").duplicate(true)
 animator.remove_animation_library("")
 animator.add_animation_library("", library)
 ```
-Looping is explicitly set per clip: locomotion clips in `LOOP_CLIPS` are assigned `LOOP_LINEAR`, while action clips use `LOOP_NONE`.
+Looping properties are set dynamically: locomotion clips (`Idle_A`, `Walking_A`, `Running_A`, `Holding_A`) loop linearly, while action clips loop none.
 
-### 2.2 Locomotion Blending
-When no action is active (`_action.is_empty()`):
-- If stationary: Plays `Holding_A` (if `carrying == true`) or `Idle_A` (crossfade $0.12\text{ s}$).
-- If moving: Plays `Running_A` (if sprint is held) or `Walking_A`.
-
-### 2.3 One-Shot Action Locking
-Actions lock character locomotion until the animation completes:
-- `play_action(action: String) -> bool`
-  - Valid actions: `"interact"` (`Interact`), `"inspect"` (`Use_Item`), `"pick_up"` (`PickUp`), `"put_down"` (`PickUp`), `"wave"` (`Waving`).
-  - Sets velocity to zero and triggers `_play(ACTIONS[action], 0.1, true)`.
-  - While `_action != ""`, movement input is ignored.
-- **Action Completion**:
-  When `AnimationPlayer.animation_finished` fires:
-  ```gdscript
-  func _on_animation_finished(_clip: StringName) -> void:
-      var finished := _action
-      if finished == "pick_up": carrying = true
-      elif finished == "put_down": carrying = false
-      _held_document.visible = carrying
-      _action = ""
-      action_finished.emit(finished)
-  ```
-
-### 2.4 Hand Prop Socket
-A `BoneAttachment3D` node is dynamically parented to the skeleton joint `handslot.l`. It holds a procedural 3D paper mesh (`BoxMesh` $0.16 \times 0.012 \times 0.21\text{ m}$), toggled visible when `carrying == true`.
+### 2.2 Locomotion Blending & One-Shot Action Locking
+- Stationary character blends smoothly to `Idle_A` (crossfade $0.12\text{ s}$).
+- Moving character plays `Walking_A` or `Running_A`.
+- One-shot actions (`interact`, `inspect`, `pick_up`, `put_down`, `wave`) lock player locomotion until `animation_finished` fires, clearing `_action` and emitting `action_finished`.
 
 ---
 
 ## 3. Fixed Perspective Follow Camera
 
-- **Source Code**: [scripts/world/follow_camera.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/follow_camera.gd)
-- **Scene File**: [scenes/world/spawn_area.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/world/spawn_area.tscn) (under `CameraRig`)
-- **Status**: **COMPLETE & VERIFIED**
+- **Source Code**: [scripts/world/follow_camera.gd](../scripts/world/follow_camera.gd)
+- **Status**: **COMPLETE — VERIFIED**
 
-### 3.1 Projection & Angles
-The camera is configured to maintain a consistent high-angle perspective view:
+### 3.1 Projection & Framing Geometry
 - **Projection**: `Camera3D.PROJECTION_PERSPECTIVE`
 - **Field of View (FOV)**: $48^\circ$
 - **Pitch**: Fixed at $35^\circ$ downward pitch (`rotation.x = -deg_to_rad(35.0)`).
-- **Distance**: $20.0\text{ m}$ along the viewing axis.
-- **Positioning**:
-  ```gdscript
-  var pitch := deg_to_rad(pitch_degrees)
-  camera.position = Vector3(0, sin(pitch) * distance, cos(pitch) * distance)
-  ```
-
-### 3.2 Target Smoothing
-In `_process(delta)`, the camera rig smoothly tracks the player using asymptotic smoothing:
-```gdscript
-func _process(delta: float) -> void:
-    global_position = global_position.lerp(_focus_position(), 1.0 - exp(-8.0 * delta))
-
-func _focus_position() -> Vector3:
-    return target.global_position + Vector3.UP * 0.7 - global_basis.z * look_ahead
-```
-- `look_ahead = 2.0` shifts the camera slightly in front of the target to prioritize the forward view.
-- `snap_to_target()` is called during level spawn and respawns (`R` key) to eliminate interpolation lag.
+- **Distance**: $20.0\text{ m}$ along viewing vector.
+- **Tracking**: Tracks player target smoothly via asymptotic exponential smoothing (`1.0 - exp(-8.0 * delta)`), with a forward look-ahead offset of $2.0\text{ m}$.
 
 ---
 
-## 4. Multiplayer Network Session Management
+## 4. Spatial Interaction System
 
-- **Source Code**: [scripts/network/network_manager.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/network/network_manager.gd)
-- **Status**: **COMPLETE & VERIFIED** (Autoload Singleton)
+- **Source Code**: [scripts/interaction/](../scripts/interaction/)
+- **Components**: `Interactable3D`, `InteractionDetector`, `InteractionController`, `InteractionPrompt`
+- **Collision Layer**: Layer 4 (`Interaction`)
+- **Status**: **COMPLETE — VERIFIED**
 
-### 4.1 Topology & Peer Assignment
+### 4.1 Architecture
+1. **`Interactable3D`**: Attached to interactive objects. Defines interaction distance ($1.5\text{ m}$), allowed timelines (`PAST`, `FUTURE`, `BOTH`), priority, and action prompt text.
+2. **`InteractionDetector`**: Attached to player. Queries layer 4 via shape casting/overlaps; selects highest-priority target with distance hysteresis to prevent prompt flickering.
+3. **`InteractionController`**: Processes `interact` input (`F` / button A), verifies target validity, triggers character animation locking, and dispatches the action.
+4. **`InteractionPrompt`**: Dynamic floating/HUD widget displaying contextual action labels and device-specific button glyphs (keyboard `[F]`, PlayStation `[✕]`, Xbox `[A]`).
+
+---
+
+## 5. 3D Physical Device Inspector
+
+- **Source Code**: [scripts/gameplay/devices/device_inspector_3d.gd](../scripts/gameplay/devices/device_inspector_3d.gd)
+- **Status**: **COMPLETE — VERIFIED**
+
+### 5.1 Real Equipment Close-Up Interaction
+When inspecting equipment (such as the Signal Lab frequency console or the Maintenance Corridor keypads):
+- The camera smoothly tweens from the follow rig to an authored inspection viewpoint.
+- Interactive components (rotatable dials, buttons, levers, numeric keypads) use ray-picked collision on layer 32.
+- The frequency dial can be dragged via mouse or rotated via scroll wheel and arrow keys ($5^\circ$ per MHz), displaying live frequency readouts on a 3D label.
+- Accompanying story records and technical logs display in a readable, scrollable side card formatted by `world_text_layout.gd`.
+- Pressing `Escape` or backing out restores the follow camera and releases player input.
+
+---
+
+## 6. Narrative Dialogue System
+
+- **Source Code**: [scripts/dialogue/dialogue_director.gd](../scripts/dialogue/dialogue_director.gd), [scripts/dialogue/dialogue_box.gd](../scripts/dialogue/dialogue_box.gd)
+- **Status**: **COMPLETE — VERIFIED**
+
+### 6.1 Features
+- Data-driven dialogue sequences (`DialogueSequence` and `DialogueLine` resources).
+- Typewriter character rollout with customizable speed (default 40 char/s).
+- Player advance via action key (`F`, `Space`, `Enter`) or mouse click.
+- Speaker portraits (Student, Professor, Radio, System) and timeline badge styling.
+- Non-blocking ambient dialogue vs. blocking story sequences (temporarily locks player input).
+- Line queues, duplicate rejection, and narrative event request dispatching.
+
+---
+
+## 7. Investigation Journal System
+
+- **Source Code**: [scripts/journal/journal_manager.gd](../scripts/journal/journal_manager.gd), [scenes/journal/journal_ui.tscn](../scenes/journal/journal_ui.tscn)
+- **Status**: **COMPLETE — VERIFIED**
+
+### 7.1 Features
+- Accessible via hotkey `J` (or controller Touchpad / Select).
+- Timeline-segregated evidence:
+  - *Student*: Spiral paper notebook skin with handwritten lab notes and observations.
+  - *Professor*: Ruggedized electronic DataPad skin with terminal logs and diagnostic records.
+- Clues discovered by one role are **not** automatically shown to the other, preserving the asymmetric information requirement.
+- Displays unlock toasts upon discovery; persists across room transitions; clears cleanly on session reset.
+
+---
+
+## 8. Solo Temporal Ghost Hologram
+
+- **Source Code**: [scripts/world/temporal_ghost.gd](../scripts/world/temporal_ghost.gd)
+- **Shader**: [shaders/temporal_ghost.gdshader](../shaders/temporal_ghost.gdshader)
+- **Status**: **COMPLETE — VERIFIED**
+
+### 8.1 Offline Co-op Assistance
+In solo testing modes, the player can toggle a translucent cyan hologram of the opposite character and their immediate surroundings:
+- Toggle key: `G` or gamepad bumper (`R1` / `RB`).
+- Radius: $4.5\text{ m}$ circular area around the inactive character's position.
+- Renders opposite-timeline geometry (such as the adjusted bridge slab or hydraulic supports) using soft silhouette fading.
+- Geometrically clipped and cached to minimize draw call overhead ($\approx 3 - 4$ additional draw calls).
+
+---
+
+## 9. Audio Subsystem
+
+- **Source Code**: [scripts/audio/audio_director.gd](../scripts/audio/audio_director.gd)
+- **Scene**: [scenes/audio/audio_system.tscn](../scenes/audio/audio_system.tscn)
+- **Assets**: Kenney CC0 sound effects and ambient tracks in `assets/audio/`
+- **Status**: **COMPLETE — VERIFIED**
+
+### 9.1 Audio Architecture
+- **5 Audio Buses**: `Master`, `SFX`, `UI`, `Ambience`, `Music`.
+- **`SoundCatalog`**: Dictionary-driven sound mapping supporting pitch variation and randomized sample selection.
+- **`FootstepEmitter3D`**: Cadence-based surface footsteps (tile in Past, concrete in Future) that automatically scale with walk/run velocity and silence while airborne.
+- **`AmbientAudioController`**: Looping atmospheric background sounds with smooth crossfading between Past and Future rooms.
+
+---
+
+## 10. Gamepad & Controller Support
+
+- **Source Code**: [scripts/input/input_manager.gd](../scripts/input/input_manager.gd)
+- **Documentation**: [docs/CONTROLLER_SUPPORT.md](../docs/CONTROLLER_SUPPORT.md)
+- **Status**: **COMPLETE — VERIFIED**
+
+### 10.1 Multi-Device Input Management
+- Real-time device detection: Keyboard/Mouse, Sony DualSense (PS5), and Xbox controllers.
+- Automatic prompt glyph adaptation (e.g. switching from `[F]` to `[✕]` or `[A]`).
+- Haptic vibration patterns (`rumble_gentle`, `rumble_heavy`, `rumble_pulse`, `temporal_heartbeat`, `device_tick`).
+- Configurable analog deadzones ($0.20$ default) and stick noise filtering.
+
+---
+
+## 11. Multiplayer Network Session Management
+
+- **Source Code**: [scripts/network/network_manager.gd](../scripts/network/network_manager.gd)
 - **Transport**: `ENetMultiplayerPeer` over UDP port `7000`.
-- **Maximum Peers**: 1 remote peer (2 players total).
-- **Host Role**: Peer `1` = Student / Past Timeline.
-- **Client Role**: Peer $> 1$ = Professor / Future Timeline.
+- **Status**: **COMPLETE — VERIFIED**
 
-### 4.2 State Lifecycle & Handshake
-The network manager transitions through `State`: `IDLE` $\rightarrow$ `HOSTING` / `CONNECTING` $\rightarrow$ `CONNECTED`.
-
-```mermaid
-stateDiagram-v2
-    [*] --> IDLE
-    IDLE --> HOSTING: host_game()
-    IDLE --> CONNECTING: join_game(ip)
-    
-    HOSTING --> CONNECTED: _register_client (guest joins)
-    CONNECTING --> CONNECTED: _apply_lobby (host confirms)
-    
-    state CONNECTED {
-        [*] --> Unready
-        Unready --> Ready: guest calls set_ready(true)
-        Ready --> Unready: guest calls set_ready(false)
-        Ready --> InGame: host calls start_game() -> _begin_game()
-    }
-    
-    CONNECTED --> HOSTING: guest disconnects (in lobby)
-    CONNECTED --> IDLE: leave_game() or timeout
-```
-
-### 4.3 Key Network Security & Validation Rules
-- **Sender Validation**: Host methods verify `multiplayer.get_remote_sender_id() == guest_id` before modifying state.
-- **Version Compatibility**: Rejects mismatched client versions using `PROTOCOL_VERSION = 2`.
-- **Disconnect Protection**: When a peer disconnects during gameplay, `in_game` is set to `false`, the game freezes character input, and the pause menu displays `"The connection was lost"`.
-
----
-
-## 5. Interaction System: Current Reality vs. Required Architecture
-
-| Capability | Current Reality in Codebase | What Needs to be Built |
-|---|---|---|
-| **Trigger Mechanism** | Direct keyboard events (`F`, `I`, `E`) in `_unhandled_key_input`. | `Area3D` proximity trigger attached to interactable props. |
-| **Target Detection** | None. Character plays animation anywhere in space. | Player detects nearest interactable within $1.5\text{ m}$. |
-| **UI Prompt** | Fixed footer label in HUD showing all controls. | Dynamic contextual prompt (e.g. `[F] Calibrate Radio`). |
-| **Object Highlighting** | None. Props remain visually static. | Outline shader or emission glow on approaching target. |
-| **State Synchronization** | None. Action affects only local document prop. | RPC action request to Host $\rightarrow$ Host validation $\rightarrow$ State update. |
-
----
-
-## 6. Timeline Preview System (Solo Mode)
-
-- **Source Code**: [scripts/world/spawn_area.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/spawn_area.gd)
-- **Status**: **COMPLETE & VERIFIED**
-
-In solo mode (launching from the menu via "EXPLORE THE LAB" or running F6), the player can test visual states without launching a second peer:
-- Clicking "VIEW FUTURE" / "VIEW PAST" toggles `timeline` between `"Past"` and `"Future"`.
-- `_apply_timeline()` updates:
-  1. `$Floor.future`: Updates shader parameter `future` on `shaders/lab_floor.gdshader`.
-  2. `$Actors/*`: Iterates over each prop, toggling `future`, which applies `PAST_COLORS` or `FUTURE_COLORS` via `shaders/painted_prop.gdshader`.
-  3. `player.body_color`: Lerps the student's jacket albedo between ochre and cyan.
-- In networked mode (`NetworkManager.in_game == true`), the toggle button is hidden, and `timeline` is strictly locked to the assigned network role.
-
+### 11.1 Topology & Role Handshake
+- **Host**: Always Peer 1 = Student / Past Timeline.
+- **Client**: Peer $> 1$ = Professor / Future Timeline.
+- Handshake protocol: `_register_client` $\rightarrow$ `_apply_lobby` $\rightarrow$ `_request_ready` $\rightarrow$ `_begin_game`.
+- Disconnect handling: Halts character input, closes open modals, and displays connection recovery prompt.

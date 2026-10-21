@@ -1,11 +1,27 @@
 # Level 3: The Final Fracture
 
-Implemented 21 October 2026 for the live Godot 4.7.2 repository. Room C is a playable standalone
-vertical slice. Room A, the Room B placeholder, the shipping menu, original character assets and
-existing tests were not edited. The root specification and three pre-existing untracked `.uid`
-files were left untouched. No commits, pushes, resets or stashes were made.
+Room C is a playable standalone vertical slice for Godot 4.7.2, reachable directly from the main
+menu for offline testing or through the existing development launcher for solo/LAN sessions.
+The testing shortcuts preserve Room A and Room B gameplay, original character assets and the
+normal Host/Join flow.
 
 ## Start here
+
+From the main menu, click **PLAY LEVEL 3 — TEST** to start a fresh offline session directly in
+the real `scenes/rooms/temporal_core.tscn`, with no server or earlier-level completion required.
+The preview starts as Past; use **DEV: OTHER TIMELINE** to switch to Future and back in a debug
+build (including the editor). Each role keeps its position. Use both real phase switches within
+five seconds: park each role beside its switch before pressing the first, then switch roles and
+press the second. Nothing is auto-completed. The 150-second timer starts only after confirming
+ARM REACTOR. Escape opens the room menu; its Return to Main Menu action lets you launch another
+clean test. Menus stop player input while the active reactor clock continues, as in multiplayer.
+
+For two players, choose **PLAY TOGETHER → LEVEL 3 / MULTIPLAYER TEST** on both clients (debug
+builds). In the existing launcher, choose **HOST / STUDENT** on one client; enter that host's IP
+and choose **JOIN / PROFESSOR** on the other (`127.0.0.1` on the same PC). The Professor clicks
+**PROFESSOR READY**, then the host clicks **HOST / ENTER ROOM C**. This starts a fresh network
+session using the existing host-authoritative rules, timer, role assignment and private choices.
+Use the normal Host/Join entries for the usual laboratory start.
 
 Open `scenes/testing/temporal_core_sandbox.tscn` in Godot and press F6. Choose solo Past, solo
 Future, or host/join. In solo mode the **DEV: OTHER TIMELINE** button lets one tester perform

@@ -27,6 +27,27 @@ func tick(frames: int = 3) -> void:
 	await process_frame
 
 
+func click(button: Button) -> void:
+	var point := button.get_global_rect().get_center()
+	var motion := InputEventMouseMotion.new()
+	motion.position = point
+	motion.global_position = point
+	root.push_input(motion, true)
+	await process_frame
+	for pressed in [true, false]:
+		var event := InputEventMouseButton.new()
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.position = point
+		event.global_position = point
+		event.pressed = pressed
+		root.push_input(event, true)
+		await process_frame
+	await tick()
+	if current_scene == null:
+		await scene_changed
+		await tick()
+
+
 func move_to(station: String) -> void:
 	room.player.position = room.worlds[room.role].position + Rules.STATIONS[station] + Vector3(0, 0, 1.0)
 	room.player.velocity = Vector3.ZERO
@@ -82,13 +103,25 @@ func solve_to_identity() -> void:
 
 
 func _run() -> void:
+	root.size = Vector2i(1600, 900)
 	pm = root.get_node("PuzzleManager")
 	pm.log_rejections = false
 	flow = root.get_node("GameFlowManager")
 	rendered = "--render-review" in OS.get_cmdline_user_args()
-	check(flow.start_room("room_03"), "room registered and independently launchable")
+	check(change_scene_to_file("res://scenes/menu/main_menu.tscn") == OK, "main menu loads")
+	await scene_changed
 	await tick()
+	var direct: Button = current_scene.get_node("%LevelThreeTestButton")
+	check(direct.is_visible_in_tree() and root.get_visible_rect().encloses(direct.get_global_rect()), "direct test button is visible on the main menu")
+	await click(direct)
+	if not current_scene is Node3D:
+		check(false, "direct test button launches gameplay")
+		quit(1)
+		return
 	room = current_scene
+	check(room.scene_file_path == "res://scenes/rooms/temporal_core.tscn" and flow.get_current_room_id() == "room_03", "menu click enters the registered real Level 3")
+	check(not room.networked and root.multiplayer.multiplayer_peer is OfflineMultiplayerPeer, "direct entry stays offline without ENet")
+	check(room.role == "past" and room.worlds.past.visible and not room.worlds.future.visible, "fresh preview starts in Past")
 	room.player.set_physics_process(false)
 	room.rules.clock = func() -> float: return test_time
 	check(room.camera.projection == Camera3D.PROJECTION_PERSPECTIVE and is_equal_approx(room.camera.fov, 48.0), "existing perspective camera preserved")
@@ -97,6 +130,12 @@ func _run() -> void:
 	test_time += 1000.0
 	pm.refresh_puzzle(Rules.ID)
 	check(room.state.stage == "DISCOVERY" and room.state.remaining == 150.0, "no discovery timeout")
+	var pause := InputEventAction.new()
+	pause.action = &"ui_cancel"
+	pause.pressed = true
+	root.push_input(pause)
+	check(room.ui.visible_modal and not room.player.controls_enabled, "Escape opens the room menu and stops player input")
+	room._close()
 	await shot("past_discovery")
 	# Use the real interaction detector/controller and verify deliberate confirmation.
 	await move_to("start")
@@ -195,5 +234,16 @@ func _run() -> void:
 	check(room.disconnected and not room.player.controls_enabled and room.ui.visible_modal, "disconnect suspends gameplay with recovery action")
 	check(room.state == frozen, "disconnect does not advance attempt")
 	room.rules.clock = Callable()
+	var session: int = pm.get_session_id()
+	var old_attempt: int = room.state.attempt
+	await click(room.ui.modal_box.find_children("*", "Button", true, false)[0])
+	check(current_scene.scene_file_path == "res://scenes/menu/main_menu.tscn", "return button restores main menu")
+	await click(current_scene.get_node("%LevelThreeTestButton"))
+	room = current_scene
+	check(pm.get_session_id() != session and room.state.attempt > old_attempt, "relaunch starts a new session and attempt")
+	check(room.role == "past" and room.state.stage == "DISCOVERY" and room.state.remaining == 150.0, "relaunch resets role and leaves the 150-second clock idle")
+	check(room.state.coils == [0, 0, 0] and not room.state.receiver and not room.state.anchor and not room.state.origin and not room.state.sync_past and not room.state.sync_future, "relaunch resets real puzzles and temporary interactions")
+	check(not room.state.locked_past and not room.state.locked_future and room.state.ending.is_empty() and not room.disconnected and not room.ui.visible_modal, "relaunch clears decisions, ending and modal state")
+	check(not root.get_node("JournalManager").is_unlocked("l3_authorization"), "new test session clears prior evidence")
 	print("LEVEL3 CORE: %s (%d checks, %d failures)" % ["PASS" if failures == 0 else "FAIL", checks, failures])
 	quit(0 if failures == 0 else 1)

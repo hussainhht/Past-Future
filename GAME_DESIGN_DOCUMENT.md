@@ -474,12 +474,12 @@ Neither player owns puzzle state, including puzzles located in their own timelin
 
 ```text
 [Either Player Interacts]
-    -> request_action(puzzle_id, action, payload)
+	-> request_action(puzzle_id, action, payload)
 [Host Validates Sender, Role, Action, and Prerequisites]
-    -> Update Central State Dictionary
-    -> Increment State Revision
+	-> Update Central State Dictionary
+	-> Increment State Revision
 [Host Broadcasts]
-    -> apply_puzzle_state(puzzle_id, new_state, revision)
+	-> apply_puzzle_state(puzzle_id, new_state, revision)
 [Both Timelines Render the Confirmed State]
 ```
 

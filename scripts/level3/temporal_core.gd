@@ -395,7 +395,7 @@ func _fade_character(body: Node, amount: float) -> void:
 func _show_conclusion() -> void:
 	if state.stage != "ENDING": return
 	var data: Dictionary = Story.ENDINGS[state.ending]
-	var options: Array = [{"label": "RETURN TO MENU", "callback": return_to_menu}]
+	var options: Array = [{"label": "RETURN TO MAIN MENU", "callback": return_to_menu}]
 	if not networked or role == "past":
 		options.push_front({"label": "REPLAY ROOM C", "callback": replay_attempt})
 	var suffix := "\n\nUNREGISTERED SIGNAL / SOURCE TIME: ???" if state.ending != "paradox" else "\n\nITERATION 02 DETECTED"
@@ -443,7 +443,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		{"label": "REDUCE / RESTORE AMBIENT EFFECTS", "callback": func() -> void:
 			for world: Node in worlds.values(): world.effects_enabled = not world.effects_enabled
 			_close()},
-		{"label": "RETURN TO MENU", "callback": return_to_menu}])
+		{"label": "RETURN TO MAIN MENU", "callback": return_to_menu}])
 
 
 func is_gameplay_paused() -> bool:
@@ -476,7 +476,7 @@ func _on_connection() -> void:
 		disconnected = true
 		remote_ready = false
 		JournalManager.close_journal()
-		_show("CONNECTION LOST / REACTOR SUSPENDED", "The other timeline disconnected. This attempt cannot continue. Return to the menu and create a new session to reconnect.", [{"label": "RETURN TO MENU", "callback": return_to_menu}])
+		_show("CONNECTION LOST / REACTOR SUSPENDED", "The other timeline disconnected. This attempt cannot continue. Return to the menu and create a new session to reconnect.", [{"label": "RETURN TO MAIN MENU", "callback": return_to_menu}])
 		_sync_controls()
 
 
