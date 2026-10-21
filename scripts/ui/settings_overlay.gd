@@ -1,6 +1,8 @@
 extends CanvasLayer
 ## Opens over an already paused room; closing returns to its pause menu.
 
+const TemporalButton := preload("res://scripts/menu/menu_button.gd")
+
 signal closed
 
 var content: VBoxContainer
@@ -12,6 +14,7 @@ func configure(audio: AudioDirector) -> void:
 	var dim := ColorRect.new()
 	dim.color = Color(0.015, 0.03, 0.045, 0.96)
 	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	TemporalButton.theme_for(dim)
 	add_child(dim)
 	var center := CenterContainer.new()
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -34,9 +37,9 @@ func configure(audio: AudioDirector) -> void:
 	content = preload("res://scripts/ui/settings_content.gd").new()
 	content.audio = audio
 	box.add_child(content)
-	back_button = Button.new()
+	back_button = TemporalButton.apply(Button.new(), &"SecondaryButton", true)
 	back_button.text = "BACK TO PAUSE MENU"
-	back_button.custom_minimum_size.y = 42
+	back_button.custom_minimum_size.y = 54
 	back_button.pressed.connect(close)
 	box.add_child(back_button)
 	hide()

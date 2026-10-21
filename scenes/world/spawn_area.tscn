@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" path="res://assets/world/spawn_ring.svg" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/gameplay/laboratory_gameplay.tscn" id="8_gameplay"]
 [ext_resource type="PackedScene" path="res://scenes/environment/rooms/signal_lab.tscn" id="8"]
+[ext_resource type="Theme" uid="uid://mljd6hp0evtx" path="res://resources/ui/menu_theme.tres" id="menu_theme"]
+[ext_resource type="Script" uid="uid://b4xsq1w0wp8a2" path="res://scripts/menu/menu_button.gd" id="menu_button"]
 
 [sub_resource type="BoxShape3D" id="HorizontalWall"]
 size = Vector3(25.44, 1, 0.32)
@@ -294,6 +296,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("menu_theme")
 color = Color(0.015, 0.035, 0.05, 0.86)
 
 [node name="Center" type="CenterContainer" parent="PauseLayer/Interface/PausePanel"]
@@ -324,46 +327,64 @@ text = "Take your time. The lab will be here."
 
 [node name="ResumeButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 60)
 mouse_default_cursor_shape = 2
+theme_type_variation = &"PrimaryButton"
+script = ExtResource("menu_button")
 text = "RESUME"
 
 [node name="SettingsButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
 text = "SETTINGS"
 
 [node name="CharacterButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
 text = "CHARACTER STUDIO"
 
 [node name="ResetSoloButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
 text = "RESET SOLO SESSION"
 
 [node name="InterferenceButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
 text = "TEST RADIO INTERFERENCE"
 
 [node name="MenuButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
 mouse_default_cursor_shape = 2
-text = "RETURN TO MENU"
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
+text = "RETURN TO MAIN MENU"
 
 [node name="QuitGameButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
+custom_minimum_size = Vector2(0, 54)
 mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+script = ExtResource("menu_button")
 text = "QUIT GAME"

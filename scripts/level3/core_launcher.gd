@@ -1,5 +1,5 @@
 extends Control
-## Debug-only route. Does not add shortcuts to the shipping menu or alter Room B.
+## Debug-only solo/LAN launcher, also reachable from the main menu. Does not alter Room B.
 
 var address: LineEdit
 var status: Label
@@ -73,6 +73,7 @@ func _button(parent: Node, text: String, callback: Callable) -> void:
 func _solo(timeline: String) -> void:
 	NetworkManager.leave_game()
 	PuzzleManager.offline_role = "future" if timeline == "future" else "past"
+	PuzzleManager.begin_session()
 	_enter()
 
 

@@ -1,7 +1,6 @@
 extends Control
 
 const InputManager := preload("res://scripts/input/input_manager.gd")
-const TemporalButton := preload("res://scripts/menu/menu_button.gd")
 
 var audio: AudioDirector
 
@@ -42,6 +41,9 @@ func _ready() -> void:
 	%StartGameButton.pressed.connect(func() -> void: NetworkManager.start_game())
 	%PreviewButton.pressed.connect(_preview_spawn_area)
 	%LevelTwoTestButton.pressed.connect(_preview_maintenance_corridor)
+	%LevelThreeTestButton.pressed.connect(_preview_temporal_core)
+	%LevelThreeMultiplayerButton.pressed.connect(_open_temporal_core_multiplayer)
+	%LevelThreeMultiplayerButton.visible = OS.is_debug_build()
 	NetworkManager.state_changed.connect(_refresh_lan)
 	NetworkManager.game_started.connect(_enter_spawn_area)
 	fullscreen_toggle.toggled.connect(_set_fullscreen)
@@ -217,6 +219,23 @@ func _preview_maintenance_corridor() -> void:
 	get_tree().change_scene_to_file.call_deferred("res://scenes/world/maintenance_corridor.tscn")
 
 
+## Reuse Room C's offline role switch and real rules; no earlier puzzles are marked solved.
+func _preview_temporal_core() -> void:
+	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
+		return
+	_entering_game = true
+	PuzzleManager.offline_role = "past"
+	PuzzleManager.begin_session()
+	GameFlowManager.start_room.call_deferred("room_03")
+
+
+func _open_temporal_core_multiplayer() -> void:
+	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
+		return
+	_entering_game = true
+	get_tree().change_scene_to_file.call_deferred("res://scenes/testing/temporal_core_sandbox.tscn")
+
+
 func _enter_spawn_area() -> void:
 	if _entering_game:
 		return
@@ -258,35 +277,9 @@ func _load_settings() -> void:
 
 func _build_audio_settings() -> void:
 	var settings := pages.get_node("SettingsPage")
-	for category: StringName in AudioDirector.CATEGORIES:
-		var row := HBoxContainer.new()
-		row.add_theme_constant_override("separation", 12)
-		var label := Label.new()
-		label.text = String(category)
-		label.custom_minimum_size.x = 95
-		label.add_theme_font_size_override("font_size", 18)
-		row.add_child(label)
-		var slider := HSlider.new()
-		slider.name = String(category) + "Volume"
-		slider.min_value = 0.0
-		slider.max_value = 1.0
-		slider.step = 0.01
-		slider.custom_minimum_size = Vector2(185, 30)
-		slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var bus_index := AudioServer.get_bus_index(category)
-		slider.value = db_to_linear(AudioServer.get_bus_volume_db(bus_index))
-		slider.tooltip_text = String(category) + " volume"
-		row.add_child(slider)
-		var mute := CheckButton.new()
-		mute.set_script(TemporalButton)
-		mute.theme_type_variation = &"ToggleButton"
-		mute.text = "Mute"
-		mute.set_pressed_no_signal(audio.is_category_muted(category))
-		mute.toggled.connect(func(value: bool) -> void: audio.set_category_muted(category, value))
-		slider.value_changed.connect(func(value: float) -> void:
-			audio.set_category_volume_linear(category, value)
-			mute.set_pressed_no_signal(value <= 0.0001)
-		)
-		row.add_child(mute)
-		settings.add_child(row)
-	settings.move_child(settings.get_node("Hint"), settings.get_child_count() - 1)
+	var content := preload("res://scripts/ui/settings_content.gd").new()
+	content.name = "SettingsContent"
+	content.audio = audio
+	settings.add_child(content)
+	content.add_display_page(fullscreen_toggle, motion_toggle)
+	settings.get_node("Hint").hide()

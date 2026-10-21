@@ -6,6 +6,7 @@ const Frequency := preload("res://scripts/puzzles/implementations/frequency_puzz
 const Radio := preload("res://scripts/gameplay/radio/temporal_radio.gd")
 const WorldTextLayout := preload("res://scripts/ui/world_text_layout.gd")
 const TemporalGhost := preload("res://scripts/world/temporal_ghost.gd")
+const TemporalButton := preload("res://scripts/menu/menu_button.gd")
 const SEQUENCES := {
 	"arrival": "res://resources/dialogue/maintenance/arrival.tres",
 	"crossing": "res://resources/dialogue/maintenance/crossing.tres",
@@ -712,6 +713,16 @@ func _button(parent: Node, text: String, callback: Callable) -> Button:
 	return button
 
 
+## Pause and ending screens use the title screen's buttons so every level shares one menu.
+func _menu_button(parent: Node, text: String, callback: Callable, variation: StringName = &"SecondaryButton") -> Button:
+	var button := TemporalButton.apply(Button.new(), variation)
+	button.text = text
+	button.custom_minimum_size = Vector2(0, 60 if variation == &"PrimaryButton" else 54)
+	button.pressed.connect(callback)
+	parent.add_child(button)
+	return button
+
+
 func _build_hud() -> void:
 	set_meta("started_networked", NetworkManager.in_game)
 	var layer := CanvasLayer.new()
@@ -759,15 +770,23 @@ func _build_hud() -> void:
 	overlays.layer = 30
 	add_child(overlays)
 	pause_screen = _overlay(overlays, "Pause")
+	# The pause menu hugs its buttons like the other levels; only the ending summary needs the wide panel.
+	var pause_panel := pause_screen.get_node("Panel") as Control
+	pause_panel.offset_left = -240.0
+	pause_panel.offset_right = 240.0
+	pause_panel.offset_top = -10.0
+	pause_panel.offset_bottom = 10.0
+	pause_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	pause_panel.grow_vertical = Control.GROW_DIRECTION_BOTH
 	var box := pause_screen.get_node("Panel/Box")
 	var title := _hud_label("A moment between years", 34)
 	title.name = "Title"
 	box.add_child(title)
-	_button(box, "RESUME", func() -> void: set_paused(false)).name = "Resume"
+	_menu_button(box, "RESUME", func() -> void: set_paused(false), &"PrimaryButton").name = "Resume"
 	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
 	add_child(settings_overlay)
 	settings_overlay.configure(audio)
-	var settings_button := _button(box, "SETTINGS", func() -> void:
+	var settings_button := _menu_button(box, "SETTINGS", func() -> void:
 		pause_screen.hide()
 		settings_overlay.open()
 	)
@@ -775,9 +794,9 @@ func _build_hud() -> void:
 		pause_screen.show()
 		settings_button.grab_focus()
 	)
-	_button(box, "RETURN TO MAIN MENU", return_to_menu)
+	_menu_button(box, "RETURN TO MAIN MENU", return_to_menu)
 	if not NetworkManager.in_game:
-		_button(box, "RESTART CHAPTER FROM LABORATORY", func() -> void:
+		_menu_button(box, "RESTART CHAPTER FROM LABORATORY", func() -> void:
 			PuzzleManager.begin_session()
 			PuzzleManager.offline_role = "past"
 			get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
@@ -790,6 +809,7 @@ func _overlay(parent: Node, node_name: String) -> Control:
 	dim.name = node_name
 	dim.color = Color(0.015, 0.03, 0.045, 0.94)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	TemporalButton.theme_for(dim)
 	parent.add_child(dim)
 	var panel := PanelContainer.new()
 	panel.name = "Panel"
@@ -829,12 +849,12 @@ func _show_ending() -> void:
 	content.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(content)
-	_button(box, "INSPECT THE STABILIZED CORE", func() -> void:
+	_menu_button(box, "INSPECT THE STABILIZED CORE", func() -> void:
 		_ending_dismissed = true
 		ending_screen.hide()
 		_sync_controls()
-	)
-	_button(box, "RETURN TO MAIN MENU", return_to_menu)
+	, &"PrimaryButton")
+	_menu_button(box, "RETURN TO MAIN MENU", return_to_menu)
 	ending_screen.show()
 	_sync_controls()
 

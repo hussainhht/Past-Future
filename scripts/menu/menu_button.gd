@@ -13,6 +13,7 @@ extends Button
 const LIT_IN := 0.18
 const LIT_OUT := 0.24
 const PRESS_OUT := 0.12
+const MENU_THEME := "res://resources/ui/menu_theme.tres"
 const FONT_ITEMS: Array[StringName] = [
 	&"font_color", &"font_hover_color", &"font_focus_color", &"font_hover_pressed_color",
 ]
@@ -33,6 +34,20 @@ var _live_down: StyleBoxFlat
 var _font_rest: Color
 var _font_lit: Color
 var _nudge := 0.0
+
+
+## Gives a menu root (pause screen, settings overlay, modal) the title screen's theme.
+static func theme_for(root: Control) -> void:
+	root.theme = load(MENU_THEME)
+
+
+## Turns a code-built button into the title screen's button. Call before adding it to the tree.
+static func apply(button: Button, variation: StringName = &"SecondaryButton", back := false) -> Button:
+	button.set_script(load("res://scripts/menu/menu_button.gd"))
+	button.theme_type_variation = variation
+	button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	button.set("points_back", back)
+	return button
 
 
 func _init() -> void:

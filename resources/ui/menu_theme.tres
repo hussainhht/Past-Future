@@ -251,9 +251,72 @@ spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_g2hqt"]
 variation_embolden = 0.2
-spacing_glyph = 2
+spacing_glyph = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shs6w"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.06666667, 0.105882354, 0.1254902, 0.55)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.27450982, 0.34901962, 0.36862746, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13es2"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsqbe"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5254902, 0.7882353, 0.81960785, 0.9)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_my11l"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0.5254902, 0.7882353, 0.81960785, 0.04)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s00gn"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0.5254902, 0.7882353, 0.81960785, 0.07)
+border_width_bottom = 2
+border_color = Color(0.5254902, 0.7882353, 0.81960785, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpx8y"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rsi2c"]
+
+[sub_resource type="FontVariation" id="FontVariation_x186l"]
+variation_embolden = 0.2
+spacing_glyph = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8bvl"]
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
@@ -265,9 +328,9 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_13es2"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ybgbv"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsqbe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mf64p"]
 content_margin_left = 24.0
 content_margin_top = 15.0
 content_margin_right = 24.0
@@ -279,13 +342,13 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="FontVariation" id="FontVariation_my11l"]
+[sub_resource type="FontVariation" id="FontVariation_yqchi"]
 variation_embolden = 0.2
 spacing_glyph = 1
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s00gn"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ttqu"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpx8y"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljaar"]
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
@@ -388,6 +451,18 @@ SecondaryButton/styles/hover = SubResource("StyleBoxFlat_glb6i")
 SecondaryButton/styles/hover_pressed = SubResource("StyleBoxFlat_glb6i")
 SecondaryButton/styles/normal = SubResource("StyleBoxFlat_4bj61")
 SecondaryButton/styles/pressed = SubResource("StyleBoxFlat_ffnig")
+TabContainer/colors/font_hovered_color = Color(0.9411765, 0.8862745, 0.78039217, 1)
+TabContainer/colors/font_selected_color = Color(0.9411765, 0.8862745, 0.78039217, 1)
+TabContainer/colors/font_unselected_color = Color(0.6627451, 0.7019608, 0.68235296, 1)
+TabContainer/font_sizes/font_size = 16
+TabContainer/fonts/font = SubResource("FontVariation_g2hqt")
+TabContainer/styles/panel = SubResource("StyleBoxFlat_shs6w")
+TabContainer/styles/tab_disabled = SubResource("StyleBoxFlat_13es2")
+TabContainer/styles/tab_focus = SubResource("StyleBoxFlat_nsqbe")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_my11l")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_s00gn")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_jpx8y")
+TabContainer/styles/tabbar_background = SubResource("StyleBoxEmpty_rsi2c")
 TertiaryButton/base_type = &"Button"
 TertiaryButton/colors/arrow_color = Color(0.5254902, 0.7882353, 0.81960785, 1)
 TertiaryButton/colors/bevel_light_color = Color(0, 0, 0, 0)
@@ -409,13 +484,13 @@ TertiaryButton/constants/indicator_inset = 5
 TertiaryButton/constants/nudge = 3
 TertiaryButton/constants/tick_inset = 0
 TertiaryButton/font_sizes/font_size = 15
-TertiaryButton/fonts/font = SubResource("FontVariation_g2hqt")
-TertiaryButton/styles/disabled = SubResource("StyleBoxFlat_shs6w")
-TertiaryButton/styles/focus = SubResource("StyleBoxEmpty_13es2")
-TertiaryButton/styles/hover = SubResource("StyleBoxFlat_shs6w")
-TertiaryButton/styles/hover_pressed = SubResource("StyleBoxFlat_shs6w")
-TertiaryButton/styles/normal = SubResource("StyleBoxFlat_shs6w")
-TertiaryButton/styles/pressed = SubResource("StyleBoxFlat_nsqbe")
+TertiaryButton/fonts/font = SubResource("FontVariation_x186l")
+TertiaryButton/styles/disabled = SubResource("StyleBoxFlat_v8bvl")
+TertiaryButton/styles/focus = SubResource("StyleBoxEmpty_ybgbv")
+TertiaryButton/styles/hover = SubResource("StyleBoxFlat_v8bvl")
+TertiaryButton/styles/hover_pressed = SubResource("StyleBoxFlat_v8bvl")
+TertiaryButton/styles/normal = SubResource("StyleBoxFlat_v8bvl")
+TertiaryButton/styles/pressed = SubResource("StyleBoxFlat_mf64p")
 ToggleButton/base_type = &"CheckButton"
 ToggleButton/colors/arrow_color = Color(0.5254902, 0.7882353, 0.81960785, 1)
 ToggleButton/colors/bevel_light_color = Color(0, 0, 0, 0)
@@ -439,10 +514,10 @@ ToggleButton/constants/indicator_inset = 0
 ToggleButton/constants/nudge = 3
 ToggleButton/constants/tick_inset = 0
 ToggleButton/font_sizes/font_size = 16
-ToggleButton/fonts/font = SubResource("FontVariation_my11l")
+ToggleButton/fonts/font = SubResource("FontVariation_yqchi")
 ToggleButton/styles/disabled = SubResource("StyleBoxFlat_6x7we")
-ToggleButton/styles/focus = SubResource("StyleBoxEmpty_s00gn")
+ToggleButton/styles/focus = SubResource("StyleBoxEmpty_8ttqu")
 ToggleButton/styles/hover = SubResource("StyleBoxFlat_glb6i")
 ToggleButton/styles/hover_pressed = SubResource("StyleBoxFlat_glb6i")
 ToggleButton/styles/normal = SubResource("StyleBoxFlat_4bj61")
-ToggleButton/styles/pressed = SubResource("StyleBoxFlat_jpx8y")
+ToggleButton/styles/pressed = SubResource("StyleBoxFlat_ljaar")

@@ -119,7 +119,7 @@ layout_mode = 0
 offset_left = 112.0
 offset_top = 500.0
 offset_right = 472.0
-offset_bottom = 686.0
+offset_bottom = 754.0
 theme_override_constants/separation = 14
 
 [node name="PlayButton" type="Button" parent="Layout/Actions" unique_id=1798032236]
@@ -163,6 +163,16 @@ size_flags_horizontal = 0
 mouse_default_cursor_shape = 2
 theme_type_variation = &"TertiaryButton"
 text = "QUIT"
+script = ExtResource("5_button")
+
+[node name="LevelThreeTestButton" type="Button" parent="Layout/Actions"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 54)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+text = "PLAY LEVEL 3 — TEST"
+tooltip_text = "Start a fresh offline Final Fracture test. Use DEV: OTHER TIMELINE to play both roles."
 script = ExtResource("5_button")
 
 [node name="PastStamp" type="Label" parent="Layout" unique_id=682961004]
@@ -279,6 +289,16 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "LEVEL 2     /     TEMPORARY SOLO TEST"
 tooltip_text = "Skip the laboratory and start a fresh Maintenance Corridor test. Press T to switch timelines."
+
+[node name="LevelThreeMultiplayerButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"SecondaryButton"
+text = "LEVEL 3     /     MULTIPLAYER TEST"
+tooltip_text = "Open the development launcher on both clients to host/join directly in The Final Fracture."
+script = ExtResource("5_button")
 
 [node name="HostButton" type="Button" parent="Overlay/Center/Panel/Margin/Pages/PlayPage" unique_id=1752570527]
 unique_name_in_owner = true

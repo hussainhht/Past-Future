@@ -1,6 +1,8 @@
 extends VBoxContainer
 ## Shared settings pages for the title screen and room pause menus.
 
+const TemporalButton := preload("res://scripts/menu/menu_button.gd")
+
 var audio: AudioDirector
 var tabs: TabContainer
 var audio_sliders: Dictionary = {}
@@ -82,13 +84,8 @@ func _build_audio(box: VBoxContainer) -> void:
 		percent.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		row.add_child(percent)
 		var mute := CheckButton.new()
+		TemporalButton.apply(mute, &"ToggleButton")
 		mute.text = "Mute"
-		mute.add_theme_font_size_override("font_size", 16)
-		for state in ["normal", "hover", "pressed", "disabled"]:
-			var style := StyleBoxFlat.new()
-			style.bg_color = Color("203338") if state == "hover" else Color.TRANSPARENT
-			style.set_content_margin_all(4)
-			mute.add_theme_stylebox_override(state, style)
 		mute.button_pressed = audio.is_category_muted(category)
 		mute.toggled.connect(func(value: bool) -> void: audio.set_category_muted(category, value))
 		slider.value_changed.connect(func(value: float) -> void:

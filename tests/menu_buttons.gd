@@ -189,7 +189,7 @@ func test_keyboard_navigation() -> void:
 	check(menu.get_node("Overlay").visible and menu.get_node("Overlay/Center/Panel/Margin/Pages/PlayPage").visible, "Enter activates Play")
 	check(btn("PreviewButton").has_focus(), "Submenu focus starts on the first live option")
 	await tap(KEY_DOWN)
-	check(btn("HostButton").has_focus(), "Down skips the disabled split-screen entry and moves through the list")
+	check(btn("LevelTwoTestButton").has_focus(), "Down moves through the mode list")
 	await tap(KEY_ESCAPE)
 	await wait(0.1)
 	check(not menu.get_node("Overlay").visible and btn("PlayButton").has_focus(), "Escape closes the page and returns focus to Play")

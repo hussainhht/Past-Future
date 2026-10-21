@@ -1,6 +1,8 @@
 extends CanvasLayer
 ## Native scalable HUD and skippable terminal/document panels.
 
+const TemporalButton := preload("res://scripts/menu/menu_button.gd")
+
 var root: Control
 var identity: Label
 var timer: Label
@@ -72,6 +74,7 @@ func _ready() -> void:
 	modal.offset_right = 470
 	modal.offset_bottom = 230
 	modal.add_theme_stylebox_override("panel", panel_style())
+	TemporalButton.theme_for(modal)
 	root.add_child(modal)
 	modal_box = VBoxContainer.new()
 	modal_box.add_theme_constant_override("separation", 16)
@@ -131,7 +134,11 @@ func show_panel(title: String, body: String, options: Array) -> void:
 	scroll.add_child(content)
 	var first: Button
 	for option: Dictionary in options:
-		var b := make_button(option.label, option.callback)
+		# Menu buttons match the title screen; the first option is the room's main action.
+		var b := TemporalButton.apply(Button.new(), &"PrimaryButton" if first == null else &"SecondaryButton")
+		b.text = option.label
+		b.custom_minimum_size.y = 60 if first == null else 54
+		b.pressed.connect(option.callback)
 		modal_box.add_child(b)
 		if first == null: first = b
 	visible_modal = true

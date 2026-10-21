@@ -1,124 +1,109 @@
 # 06 SCENES AND LEVELS: Environments, Props & Level Architecture
 
-This document catalogs all scene files, room layouts, physical boundaries, lighting configurations, and level transition flows in the game.
+This document catalogs all Godot scenes (`.tscn`), playable room layouts, physical boundaries, interactive equipment, and level progression flows in **Past-Future**.
 
 ---
 
 ## 1. Complete Scene Inventory
 
-| Scene Path | Root Node | Script / Controller | Purpose / Current State |
+### 1.1 Menus & Global Overlays
+| Scene Path | Root Node | Script / Controller | Description & State |
 |---|---|---|---|
-| [scenes/menu/main_menu.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/menu/main_menu.tscn) | `Control` | [main_menu.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/menu/main_menu.gd) | **ACTIVE**. Title screen, audio/video settings, credits, and LAN lobby UI. |
-| [scenes/world/spawn_area.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/world/spawn_area.tscn) | `Node3D` | [spawn_area.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/spawn_area.gd) | **ACTIVE**. Greybox testing environment (Signal Laboratory prototype). |
-| [scenes/characters/student_3d_player.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_3d_player.tscn) | `CharacterBody3D` | [student_3d_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_3d_player.gd) | **ACTIVE**. The playable 3D student character with KayKit animations. |
-| [scenes/characters/student_3d_studio.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_3d_studio.tscn) | `Control` | [student_3d_studio.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_3d_studio.gd) | **ACTIVE**. In-game 3D inspection studio for animations and turntable. |
-| [scenes/props/lab_prop.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/props/lab_prop.tscn) | `StaticBody3D` | [lab_prop.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/lab_prop.gd) | **ACTIVE**. Reusable base prop with collision footprint and dynamic mesh loader. |
-| [scenes/props/table_visual.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/props/table_visual.tscn) | `Node3D` | None (Mesh container) | **ACTIVE**. 3D painted workbench with terminal base and documents. |
-| [scenes/props/cabinet_visual.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/props/cabinet_visual.tscn) | `Node3D` | None (Mesh container) | **ACTIVE**. 3D painted storage cabinet with drawers and shelves. |
-| [scenes/props/console_visual.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/props/console_visual.tscn) | `Node3D` | None (Mesh container) | **ACTIVE**. 3D painted scientific computer terminal with dual displays. |
-| [scenes/characters/student_player.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_player.tscn) | `CharacterBody3D` | [student_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_player.gd) | **BROKEN**. Missing `student_v2.glb`. |
-| [scenes/characters/student_model.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_model.tscn) | `Node3D` | None | **BROKEN**. Missing `student_v2.glb`. |
-| [scenes/characters/student_2d_player.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_2d_player.tscn) | `CharacterBody3D` | [student_2d_player.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_2d_player.gd) | **BROKEN**. Missing 2D atlas PNGs. |
-| [scenes/characters/student_paper_rig.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_paper_rig.tscn) | `Node2D` | [student_paper_rig.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_paper_rig.gd) | **BROKEN**. Missing 2D atlas PNGs. |
-| [scenes/characters/student_animation_studio.tscn](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scenes/characters/student_animation_studio.tscn) | `Control` | [student_animation_studio.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/characters/student_animation_studio.gd) | **BROKEN**. Legacy 2D character studio. |
+| [scenes/menu/main_menu.tscn](../scenes/menu/main_menu.tscn) | `Control` | [main_menu.gd](../scripts/menu/main_menu.gd) | **ACTIVE**. Title screen, play mode selectors, ENet LAN lobby, settings, credits, and exit confirmation. |
+| [scenes/ui/settings_overlay.tscn](../scenes/ui/settings_overlay.tscn) | `Control` | [settings_overlay.gd](../scripts/ui/settings_overlay.gd) | **ACTIVE**. Shared settings modal (fullscreen, reduced motion, master/sfx/ui/ambience/music volume sliders). |
+| [scenes/game_flow/transition_overlay.tscn](../scenes/game_flow/transition_overlay.tscn) | `CanvasLayer` | [transition_overlay.gd](../scripts/game_flow/transition_overlay.gd) | **ACTIVE**. Layer 100 screen fade overlay used by `GameFlowManager` during room transitions. |
+| [scenes/cinematic/cinematic_transition.tscn](../scenes/cinematic/cinematic_transition.tscn) | `CanvasLayer` | [cinematic_transition.gd](../scripts/cinematic/cinematic_transition.gd) | **ACTIVE**. Layer 40 cinematic room introduction title card overlay. |
+| [scenes/dialogue/dialogue_box.tscn](../scenes/dialogue/dialogue_box.tscn) | `Control` | [dialogue_box.gd](../scripts/dialogue/dialogue_box.gd) | **ACTIVE**. Dialogue overlay with portrait badges, typewriter text, and click/key advance. |
+| [scenes/journal/journal_ui.tscn](../scenes/journal/journal_ui.tscn) | `CanvasLayer` | [journal_ui.gd](../scripts/journal/journal_ui.gd) | **ACTIVE**. Layer 90 investigation journal (Student Notebook vs. Professor DataPad). |
+| [scenes/ui/interaction_prompt.tscn](../scenes/ui/interaction_prompt.tscn) | `Control` | [interaction_prompt.gd](../scripts/ui/interaction_prompt.gd) | **ACTIVE**. Contextual interaction prompt widget with dynamic controller glyphs. |
+
+### 1.2 Playable Levels
+| Scene Path | Root Node | Script / Controller | Description & State |
+|---|---|---|---|
+| [scenes/world/spawn_area.tscn](../scenes/world/spawn_area.tscn) | `Node3D` | [spawn_area.gd](../scripts/world/spawn_area.gd) | **ACTIVE (Room 01)**. Signal Laboratory: starting area, radio acquisition, frequency puzzle, and exit door. |
+| [scenes/world/maintenance_corridor.tscn](../scenes/world/maintenance_corridor.tscn) | `Node3D` | [maintenance_corridor.gd](../scripts/world/maintenance_corridor.gd) | **ACTIVE (Room 02)**. Maintenance Corridor: service loop, battery crank, dynamic support bridge, archive code 3142. |
+| [scenes/rooms/temporal_core.tscn](../scenes/rooms/temporal_core.tscn) | `Node3D` | [temporal_core.gd](../scripts/level3/temporal_core.gd) | **ACTIVE (Room 03)**. The Final Fracture: 150s reactor challenge, coils, anchor alignment, phase switch, Stage C endings. |
+
+### 1.3 Characters & Animation Studios
+| Scene Path | Root Node | Script / Controller | Description & State |
+|---|---|---|---|
+| [scenes/characters/student_3d_player.tscn](../scenes/characters/student_3d_player.tscn) | `CharacterBody3D` | [student_3d_player.gd](../scripts/characters/student_3d_player.gd) | **ACTIVE**. Playable 18yo Student model with KayKit animations. |
+| [scenes/characters/professor_3d_player.tscn](../scenes/characters/professor_3d_player.tscn) | `CharacterBody3D` | [student_3d_player.gd](../scripts/characters/student_3d_player.gd) | **ACTIVE**. Playable 49yo Professor model with KayKit animations. |
+| [scenes/characters/student_3d_studio.tscn](../scenes/characters/student_3d_studio.tscn) | `Control` | [student_3d_studio.gd](../scripts/characters/student_3d_studio.gd) | **ACTIVE**. In-game animation review studio for Student model (F2). |
+| [scenes/characters/professor_3d_studio.tscn](../scenes/characters/professor_3d_studio.tscn) | `Control` | [student_3d_studio.gd](../scripts/characters/student_3d_studio.gd) | **ACTIVE**. In-game animation review studio for Professor model. |
+
+### 1.4 Interactive Environment Props & Audio
+| Scene Path | Root Node | Script / Controller | Description & State |
+|---|---|---|---|
+| [scenes/environment/rooms/signal_lab.tscn](../scenes/environment/rooms/signal_lab.tscn) | `Node3D` | None | Assembled 3D Signal Laboratory room geometry and furniture. |
+| [scenes/environment/rooms/maintenance_layout.tscn](../scenes/environment/rooms/maintenance_layout.tscn) | `Node3D` | None | Assembled 3D Maintenance Corridor industrial layout and stations. |
+| [scenes/environment/effects/temporal_rift.tscn](../scenes/environment/effects/temporal_rift.tscn) | `Node3D` | [temporal_rift.gd](../scripts/environment/temporal_rift.gd) | Animated temporal distortion rift with particle energy. |
+| [scenes/environment/interactive/console_terminal.tscn](../scenes/environment/interactive/console_terminal.tscn) | `StaticBody3D` | None | Interactive scientific terminal stand with inspection target. |
+| [scenes/environment/interactive/security_door.tscn](../scenes/environment/interactive/security_door.tscn) | `Node3D` | None | Electronic sliding security exit door between rooms. |
+| [scenes/environment/interactive/radio_pickup_past.tscn](../scenes/environment/interactive/radio_pickup_past.tscn) | `Node3D` | None | Past radio transceiver equipment pickup station. |
+| [scenes/environment/interactive/radio_pickup_future.tscn](../scenes/environment/interactive/radio_pickup_future.tscn) | `Node3D` | None | Future radio transceiver equipment pickup station. |
+| [scenes/environment/interactive/research_notebook.tscn](../scenes/environment/interactive/research_notebook.tscn) | `Node3D` | None | Student research notebook evidence pickup. |
+| [scenes/environment/interactive/lab_memo.tscn](../scenes/environment/interactive/lab_memo.tscn) | `Node3D` | None | Wall memo and document inspection target. |
+| [scenes/environment/interactive/door_keypad.tscn](../scenes/environment/interactive/door_keypad.tscn) | `StaticBody3D` | None | 3D numeric keypad station for access codes. |
+| [scenes/environment/interactive/junction_box.tscn](../scenes/environment/interactive/junction_box.tscn) | `StaticBody3D` | None | Electrical breaker junction box with switches. |
+| [scenes/props/lab_prop.tscn](../scenes/props/lab_prop.tscn) | `StaticBody3D` | [lab_prop.gd](../scripts/world/lab_prop.gd) | Modular prop base: footprint collision + dynamic visual mesh. |
+| [scenes/props/table_visual.tscn](../scenes/props/table_visual.tscn) | `Node3D` | None | 3D painted workbench model. |
+| [scenes/props/cabinet_visual.tscn](../scenes/props/cabinet_visual.tscn) | `Node3D` | None | 3D painted storage cabinet model. |
+| [scenes/props/console_visual.tscn](../scenes/props/console_visual.tscn) | `Node3D` | None | 3D painted scientific computer console model. |
+| [scenes/audio/audio_system.tscn](../scenes/audio/audio_system.tscn) | `Node` | [audio_director.gd](../scripts/audio/audio_director.gd) | Audio subsystem: 2D/3D audio poolers and ambient controller. |
+| [scenes/audio/footstep_emitter_3d.tscn](../scenes/audio/footstep_emitter_3d.tscn) | `Node3D` | [footstep_emitter_3d.gd](../scripts/audio/footstep_emitter_3d.gd) | Cadence-based 3D footstep emitter attached to characters. |
+
+### 1.5 Testing & Sandbox Scenes
+| Scene Path | Root Node | Purpose |
+|---|---|---|
+| [scenes/testing/temporal_core_sandbox.tscn](../scenes/testing/temporal_core_sandbox.tscn) | `Control` | Standalone Level 3 testbed with dev timeline switcher and launcher buttons. |
+| [scenes/testing/transition_flow_sandbox.tscn](../scenes/testing/transition_flow_sandbox.tscn) | `Node` | Test harness for verifying room transitions between mock rooms A and B. |
+| [scenes/testing/audio_sandbox.tscn](../scenes/testing/audio_sandbox.tscn) | `Node3D` | Interactive sound testing sandbox for footsteps, ambience, and UI cues. |
+| [scenes/testing/controller_sandbox.tscn](../scenes/testing/controller_sandbox.tscn) | `Node` | Gamepad controller and DualSense haptic testing sandbox. |
+| [scenes/testing/dialogue_sandbox.tscn](../scenes/testing/dialogue_sandbox.tscn) | `Control` | Dialogue sequence auditioning and typewriter testbed. |
+| [scenes/testing/frequency_puzzle_sandbox.tscn](../scenes/testing/frequency_puzzle_sandbox.tscn) | `Node3D` | Standalone test environment for the 3D frequency tuning dial. |
+| [scenes/testing/interaction_sandbox.tscn](../scenes/testing/interaction_sandbox.tscn) | `Node3D` | Sandbox verifying proximity detection and priority selection. |
+
+### 1.6 Legacy Deprecated Scenes (Historical Artifacts)
+- `scenes/characters/student_player.tscn` / `student_model.tscn`: Legacy articulated 3D model (Missing `student_v2.glb`).
+- `scenes/characters/student_2d_player.tscn` / `student_paper_rig.tscn` / `student_animation_studio.tscn`: Legacy 2D paper rig (Missing deleted PNG atlases).
 
 ---
 
-## 2. Active Level: The Signal Laboratory (`spawn_area.tscn`)
+## 2. Room 01: Signal Laboratory (`spawn_area.tscn`)
 
-The active playable environment serves as both the testing playground and the initial room of Chapter 0.
-
-```mermaid
-graph TD
-    SpawnArea[SpawnArea - Node3D]
-    SpawnArea --> Env[WorldEnvironment - SubResource]
-    SpawnArea --> KeyLight[CharacterKeyLight - DirectionalLight3D]
-    SpawnArea --> Floor[Floor - Node3D / lab_floor.gd]
-    Floor --> FloorMesh[Surface - MeshInstance3D / PlaneMesh]
-    Floor --> FloorRim[Rim - 4 Border Rim Meshes]
-    Floor --> SpawnRing[SpawnRing - Sprite3D / Decal]
-    SpawnArea --> Bounds[Bounds - StaticBody3D / Low Border Walls]
-    SpawnArea --> SpawnPoint[SpawnPoint - Marker3D at 0, 0, 3.7]
-    SpawnArea --> Actors[Actors - Node3D]
-    Actors --> LeftTable[LeftTable - lab_prop.tscn Kind 0]
-    Actors --> RightTable[RightTable - lab_prop.tscn Kind 0]
-    Actors --> LeftCabinet[LeftCabinet - lab_prop.tscn Kind 1]
-    Actors --> RightCabinet[RightCabinet - lab_prop.tscn Kind 1]
-    Actors --> Console[Console - lab_prop.tscn Kind 2]
-    Actors --> Player[Player - student_3d_player.tscn]
-    SpawnArea --> CameraRig[CameraRig - Node3D / follow_camera.gd]
-    CameraRig --> Camera3D[Camera3D - Perspective 48 deg, pitch 35 deg]
-    SpawnArea --> HUD[HUD - CanvasLayer]
-```
-
-### 2.1 Physical Dimensions & Boundary Collisions
-- **Floor Surface**: Dimensions $24.8\text{ m} \times 15.6\text{ m}$ on the X/Z plane ($Y = 0$).
-- **Low Perimeter Walls**:
-  - Four `CollisionShape3D` boxes under `Bounds/StaticBody3D`:
-    - **North Wall**: Centered at $(0, 0.5, -7.96)$, size $25.44 \times 1.0 \times 0.32\text{ m}$.
-    - **South Wall**: Centered at $(0, 0.5, 7.96)$, size $25.44 \times 1.0 \times 0.32\text{ m}$.
-    - **West Wall**: Centered at $(-12.56, 0.5, 0)$, size $0.32 \times 1.0 \times 16.24\text{ m}$.
-    - **East Wall**: Centered at $(12.56, 0.5, 0)$, size $0.32 \times 1.0 \times 16.24\text{ m}$.
-  - **Height**: Low walls ($1.0\text{ m}$ high) are used intentionally so they do not occlude the camera's high top-down perspective while still preventing the player from walking outside the room bounds.
-
-### 2.2 Lighting & Atmosphere
-- **WorldEnvironment**:
-  - Background Mode: Clear color (`#090f13`).
-  - Ambient Light: Source = Color (`#d6e6ff`), Energy = $0.65$. Provides a cool atmospheric fill light.
-- **Directional Keylight**:
-  - `CharacterKeyLight`: DirectionalLight3D pitched at $(-40^\circ, -32^\circ, 0^\circ)$, light color `#fff0dc` (warm sun/fluorescent tone), energy $1.15$. Casts defined highlights on character and furniture geometry.
+- **Floor Dimensions**: $24.8\text{ m} \times 15.6\text{ m}$ on the X/Z ground plane ($Y=0$).
+- **Perimeter Bounds**: Low $1.0\text{ m}$ collision walls on North, South, West, East to keep the fixed-angle perspective camera view unobstructed.
+- **Lighting**:
+  - `WorldEnvironment`: Ambient fill light `#d6e6ff` (energy 0.65).
+  - `CharacterKeyLight`: DirectionalLight3D pitched at $(-40^\circ, -32^\circ, 0^\circ)$, energy 1.15.
+- **Stations & Interactables**:
+  - `RadioPickup`: Transceiver equipment required to establish the cross-timeline radio link.
+  - `ConsoleTerminal`: Active console in Past with rotatable frequency and amplitude dials; ruined log terminal in Future showing 67 MHz / 70% amplitude.
+  - `ResearchNotebook`: Clue pickup unlocking initial journal notes.
+  - `SecurityDoor`: North exit door that unlocks once the 67 MHz frequency link is established.
 
 ---
 
-## 3. Reusable Prop System (`scenes/props/`)
+## 3. Room 02: Maintenance Corridor (`maintenance_corridor.tscn`)
 
-Instead of unique models for every room, furniture is modularized into reusable composite scenes driven by [scripts/world/lab_prop.gd](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/scripts/world/lab_prop.gd).
-
-### 3.1 Prop Architecture & Footprint Collision
-A `LabProp` is an instance of `StaticBody3D` with:
-1. `CollisionShape3D` (`Footprint`): Sized to the physical ground footprint of the furniture.
-2. `MeshInstance3D` (`Shadow`): A flattened circular shadow cylinder at floor contact level.
-3. `Node3D` (`Visual`): Dynamically instantiates one of three visual scenes based on the exported `kind` enum:
-   - `0 = Table` $\rightarrow$ `table_visual.tscn` (Footprint: $4.32 \times 1.5 \times 0.8\text{ m}$)
-   - `1 = Cabinet` $\rightarrow$ `cabinet_visual.tscn` (Footprint: $1.65 \times 3.2 \times 0.8\text{ m}$)
-   - `2 = Console` $\rightarrow$ `console_visual.tscn` (Footprint: $1.65 \times 2.45 \times 0.8\text{ m}$)
-
-### 3.2 Visual Construction & Face Shading
-Each visual scene is assembled from multiple solid primitive `BoxMesh` instances. Every mesh part contains metadata defining its palette slot (e.g. `meta/palette_slot = "top"`, `"frame"`, `"body"`, `"screen"`, `"signal"`):
-- In `_apply_tint()`, `lab_prop.gd` assigns [shaders/painted_prop.gdshader](file:///c:/Users/hanwd/OneDrive/Desktop/past-future/shaders/painted_prop.gdshader) to each child mesh.
-- It supplies the appropriate color from either `PAST_COLORS` or `FUTURE_COLORS`.
-- The shader calculates custom directional face shading, giving furniture an authored low-poly painted appearance without textures.
+- **Layout**: Industrial service gallery authored via `scenes/environment/rooms/maintenance_layout.tscn` (generated by `tools/build_maintenance_map.py`).
+- **Pioneering Features**:
+  - *Power Bay*: Entry cabinet with SERVICE circuit isolator lever and emergency battery crank.
+  - *Support Crossing*: A physical chasm in the Future. The Student manipulates three hydraulic floor jacks; when configured to **Circle 3, Triangle 2, Square 1**, the collapsed ceiling slab in the Future shifts into a guarded walkable bridge.
+  - *Records Archive*: Future records room containing personnel history confirming the Professor is the Student 31 years later, plus service override code **3142**.
+  - *Private Dilemma Stations*: Local Reserve lever (diverts power locally at partner's expense) and Incident Recorder (extracting the cell provides early door power but erases authorization proof).
 
 ---
 
-## 4. UI Overlay & Head-Up Display (HUD)
+## 4. Room 03: The Final Fracture (`temporal_core.tscn`)
 
-The HUD is attached to `scenes/world/spawn_area.tscn` via a `CanvasLayer`:
-- **Top Header Bar**:
-  - Timeline indicator: `"I / PAST"` (in ochre) or `"II / FUTURE"` (in cyan).
-  - Role indicator: `"THE STUDENT"` or `"THE PROFESSOR"`.
-  - Room title: `"SIGNAL LABORATORY"`.
-  - Action buttons:
-    - `"VIEW FUTURE"` / `"VIEW PAST"`: Switches local timeline in solo preview (hidden in LAN mode).
-    - `"CHARACTER / F2"`: Opens `scenes/characters/student_3d_studio.tscn`.
-    - `"PAUSE"`: Opens the in-game pause modal.
-- **Bottom Footer Bar**:
-  - Displays persistent control hints: `WASD / ARROWS · MOVE | SHIFT · RUN | F · INTERACT | I · USE ITEM | E · PICK UP/PUT DOWN | F2 · STUDIO | R · RESPAWN | ESC · PAUSE`.
-- **Pause Panel Modal**:
-  - Full-screen modal overlay providing "RESUME", "RETURN TO MENU", and "QUIT GAME" options. Automatically halts player movement when open.
-
----
-
-## 5. Room Progression & Missing Levels
-
-Per the GDD v0.16 design, the Game Jam demo requires three connected rooms:
-
-```text
-[Room A: Signal Laboratory]  --->  [Room B: Maintenance Corridor]  --->  [Room C: Temporal Research Core]
-  (spawn_area.tscn greybox)             (NOT CREATED YET)                       (NOT CREATED YET)
-```
-
-1. **Room A (Signal Laboratory)**: Currently prototyped as `spawn_area.tscn`. Needs the addition of the interactive communication array and the locking security exit door.
-2. **Room B (Maintenance Corridor)**: Not yet built. Requires a narrower passage layout with 3 adjustable hydraulic support props and a collapsed ceiling mesh that shifts dynamically between timelines.
-3. **Room C (Temporal Research Core)**: Not yet built. Requires the central reactor pedestal, temporal fracture visual effect, control consoles, and the end-of-demo trigger zone.
-
+- **Dimensions**: $18.0\text{ m} \times 14.0\text{ m}$ central reactor chamber.
+- **Components**:
+  - Central reactor ring assembly, energetic temporal core pylon, and illuminated conduits.
+  - West-bank coils 1, 2, 3 (configured to 2, 0, 1).
+  - Future emergency receiver battery and collapsed north conduit.
+  - Signal Anchor calibration station and Origin Core stabilizer.
+  - Dual phase synchronization switches (requires simultaneous activation within 5 seconds).
+  - Stage C Identity Terminals: Origin Terminal (Past) and Continuity Terminal (Future).
+- **Audio & Visual Feedback**: Reactor clock countdown HUD, conduit energization lights, reactor core ring rotation speed/direction, and ending fade-out effects.

@@ -2,280 +2,329 @@
 
 ## 1. Repository Directory Structure
 
-Below is the verified file tree of the active repository (excluding Git metadata, `.godot/` cache, and `.venv/`):
+Below is the verified file tree of the active repository (excluding Git internals, `.godot/` cache, and local `.venv/`):
 
 ```text
 past-future/
+├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
 ├── GAME_DESIGN_DOCUMENT.md
 ├── icon.svg
 ├── icon.svg.import
-├── project.godot
-├── 3d/                                        <- (Reserved directory, currently empty)
+├── project.godot                              <- Engine configuration, Autoloads, Input actions, Physics
 ├── assets/
+│   ├── audio/                                 <- Kenney CC0 sound effects, footstep banks & ambiences
+│   │   ├── ambience/ (past, future)
+│   │   ├── asset_provenance.json              <- Audio provenance, sources, and hashes
+│   │   ├── computer/, documents/, doors/, footsteps/, interactions/, music/, radio/, rift/, ui/
+│   │   └── licenses/                          <- Kenney audio license texts (CC0)
 │   ├── characters/
-│   │   ├── ART_NOTES.md
-│   │   ├── STUDENT_MODEL.md
-│   │   ├── references/                        <- Excluded from Godot (.gdignore)
-│   │   │   ├── .gdignore
-│   │   │   ├── README.md
-│   │   │   ├── backview.png
-│   │   │   ├── frontview.png
-│   │   │   ├── sideview1.png
-│   │   │   └── sideview2.png
-│   │   ├── student_2d/                        <- Legacy 2D prototype files
-│   │   │   ├── atlas_regions.json
-│   │   │   ├── generation_prompts.json
-│   │   │   └── README.md
-│   │   └── student_3d/                        <- ACTIVE 3D character assets
-│   │       ├── manifest.json                  <- Model geometry, bone retarget & provenance
-│   │       ├── README.md
-│   │       ├── REFERENCE_STUDY.md
-│   │       ├── student.glb                    <- Compiled 3D skinned mesh (7.33 MB)
-│   │       ├── student.glb.import
-│   │       ├── VALIDATION.md
-│   │       ├── review/                        <- Renders & turnaround evidence (.gdignore)
-│   │       └── source/                        <- Blender editable project (.gdignore)
-│   │           └── student.blend
+│   │   ├── ART_NOTES.md, STUDENT_MODEL.md
+│   │   ├── references/                        <- 4-view concept art (.gdignore)
+│   │   ├── professor_3d/                      <- ACTIVE 3D Professor assets (49yo)
+│   │   │   ├── manifest.json, README.md, REFERENCE_STUDY.md, VALIDATION.md
+│   │   │   ├── professor.glb (7.29 MB)        <- Compiled 3D skinned mesh (23 bones, 77 clips)
+│   │   │   ├── review/, source/ (professor.blend)
+│   │   ├── student_2d/                        <- (Legacy 2D prototype files; PNGs deleted)
+│   │   └── student_3d/                        <- ACTIVE 3D Student assets (18yo)
+│   │       ├── manifest.json, README.md, REFERENCE_STUDY.md, VALIDATION.md
+│   │       ├── student.glb (7.33 MB)          <- Compiled 3D skinned mesh (23 bones, 77 clips)
+│   │       └── review/, source/ (student.blend)
+│   ├── environments/                          <- Modular lab props, textures & models
 │   ├── third_party/
-│   │   └── kaykit_character_animations/       <- Source CC0 animation packs (.gdignore)
-│   │       ├── .gdignore
-│   │       ├── License.txt
-│   │       ├── Mannequin_Medium.glb
-│   │       ├── README.md
-│   │       └── Rig_Medium_*.glb (8 files)
-│   ├── ui/
-│   │   ├── temporal_background.svg
-│   │   └── temporal_background.svg.import
-│   └── world/                                 <- Legacy & active 2D/vector decors
-│       ├── cabinet.svg, console.svg, pill.svg, table.svg
-│       ├── spawn_ring.svg
-│       └── spawn_ring.svg.import
+│   │   └── kaykit_character_animations/       <- CC0 source animation GLBs (.gdignore)
+│   └── ui/                                    <- Vector graphics & temporal dials
+├── docs/                                      <- Comprehensive system guides, reports & screenshots
+│   ├── AUDIO_SYSTEM.md, CINEMATIC_ROOM_TRANSITIONS.md, CONTROLLER_SUPPORT.md
+│   ├── DIALOGUE_SYSTEM.md, FREQUENCY_PUZZLE.md, GAMEPLAY_INTEGRATION.md
+│   ├── GAME_FLOW_SYSTEM.md, INTERACTION_SYSTEM.md, JOURNAL_SYSTEM.md
+│   ├── LEVEL_02.md, LEVEL3_FINAL_FRACTURE.md, PERFORMANCE.md, PLAYER_EXPERIENCE.md
+│   └── TEMPORAL_GHOST.md
+├── resources/
+│   ├── audio/                                 <- Audio bus layouts & presets
+│   ├── cinematic/                             <- Room intro definitions & style presets
+│   │   ├── presets/ (past_memory, future_signal, neutral, finale)
+│   │   └── rooms/ (signal_laboratory, maintenance_corridor, temporal_core)
+│   ├── dialogue/                              <- Dialogue sequence resources (.tres)
+│   │   ├── intro/, laboratory/, maintenance/, core/
+│   │   └── speakers/ (student, professor, system, radio)
+│   ├── journal/                               <- JournalEntry resources for notebook & DataPad
+│   │   ├── student/ (clues & observations)
+│   │   └── professor/ (clues & logs)
+│   ├── levels/                                <- RoomDefinition resources
+│   │   ├── room_01.tres                       <- Signal Laboratory
+│   │   ├── room_02.tres                       <- Maintenance Corridor
+│   │   ├── room_03.tres                       <- The Final Fracture / Temporal Core
+│   │   └── test/                              <- Test room definitions
+│   └── ui/
+│       └── menu_theme.tres                    <- Shared UI theme for menus, buttons & panels
 ├── scenes/
+│   ├── audio/                                 <- audio_system.tscn, footstep_emitter_3d.tscn
 │   ├── characters/
-│   │   ├── student_2d_player.tscn             <- (Legacy, broken: missing PNGs)
-│   │   ├── student_3d_player.tscn             <- ACTIVE gameplay character scene
-│   │   ├── student_3d_studio.tscn             <- In-game 3D animation inspection studio
-│   │   ├── student_animation_studio.tscn      <- (Legacy 2D studio)
-│   │   ├── student_model.tscn                 <- (Legacy, broken: missing student_v2.glb)
-│   │   ├── student_paper_rig.tscn             <- (Legacy 2D paper rig)
-│   │   └── student_player.tscn                <- (Legacy, broken: missing student_v2.glb)
+│   │   ├── student_3d_player.tscn             <- ACTIVE Student player scene
+│   │   ├── student_3d_studio.tscn             <- In-game Student animation review studio (F2)
+│   │   ├── professor_3d_player.tscn           <- ACTIVE Professor player scene
+│   │   ├── professor_3d_studio.tscn           <- In-game Professor animation review studio
+│   │   └── (student_player, student_2d_player, etc. - legacy deprecated scenes)
+│   ├── cinematic/
+│   │   └── cinematic_transition.tscn          <- Room intro title card overlay (CanvasLayer 40)
+│   ├── dialogue/
+│   │   ├── dialogue_box.tscn                  <- Dialogue box UI (portrait, text, click advance)
+│   │   └── dialogue_system.tscn               <- Director + box container
+│   ├── environment/
+│   │   ├── effects/ (temporal_rift.tscn)
+│   │   ├── interactive/ (console_terminal, security_door, junction_box, radio_pickup_*, etc.)
+│   │   └── rooms/ (signal_lab.tscn, maintenance_layout.tscn)
+│   ├── game_flow/
+│   │   └── transition_overlay.tscn            <- Full-screen fade overlay for level travel (Layer 100)
+│   ├── gameplay/
+│   │   └── laboratory_gameplay.tscn           <- Signal lab interactables, triggers & dialogue hooks
+│   ├── journal/
+│   │   └── journal_ui.tscn                    <- Notebook/DataPad inspection UI (Layer 90)
 │   ├── menu/
-│   │   └── main_menu.tscn                     <- Title screen, settings, credits, LAN lobby
+│   │   └── main_menu.tscn                     <- Title screen, settings, credits, play modes & LAN lobby
 │   ├── props/
-│   │   ├── cabinet_visual.tscn                <- Reusable 3D painted cabinet mesh
-│   │   ├── console_visual.tscn                <- Reusable 3D painted computer console mesh
-│   │   ├── lab_prop.tscn                      <- Prop base: collision footprint + visual loader
-│   │   └── table_visual.tscn                  <- Reusable 3D painted workbench mesh
+│   │   ├── lab_prop.tscn                      <- Reusable base prop with collision footprint
+│   │   ├── table_visual.tscn, cabinet_visual.tscn, console_visual.tscn
+│   ├── rooms/
+│   │   └── temporal_core.tscn                 <- ACTIVE Level 3 / Room C production room
+│   ├── testing/                               <- Sandbox scenes for audio, controllers, dialogue, etc.
+│   │   ├── temporal_core_sandbox.tscn         <- Level 3 standalone testbed with dev switcher
+│   │   └── transition_flow_sandbox.tscn
+│   ├── ui/
+│   │   ├── interaction_prompt.tscn            <- Dynamic contextual prompt widget
+│   │   └── settings_overlay.tscn              <- Settings modal overlay
 │   └── world/
-│       └── spawn_area.tscn                    <- ACTIVE testbed room (Signal Laboratory greybox)
+│       ├── spawn_area.tscn                    <- ACTIVE Level 1 / Signal Laboratory room
+│       ├── maintenance_corridor.tscn          <- ACTIVE Level 2 / Maintenance Corridor room
+│       └── room_02_placeholder.tscn          <- Standalone corridor greybox
 ├── scripts/
-│   ├── characters/
-│   │   ├── student_2d_player.gd
-│   │   ├── student_3d_player.gd               <- ACTIVE player controller (movement & animator)
-│   │   ├── student_3d_studio.gd               <- ACTIVE studio UI controller
-│   │   ├── student_animation_studio.gd
-│   │   ├── student_atlas_regions.gd
-│   │   ├── student_direction_poses.gd
-│   │   ├── student_paper_rig.gd
-│   │   └── student_player.gd
-│   ├── menu/
-│   │   ├── main_menu.gd                       <- Main menu, settings & LAN UI logic
-│   │   └── temporal_backdrop.gd               <- Procedural canvas item clock & particle motion
-│   ├── network/
-│   │   └── network_manager.gd                 <- AUTOLOAD singleton: ENet LAN host/join & state
-│   └── world/
-│       ├── follow_camera.gd                   <- Fixed-angle perspective follow camera
-│       ├── lab_floor.gd                       <- Floor procedural tile setup & timeline tint
-│       ├── lab_prop.gd                        <- Prop collision shape configuration & shader tint
-│       └── spawn_area.gd                      <- Room coordinator, timeline switcher & pause
+│   ├── audio/                                 <- audio_director.gd, ambient_audio_controller.gd, footstep_emitter_3d.gd, sound_catalog.gd
+│   ├── characters/                            <- student_3d_player.gd, student_3d_studio.gd, etc.
+│   ├── cinematic/                             <- cinematic_transition_manager.gd (AUTOLOAD), cinematic_transition.gd, room_intro_data.gd, room_intro_style.gd
+│   ├── dialogue/                              <- dialogue_director.gd, dialogue_box.gd, dialogue_sequence.gd, dialogue_line.gd, dialogue_trigger.gd
+│   ├── environment/                           <- signal_lab.gd, temporal_rift.gd, env_palette.gd
+│   ├── game_flow/                             <- game_flow_manager.gd (AUTOLOAD), room_definition.gd, transition_overlay.gd
+│   ├── gameplay/
+│   │   ├── laboratory_gameplay.gd             <- Signal Lab coordinator
+│   │   └── devices/                           <- device_inspector_3d.gd, device_inspector_interactable.gd
+│   ├── input/                                 <- input_manager.gd (controller auto-detect, glyphs, rumble)
+│   ├── interaction/                           <- interactable_3d.gd, interaction_detector.gd, interaction_controller.gd, puzzle_interactable_3d.gd
+│   ├── journal/                               <- journal_manager.gd (AUTOLOAD), journal_ui.gd, journal_entry.gd, journal_unlock.gd
+│   ├── level3/                                <- temporal_core.gd, core_rules.gd, core_ui.gd, core_launcher.gd
+│   ├── menu/                                  <- main_menu.gd, menu_button.gd, temporal_backdrop.gd
+│   ├── network/                               <- network_manager.gd (AUTOLOAD: ENet LAN host/join)
+│   ├── puzzles/                               <- puzzle_manager.gd (AUTOLOAD), puzzle_base.gd, puzzle_listener.gd
+│   │   └── implementations/                   <- frequency_puzzle.gd, maintenance_corridor_puzzle.gd, power_switch_puzzle.gd
+│   ├── testing/                               <- Sandboxes and mock helpers
+│   ├── ui/                                    <- interaction_prompt.gd, lab_ui.gd, maintenance_panel.gd, settings_content.gd, settings_overlay.gd, world_text_layout.gd
+│   └── world/                                 <- follow_camera.gd, lab_floor.gd, lab_prop.gd, maintenance_corridor.gd, spawn_area.gd, temporal_ghost.gd
 ├── shaders/
-│   ├── lab_floor.gdshader                     <- Procedural tile grid & timeline color switch
-│   └── painted_prop.gdshader                  <- Unshaded Lambertian face lighting for furniture
-├── tests/
-│   ├── lan_peer.gd                            <- Multi-process headless LAN verification
-│   ├── run_lan_smoke.py                       <- Python orchestrator for loopback testing
-│   ├── spawn_area.gd                          <- Godot headless scene & physics verification
-│   ├── student_2d.gd                          <- Legacy 2D test (currently fails)
-│   ├── student_3d.gd                          <- Godot headless 77-clip skeletal animation test
-│   └── student_3d_assets.py                   <- Python GLB asset provenance & skin validator
-└── tools/
-    ├── assemble_student_review.py             <- Generates HTML and turnaround review sheet
-    ├── build_student_kaykit.py                <- Primary procedural mesh authoring tool
-    ├── build_student_model.py                 <- Legacy student_v2 procedural builder
-    ├── gltf_tools.py                          <- Binary glTF/GLB reader/writer library
-    ├── ground_student_clips.py                <- 60 Hz skinned surface floor clearance optimizer
-    ├── inspect_student_atlases.py             <- Inspects legacy 2D sprite sheets
-    ├── preview_student.gd / preview_student_3d.gd
-    ├── render_student_review.gd               <- Godot script capturing neutral poses & clips
-    ├── requirements-character.txt             <- Python dependencies (NumPy, Pillow, bpy)
-    ├── student_blender.py                     <- Blender creation, export, and rendering
-    ├── student_mesh.py                        <- Geometry classes & glTF packaging
-    └── student_rig.py                         <- Retargeting & bone length delta scaling
+│   ├── environment.gdshader                   <- Lit environment shader
+│   ├── interaction_highlight.gdshader         <- Outline/fresnel highlight for active interactables
+│   ├── lab_floor.gdshader                     <- Procedural tile grid & timeline base switch
+│   ├── painted_prop.gdshader                  <- Lambertian normal face lighting for furniture
+│   ├── temporal_ghost.gdshader                <- Translucent cyan hologram silhouette & fade
+│   └── temporal_rift.gdshader                 <- Swirling distortion and fracture energy
+├── tests/                                     <- 13 Automated test suites & headless GDScript verifiers
+└── tools/                                     <- Python procedural mesh builders & asset exporters
 ```
 
 ---
 
-## 2. Godot Project Configuration (`project.godot`)
-
-The engine configuration file defines critical system-level defaults:
+## 2. Godot Engine Configuration (`project.godot`)
 
 - **Application**:
-  - `config/name="Past-Future"`
-  - `run/main_scene="res://scenes/menu/main_menu.tscn"`
-  - `config/features=PackedStringArray("4.7", "GL Compatibility")`
-- **Autoloads**:
-  - `NetworkManager="*res://scripts/network/network_manager.gd"` (Singleton running across all scenes)
+  - Name: `"Past-Future"`
+  - Main Scene: `"res://scenes/menu/main_menu.tscn"`
+  - Engine Features: `PackedStringArray("4.7", "GL Compatibility")`
+- **Autoload Singletons (Execution Priority Order)**:
+  1. `NetworkManager` (`*res://scripts/network/network_manager.gd`)
+  2. `PuzzleManager` (`*res://scripts/puzzles/puzzle_manager.gd`)
+  3. `GameFlowManager` (`*res://scripts/game_flow/game_flow_manager.gd`)
+  4. `JournalManager` (`*res://scripts/journal/journal_manager.gd`)
+  5. `CinematicTransitionManager` (`*res://scripts/cinematic/cinematic_transition_manager.gd`)
 - **Display & Viewport**:
-  - `window/size/viewport_width=1600`
-  - `window/size/viewport_height=900`
-  - `window/size/window_width_override=1280`
-  - `window/size/window_height_override=720`
-  - `window/stretch/mode="canvas_items"`
+  - Virtual Viewport: $1600 \times 900$
+  - Window Override: $1280 \times 720$ (Minimum: $960 \times 540$)
+  - Stretch Mode: `"canvas_items"`
 - **Physics**:
-  - `3d/physics_engine="Jolt Physics"` (Uses the Jolt 3D physics library)
+  - 3D Physics Engine: `"Jolt Physics"`
+  - Layer 4: `"Interaction"` (`3d_physics/layer_4="Interaction"`)
 - **Input Map**:
-  - `move_left`: Key `A` (Physical keycode 65)
-  - `move_right`: Key `D` (Physical keycode 68)
-  - `move_up`: Key `W` (Physical keycode 87)
-  - `move_down`: Key `S` (Physical keycode 83)
-- **Rendering**:
-  - `renderer/rendering_method="gl_compatibility"`
-  - `rendering_device/driver.windows="d3d12"`
+  - `move_left` (`A` / D-pad Left / Left Stick Left)
+  - `move_right` (`D` / D-pad Right / Left Stick Right)
+  - `move_up` (`W` / D-pad Up / Left Stick Up)
+  - `move_down` (`S` / D-pad Down / Left Stick Down)
+  - `interact` (`F` / DualSense Cross / Xbox A)
+  - `inspect` (`I` / DualSense Square / Xbox X)
+  - `use_item` (`E` / DualSense Triangle / Xbox Y)
+  - `sprint` (`Shift` / R2 / RT)
+  - `journal` (`J` / Select / Touchpad)
+  - `cancel` / `pause` (`Escape` / Start / Options)
 
 ---
 
-## 3. High-Level Architectural Layers
-
-The architecture consists of four distinct operational layers:
+## 3. High-Level Architectural System Layers
 
 ```mermaid
 graph TD
-    subgraph UI_Layer [UI & Presentation Layer]
-        MainMenu[scenes/menu/main_menu.tscn]
-        HUD[spawn_area.tscn / CanvasLayer / HUD]
-        Studio[scenes/characters/student_3d_studio.tscn]
+    subgraph UI_Layer [UI, Menus & Settings]
+        MainMenu[main_menu.tscn / main_menu.gd]
+        Settings[settings_overlay.tscn / settings_content.gd]
+        Theme[resources/ui/menu_theme.tres]
+        MainMenu --> Settings
     end
 
-    subgraph Network_Layer [Network & Session Layer]
-        NetworkManager[scripts/network/network_manager.gd - AUTOLOAD]
-        ENetPeer[ENetMultiplayerPeer - UDP 7000]
-        NetworkManager --> ENetPeer
+    subgraph Cinematic_Dialogue [Narrative & Presentation Layer]
+        CinematicMgr[CinematicTransitionManager - Autoload]
+        CinematicOverlay[scenes/cinematic/cinematic_transition.tscn]
+        DialogueDir[scripts/dialogue/dialogue_director.gd]
+        DialogueBox[scenes/dialogue/dialogue_box.tscn]
+        JournalMgr[JournalManager - Autoload]
+        JournalUI[scenes/journal/journal_ui.tscn]
+        CinematicMgr --> CinematicOverlay
+        DialogueDir --> DialogueBox
+        JournalMgr --> JournalUI
     end
 
-    subgraph World_Layer [Simulation & World Layer]
-        SpawnArea[scenes/world/spawn_area.tscn]
-        CameraRig[scripts/world/follow_camera.gd]
-        LabFloor[scripts/world/lab_floor.gd]
-        LabProp[scripts/world/lab_prop.gd]
-        SpawnArea --> CameraRig
-        SpawnArea --> LabFloor
-        SpawnArea --> LabProp
+    subgraph Flow_Network [Session & Level Flow Layer]
+        NetworkManager[NetworkManager - Autoload ENet UDP 7000]
+        GameFlowManager[GameFlowManager - Autoload Room Fader]
+        TransitionOverlay[scenes/game_flow/transition_overlay.tscn]
+        GameFlowManager --> TransitionOverlay
+        MainMenu --> NetworkManager
+        MainMenu --> GameFlowManager
     end
 
-    subgraph Character_Layer [Character & Animation Layer]
-        Player[scenes/characters/student_3d_player.tscn]
-        Controller[scripts/characters/student_3d_player.gd]
-        AnimPlayer[AnimationPlayer - 77 KayKit Clips]
-        SkinnedMesh[MeshInstance3D - Student_SkinnedMesh]
-        Player --> Controller
-        Controller --> AnimPlayer
-        Controller --> SkinnedMesh
+    subgraph Puzzle_Authority [Host-Authoritative Puzzle Layer]
+        PuzzleManager[PuzzleManager - Autoload State Dict & RPCs]
+        FreqPuzzle[puzzles/implementations/frequency_puzzle.gd]
+        MaintPuzzle[puzzles/implementations/maintenance_corridor_puzzle.gd]
+        CoreRules[scripts/level3/core_rules.gd]
+        PuzzleManager --> FreqPuzzle
+        PuzzleManager --> MaintPuzzle
+        PuzzleManager --> CoreRules
     end
 
-    MainMenu -->|Reads State & Starts Host/Join| NetworkManager
-    NetworkManager -->|Emits game_started| MainMenu
-    MainMenu -->|Changes Scene| SpawnArea
-    SpawnArea --> Player
+    subgraph Room_Worlds [Playable Game Worlds]
+        Room1[Level 1: scenes/world/spawn_area.tscn]
+        Room2[Level 2: scenes/world/maintenance_corridor.tscn]
+        Room3[Level 3: scenes/rooms/temporal_core.tscn]
+        GameFlowManager --> Room1
+        GameFlowManager --> Room2
+        GameFlowManager --> Room3
+    end
+
+    subgraph Gameplay_Actors [Characters, Interactions & Inspection]
+        StudentPlayer[student_3d_player.tscn - Past]
+        ProfessorPlayer[professor_3d_player.tscn - Future]
+        InteractionDetector[scripts/interaction/interaction_detector.gd]
+        DeviceInspector[scripts/gameplay/devices/device_inspector_3d.gd]
+        AudioDirector[scripts/audio/audio_director.gd]
+        TemporalGhost[scripts/world/temporal_ghost.gd]
+        Room1 --> StudentPlayer
+        Room1 --> ProfessorPlayer
+        Room2 --> StudentPlayer
+        Room2 --> ProfessorPlayer
+        Room3 --> StudentPlayer
+        Room3 --> ProfessorPlayer
+        StudentPlayer --> InteractionDetector
+        ProfessorPlayer --> InteractionDetector
+        InteractionDetector --> DeviceInspector
+        DeviceInspector --> PuzzleManager
+    end
 ```
 
 ---
 
-## 4. System Interactions & Event Flow
+## 4. System Interactions & Event Flows
 
-### 4.1 LAN Connection & Game Launch Flow
-1. **User Action**: In `main_menu.gd`, the player clicks "HOST ON WI-FI" or "JOIN ON WI-FI".
-2. **Host**: Calls `NetworkManager.host_game(7000)`. Sets `role = "past"`, state to `HOSTING`, binds `ENetMultiplayerPeer`.
-3. **Guest**: Enters host IP and calls `NetworkManager.join_game(address, 7000)`. Sets `role = "future"`, state to `CONNECTING`.
-4. **Handshake**:
-   - `multiplayer.connected_to_server` triggers `_register_client.rpc_id(1, PROTOCOL_VERSION)` on the guest.
-   - Host verifies protocol version ($2$), sets `guest_id`, switches state to `CONNECTED`, and sends `_apply_lobby.rpc_id(guest_id)`.
-5. **Ready State**:
-   - Guest clicks "I'M READY". Calls `NetworkManager.set_ready(true)`, sending `_request_ready.rpc_id(1, true)`.
-   - Host records `guest_ready = true` and updates guest via `_apply_lobby`.
-6. **Game Start**:
-   - Host clicks "START GAME". Calls `NetworkManager.start_game()`.
-   - Host broadcasts `_begin_game.rpc()` (authority, call_local).
-   - Both peers receive `_begin_game()`, set `in_game = true`, and emit `game_started`.
-   - `main_menu.gd` receives `game_started` and executes:
-     ```gdscript
-     get_tree().change_scene_to_file.call_deferred("res://scenes/world/spawn_area.tscn")
-     ```
+### 4.1 Host-Authoritative Puzzle Replication
+All puzzle interactions follow strict host authority:
+```text
+[Client Player Action]
+       │
+       ▼ (RPC request_puzzle_action)
+[Host (Peer 1) PuzzleManager]
+       │
+       ├─► 1. Verify Sender Peer ID & Authenticated Role
+       ├─► 2. Validate Prerequisites, Station Distance & Payload Schema
+       ├─► 3. Mutate Canonical State Dictionary
+       └─► 4. Increment State Revision (Monotonic Counter)
+       │
+       ▼ (RPC apply_puzzle_state, call_local)
+[Both Peers' PuzzleManagers]
+       │
+       ├─► Store Confirmed State & Emit puzzle_state_updated
+       └─► Notify Registered PuzzleListeners / DeviceInspectors
+```
+Clients **never mutate puzzle state optimistically**. Pending actions remain visual until host confirmation arrives.
 
-### 4.2 Room Setup & Timeline Application
-1. In `spawn_area.gd`, `_ready()` detects whether the game is networked:
-   ```gdscript
-   _networked = NetworkManager.in_game
-   if _networked:
-       timeline = "Past" if NetworkManager.role == "past" else "Future"
-   ```
-2. `_apply_timeline()` executes:
-   - Configures `Floor.future` (setting `future` uniform on `shaders/lab_floor.gdshader`).
-   - Iterates through all `Actors/` props and sets `prop.future = future` (recoloring materials via `shaders/painted_prop.gdshader`).
-   - Tints the player's jacket material: ochre (`#e4bf7f`) for Past, cold cyan (`#89ccd4`) for Future.
-   - Hides the "VIEW FUTURE" button in networked sessions (timeline switching is restricted to solo preview).
+### 4.2 Room Transitions (`GameFlowManager`)
+Moving between rooms is decoupled from network transport and puzzle sessions:
+1. **Request / Ready**: Players reach an exit door. Interacting marks readiness.
+2. **Authorization**: In multiplayer, travel requires both roles to report ready (`require_both_ready = true`).
+3. **Execution**:
+   - Host authorizes and broadcasts `transition_started`.
+   - Both peers fade screen to black (`fade_out_seconds = 0.45`).
+   - Old room is unloaded; ambience fades; new room instantiates and attaches.
+   - Initial snapshot is restored without resetting the puzzle session or ENet connection.
+   - Screen fades in (`fade_in_seconds = 0.55`); input lock is released.
+   - `CinematicTransitionManager` triggers the room title card presentation two frames after `_ready()`.
 
-### 4.3 Locomotion & Visual Update
-1. `student_3d_player.gd` processes player input in `_physics_process`:
-   - Gets 2D movement vector from `move_left`, `move_right`, `move_up`, `move_down`.
-   - Unprojects input into ground-plane vectors relative to `Camera3D`'s right and forward basis.
-   - Calculates velocity with optional sprint (`KEY_SHIFT`).
-   - Calls `move_and_slide()` using Jolt Physics.
-   - Rotates visual root smoothly toward movement direction:
-     ```gdscript
-     $Visual.rotation.y = rotate_toward($Visual.rotation.y, atan2(ground_direction.x, ground_direction.z), delta * 12.0)
-     ```
-   - Blends `AnimationPlayer` clips (`Idle_A`, `Walking_A`, `Running_A`, `Holding_A`).
+### 4.3 3D Physical Device Inspection (`DeviceInspector3D`)
+Equipment is manipulated in-world:
+1. Player approaches an interactive station and presses `F` (or controller `Cross`/`A`).
+2. The fixed camera smoothly interpolates to an inspection framing position.
+3. Ray-picked collision shapes allow direct clicking on 3D dials, switches, and keypads.
+4. An accompanying readable document panel appears alongside the equipment, formatted by `WorldTextLayout`.
+5. Pressing `Escape` or backing out restores the standard follow camera and returns player movement.
 
 ---
 
-## 5. Autoloads, Signals & RPC API
+## 5. Autoload Singletons API Reference
 
-### 5.1 Autoload: `NetworkManager` (`scripts/network/network_manager.gd`)
+### 5.1 `NetworkManager` (`scripts/network/network_manager.gd`)
+- **Role**: Manages ENet multiplayer peer lifecycle on UDP port `7000`.
+- **Properties**:
+  - `state: State` (`IDLE`, `HOSTING`, `CONNECTING`, `CONNECTED`)
+  - `role: String` (`"past"` on Host, `"future"` on Guest)
+  - `guest_ready: bool`: Readiness state in lobby
+  - `in_game: bool`: True when actively in a gameplay room
+- **Signals**: `state_changed`, `game_started`
+- **RPCs**: `_register_client`, `_apply_lobby`, `_request_ready`, `_begin_game`
 
-| Member / Signal / RPC | Type / Scope | Description |
-|---|---|---|
-| `signal state_changed` | Signal | Emitted when connection status, lobby state, or role changes. |
-| `signal game_started` | Signal | Emitted when host authorizes start and both clients launch. |
-| `state: State` | Enum (`IDLE`, `HOSTING`, `CONNECTING`, `CONNECTED`) | Current network lifecycle state. |
-| `role: String` | Variable (`"past"` or `"future"`) | Assigned player timeline role. |
-| `guest_ready: bool` | Variable | Whether the guest (Future) player has marked ready. |
-| `in_game: bool` | Variable | True when actively inside the game level. |
-| `_register_client(version)` | `@rpc("any_peer", "call_remote", "reliable")` | Sent from client to host to register protocol version. |
-| `_apply_lobby(id, ready)` | `@rpc("authority", "call_remote", "reliable")` | Sent from host to client to synchronize lobby status. |
-| `_request_ready(ready)` | `@rpc("any_peer", "call_remote", "reliable")` | Sent from client to host to request ready status change. |
-| `_begin_game()` | `@rpc("authority", "call_local", "reliable")` | Broadcast from host to both peers to transition to gameplay. |
+### 5.2 `PuzzleManager` (`scripts/puzzles/puzzle_manager.gd`)
+- **Role**: Authoritative host state dictionary and RPC replication pipeline.
+- **Key Methods**:
+  - `submit_action(id, action, payload)`: Client-facing submission method.
+  - `get_state(id)`: Returns confirmed dictionary for puzzle `id`.
+  - `is_solved(id)`: Returns whether puzzle `id` has completed.
+  - `refresh_puzzle(id)`: Host-only hook for active timed puzzles (e.g. Level 3 reactor clock).
+  - `get_session_id()`: Returns monotonic session identifier.
+- **Signals**: `puzzle_state_updated(id, state)`, `puzzle_completed(id)`, `session_started`, `session_ended`
 
-### 5.2 Character Signals (`scripts/characters/student_3d_player.gd`)
-- `signal action_finished(action: String)`: Emitted when an action clip (e.g. `pick_up`, `interact`, `inspect`) completes.
+### 5.3 `GameFlowManager` (`scripts/game_flow/game_flow_manager.gd`)
+- **Role**: Level flow, multi-peer transition synchronization, screen fades, and room registration.
+- **Key Methods**:
+  - `start_room(room_id)`: Enters room directly (used by tests and menu preview buttons).
+  - `set_ready(destination)`: Marks local peer ready to travel.
+  - `is_input_locked()`: Returns whether transition overlay has locked player controls.
+- **Signals**: `transition_requested`, `readiness_changed`, `transition_started`, `room_changed`, `transition_completed`, `transition_failed`
 
-### 5.3 Studio Signals (`scripts/characters/student_3d_studio.gd`)
-- `signal close_requested`: Emitted when the character review studio is closed via Esc or UI button.
+### 5.4 `JournalManager` (`scripts/journal/journal_manager.gd`)
+- **Role**: Session-long evidence and investigation tracker (Student Notebook / Professor DataPad).
+- **Key Methods**:
+  - `unlock_entry(entry_id, role)`: Unlocks evidence for a specific timeline.
+  - `is_unlocked(entry_id)`: Checks if current role has discovered the clue.
+  - `toggle_journal()`: Opens/closes UI overlay (`J` key).
+- **Signals**: `entry_unlocked(entry)`, `journal_opened`, `journal_closed`, `state_changed`
 
----
-
-## 6. Architectural Deficiencies & Missing Systems
-
-While the repository has clean separation between menu, network, world, and character visuals, several core architecture components specified in `GAME_DESIGN_DOCUMENT.md` **do not exist in the code**:
-
-1. **Missing `PuzzleManager` Autoload**:
-   - GDD Section 9 specifies a central, host-authoritative `puzzle_manager.gd`.
-   - Currently, there is no puzzle manager, state dictionary, revision tracker, or RPC broadcast handler for game puzzles.
-2. **Missing Interaction Architecture**:
-   - There are no `Area3D` interaction zones, interaction prompt widgets, or raycast detectors.
-   - Keys `F`, `I`, and `E` only trigger isolated character animation clips and attach a temporary document mesh to the hand socket.
-3. **Missing Split-Screen Architecture**:
-   - `LocalButton` in `main_menu.tscn` is disabled (`disabled = true`).
-   - There is no dual `SubViewportContainer` or input router for simultaneous same-PC play.
-
+### 5.5 `CinematicTransitionManager` (`scripts/cinematic/cinematic_transition_manager.gd`)
+- **Role**: Presentation-only room introduction title cards on CanvasLayer 40.
+- **Key Methods**:
+  - `show_room_intro(room_id, timeline)`: Triggers title card overlay.
+  - `dismiss()`: Immediately fades out current intro.
+- **Signals**: `intro_started(room_id, timeline)`, `intro_finished(room_id, completed)`
