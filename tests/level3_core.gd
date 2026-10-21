@@ -169,8 +169,15 @@ func _run() -> void:
 	check(room.state.stage == "OVERLOAD" and room.state.remaining == 0, "exact expiry overloads, never negative")
 	test_time += 3.0
 	pm.refresh_puzzle(Rules.ID)
-	check(room.state.stage == "DISCOVERY" and room.state.attempt > attempt, "timeout creates a fresh Room C attempt")
-	check(root.get_node("JournalManager").is_unlocked("l3_authorization"), "timeout keeps discovered evidence")
+	check(room.state.stage == "OVERLOAD" and room.state.attempt == attempt, "timeout stays latched during destruction")
+	await create_timer(5.3).timeout
+	while flow.is_transitioning(): await process_frame
+	check(flow.get_current_room_id() == "room_01", "timeout restarts the campaign in Room 1")
+	check(not root.get_node("JournalManager").is_unlocked("l3_authorization"), "campaign restart clears discovered evidence")
+	check(flow.start_room("room_03"), "return to isolated core for ending regression checks")
+	room = current_scene
+	room.player.set_physics_process(false)
+	room.rules.clock = func() -> float: return test_time
 	var stale: Dictionary = pm.submit_action(Rules.ID, "start", {"attempt": attempt, "seq": 9000}, "past")
 	check(stale.status == 0, "old-attempt action refused")
 	# One full solution, with an expired sync window and retry before the ending matrix.

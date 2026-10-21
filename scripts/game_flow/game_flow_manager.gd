@@ -121,6 +121,11 @@ var _partner_deadline_ms: int = 0
 var _input_locked: bool = false
 var _locked_bodies: Dictionary = {}  # instance id -> controls_enabled before the lock
 var _locked_controllers: Array[int] = []
+var _reactor_restart_attempt: int = -1
+var _reactor_restart_session: int = 0
+var _reactor_guest_finished: int = -1
+var _reactor_restart_deadline: int = 0
+var _campaign_restart_in_flight := false
 
 
 func _ready() -> void:
@@ -419,6 +424,50 @@ func begin_transition(room_id: String) -> String:
 	return ""
 
 
+## Called by each local cinematic only after its final black frame. The host waits
+## briefly for the guest, then uses the existing begin/load/ack/commit protocol.
+func reactor_cinematic_finished(attempt: int) -> void:
+	if get_current_room_id() != "room_03": return
+	if _mode() == Mode.CLIENT:
+		_rpc_reactor_finished.rpc_id(1, PuzzleManager.get_session_id(), attempt)
+		return
+	var core := PuzzleManager.get_state("puzzle_03_final_fracture")
+	if core.get("stage") != "OVERLOAD" or core.get("attempt") != attempt: return
+	if _reactor_restart_attempt == attempt: return
+	_reactor_restart_attempt = attempt
+	_reactor_restart_session = PuzzleManager.get_session_id()
+	_reactor_restart_deadline = Time.get_ticks_msec() + 2500
+
+
+func _poll_reactor_restart() -> void:
+	if _reactor_restart_attempt < 0: return
+	if _reactor_restart_session != PuzzleManager.get_session_id() or get_current_room_id() != "room_03":
+		_reactor_restart_attempt = -1
+		return
+	# Never wait on a disconnected peer. A severed session returns to its existing recovery UI.
+	if _mode() == Mode.LOST:
+		_reactor_restart_attempt = -1
+		return
+	if _phase != Phase.IDLE: return
+	if _mode() == Mode.HOST and _reactor_guest_finished != _reactor_restart_attempt and Time.get_ticks_msec() < _reactor_restart_deadline: return
+	_reactor_restart_attempt = -1
+	var guest := _guest_peer()
+	if guest != 0: _rpc_prepare_campaign_restart.rpc_id(guest, PuzzleManager.get_session_id())
+	_prepare_campaign_restart()
+	# A new gameplay session invalidates queued actions and resets every rules object,
+	# journal, private vote, radio, item and device record. ENet and assigned roles survive.
+	PuzzleManager.begin_session()
+	_start_authorized("room_01")
+
+
+func _prepare_campaign_restart() -> void:
+	_campaign_restart_in_flight = true
+	PuzzleManager.gameplay_suspended = true
+	_blockers.clear()
+	_clear_readiness()
+	CinematicTransitionManager.reset_history()
+
+
 ## Host or offline only: cancel the transition in flight, restoring the previous room.
 func abort_transition(reason: String = "cancelled") -> bool:
 	if _phase == Phase.IDLE or _committed or _mode() == Mode.CLIENT:
@@ -709,6 +758,9 @@ func _finish(success: bool) -> void:
 	overlay.clear_status()
 	overlay.snap(false)
 	_set_input_locked(false)
+	if _campaign_restart_in_flight:
+		_campaign_restart_in_flight = false
+		PuzzleManager.gameplay_suspended = false
 	if finished_mode == Mode.CLIENT and _mode() == Mode.CLIENT:
 		_rpc_finished.rpc_id(1, PuzzleManager.get_session_id(), finished_tid)
 	if success:
@@ -746,6 +798,11 @@ func _abort(reason: String) -> void:
 ## just fade back in; peers that already entered the new one reload the room they left.
 func _recover(reason: String) -> void:
 	if _phase == Phase.IDLE or _committed or not _failing_reason.is_empty():
+		return
+	# A failed fresh-game load cannot restore a destroyed chamber with erased progress.
+	if _campaign_restart_in_flight:
+		_campaign_restart_in_flight = false
+		_fatal(reason)
 		return
 	_failing_reason = reason
 	_discard_pending_load()
@@ -823,6 +880,7 @@ func _physics_process(_delta: float) -> void:
 
 func _process(_delta: float) -> void:
 	_poll_orphans()
+	_poll_reactor_restart()
 	var now := Time.get_ticks_msec()
 	if _partner_busy and now > _partner_deadline_ms:
 		_partner_busy = false
@@ -957,6 +1015,19 @@ func _from_guest(session_id: int) -> bool:
 ## True when the current RPC comes from the host, inside the current session.
 func _from_host(session_id: int) -> bool:
 	return _mode() == Mode.CLIENT and multiplayer.get_remote_sender_id() == 1 and session_id == PuzzleManager.get_session_id() and PuzzleManager.is_session_active()
+
+
+@rpc("any_peer", "call_remote", "reliable")
+func _rpc_reactor_finished(session_id: int, attempt: int) -> void:
+	if not _from_guest(session_id) or get_current_room_id() != "room_03": return
+	var core := PuzzleManager.get_state("puzzle_03_final_fracture")
+	if core.get("stage") == "OVERLOAD" and core.get("attempt") == attempt:
+		_reactor_guest_finished = attempt
+
+
+@rpc("authority", "call_remote", "reliable")
+func _rpc_prepare_campaign_restart(session_id: int) -> void:
+	if _from_host(session_id): _prepare_campaign_restart()
 
 
 @rpc("any_peer", "call_remote", "reliable")

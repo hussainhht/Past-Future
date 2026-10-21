@@ -3,9 +3,13 @@ extends RefCounted
 ## Shared native AudioStreams, with editable event metadata in one Resource catalog.
 
 const LIBRARY := preload("res://resources/audio/sound_events.tres")
+## Level 2 / Level 3 events (reactor devices, countdown score, endings, maintenance machinery).
+const LEVEL_LIBRARY := preload("res://resources/audio/level_sound_events.tres")
 
 static func definitions() -> Dictionary:
-	return LIBRARY.events
+	var merged: Dictionary = LIBRARY.events.duplicate()
+	merged.merge(LEVEL_LIBRARY.events)
+	return merged
 
 static func load_entry(definition: Dictionary) -> Dictionary:
 	var entry := definition.duplicate(true)

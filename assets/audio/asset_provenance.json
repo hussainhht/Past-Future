@@ -1500,5 +1500,3427 @@
       "music_future"
     ],
     "cached_source": "future_music/GalacticTemple.ogg"
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_music_bed.ogg",
+    "sha256": "1882cfb2e7ced7e89bf9c7757e9e200eca3520786517b3552d263ca6c9e0676d",
+    "duration_seconds": 28.4444,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "bars 22-38 of pulse at 135 BPM; 16-bar loop, 1-bar tail-continuation crossfade at the wrap; RMS -20.0 dBFS",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "pulse.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      }
+    ],
+    "intended_game_usage": [
+      "core_music_bed"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_music_pad.ogg",
+    "sha256": "76802f8f9e55fe610c28830cefcb1c22aad88bd4e08b8f1bebd2546ae9bfff9b",
+    "duration_seconds": 28.4444,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "bars 8-24 of airy at 135 BPM; 16-bar loop, 1-bar tail-continuation crossfade at the wrap; RMS -22.0 dBFS",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "airy.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      }
+    ],
+    "intended_game_usage": [
+      "core_music_pad"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_music_drive.ogg",
+    "sha256": "5efb9ee2cc134e577928470d2a589c010f09b01c23b1744d4ce503aa5fff3882",
+    "duration_seconds": 28.4444,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "bars 1-17 of urgent at 135 BPM; 16-bar loop, 1-bar tail-continuation crossfade at the wrap; RMS -20.0 dBFS",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "urgent.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      }
+    ],
+    "intended_game_usage": [
+      "core_music_drive"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_music_lead.ogg",
+    "sha256": "2c4e6f07369bac286ae6c8f520ffd4fe456c32ff53b338cb82a44409efb4e882",
+    "duration_seconds": 28.4444,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "bars 8-24 of sector at 135 BPM; 16-bar loop, 1-bar tail-continuation crossfade at the wrap; RMS -22.0 dBFS",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "sector.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      }
+    ],
+    "intended_game_usage": [
+      "core_music_lead"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_music_climax.ogg",
+    "sha256": "38ebedbcd9826c6f572648794c66ae7cdb49a82666cd7b7b3c9214b9e6521f61",
+    "duration_seconds": 28.4444,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "bars 14-30 of urgent at 135 BPM; 16-bar loop, 1-bar tail-continuation crossfade at the wrap; RMS -19.0 dBFS",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "urgent.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      }
+    ],
+    "intended_game_usage": [
+      "core_music_climax"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/relay_clunk_1.wav",
+    "sha256": "36805a12fc88a71d872fcf26d0839490a2fc94e60d36b300182d1a7a90fd83ee",
+    "duration_seconds": 0.5768,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "heavy relay: impactMetal_heavy + impactPlate_heavy_001 + low impactSoft_heavy",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_000.ogg",
+          "impactPlate_heavy_001.ogg",
+          "impactSoft_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_relay_clunk"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/relay_clunk_2.wav",
+    "sha256": "dbe724abc163d96b69016abf875ce884049ebd12fe5bb523614560fa98a919b5",
+    "duration_seconds": 0.5768,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "heavy relay: impactMetal_heavy + impactPlate_heavy_001 + low impactSoft_heavy",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_001.ogg",
+          "impactPlate_heavy_001.ogg",
+          "impactSoft_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_relay_clunk"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/relay_clunk_3.wav",
+    "sha256": "b9094762ec967151760c07199b18074667828797f2f007dce820b3f2b8407d98",
+    "duration_seconds": 0.5768,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "heavy relay: impactMetal_heavy + impactPlate_heavy_001 + low impactSoft_heavy",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_002.ogg",
+          "impactPlate_heavy_001.ogg",
+          "impactSoft_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_relay_clunk"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/battery_latch.wav",
+    "sha256": "de13371b429071723484bf0e5dd16bffd00e8b94c3ec07b3dcc2e1fe3f92f0d7",
+    "duration_seconds": 1.0375,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "battery contact latch: metal medium + mining impact + light metal tail",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_001.ogg",
+          "impactMetal_medium_000.ogg",
+          "impactMining_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_battery_latch"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/switch_heavy.wav",
+    "sha256": "ef6041b5c4bade44578cdc51601feaee0abe3b9149f46a90b419305d89229b82",
+    "duration_seconds": 0.6691,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "heavy phase switch: plate impact + sub thud + light metal ring",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_002.ogg",
+          "impactPlate_heavy_000.ogg",
+          "impactSoft_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_switch_heavy"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/coil_surge.wav",
+    "sha256": "d502d04d83aa4f553c9e5c68abb697e8397ae69434d1bfb1f07de3c3018ce1f3",
+    "duration_seconds": 1.054,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "coil energy surge: forceField + laserLarge zap + glitch crackle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_000.ogg",
+          "laserLarge_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_002.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_coil_surge"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/coil_align.wav",
+    "sha256": "8e66e029d620a78c8d42c4eea52af0024aa6c4c422c45acc7f03a5ab0fa5aa99",
+    "duration_seconds": 1.9609,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "coil aligned confirmation: retro zap + bell + force-field bloom",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_002.ogg",
+          "laserRetro_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_coil_align"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/battery_connect.wav",
+    "sha256": "685b456b9b8ed1dbcff927e48412d0c6b12d3f308de2213284160f2dbdbde4dc",
+    "duration_seconds": 1.8534,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "receiver battery connected: rising computer hum + latch + zap + field",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_001.ogg",
+          "forceField_001.ogg",
+          "laserSmall_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_medium_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_battery_connect"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/anchor_calibrate.wav",
+    "sha256": "39ebf2650e191284fb5b8ccd683a22ec47e9095c5d9a16b2ea72073b154e5908",
+    "duration_seconds": 1.7,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "Signal Anchor frequency sweep: forceField variable-rate glide + computerNoise bed",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_002.ogg",
+          "forceField_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_anchor_calibrate"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/anchor_lock.wav",
+    "sha256": "ffa9d4d44d93904e13426c2deb388b0a86e1191eba850887ff6dd85c70cca578",
+    "duration_seconds": 1.7802,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "anchor locked: bell + laser ping + force-field + confirmation",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_003.ogg",
+          "laserSmall_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "confirmation_003.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_anchor_lock"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/origin_stabilize.wav",
+    "sha256": "66d90021163f0a271e45e9e8d828217b465ee352e183afe645a375aaccbaab0c",
+    "duration_seconds": 3.7,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "Origin Core stabilizer: low engine resonance + sub explosion + field + deep bell",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_004.ogg",
+          "lowFrequency_explosion_001.ogg",
+          "spaceEngineLow_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_002.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_origin_stabilize"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/power_restore.wav",
+    "sha256": "9b63ce1ad3292e98342f80060a2a71393ec449f491872f5612c447da8098c9de",
+    "duration_seconds": 3.5,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "conduit power routing restored: sub boom + rising engine surge + zap train",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserLarge_000.ogg",
+          "laserLarge_002.ogg",
+          "laserLarge_003.ogg",
+          "laserLarge_004.ogg",
+          "lowFrequency_explosion_000.ogg",
+          "spaceEngineLarge_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_power_restore"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/sync_engage.wav",
+    "sha256": "e5c414a0a615cd02f0e71d1d2588fceffc3b858a60060e74281458a4339a5149",
+    "duration_seconds": 1.35,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "phase switch engage: plate thunk + charging engine whine glide",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactPlate_heavy_002.ogg",
+          "impactSoft_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "engineCircular_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_sync_engage"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/sync_tick.wav",
+    "sha256": "95cfeb55c4bd69e02967820681939e0b21c8e5945cc79f4a01784967637a1f05",
+    "duration_seconds": 0.2199,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "five-second window urgency pulse: low bong + tick",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "bong_001.ogg",
+          "tick_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_sync_tick"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/sync_success.wav",
+    "sha256": "31e3a0ea205fbf681026db77abdd8749f05f616cf04ed607122770294298e1c5",
+    "duration_seconds": 1.7,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "synchronization success: sub boom + rising field glide + bell + confirmation",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_004.ogg",
+          "lowFrequency_explosion_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_003.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "confirmation_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_sync_success"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/sync_fail.wav",
+    "sha256": "cc4ee9eaf654489b7ca64376a369732d31b49fdc6bcb9d3c2f2ea141de2e282a",
+    "duration_seconds": 1.4,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "missed phase window: descending field glide + error + relay drop",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_001.ogg",
+          "laserRetro_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "error_006.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_sync_fail"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/command_lock.wav",
+    "sha256": "0c27e8aade2d319b7be943ea4d716cf2de979cf5bd53471f8659902dbf0aaebe",
+    "duration_seconds": 1.5,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "identity command locked: plate impact + metal + confirmation + low resonance",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_medium_003.ogg",
+          "impactPlate_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "confirmation_001.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_command_lock"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/reject.wav",
+    "sha256": "908ff7053991d3eaf3d819e53fa5bdd1814a3afdaeb916760f760f0229e2b778",
+    "duration_seconds": 0.3943,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "rejected operation: low-passed error buzz + tin knock",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "error_007.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactTin_medium_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_reject"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/arm_confirm.wav",
+    "sha256": "2697293941dec7000b66e48181547d0a3233a783f90e72792a4e41e3a42d9b19",
+    "duration_seconds": 3.9,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "ARM REACTOR: heavy metal slam + sub boom + engine spool-up glide + field + deep bell",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_004.ogg",
+          "impactMetal_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_002.ogg",
+          "lowFrequency_explosion_000.ogg",
+          "spaceEngineLarge_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_arm_confirm"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/console_open.wav",
+    "sha256": "2ffdd2d26c536ce0c288ba47ba186fc2f54cbfa7843c63c5d567615bf148c1e8",
+    "duration_seconds": 0.75,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "console power-on: computer noise + toggle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "toggle_003.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_console_open"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/console_close.wav",
+    "sha256": "14c3cd2d8dfe8810f3a8cea3e66acb329db2328dc86d893fc0bd63169d2ebd1b",
+    "duration_seconds": 0.45,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "console power-off: reversed computer noise + toggle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "toggle_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_console_close"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/alarm_siren.wav",
+    "sha256": "7bd5a81442ea64023f92861f0604ae35b58d2ba65c62fcb17c1c9ad6d7b401c0",
+    "duration_seconds": 1.1,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "reactor alarm: engineCircular variable-rate rise/fall, band-limited",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "engineCircular_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_alarm"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/arc_1.wav",
+    "sha256": "7d56dbf4aff33571af0cc81dba3eb4d75d56028dfc553ac28cf42ce3be928677",
+    "duration_seconds": 0.3863,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant electrical arc: laserSmall + glitch crackle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_001.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_arc"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/clank_1.wav",
+    "sha256": "c177a96b7aa3a4377ad24562d2c970bca27d65515322bc976e92a7da54eb1504",
+    "duration_seconds": 0.9168,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant machinery clank: impactMetal slowed to 0.75x, low-passed",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_clank"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/arc_2.wav",
+    "sha256": "408ce9500713c415572b5b76f87e08281b12e0eae8a231ad69961e14c0a8beb6",
+    "duration_seconds": 0.3945,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant electrical arc: laserSmall + glitch crackle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_002.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_arc"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/clank_2.wav",
+    "sha256": "3e10740dff88a1a9f4625f98243a7b57bbe53a7b49d5242fdfe1b5710adab05a",
+    "duration_seconds": 0.6282,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant machinery clank: impactMetal slowed to 0.75x, low-passed",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_clank"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/arc_3.wav",
+    "sha256": "6ea63b5a8988c22ce66783078271da7a00b4377fe2cb90083024513680f0f963",
+    "duration_seconds": 0.4943,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant electrical arc: laserSmall + glitch crackle",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_003.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_arc"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/clank_3.wav",
+    "sha256": "033e1efaf23e978b5bc0ba619bffd59dd528b18b732f03b50b72a1958570a1e9",
+    "duration_seconds": 1.0357,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant machinery clank: impactMetal slowed to 0.75x, low-passed",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_clank"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/temporal_pulse.wav",
+    "sha256": "f1c2bc8d61ea49880b4c574f0d531ef231148dbc1a6562e90ca6944728572971",
+    "duration_seconds": 1.1001,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "mysterious temporal pulse: sub explosion + reversed force field",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_003.ogg",
+          "lowFrequency_explosion_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_temporal_pulse"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/tier_hit.wav",
+    "sha256": "5a3adfbcd64607f281d933a6779f690c1dec030c5369cd406abaff094a0f91c1",
+    "duration_seconds": 1.1001,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "countdown tier stinger: low boom + metal hit",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "lowFrequency_explosion_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_tier_hit"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/perc_kick.wav",
+    "sha256": "31722ba9c4bc797bbf279d3ca538dc814c4f23645b4979fbdce10322c3466b30",
+    "duration_seconds": 0.3,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "pulse kick: impactSoft_heavy low-passed, shortened",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactSoft_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_perc_kick"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/perc_tick.wav",
+    "sha256": "62bea7f5f99af1ef752fd754124cf0492686b798f0a4676dfb532b09b7d108ea",
+    "duration_seconds": 0.2989,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "pulse hat: tick + light metal",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "tick_002.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_perc_tick"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/perc_hit.wav",
+    "sha256": "3c55a8e67b477e860da1d91b062e9053eb8fbb8c4c391997af5ce4b1653a24bc",
+    "duration_seconds": 0.6093,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "pulse accent: impactPlate_medium high-passed",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactPlate_medium_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "core_perc_hit"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/warn_beep.wav",
+    "sha256": "3ce5fa49a7b6fa9ed911dcb320d0d454564a2e49f59c3ac78221b257dc2b45ed",
+    "duration_seconds": 0.06,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "countdown warning blip: bong pitched up one octave",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "bong_001.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_warn_beep"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/countdown_second.wav",
+    "sha256": "2a5e100c420a725a153fc5026bae5b1df60c12dae3f479b552e8798b8e435b69",
+    "duration_seconds": 1.5802,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "final ten-second marker: bell + tick",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "tick_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_countdown_second"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/reset_return.wav",
+    "sha256": "40172b499cc85450f13d14cb53f1220cad83f4a5fa56d2bc2e4393145d96a4b9",
+    "duration_seconds": 2.5,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "attempt reset: low engine spin-up glide back toward the ambient hum",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_reset_return"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/reactor_core_loop.ogg",
+    "sha256": "69bfa194bbf9a3a3c116d41ebfcedcf2bc96b95f511c64fe7884e8c5dd4b1b3b",
+    "duration_seconds": 4.2,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "positional reactor core hum: spaceEngineLow_000 band-passed 45-520 Hz, 0.8 s wrap crossfade",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_reactor_loop"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/coil_hum_loop.ogg",
+    "sha256": "d3f52d6166146ebff133a3865d4b4bfba9ec70f0d0e2935744e18fea5467b2e6",
+    "duration_seconds": 4.2,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "aligned coil transformer hum: spaceEngineLow_003 band-passed 90-800 Hz",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_coil_hum"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Room Tone, Deep Ventilation",
+    "creator": "Kinoton",
+    "source_url": "https://freesound.org/people/Kinoton/sounds/503255/",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/ambience/core_ambience_past.ogg",
+    "sha256": "5ace4d4ac8e362a5624f371e44c9815b781a56f604210545c367b22b081ed6e4",
+    "duration_seconds": 22.5,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ambience",
+    "processing": "Past reactor bed: spaceEngineLow + boiler loop at 0.7x pitch + ventilation, low-passed",
+    "sources": [
+      {
+        "pack": "Room Tone, Deep Ventilation",
+        "creator": "Kinoton",
+        "page": "https://freesound.org/people/Kinoton/sounds/503255/",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "ventilation.mp3"
+        ],
+        "pack_sha256": "db2dff0746a90178be31e751b64d4f5ec368b177d852129ca5149d17d7c90420"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Steam boiler sound loop (generator_loop.wav)",
+        "creator": "bart",
+        "page": "https://opengameart.org/content/steam-boiler-sound-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "generator_loop.wav"
+        ],
+        "pack_sha256": "64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ambience_past"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "wind whoosh loop",
+    "creator": "SketchMan3",
+    "source_url": "https://opengameart.org/content/wind-whoosh-loop",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/ambience/core_ambience_future.ogg",
+    "sha256": "7bfe5a603861d603322737e98a29fbd160ae52c765bb079ca68ce25490ae9094",
+    "duration_seconds": 22.5,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ambience",
+    "processing": "Future reactor bed: detuned engine + boiler at 0.62x with slow vibrato + air leak",
+    "sources": [
+      {
+        "pack": "wind whoosh loop",
+        "creator": "SketchMan3",
+        "page": "https://opengameart.org/content/wind-whoosh-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "wind.ogg"
+        ],
+        "pack_sha256": "0cfdbd3f21ed449689a9024264edf267d0037a6495813a7010827672ec191dac"
+      },
+      {
+        "pack": "Steam boiler sound loop (generator_loop.wav)",
+        "creator": "bart",
+        "page": "https://opengameart.org/content/steam-boiler-sound-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "generator_loop.wav"
+        ],
+        "pack_sha256": "64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineLow_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ambience_future"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/music/core_riser_final.ogg",
+    "sha256": "2e190b1a3078920fa4772827b9864503f2dc50dca0ed429a2a8d1c3bc1bc243c",
+    "duration_seconds": 10.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "music",
+    "processing": "final ten-second riser: engineCircular and spaceEngineLarge variable-rate glides (0.55x->2.2x) + reversed explosion run-in + accelerating ticks",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "engineCircular_001.ogg",
+          "explosionCrunch_004.ogg",
+          "lowFrequency_explosion_000.ogg",
+          "spaceEngineLarge_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "tick_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_riser_final"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/endings/ending_trust.ogg",
+    "sha256": "49476e6c25079240082e4825946078fb1ea89efb7b0833478820cf82b0329e97",
+    "duration_seconds": 24.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Trust: airy pad + softened victory sting + reactor spin-down glide + reversed glass shimmer",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "airy.ogg",
+          "victory.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_002.ogg",
+          "spaceEngineLow_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glass_003.ogg",
+          "glass_005.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ending_trust"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/endings/ending_student_override.ogg",
+    "sha256": "ffeddc6edf18e73fe825d4cdb633d19a33982f088c99f1f77b5d846b50d315ce",
+    "duration_seconds": 16.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Student Override: reversed pulse closing to 220 Hz + reversed explosions/force fields + falling laser glide + sub boom then hush",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "pulse.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "explosionCrunch_004.ogg",
+          "forceField_000.ogg",
+          "laserLarge_000.ogg",
+          "lowFrequency_explosion_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glass_001.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ending_student_override"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/endings/ending_professor_override.ogg",
+    "sha256": "12c635580fc95c85c97020c54697f17e33af76587959b6a1405da2c5a996a282",
+    "duration_seconds": 20.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Professor Override: transmission closing to 900 Hz with long echo + plate/glass/door lock hits + 180 Hz resonance + octave-down bell",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "transmission.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_000.ogg",
+          "impactGlass_heavy_001.ogg",
+          "impactPlate_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "doorClose_001.ogg",
+          "spaceEngineLarge_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ending_professor_override"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Dark Sci-Fi Audio Pack",
+    "creator": "SRG774",
+    "source_url": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/endings/ending_paradox.ogg",
+    "sha256": "96d8656625a5210ac03d6b66412472be103a0eb479be294d2af00ce4f1bd6496",
+    "duration_seconds": 22.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Paradox: bit-crushed vibrato transmission + reversed ghost + stutter + 16 seeded glitches + unstable low engine + reversed explosion reset",
+    "sources": [
+      {
+        "pack": "Dark Sci-Fi Audio Pack",
+        "creator": "SRG774",
+        "page": "https://opengameart.org/content/dark-sci-fi-audio-pack",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "transmission.ogg"
+        ],
+        "pack_sha256": "c17c40f2b5ff32a51016d121a017cf1a307e0065c7acfcc30c66f05f1d047ce1"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_001.ogg",
+          "glitch_002.ogg",
+          "glitch_003.ogg",
+          "glitch_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "explosionCrunch_000.ogg",
+          "forceField_000.ogg",
+          "lowFrequency_explosion_000.ogg",
+          "spaceEngineLow_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_ending_paradox"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/overload_impact.wav",
+    "sha256": "907517668c1587921c1396679663897eed70f153ee6cbad6bb96129bd9bbb688",
+    "duration_seconds": 3.2001,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Reactor overload impact: explosionCrunch + sub explosion + metal slam + glitch, saturated and closing 9 kHz -> 400 Hz",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "explosionCrunch_000.ogg",
+          "lowFrequency_explosion_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_001.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_overload_impact"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/overload_rupture.wav",
+    "sha256": "c8e92f37f4e4840d03e93238d0dac471a583efe0b5154ebb6a5cd782b63094be",
+    "duration_seconds": 3.4036,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Reactor overload rupture: explosionCrunch_004 + eight laser tears + twelve glitch bursts",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "explosionCrunch_004.ogg",
+          "laserLarge_000.ogg",
+          "laserLarge_001.ogg",
+          "laserLarge_002.ogg",
+          "laserLarge_003.ogg",
+          "laserLarge_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "glitch_001.ogg",
+          "glitch_002.ogg",
+          "glitch_003.ogg",
+          "glitch_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "core_overload_rupture"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level3/sfx/overload_shockwave.wav",
+    "sha256": "f587ee8d2d418ebc2a3ca9f331a037e95e80d9989b224bae8fa47fc107758802",
+    "duration_seconds": 4.0,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ending",
+    "processing": "Reactor overload shockwave: falling-rate sub explosion + low engine swell + reversed field, collapsing to 120 Hz",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_002.ogg",
+          "lowFrequency_explosion_001.ogg",
+          "spaceEngineLarge_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "core_overload_shockwave"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Steam boiler sound loop (generator_loop.wav)",
+    "creator": "bart",
+    "source_url": "https://opengameart.org/content/steam-boiler-sound-loop",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/ambience/maint_bed_past.ogg",
+    "sha256": "8a4cd2361bc8ea25b8124f579e6b1d525934b3875daeaa1eb45ac2ac9020f228",
+    "duration_seconds": 20.6539,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ambience",
+    "processing": "Level 2 Past bed: steam boiler loop 55-1200 Hz + ventilation",
+    "sources": [
+      {
+        "pack": "Steam boiler sound loop (generator_loop.wav)",
+        "creator": "bart",
+        "page": "https://opengameart.org/content/steam-boiler-sound-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "generator_loop.wav"
+        ],
+        "pack_sha256": "64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd"
+      },
+      {
+        "pack": "Room Tone, Deep Ventilation",
+        "creator": "Kinoton",
+        "page": "https://freesound.org/people/Kinoton/sounds/503255/",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "ventilation.mp3"
+        ],
+        "pack_sha256": "db2dff0746a90178be31e751b64d4f5ec368b177d852129ca5149d17d7c90420"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_bed_past"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "wind whoosh loop",
+    "creator": "SketchMan3",
+    "source_url": "https://opengameart.org/content/wind-whoosh-loop",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/ambience/maint_bed_future.ogg",
+    "sha256": "3a1f669073cdf7eff57495098f6c04c2a78926896f4ccb0a6c305c8e3afa57ca",
+    "duration_seconds": 20.5,
+    "channels": 2,
+    "mix_rate": 48000,
+    "kind": "ambience",
+    "processing": "Level 2 Future bed: boiler loop at 0.85x + air leak",
+    "sources": [
+      {
+        "pack": "wind whoosh loop",
+        "creator": "SketchMan3",
+        "page": "https://opengameart.org/content/wind-whoosh-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "wind.ogg"
+        ],
+        "pack_sha256": "0cfdbd3f21ed449689a9024264edf267d0037a6495813a7010827672ec191dac"
+      },
+      {
+        "pack": "Steam boiler sound loop (generator_loop.wav)",
+        "creator": "bart",
+        "page": "https://opengameart.org/content/steam-boiler-sound-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "generator_loop.wav"
+        ],
+        "pack_sha256": "64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_bed_future"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Steam boiler sound loop (generator_loop.wav)",
+    "creator": "bart",
+    "source_url": "https://opengameart.org/content/steam-boiler-sound-loop",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/machine_loop.ogg",
+    "sha256": "0adbb6ca04c21ea9a5f0d1ef4c1536bbd19341e5d2d81be93ae74433a195e578",
+    "duration_seconds": 21.1539,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "positional boiler machinery: generator loop 60-900 Hz",
+    "sources": [
+      {
+        "pack": "Steam boiler sound loop (generator_loop.wav)",
+        "creator": "bart",
+        "page": "https://opengameart.org/content/steam-boiler-sound-loop",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "generator_loop.wav"
+        ],
+        "pack_sha256": "64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_machine_loop"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/buzz_loop.ogg",
+    "sha256": "fa357951d5c5a8157ba42384bb33225542da409fa3f9a6aad87d152a225adaed",
+    "duration_seconds": 4.4,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "positional electrical buzz: spaceEngineSmall band-passed, 100 Hz tremolo",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineSmall_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_buzz_loop"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/lever_clunk.wav",
+    "sha256": "847b01b955fa46f7410cfb936ae43d9634daf015eb79175c84ca456b8706d8b5",
+    "duration_seconds": 1.2034,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "service isolator lever: heavy metal + mining impact + reversed disconnect arc",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_001.ogg",
+          "impactMining_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "switch_003.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_lever_clunk"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/crank_ratchet.wav",
+    "sha256": "5aa45aa37c236b1e18e2200f1c3106625d3f8e787fb6899e3dc31f0e4c415f04",
+    "duration_seconds": 1.2139,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "emergency crank: eight ratchet clicks (tick + light metal) over the 0.85 s wheel turn",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "tick_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_000.ogg",
+          "impactMetal_light_001.ogg",
+          "impactMetal_light_002.ogg",
+          "impactMetal_light_003.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_crank"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/charge_latch.wav",
+    "sha256": "0480b1a5654b7ee13cced1e9b77c29427aa2ed55058470f84f9482a22b53c1aa",
+    "duration_seconds": 2.0409,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "battery charge latch: heavy metal + zap + bell",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_001.ogg",
+          "impactMetal_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_charge_latch"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/power_surge.wav",
+    "sha256": "688c3b5c45c2bb4c3ec95cf9563ce834cee5e90f2ac41936ce4d72da821a3a7a",
+    "duration_seconds": 2.7,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "electrical restoration surge: sub boom + engine swell + zaps",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserLarge_001.ogg",
+          "laserLarge_003.ogg",
+          "lowFrequency_explosion_001.ogg",
+          "spaceEngineLarge_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_power_surge"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/power_down.wav",
+    "sha256": "22440417b2a5830c834d6e55eee45712e77656529f00bd62c95a4549f73ba235",
+    "duration_seconds": 1.4,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "voltage drop: descending force field + low error",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "error_005.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_power_down"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/reserve_lever.wav",
+    "sha256": "8f798d57450c6b6ed4bd6ac475c069f0aa33ef58753361e7583bfcfca28376ad",
+    "duration_seconds": 0.6887,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "reserve priority lever: plate + metal + short zap",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_medium_002.ogg",
+          "impactPlate_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_reserve_lever"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/fuse_seat.wav",
+    "sha256": "ddb6823289b6e238d30e8fcf988a5077a06e2062baf99889a58f3a532f9f47ce",
+    "duration_seconds": 0.809,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "fuse seated / ground lead clamped: light metal + clack + switch",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_003.ogg",
+          "impactMetal_medium_004.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "switch_005.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_fuse_seat"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/archive_access.wav",
+    "sha256": "503dbcf9b2a66de7845e96a1a48e011683b3f853a00d7b01393735686b3622c9",
+    "duration_seconds": 1.7,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "archive terminal access: computer noise + interface open",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "maximize_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_archive"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/recorder_export.wav",
+    "sha256": "a7bb1e329d17dc1afa37333ac2424c4dd008844efa0d30db1822d0392f231b3a",
+    "duration_seconds": 2.439,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "recorder export: rising data chatter glide + confirmation",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "computerNoise_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "confirmation_002.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_light_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_recorder_export"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/cell_pull.wav",
+    "sha256": "9a1543d98895dfa3eb6425f2fea997aca5a9fcec6800a162abd3f5c29d2a956b",
+    "duration_seconds": 1.25,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "backup cell pulled: plate impact + collapsing field",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactPlate_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "error_006.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_cell_pull"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/keypad_authorize.wav",
+    "sha256": "8f99003ffecd0258e9345d36b206e885d8f6c1cd166fc06a90cf0968efc7f70a",
+    "duration_seconds": 0.7404,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "access granted: metal latch + confirmation + zap",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_medium_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "confirmation_004.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "laserSmall_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_keypad_authorize"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Interface Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/interface-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/release_wheel.wav",
+    "sha256": "a15971ddc038ab010b750c4480a509fb8cedfb85a15612399d1466cc5e366a4a",
+    "duration_seconds": 1.3144,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "manual release wheel: slowed scratch grind + mining impact + latch thunk",
+    "sources": [
+      {
+        "pack": "Interface Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/interface-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "scratch_002.ogg"
+        ],
+        "pack_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_002.ogg",
+          "impactMining_002.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_release_wheel"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/gate_open.wav",
+    "sha256": "a8d4d2f1fa423c99e9a7cdd2b2f49d8990e2b45e703e023b3cd0104dff688151",
+    "duration_seconds": 2.9,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "Core gate opens: door slowed to 0.6x + low engine rumble + metal hit",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "doorOpen_001.ogg",
+          "spaceEngineLow_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_gate_open"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/anchor_latch.wav",
+    "sha256": "49ac4611d21a7cea88edc3e17180d19a6d656825388e856f93bc36ff0dfb130b",
+    "duration_seconds": 1.2034,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "stabilization contact latched: plate + zap + field",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactPlate_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_001.ogg",
+          "laserSmall_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_anchor_latch"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/anchor_complete.wav",
+    "sha256": "663d6f187b2d35f54fca139e8ea3343ebcf0c6ad57548591efb10bac28ddd755",
+    "duration_seconds": 2.3,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "both anchors stable: sub boom + bell + rising field",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "forceField_004.ogg",
+          "lowFrequency_explosion_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactBell_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_anchor_complete"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/hatch_open.wav",
+    "sha256": "19156d1cf55c90869ab76a109d43d42eb38d40f51cbd291b03935af0ec05d214",
+    "duration_seconds": 1.0,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "floor hatch: hydraulic hiss + door slowed + latch",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "doorOpen_002.ogg",
+          "thrusterFire_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_002.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_hatch_open"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/hatch_close.wav",
+    "sha256": "2a9ffc668be53a27205ab5fc65d017ee03db0c53280aa2a96970c201eeda5956",
+    "duration_seconds": 1.0,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "floor hatch closes: hydraulic hiss + door + seal thunk",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "doorClose_002.ogg",
+          "thrusterFire_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      },
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_001.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_hatch_close"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/lift_move.wav",
+    "sha256": "f9cc0a1c0b557299bf78d5089070b99bb5cb77174875f25cb877349dff62fc42",
+    "duration_seconds": 1.25,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "hydraulic lift movement: small engine drone + hiss",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "spaceEngineSmall_002.ogg",
+          "thrusterFire_001.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_lift_move"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Impact Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/impact-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/lift_stop.wav",
+    "sha256": "4efbf2f47bc83ed40dfe4be17f1fba81e57511268bcc1b9981daaa45d6eb51e2",
+    "duration_seconds": 0.73,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "lift settles: metal clunk + hiss release",
+    "sources": [
+      {
+        "pack": "Impact Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/impact-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_heavy_000.ogg"
+        ],
+        "pack_sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8"
+      },
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "thrusterFire_000.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_lift_stop"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/clank_1.wav",
+    "sha256": "05eeb45885b9d594a0ccc86b9d9da6c254632e1baba8cfe6a622cc82324a4100",
+    "duration_seconds": 0.673,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant pipe clank: impactMetal slowed to 0.7x",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_002.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_detail"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/clank_2.wav",
+    "sha256": "cc811b898a05e2382f9d2aa37e44b4c5fd84c361a8a70c21e3e8d05fc6327955",
+    "duration_seconds": 1.1097,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant pipe clank: impactMetal slowed to 0.7x",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_003.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_detail"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/clank_3.wav",
+    "sha256": "158c8d0b560bba65515d820ba09bb6cf2c2de19137f2c3440df1e0ec5edc5b46",
+    "duration_seconds": 0.5565,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "distant pipe clank: impactMetal slowed to 0.7x",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "impactMetal_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_detail"
+    ]
+  },
+  {
+    "collection": "level2_level3_audio",
+    "original_asset_title": "Sci-fi Sounds",
+    "creator": "Kenney",
+    "source_url": "https://kenney.nl/assets/sci-fi-sounds",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "attribution_requirements": "None; voluntary credit retained.",
+    "download_date": "2026-10-21",
+    "imported_filename": "assets/audio/level2/sfx/steam_hiss.wav",
+    "sha256": "2252d3ec98bf60fbb882f20bfa20c675dd50a83923fa20565fc955b5643c0dda",
+    "duration_seconds": 2.2,
+    "channels": 1,
+    "mix_rate": 48000,
+    "kind": "sfx",
+    "processing": "steam vent: thrusterFire band-limited with swell",
+    "sources": [
+      {
+        "pack": "Sci-fi Sounds",
+        "creator": "Kenney",
+        "page": "https://kenney.nl/assets/sci-fi-sounds",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "files_used": [
+          "thrusterFire_004.ogg"
+        ],
+        "pack_sha256": "119340f351a5098ad814f78719438c0da355a9ce8a4c8a3af6a8d48aa3d49e04"
+      }
+    ],
+    "intended_game_usage": [
+      "maint_detail"
+    ]
   }
 ]

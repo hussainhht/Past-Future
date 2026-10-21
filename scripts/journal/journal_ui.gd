@@ -152,6 +152,12 @@ func show_toast(entry: JournalEntry) -> void:
 	refresh_hint()
 
 
+func dismiss_notifications() -> void:
+	if _toast_tween: _toast_tween.kill()
+	_toast.hide()
+	_hint.hide()
+
+
 func refresh_hint() -> void:
 	var skin := _make_skin(JournalManager.get_local_role())
 	var fresh := JournalManager.get_new_count()

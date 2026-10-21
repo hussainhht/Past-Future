@@ -1,0 +1,1210 @@
+[gd_resource type="Resource" load_steps=82 format=3]
+
+[ext_resource type="Script" path="res://scripts/audio/sound_event_library.gd" id="1_library"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/ambience/maint_bed_future.ogg" id="2"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/ambience/maint_bed_past.ogg" id="3"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/anchor_complete.wav" id="4"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/anchor_latch.wav" id="5"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/archive_access.wav" id="6"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/buzz_loop.ogg" id="7"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/cell_pull.wav" id="8"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/charge_latch.wav" id="9"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/clank_1.wav" id="10"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/clank_2.wav" id="11"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/clank_3.wav" id="12"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/crank_ratchet.wav" id="13"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/fuse_seat.wav" id="14"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/gate_open.wav" id="15"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/hatch_close.wav" id="16"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/hatch_open.wav" id="17"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/keypad_authorize.wav" id="18"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/lever_clunk.wav" id="19"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/lift_move.wav" id="20"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/lift_stop.wav" id="21"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/machine_loop.ogg" id="22"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/power_down.wav" id="23"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/power_surge.wav" id="24"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/recorder_export.wav" id="25"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/release_wheel.wav" id="26"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/reserve_lever.wav" id="27"]
+[ext_resource type="AudioStream" path="res://assets/audio/level2/sfx/steam_hiss.wav" id="28"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/ambience/core_ambience_future.ogg" id="29"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/ambience/core_ambience_past.ogg" id="30"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/endings/ending_paradox.ogg" id="31"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/endings/ending_professor_override.ogg" id="32"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/endings/ending_student_override.ogg" id="33"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/endings/ending_trust.ogg" id="34"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_music_bed.ogg" id="35"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_music_climax.ogg" id="36"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_music_drive.ogg" id="37"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_music_lead.ogg" id="38"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_music_pad.ogg" id="39"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/music/core_riser_final.ogg" id="40"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/alarm_siren.wav" id="41"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/anchor_calibrate.wav" id="42"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/anchor_lock.wav" id="43"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/arc_1.wav" id="44"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/arc_2.wav" id="45"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/arc_3.wav" id="46"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/arm_confirm.wav" id="47"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/battery_connect.wav" id="48"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/battery_latch.wav" id="49"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/clank_1.wav" id="50"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/clank_2.wav" id="51"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/clank_3.wav" id="52"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/coil_align.wav" id="53"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/coil_hum_loop.ogg" id="54"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/coil_surge.wav" id="55"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/command_lock.wav" id="56"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/console_close.wav" id="57"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/console_open.wav" id="58"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/countdown_second.wav" id="59"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/origin_stabilize.wav" id="60"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/overload_impact.wav" id="61"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/overload_rupture.wav" id="62"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/overload_shockwave.wav" id="63"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/perc_hit.wav" id="64"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/perc_kick.wav" id="65"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/perc_tick.wav" id="66"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/power_restore.wav" id="67"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/reactor_core_loop.ogg" id="68"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/reject.wav" id="69"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/relay_clunk_1.wav" id="70"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/relay_clunk_2.wav" id="71"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/relay_clunk_3.wav" id="72"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/reset_return.wav" id="73"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/switch_heavy.wav" id="74"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/sync_engage.wav" id="75"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/sync_fail.wav" id="76"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/sync_success.wav" id="77"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/sync_tick.wav" id="78"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/temporal_pulse.wav" id="79"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/tier_hit.wav" id="80"]
+[ext_resource type="AudioStream" path="res://assets/audio/level3/sfx/warn_beep.wav" id="81"]
+
+[resource]
+script = ExtResource("1_library")
+events = {
+  "core_relay_clunk": {
+    "files": [
+      "res://assets/audio/level3/sfx/relay_clunk_1.wav",
+      "res://assets/audio/level3/sfx/relay_clunk_2.wav",
+      "res://assets/audio/level3/sfx/relay_clunk_3.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.04,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.08,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_battery_latch": {
+    "files": [
+      "res://assets/audio/level3/sfx/battery_latch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_switch_heavy": {
+    "files": [
+      "res://assets/audio/level3/sfx/switch_heavy.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -7,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_coil_surge": {
+    "files": [
+      "res://assets/audio/level3/sfx/coil_surge.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_coil_align": {
+    "files": [
+      "res://assets/audio/level3/sfx/coil_align.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.2,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_battery_connect": {
+    "files": [
+      "res://assets/audio/level3/sfx/battery_connect.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -7,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_anchor_calibrate": {
+    "files": [
+      "res://assets/audio/level3/sfx/anchor_calibrate.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_anchor_lock": {
+    "files": [
+      "res://assets/audio/level3/sfx/anchor_lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_origin_stabilize": {
+    "files": [
+      "res://assets/audio/level3/sfx/origin_stabilize.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -5,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 92,
+    "loop": false,
+    "unit_size": 10.0,
+    "max_distance": 30.0
+  },
+  "core_power_restore": {
+    "files": [
+      "res://assets/audio/level3/sfx/power_restore.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 95,
+    "loop": false
+  },
+  "core_arm_confirm": {
+    "files": [
+      "res://assets/audio/level3/sfx/arm_confirm.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -3,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_sync_engage": {
+    "files": [
+      "res://assets/audio/level3/sfx/sync_engage.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -7,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_sync_engage_remote": {
+    "files": [
+      "res://assets/audio/level3/sfx/sync_engage.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -12,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false
+  },
+  "core_sync_tick": {
+    "files": [
+      "res://assets/audio/level3/sfx/sync_tick.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -13,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.0,
+    "concurrency": 3,
+    "priority": 95,
+    "loop": false
+  },
+  "core_sync_success": {
+    "files": [
+      "res://assets/audio/level3/sfx/sync_success.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 98,
+    "loop": false
+  },
+  "core_sync_fail": {
+    "files": [
+      "res://assets/audio/level3/sfx/sync_fail.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -5,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 98,
+    "loop": false
+  },
+  "core_command_lock": {
+    "files": [
+      "res://assets/audio/level3/sfx/command_lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -7,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "core_command_lock_remote": {
+    "files": [
+      "res://assets/audio/level3/sfx/command_lock.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -14,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false
+  },
+  "core_reject": {
+    "files": [
+      "res://assets/audio/level3/sfx/reject.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.15,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false
+  },
+  "core_console_open": {
+    "files": [
+      "res://assets/audio/level3/sfx/console_open.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -16,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "core_console_close": {
+    "files": [
+      "res://assets/audio/level3/sfx/console_close.wav"
+    ],
+    "bus": "UI",
+    "volume_db": -16,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": false
+  },
+  "core_alarm": {
+    "files": [
+      "res://assets/audio/level3/sfx/alarm_siren.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -16,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.5,
+    "concurrency": 1,
+    "priority": 70,
+    "loop": false
+  },
+  "core_arc": {
+    "files": [
+      "res://assets/audio/level3/sfx/arc_1.wav",
+      "res://assets/audio/level3/sfx/arc_2.wav",
+      "res://assets/audio/level3/sfx/arc_3.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -14,
+    "pitch_variance": 0.08,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.5,
+    "concurrency": 1,
+    "priority": 25,
+    "loop": false,
+    "unit_size": 8.0,
+    "max_distance": 30.0
+  },
+  "core_clank": {
+    "files": [
+      "res://assets/audio/level3/sfx/clank_1.wav",
+      "res://assets/audio/level3/sfx/clank_2.wav",
+      "res://assets/audio/level3/sfx/clank_3.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -15,
+    "pitch_variance": 0.05,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 1.0,
+    "concurrency": 1,
+    "priority": 20,
+    "loop": false,
+    "unit_size": 8.0,
+    "max_distance": 30.0
+  },
+  "core_temporal_pulse": {
+    "files": [
+      "res://assets/audio/level3/sfx/temporal_pulse.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -13,
+    "pitch_variance": 0.1,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 3.0,
+    "concurrency": 1,
+    "priority": 30,
+    "loop": false,
+    "unit_size": 12.0,
+    "max_distance": 40.0
+  },
+  "core_reset_return": {
+    "files": [
+      "res://assets/audio/level3/sfx/reset_return.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 95,
+    "loop": false
+  },
+  "core_reactor_loop": {
+    "files": [
+      "res://assets/audio/level3/sfx/reactor_core_loop.ogg"
+    ],
+    "bus": "SFX",
+    "volume_db": -20,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": true,
+    "unit_size": 9.0,
+    "max_distance": 34.0
+  },
+  "core_coil_hum_loop": {
+    "files": [
+      "res://assets/audio/level3/sfx/coil_hum_loop.ogg"
+    ],
+    "bus": "SFX",
+    "volume_db": -24,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": true,
+    "unit_size": 4.0,
+    "max_distance": 14.0
+  },
+  "core_ambience_past": {
+    "files": [
+      "res://assets/audio/level3/ambience/core_ambience_past.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "core_ambience_future": {
+    "files": [
+      "res://assets/audio/level3/ambience/core_ambience_future.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "core_music_bed": {
+    "files": [
+      "res://assets/audio/level3/music/core_music_bed.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": 0,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false,
+    "music_stem": true
+  },
+  "core_music_pad": {
+    "files": [
+      "res://assets/audio/level3/music/core_music_pad.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": 0,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false,
+    "music_stem": true
+  },
+  "core_music_drive": {
+    "files": [
+      "res://assets/audio/level3/music/core_music_drive.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": 0,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false,
+    "music_stem": true
+  },
+  "core_music_lead": {
+    "files": [
+      "res://assets/audio/level3/music/core_music_lead.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": 0,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false,
+    "music_stem": true
+  },
+  "core_music_climax": {
+    "files": [
+      "res://assets/audio/level3/music/core_music_climax.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": 0,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false,
+    "music_stem": true
+  },
+  "core_riser_final": {
+    "files": [
+      "res://assets/audio/level3/music/core_riser_final.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -3,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_tier_hit": {
+    "files": [
+      "res://assets/audio/level3/sfx/tier_hit.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.5,
+    "concurrency": 1,
+    "priority": 95,
+    "loop": false
+  },
+  "core_perc_kick": {
+    "files": [
+      "res://assets/audio/level3/sfx/perc_kick.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.0,
+    "concurrency": 4,
+    "priority": 90,
+    "loop": false
+  },
+  "core_perc_tick": {
+    "files": [
+      "res://assets/audio/level3/sfx/perc_tick.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.0,
+    "concurrency": 4,
+    "priority": 90,
+    "loop": false
+  },
+  "core_perc_hit": {
+    "files": [
+      "res://assets/audio/level3/sfx/perc_hit.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -12,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.0,
+    "concurrency": 3,
+    "priority": 90,
+    "loop": false
+  },
+  "core_warn_beep": {
+    "files": [
+      "res://assets/audio/level3/sfx/warn_beep.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.0,
+    "concurrency": 4,
+    "priority": 95,
+    "loop": false
+  },
+  "core_countdown_second": {
+    "files": [
+      "res://assets/audio/level3/sfx/countdown_second.wav"
+    ],
+    "bus": "Music",
+    "volume_db": -3,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.4,
+    "concurrency": 2,
+    "priority": 95,
+    "loop": false
+  },
+  "core_overload_impact": {
+    "files": [
+      "res://assets/audio/level3/sfx/overload_impact.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -2,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_overload_rupture": {
+    "files": [
+      "res://assets/audio/level3/sfx/overload_rupture.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -6,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_overload_shockwave": {
+    "files": [
+      "res://assets/audio/level3/sfx/overload_shockwave.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_ending_trust": {
+    "files": [
+      "res://assets/audio/level3/endings/ending_trust.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_ending_student_override": {
+    "files": [
+      "res://assets/audio/level3/endings/ending_student_override.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_ending_professor_override": {
+    "files": [
+      "res://assets/audio/level3/endings/ending_professor_override.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "core_ending_paradox": {
+    "files": [
+      "res://assets/audio/level3/endings/ending_paradox.ogg"
+    ],
+    "bus": "Music",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 100,
+    "loop": false
+  },
+  "maint_bed_past": {
+    "files": [
+      "res://assets/audio/level2/ambience/maint_bed_past.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "maint_bed_future": {
+    "files": [
+      "res://assets/audio/level2/ambience/maint_bed_future.ogg"
+    ],
+    "bus": "Ambience",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 60,
+    "loop": true
+  },
+  "maint_machine_loop": {
+    "files": [
+      "res://assets/audio/level2/sfx/machine_loop.ogg"
+    ],
+    "bus": "SFX",
+    "volume_db": -24,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": true,
+    "unit_size": 6.0,
+    "max_distance": 22.0
+  },
+  "maint_buzz_loop": {
+    "files": [
+      "res://assets/audio/level2/sfx/buzz_loop.ogg"
+    ],
+    "bus": "SFX",
+    "volume_db": -26,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 60,
+    "loop": true,
+    "unit_size": 3.0,
+    "max_distance": 12.0
+  },
+  "maint_lever_clunk": {
+    "files": [
+      "res://assets/audio/level2/sfx/lever_clunk.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_crank": {
+    "files": [
+      "res://assets/audio/level2/sfx/crank_ratchet.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -10,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_charge_latch": {
+    "files": [
+      "res://assets/audio/level2/sfx/charge_latch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_power_surge": {
+    "files": [
+      "res://assets/audio/level2/sfx/power_surge.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -5,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 95,
+    "loop": false
+  },
+  "maint_power_down": {
+    "files": [
+      "res://assets/audio/level2/sfx/power_down.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 90,
+    "loop": false
+  },
+  "maint_reserve_lever": {
+    "files": [
+      "res://assets/audio/level2/sfx/reserve_lever.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_fuse_seat": {
+    "files": [
+      "res://assets/audio/level2/sfx/fuse_seat.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 80,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_archive": {
+    "files": [
+      "res://assets/audio/level2/sfx/archive_access.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -12,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 70,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_recorder_export": {
+    "files": [
+      "res://assets/audio/level2/sfx/recorder_export.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_cell_pull": {
+    "files": [
+      "res://assets/audio/level2/sfx/cell_pull.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_keypad_authorize": {
+    "files": [
+      "res://assets/audio/level2/sfx/keypad_authorize.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_release_wheel": {
+    "files": [
+      "res://assets/audio/level2/sfx/release_wheel.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -7,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_gate_open": {
+    "files": [
+      "res://assets/audio/level2/sfx/gate_open.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -5,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 90,
+    "loop": false,
+    "unit_size": 10.0,
+    "max_distance": 34.0
+  },
+  "maint_anchor_latch": {
+    "files": [
+      "res://assets/audio/level2/sfx/anchor_latch.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -8,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 85,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_anchor_complete": {
+    "files": [
+      "res://assets/audio/level2/sfx/anchor_complete.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -4,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": false,
+    "cooldown": 0.1,
+    "concurrency": 1,
+    "priority": 98,
+    "loop": false
+  },
+  "maint_hatch_open": {
+    "files": [
+      "res://assets/audio/level2/sfx/hatch_open.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 75,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_hatch_close": {
+    "files": [
+      "res://assets/audio/level2/sfx/hatch_close.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 75,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_lift_move": {
+    "files": [
+      "res://assets/audio/level2/sfx/lift_move.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -11,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 70,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_lift_stop": {
+    "files": [
+      "res://assets/audio/level2/sfx/lift_stop.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -9,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 0.1,
+    "concurrency": 2,
+    "priority": 70,
+    "loop": false,
+    "unit_size": 7.0,
+    "max_distance": 26.0
+  },
+  "maint_detail": {
+    "files": [
+      "res://assets/audio/level2/sfx/clank_1.wav",
+      "res://assets/audio/level2/sfx/clank_2.wav",
+      "res://assets/audio/level2/sfx/clank_3.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -17,
+    "pitch_variance": 0.05,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 1.0,
+    "concurrency": 1,
+    "priority": 15,
+    "loop": false,
+    "unit_size": 8.0,
+    "max_distance": 30.0
+  },
+  "maint_steam_hiss": {
+    "files": [
+      "res://assets/audio/level2/sfx/steam_hiss.wav"
+    ],
+    "bus": "SFX",
+    "volume_db": -20,
+    "pitch_variance": 0.0,
+    "volume_variance_db": 0.0,
+    "spatial": true,
+    "cooldown": 2.0,
+    "concurrency": 1,
+    "priority": 15,
+    "loop": false,
+    "unit_size": 6.0,
+    "max_distance": 22.0
+  }
+}
+assets = Array[AudioStream]([ExtResource("2"), ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("23"), ExtResource("24"), ExtResource("25"), ExtResource("26"), ExtResource("27"), ExtResource("28"), ExtResource("29"), ExtResource("30"), ExtResource("31"), ExtResource("32"), ExtResource("33"), ExtResource("34"), ExtResource("35"), ExtResource("36"), ExtResource("37"), ExtResource("38"), ExtResource("39"), ExtResource("40"), ExtResource("41"), ExtResource("42"), ExtResource("43"), ExtResource("44"), ExtResource("45"), ExtResource("46"), ExtResource("47"), ExtResource("48"), ExtResource("49"), ExtResource("50"), ExtResource("51"), ExtResource("52"), ExtResource("53"), ExtResource("54"), ExtResource("55"), ExtResource("56"), ExtResource("57"), ExtResource("58"), ExtResource("59"), ExtResource("60"), ExtResource("61"), ExtResource("62"), ExtResource("63"), ExtResource("64"), ExtResource("65"), ExtResource("66"), ExtResource("67"), ExtResource("68"), ExtResource("69"), ExtResource("70"), ExtResource("71"), ExtResource("72"), ExtResource("73"), ExtResource("74"), ExtResource("75"), ExtResource("76"), ExtResource("77"), ExtResource("78"), ExtResource("79"), ExtResource("80"), ExtResource("81")])

@@ -31,6 +31,8 @@ enum Cause { ACTION, RESET, INITIAL }
 var offline_role: String = PuzzleBase.PAST
 ## Warn about refused actions. Rejections are normal gameplay; keep the log quiet in release builds.
 var log_rejections: bool = OS.is_debug_build()
+## Set during a reactor catastrophe; kept through the coordinated room load.
+var gameplay_suspended: bool = false
 
 var _logic: Dictionary = {}    # puzzle_id -> PuzzleBase; survives scene changes
 var _records: Dictionary = {}  # puzzle_id -> Record; the canonical (or replicated) state
@@ -258,6 +260,7 @@ func _compute_mode() -> Mode:
 
 
 func _end_session() -> void:
+	gameplay_suspended = false
 	if not _session_active:
 		return
 	_session_active = false
@@ -302,6 +305,8 @@ func _handle_request(puzzle_id: String, action: String, payload: Variant, role: 
 
 ## The single validation-and-execution path for local and remote actions.
 func _run_action(puzzle_id: String, action: String, payload: Variant, role: String) -> Dictionary:
+	if gameplay_suspended:
+		return _rejected(puzzle_id, action, "cinematic_locked")
 	if not _session_active:
 		return _rejected(puzzle_id, action, "no_session", "no game session is running")
 	if typeof(payload) != TYPE_DICTIONARY:
@@ -447,7 +452,7 @@ func _request_from_host(puzzle_id: String, action: String, payload: Dictionary) 
 		var result := _rejected(puzzle_id, action, "no_session", "not connected to a started game")
 		action_rejected.emit(puzzle_id, action, "no_session", NetworkManager.role)
 		return result
-	_rpc_request_action.rpc_id(1, puzzle_id, action, payload)
+	_rpc_request_action.rpc_id(1, _session_id, puzzle_id, action, payload)
 	return _result(Status.PENDING, puzzle_id, action)
 
 
@@ -466,8 +471,8 @@ func _push_snapshot(cause: int) -> void:
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func _rpc_request_action(puzzle_id: String, action: String, payload: Variant) -> void:
-	if _mode != Mode.HOST:
+func _rpc_request_action(session_id: int, puzzle_id: String, action: String, payload: Variant) -> void:
+	if _mode != Mode.HOST or session_id != _session_id:
 		return
 	var sender := multiplayer.get_remote_sender_id()
 	var role := _role_of_peer(sender)

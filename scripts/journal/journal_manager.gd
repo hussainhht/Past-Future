@@ -130,9 +130,14 @@ func mark_seen(entry_id: String) -> void:
 ## Forget all discoveries (a new game session).
 func reset() -> void:
 	close_journal()
+	dismiss_notifications()
 	_unlocked = {"past": [], "future": []}
 	_seen = {"past": {}, "future": {}}
 	state_changed.emit()
+
+
+func dismiss_notifications() -> void:
+	if is_instance_valid(_ui): _ui.dismiss_notifications()
 
 
 func _on_puzzle_completed(puzzle_id: String) -> void:

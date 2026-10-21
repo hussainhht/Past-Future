@@ -1,0 +1,9 @@
+Steam boiler sound loop (generator_loop.wav)
+Creator: bart
+Page: https://opengameart.org/content/steam-boiler-sound-loop
+License: CC0 1.0 Universal (public domain dedication), as shown on the OpenGameArt page.
+License text: https://creativecommons.org/publicdomain/zero/1.0/
+Attribution is not required; the creator asks for credit where convenient.
+Download: https://opengameart.org/sites/default/files/generator_loop.wav
+SHA256: 64b174cf8ef71e7f71aa03cf29864ab489f7be1f624456cab916043da38911bd
+Verified: 2026-10-21

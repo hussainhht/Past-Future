@@ -242,7 +242,7 @@ func render(state: Dictionary, role: String, predicted_remaining: float, predict
 				text = "Both engage your PHASE SWITCH. " + sync_text
 				if device_panel.visible: device_feedback.text = "STUDENT: %s\nPROFESSOR: %s\n%s" % ["HELD" if state.sync_past else "READY", "HELD" if state.sync_future else "READY", sync_text]
 		"STAGE_C": text = "IDENTITY LOCK  /  Operate your final terminal. Two versions. One identity. One survivor."
-		"OVERLOAD": text = "OVERLOAD CONTAINMENT  /  Room C will reset. Your investigation and earlier rooms are safe."
+		"OVERLOAD": text = "TEMPORAL COLLAPSE / Returning both timelines to the beginning."
 		"ENDING": text = "END OF CHAPTER 0"
 	if state.stage == "STAGE_C":
 		text += "  /  YOU: %s  ·  PARTNER: %s" % ["LOCKED" if state["locked_" + role] else "WAITING", "LOCKED" if state["locked_" + ("past" if role == "future" else "future")] else "WAITING"]
