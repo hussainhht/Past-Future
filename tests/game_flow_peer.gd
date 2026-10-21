@@ -267,7 +267,7 @@ func establish_link() -> bool:
 
 func scenario_full() -> void:
 	var timeline := "past" if is_host() else "future"
-	var expected_state := {"student_radio": true, "professor_radio": true, "frequency_calibrated": true}
+	var expected_state := {"student_radio": true, "professor_radio": true, "frequency_calibrated": true, "current_frequency": 67, "current_amplitude": 70}
 
 	# 1. Both players start in Room A with their own timeline; invalid and forged requests go nowhere.
 	var partner := await barrier({"session": session})
@@ -610,6 +610,7 @@ func scenario_production() -> void:
 		return
 	if is_host():
 		puzzles.submit_action(FREQ, "tune_frequency", {"frequency": 67})
+		puzzles.submit_action(FREQ, "tune_amplitude", {"amplitude": 70})
 	if not await wait_for(func() -> bool: return puzzles.is_solved(FREQ), "Production calibration failed"):
 		return
 	await tick(4)

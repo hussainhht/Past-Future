@@ -1,0 +1,15 @@
+# Gameplay performance
+
+The temporal ghost originally scanned 422 laboratory or 784 maintenance meshes at 20 Hz, repeatedly submitted unchanged transforms, and added over a hundred individual draw calls. It now caches a neighborhood around the Professor, refreshes on confirmed changes, and follows active mechanical animations at up to 20 Hz. Settled geometry does no periodic rebuilds. Hidden Professor animation is disabled.
+
+Ghost surroundings render in two combined meshes. The Professor's identical-material surfaces render in one combined skinned mesh. Source meshes, poses, and visibility remain available for live updates; the overlay still has no collisions or gameplay targets. The fragment shader rejects pixels outside the radius early and avoids rendering the back faces of closed meshes.
+
+A further locality pass clips boundary geometry on the CPU before upload, using a 16-sided polygon inscribed in the 4.5-unit radius. Previously, large floors and walls intersected the radius and submitted whole surfaces, including vertices approximately 14.5 units from the Professor in the maintenance sample. The same geometry check now finds zero surroundings vertices outside the radius in both rooms. A spatial grid selects the neighborhood, clipped meshes are cached by pose, and old copies are released after relocation. Offscreen echoes suspend both animation and geometry updates, then catch up when visible again.
+
+The laboratory waveform texture renders once when its signal or timeline changes. Its existing texture stays visible between updates, preserving live tuning without redrawing an unchanged 768 × 552 viewport every frame.
+
+On the local Apple M4 / Godot 4.7.2 Compatibility renderer at 1600 × 900, the ghost overlay adds approximately 3–4 draw calls after optimization. The rendered sample with the overlay enabled ran at roughly 16.7–17.2 ms per frame, compared with the initial 27.5–30.4 ms samples. These are local measurements, not a guaranteed frame rate on other machines; window presentation and background load affect timings.
+
+Run `godot --path . --rendering-method gl_compatibility --script res://tools/profile_gameplay.gd` for a repeatable profile. Set `PROFILE_OUTPUT` to save JSON. The tool explicitly renders frames so background-window occlusion cannot suppress rendering and disables room introductions for the measurement. It samples both real rooms with the ghost off and on and reports frame timing, draw calls, object counts, uploaded geometry bounds, and selected script costs. Geometry statistics describe cached batches even when the ghost is disabled; those batches are not drawn while disabled. It does not change project graphics settings.
+
+`tests/temporal_ghost.gd` checks the render-surface budget, idle caching, suspended animation, anchoring, controls, live geometry updates, and preservation of puzzle state. The existing gameplay, maintenance, and rendered text-layout suites cover equipment operation, role switching, room travel, resizing, and the updated console.

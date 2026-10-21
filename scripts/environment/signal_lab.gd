@@ -42,7 +42,12 @@ var _state: Dictionary = {}
 
 func _ready() -> void:
 	audio.add_to_group("lab_audio")
-	$Layout/Interactive/ConsoleTerminal.bind_screens(terminal, reader)
+	var console := $Layout/Interactive/ConsoleTerminal
+	console.bind_screens(terminal, reader)
+	console.waveform.target_frequency = coordinator.target_frequency
+	console.waveform.target_amplitude = coordinator.target_amplitude
+	reader.waveform.target_frequency = coordinator.target_frequency
+	reader.waveform.target_amplitude = coordinator.target_amplitude
 	PuzzleManager.puzzle_state_changed.connect(_on_puzzle_state_changed)
 	coordinator.temporal_radio_link_established.connect(_on_link_established)
 	_state = PuzzleManager.get_state(Rules.ID)

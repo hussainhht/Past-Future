@@ -106,6 +106,7 @@ shape = SubResource("ExitZoneShape")
 layer = 5
 
 [node name="Objective" type="Label" parent="GameplayHUD"]
+visible = false
 offset_left = 48.0
 offset_top = 126.0
 offset_right = 1050.0
@@ -116,8 +117,8 @@ text = "THE LOST FREQUENCY"
 mouse_filter = 2
 
 [node name="RadioHUD" parent="GameplayHUD" node_paths=PackedStringArray("radio") instance=ExtResource("21")]
-offset_top = 126.0
-offset_bottom = 214.0
+offset_top = 96.0
+offset_bottom = 172.0
 radio = NodePath("../../TemporalRadio")
 
 [node name="StudentDiscovery" type="Node" parent="."]

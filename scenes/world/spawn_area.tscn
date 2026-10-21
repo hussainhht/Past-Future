@@ -206,7 +206,7 @@ theme = SubResource("WorldTheme")
 [node name="Header" type="ColorRect" parent="HUD/Interface"]
 layout_mode = 1
 anchor_right = 1.0
-offset_bottom = 106.0
+offset_bottom = 82.0
 mouse_filter = 2
 color = Color(0.035, 0.06, 0.075, 0.96)
 
@@ -215,24 +215,24 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 48
-theme_override_constants/margin_right = 48
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_bottom = 18
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
 
 [node name="Row" type="HBoxContainer" parent="HUD/Interface/Header/Margin"]
 layout_mode = 2
-theme_override_constants/separation = 38
+theme_override_constants/separation = 20
 
 [node name="Identity" type="VBoxContainer" parent="HUD/Interface/Header/Margin/Row"]
 layout_mode = 2
-custom_minimum_size = Vector2(240, 0)
+custom_minimum_size = Vector2(165, 0)
 theme_override_constants/separation = 5
 
 [node name="TimelineLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/Identity"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "I  /  PAST"
 
 [node name="RoleLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/Identity"]
@@ -248,7 +248,7 @@ theme_override_constants/separation = 5
 
 [node name="Title" type="Label" parent="HUD/Interface/Header/Margin/Row/RoomInfo"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "SIGNAL LABORATORY"
 
 [node name="ConnectionLabel" type="Label" parent="HUD/Interface/Header/Margin/Row/RoomInfo"]
@@ -266,14 +266,6 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "VIEW FUTURE"
 
-[node name="CharacterButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-focus_mode = 0
-mouse_default_cursor_shape = 2
-text = "CHARACTER  /  F2"
-
 [node name="PauseButton" type="Button" parent="HUD/Interface/Header/Margin/Row"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(110, 48)
@@ -282,30 +274,6 @@ size_flags_vertical = 4
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "PAUSE"
-
-[node name="Footer" type="ColorRect" parent="HUD/Interface"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -82.0
-grow_vertical = 0
-mouse_filter = 2
-color = Color(0.035, 0.06, 0.075, 0.96)
-
-[node name="Hint" type="Label" parent="HUD/Interface/Footer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 12.0
-offset_right = -48.0
-offset_bottom = -10.0
-theme_override_font_sizes/font_size = 17
-text = "WASD / ARROWS  ·  MOVE     SHIFT  ·  RUN     F  ·  INTERACT     ENTER / CLICK DIALOGUE  ·  CONTINUE\nT  ·  SWITCH SOLO ROLE     F2  ·  CHARACTER STUDIO     R  ·  RESPAWN     ESC  ·  PAUSE"
-vertical_alignment = 1
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
 layer = 60
@@ -360,6 +328,18 @@ custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "RESUME"
+
+[node name="SettingsButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="CharacterButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "CHARACTER STUDIO"
 
 [node name="ResetSoloButton" type="Button" parent="PauseLayer/Interface/PausePanel/Center/Panel/Content"]
 unique_name_in_owner = true

@@ -79,6 +79,32 @@ func approach(position: Vector3, expected: Node) -> void:
 	await press(KEY_F)
 
 
+func check_radio_sprint() -> void:
+	var player = room.player
+	var saved_position: Vector3 = player.global_position
+	room.respawn()
+	check(game.radio.owns_radio and player.carrying, "Sprint check uses the acquired handheld radio in " + room.timeline)
+	Input.action_press("move_right")
+	await tick(12)
+	var walk_speed := Vector2(player.velocity.x, player.velocity.z).length()
+	check(is_equal_approx(walk_speed, player.speed), "Carrying the radio retains walking speed in " + room.timeline)
+	Input.action_press("sprint")
+	await tick(12)
+	check(is_equal_approx(Vector2(player.velocity.x, player.velocity.z).length(), player.speed * player.run_multiplier), "Carrying the radio allows full sprint speed in " + room.timeline)
+	check(player.animation_name == "Running_A", "Carrying the radio uses the running animation while sprinting in " + room.timeline)
+	check(player.skeleton.get_node("HeldRadioSocket/PlaceholderRadio").visible, "Radio remains visible while sprinting in " + room.timeline)
+	Input.action_release("sprint")
+	await tick(12)
+	check(is_equal_approx(Vector2(player.velocity.x, player.velocity.z).length(), walk_speed) and player.animation_name == "Walking_A", "Releasing sprint returns to walking while carrying the radio in " + room.timeline)
+	Input.action_release("move_right")
+	await tick(12)
+	check(Vector2(player.velocity.x, player.velocity.z).is_zero_approx(), "Movement stops after sprinting with the radio in " + room.timeline)
+	check(player.animation_name == "Holding_A", "Radio holding pose returns when stopped in " + room.timeline)
+	player.global_position = saved_position
+	player.velocity = Vector3.ZERO
+	await tick()
+
+
 func _run() -> void:
 	var puzzles: Node = root.get_node("PuzzleManager")
 	puzzles.log_rejections = false
@@ -139,6 +165,23 @@ func _run() -> void:
 	check(game.director.get_current_sequence_id() == "opening_past", "Actual DialogueTrigger starts Past-specific discovery sequence")
 	await finish_dialogue()
 	await capture("08_held_student_radio")
+	await check_radio_sprint()
+	# The first pickup must leave both physical dials locked.
+	await approach(Vector3(0, 0, -5.6), game.computer)
+	await wait_for(func() -> bool: return game.terminal.visible, "Locked terminal failed to open")
+	var locked_inspector = game.physical_devices.inspector
+	check(not locked_inspector.adjust_dial(1) and not locked_inspector.adjust_dial(1, "amplitude"), "Both dials wait for both handheld radios")
+	await press(KEY_ESCAPE)
+	await tick(3)
+	await press(KEY_T)
+	await tick()
+	await approach(Vector3(-8.45, 0, 4.2), game.professor_pickup)
+	if not await wait_for(func() -> bool: return game.radio.owns_radio, "Professor pickup failed before tuning"):
+		quit(1)
+		return
+	check(not puzzles.is_solved(FREQUENCY), "Both radio pickups unlock tuning without completing the puzzle")
+	await press(KEY_T)
+	await tick()
 	await approach(Vector3(0, 0, -5.6), game.computer)
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Main console did not open terminal after animation"):
 		quit(1)
@@ -178,14 +221,11 @@ func _run() -> void:
 	root.push_input(up, true)
 	await tick(3)
 	check(inspector.entry == "66" and inspector._dial_knob.rotation.z != old_rotation, "Dragging clockwise rotates the physical knob and stages 66 MHz")
-	check(not inspector._dragging_dial and puzzles.get_revision(FREQUENCY) == revision, "Releasing the dial ends dragging without submitting puzzle state")
+	check(not inspector._dragging_dial and puzzles.get_revision(FREQUENCY) > revision and puzzles.get_state(FREQUENCY).current_frequency == 66, "Dragging replicates live frequency and release ends dragging")
 	await press(KEY_9)
 	check(inspector.entry == "66", "Digit keys do not act as a hidden frequency keypad")
-	var enter_point: Vector2 = room.camera.unproject_position(inspector.controls["Calibrate signal"].visual.global_position)
-	check(inspector.pick_at(enter_point), "A camera ray presses the device's physical CALIBRATE button")
-	check(game.physical_devices.last_result.status == 1 and "SIGNAL NOT FOUND" in game.terminal.feedback_label.text, "Incorrect frequency produces normal retry feedback on the device")
-	check(puzzles.get_revision(FREQUENCY) == revision, "Incorrect attempt creates no authoritative revision")
-	check(&"computer_open" in audio_events and &"computer_calibrate" in audio_events and &"computer_invalid" in audio_events, "Actual terminal opening, calibration and failure play catalog cues")
+	check(game.physical_devices.last_result.status == 2 and not puzzles.is_solved(FREQUENCY), "Unmatched frequency updates shared state without solving")
+	check(&"computer_open" in audio_events and &"computer_tune" in audio_events, "Opening and turning the live dial play catalog cues")
 	check(&"radio_pickup" in audio_events, "Confirmed physical pickup plays tactile audio")
 	await capture("03_terminal_retry")
 	await tick(3)
@@ -202,24 +242,28 @@ func _run() -> void:
 	inspector.suspended = true
 	check(not inspector.adjust_dial(10) and inspector.entry == "67", "A suspended inspection cannot turn the dial")
 	inspector.suspended = false
-	await press(KEY_ENTER)
-	check(game.physical_devices.last_result.status == 2 and not puzzles.is_solved(FREQUENCY), "Physical calibration waits for missing Professor radio")
-	check(not inspector.adjust_dial(1) and inspector.entry == "67", "The confirmed carrier locks the dial against further changes")
+	check(not puzzles.is_solved(FREQUENCY), "Matching frequency still needs amplitude")
+	check(inspector.adjust_dial(-5000, "amplitude") and inspector.amplitude == 1, "Amplitude clamps at one percent")
+	check(inspector.adjust_dial(5000, "amplitude") and inspector.amplitude == 100, "Amplitude clamps at one hundred percent")
+	inspector.adjust_dial(-65, "amplitude")
+	await tick(2)
+	var amplitude_point: Vector2 = room.camera.unproject_position(inspector._amplitude_knob.global_position)
+	check(inspector.pick_at(amplitude_point), "A ray selects the second physical dial")
+	check(inspector._dragging_dial and inspector._selected_dial == "amplitude", "Amplitude uses the same drag mechanism")
+	inspector._dragging_dial = false
+	await press(KEY_TAB)
+	check(inspector._selected_dial == "frequency", "Tab selects the other dial for keyboard tuning")
+	await press(KEY_TAB)
+	check(inspector.pick_at(amplitude_point), "The amplitude knob can begin another drag")
+	motion.position = amplitude_point + Vector2(175, 0)
+	motion.relative = Vector2(175, 0)
+	root.push_input(motion, true)
+	await process_frame
+	check(game.physical_devices.last_result.status == 3 and puzzles.is_solved(FREQUENCY), "The final live dial change establishes the temporal link")
+	check(not inspector.adjust_dial(1) and not inspector.adjust_dial(1, "frequency"), "Both confirmed dials lock after matching")
 
 	await press(KEY_ESCAPE)
-	check(not game.terminal.visible and not room._paused and room.player.controls_enabled, "Escape closes terminal without opening pause or leaving movement locked")
-	var radio_instance: int = game.radio.get_instance_id()
-	await press(KEY_T)
-	await tick()
-	check(room.timeline == "Future" and room.player.scene_file_path.ends_with("professor_3d_player.tscn"), "Solo switches to real Professor model and Future environment")
-	check(game.radio.get_instance_id() == radio_instance and game.radio.get_parent() == room.player, "Role switch rebinds the existing radio component without resetting state")
-	check(room.get_node("CameraRig").target == room.player and game.controller.actor == room.player, "Camera and interaction controller follow the new local character")
-	check(not student_pickup.is_visible_in_tree() and game.professor_pickup.is_visible_in_tree(), "Role-specific world radios use the corresponding timeline")
-	await capture("04_future_lab")
-	await approach(Vector3(-8.45, 0, 4.2), game.professor_pickup)
-	if not await wait_for(func() -> bool: return puzzles.is_solved(FREQUENCY), "Final radio did not establish temporal connection"):
-		quit(1)
-		return
+	check(not game.terminal.visible and not room._paused and not room.player.controls_enabled and game.director.is_dialogue_active(), "Escape closes terminal and releases input to the connection dialogue")
 	check(game.radio.can_receive() and game.get_node("GameplayHUD/RadioHUD").status_label.text == "CONNECTED", "Confirmed link updates actual radio HUD")
 	check(room.lab.get_node("Layout/RiftArea/TemporalRift").linked(), "Actual laboratory rift reflects connection")
 	check("TEMPORAL RADIO LINK ESTABLISHED" in game.objective.text, "Gameplay displays required success text")
@@ -248,11 +292,19 @@ func _run() -> void:
 	check(game.director.dialogue_box.get_speaker_text() == "The Professor", "Actual director alternates Student and Professor")
 	await finish_dialogue()
 	check(room.player.controls_enabled and game.adapter.active_sequence_id.is_empty(), "Dialogue completion restores controls and adapter lifetime")
+	var radio_instance: int = game.radio.get_instance_id()
+	await press(KEY_T)
+	await tick()
+	check(room.timeline == "Future" and room.player.scene_file_path.ends_with("professor_3d_player.tscn"), "Solo switches to real Professor model and Future environment")
+	check(game.radio.get_instance_id() == radio_instance and game.radio.get_parent() == room.player, "Role switch rebinds the radio without resetting state")
+	check(room.get_node("CameraRig").target == room.player and game.controller.actor == room.player, "Camera and interaction follow the new character")
+	await capture("04_future_lab")
+	await check_radio_sprint()
 	await approach(Vector3(0, 0, -5.6), game.clue)
 	if not await wait_for(func() -> bool: return game.reader.visible, "Future research reader failed"):
 		quit(1)
 		return
-	check("67 MHz" in game.reader.document_label.text and not room.player.controls_enabled, "Research log is readable in actual Future lab with safe modal input")
+	check(game.reader.waveform.state.current_frequency == 67 and game.reader.waveform.state.current_amplitude == 70 and not room.player.controls_enabled, "Future receiver shows confirmed live signal with safe modal input")
 	check(&"document_open" in audio_events, "Actual research document plays paper cue")
 	await capture("07_research_log")
 	await press(KEY_ESCAPE)
@@ -290,7 +342,7 @@ func _run() -> void:
 	if not await wait_for(func() -> bool: return game.terminal.visible, "Recreated lab terminal failed to open"):
 		quit(1)
 		return
-	check(game.terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and game.terminal.frequency_input.text == "67", "Reopened actual console restores the calibrated connection")
+	check(game.terminal.status_label.text == "TEMPORAL RADIO LINK ESTABLISHED" and game.terminal.frequency_dial.value == 67, "Reopened actual console restores the calibrated connection")
 	await capture("09_connected_terminal")
 	await press(KEY_ESCAPE)
 	room._set_paused(true)
@@ -304,6 +356,27 @@ func _run() -> void:
 		quit(1)
 		return
 	check(get_nodes_in_group("dialogue_director").is_empty() and root.get_node("NetworkManager").state == 0, "Returning to menu releases dialogue and network session resources")
+	# The shortcut must work even after the laboratory registered an unsolved frequency puzzle.
+	session = puzzles.get_session_id()
+	current_scene.get_node("%PlayButton").pressed.emit()
+	check(current_scene.get_node("%LevelTwoTestButton").is_visible_in_tree(), "Play menu exposes the temporary Level 02 shortcut")
+	current_scene.get_node("%LevelTwoTestButton").pressed.emit()
+	await scene_changed
+	var corridor = current_scene
+	corridor.pause_when_unfocused = false
+	await tick(8)
+	check(corridor.scene_file_path == "res://scenes/world/maintenance_corridor.tscn" and root.get_node("GameFlowManager").get_current_room_id() == "room_02", "Shortcut enters the real Level 02 and attaches its room flow")
+	check(puzzles.get_session_id() != session and puzzles.is_solved(FREQUENCY), "Shortcut starts a fresh session with Level 01 completed")
+	check(corridor.role == "past" and corridor.radio.owns_radio and corridor.radio.has_established_link() and corridor.radio.get_calibrated_frequency() == 67, "Shortcut starts as Student with a working 67 MHz radio")
+	check(not corridor.state.service_isolated and not corridor.state.supports_secured and not puzzles.is_solved("puzzle_02_maintenance"), "Shortcut leaves Level 02 puzzles unsolved")
+	corridor.director.stop_dialogue()
+	corridor._pending_lines.clear()
+	await tick()
+	await press(KEY_T)
+	await tick()
+	check(corridor.role == "future" and corridor.radio.owns_radio and corridor.radio.has_established_link(), "Shortcut permits switching to Professor with the linked radio intact")
+	corridor.return_to_menu()
+	await scene_changed
 	current_scene.get_node("%PlayButton").pressed.emit()
 	current_scene.get_node("%PreviewButton").pressed.emit()
 	await scene_changed

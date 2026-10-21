@@ -438,6 +438,7 @@ func test_signal_laboratory() -> void:
 	for radio_role in ["past", "future"]:
 		puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": radio_role}, radio_role)
 	puzzles.submit_action(FREQ, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY}, "past")
+	puzzles.submit_action(FREQ, "tune_amplitude", {"amplitude": 70}, "past")
 	await tick(4)
 	var completions_before := completions
 	var revision: int = puzzles.get_revision(FREQ)

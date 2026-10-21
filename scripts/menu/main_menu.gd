@@ -41,6 +41,7 @@ func _ready() -> void:
 	%ReadyButton.pressed.connect(func() -> void: NetworkManager.set_ready(not NetworkManager.guest_ready))
 	%StartGameButton.pressed.connect(func() -> void: NetworkManager.start_game())
 	%PreviewButton.pressed.connect(_preview_spawn_area)
+	%LevelTwoTestButton.pressed.connect(_preview_maintenance_corridor)
 	NetworkManager.state_changed.connect(_refresh_lan)
 	NetworkManager.game_started.connect(_enter_spawn_area)
 	fullscreen_toggle.toggled.connect(_set_fullscreen)
@@ -109,7 +110,7 @@ func _open_page(page_name: String) -> void:
 	if page_name == "PlayPage":
 		%PreviewButton.grab_focus()
 	elif page_name == "SettingsPage":
-		fullscreen_toggle.grab_focus()
+		pages.get_node("SettingsPage/SettingsContent").tabs.get_tab_bar().grab_focus()
 	elif page_name == "QuitPage":
 		%ConfirmQuit.grab_focus()
 	else:
@@ -197,6 +198,23 @@ func _preview_spawn_area() -> void:
 		PuzzleManager.offline_role = "past"
 		PuzzleManager.begin_session()  # a new solo run starts with fresh puzzles
 		_enter_spawn_area()
+
+
+## Temporary testing shortcut. Seed only Level 01; the corridor starts unsolved.
+func _preview_maintenance_corridor() -> void:
+	if _entering_game or NetworkManager.state != NetworkManager.State.IDLE:
+		return
+	_entering_game = true
+	PuzzleManager.offline_role = "past"
+	PuzzleManager.begin_session()
+	var frequency = load("res://scripts/puzzles/implementations/frequency_puzzle.gd")
+	if not PuzzleManager.is_registered(frequency.ID):
+		PuzzleManager.register_puzzle(frequency.ID, frequency.new())
+	PuzzleManager.submit_action(frequency.ID, "acquire_radio", {"radio_role": "past"}, "past")
+	PuzzleManager.submit_action(frequency.ID, "acquire_radio", {"radio_role": "future"}, "future")
+	PuzzleManager.submit_action(frequency.ID, "tune_frequency", {"frequency": 67}, "past")
+	PuzzleManager.submit_action(frequency.ID, "tune_amplitude", {"amplitude": 70}, "past")
+	get_tree().change_scene_to_file.call_deferred("res://scenes/world/maintenance_corridor.tscn")
 
 
 func _enter_spawn_area() -> void:

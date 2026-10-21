@@ -46,7 +46,9 @@ func run() -> void:
 	current_scene._set_paused(false)
 	var role: String = "past" if who == "host" else "future"
 	puzzles.submit_action(Frequency.ID, "acquire_radio", {"radio_role": role})
-	if who == "host": puzzles.submit_action(Frequency.ID, "tune_frequency", {"frequency":67})
+	if who == "host":
+		puzzles.submit_action(Frequency.ID, "tune_frequency", {"frequency":67})
+		puzzles.submit_action(Frequency.ID, "tune_amplitude", {"amplitude":70})
 	if not await wait_for(func() -> bool: return puzzles.is_solved(Frequency.ID), "Radio prerequisite never completed"): return finish()
 	current_scene.gameplay.close_overlays()
 	current_scene.gameplay.get_node("StudentDiscovery").enabled = false

@@ -20,6 +20,7 @@ func fresh() -> void:
 	puzzles.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "past"}, "past")
 	puzzles.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "future"}, "future")
 	puzzles.submit_action(Frequency.ID, "tune_frequency", {"frequency": 67}, "past")
+	puzzles.submit_action(Frequency.ID, "tune_amplitude", {"amplitude": 70}, "past")
 func fix_bypass() -> void:
 	act("repair_bypass", "past")
 	act("repair_bypass", "future")

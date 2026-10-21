@@ -174,7 +174,7 @@ func _physics_process(delta: float) -> void:
 		down = view_camera.global_basis.z
 		down.y = 0.0
 		down = down.normalized()
-	var running := controls_enabled and not carrying and (Input.is_physical_key_pressed(KEY_SHIFT) or Input.is_action_pressed("sprint"))
+	var running := controls_enabled and (Input.is_physical_key_pressed(KEY_SHIFT) or Input.is_action_pressed("sprint"))
 	var ground_direction := right * direction.x + down * direction.y
 	var movement_speed := speed * (run_multiplier if running else 1.0)
 	var ground_velocity := Vector2(velocity.x, velocity.z)

@@ -3,7 +3,7 @@ extends SceneTree
 
 const Rules := preload("res://scripts/puzzles/implementations/frequency_puzzle.gd")
 const Status := preload("res://scripts/puzzles/puzzle_base.gd").Status
-const INITIAL := {"student_radio": false, "professor_radio": false, "frequency_calibrated": false}
+const INITIAL := {"student_radio": false, "professor_radio": false, "frequency_calibrated": false, "current_frequency": 50, "current_amplitude": 35}
 
 var manager: Node
 var checks: int = 0
@@ -34,7 +34,7 @@ func _run() -> void:
 	manager.puzzle_completed.connect(func(id: String):
 		if id == Rules.ID:
 			completions += 1)
-	check(manager.get_state(Rules.ID) == INITIAL, "Exactly three initial prerequisite flags")
+	check(manager.get_state(Rules.ID) == INITIAL, "Initial ownership and live dial values")
 	check(not manager.is_solved(Rules.ID), "Initially disconnected")
 	check(act("tune_frequency", {"frequency": 67}).reason == "student_radio_required", "Student must acquire a radio before calibrating")
 	check(act("acquire_radio", {"radio_role": "future"}).reason == "radio_not_yours", "Student cannot take Professor ownership")
@@ -56,19 +56,27 @@ func _run() -> void:
 	check(act("tune_frequency", {}).reason == "invalid_frequency", "Frequency is required")
 	check(act("tune_frequency", {"frequency": 67, "solved": true}).reason == "invalid_frequency", "No extra authoritative payload fields")
 	check(act("tune_frequency", {"frequency": 67}, "future").reason == "role_not_allowed", "Future cannot tune")
+	check(act("tune_frequency", {"frequency": 67}).reason == "professor_radio_required", "Both radios must be acquired before tuning")
+	check(act("tune_amplitude", {"amplitude": 70}).reason == "professor_radio_required", "Amplitude also waits for both radios")
+	check(act("acquire_radio", {"radio_role": "future"}, "future").status == Status.CHANGED, "Second radio unlocks tuning without solving")
+	for invalid in [null, "70", 70.0, true]:
+		check(act("tune_amplitude", {"amplitude": invalid}).reason == "invalid_amplitude", "Amplitude requires an integer")
+	for invalid in [0, 101]:
+		check(act("tune_amplitude", {"amplitude": invalid}).reason == "amplitude_out_of_range", "Amplitude is bounded")
+	check(act("tune_amplitude", {"amplitude": 70}, "future").reason == "role_not_allowed", "Future cannot turn amplitude")
 	for wrong in [1, 66, 68, 999]:
-		var result := act("tune_frequency", {"frequency": wrong})
-		check(result.status == Status.NO_CHANGE and result.message == "SIGNAL NOT FOUND", "Wrong frequency is normal retry feedback")
-	check(manager.get_revision(Rules.ID) == 1 and completions == 0, "Bad attempts never mutate or complete")
-	check(act("tune_frequency", {"frequency": 67}).status == Status.CHANGED, "Calibration can wait for the second radio")
-	check(manager.get_state(Rules.ID).frequency_calibrated and not manager.is_solved(Rules.ID), "Missing Professor radio prevents connection")
-	check(act("acquire_radio", {"radio_role": "future"}, "future").status == Status.COMPLETED, "Final radio establishes connection")
-	check(manager.is_solved(Rules.ID) and Rules.link_established(manager.get_state(Rules.ID)), "Connection is derived from every prerequisite")
-	check(completions == 1 and manager.get_revision(Rules.ID) == 3, "One completion and three authoritative transitions")
-	check(act("tune_frequency", {"frequency": 67}).status == Status.NO_CHANGE, "Repeated tuning does not complete again")
-	check(act("tune_frequency", {"frequency": 80}).status == Status.NO_CHANGE, "Locked calibration cannot be undone by wrong tuning")
+		check(act("tune_frequency", {"frequency": wrong}).status == Status.CHANGED, "Every different frequency updates the live signal")
+		check(manager.get_state(Rules.ID).current_frequency == wrong and not manager.is_solved(Rules.ID), "Replica keeps unmatched values")
+	check(act("tune_frequency", {"frequency": 67}).status == Status.CHANGED, "Matching frequency alone does not connect")
+	check(not manager.is_solved(Rules.ID), "Amplitude is required too")
+	check(act("tune_frequency", {"frequency": 67}).status == Status.NO_CHANGE, "Repeated setting creates no revision")
+	check(act("tune_amplitude", {"amplitude": 70}).status == Status.COMPLETED, "Matching both dials establishes connection")
+	var revision: int = manager.get_revision(Rules.ID)
+	check(completions == 1, "One completion for the matching signal")
+	check(act("tune_frequency", {"frequency": 80}).status == Status.NO_CHANGE, "Locked frequency cannot be undone")
+	check(act("tune_amplitude", {"amplitude": 20}).status == Status.NO_CHANGE, "Locked amplitude cannot be undone")
 	check(act("acquire_radio", {"radio_role": "future"}, "future").status == Status.NO_CHANGE, "Repeated completed pickup is a no-op")
-	check(completions == 1 and manager.get_revision(Rules.ID) == 3, "Repeats produce no extra revisions or events")
+	check(completions == 1 and manager.get_revision(Rules.ID) == revision, "Repeats produce no extra revisions or events")
 	var copy: Dictionary = manager.get_state(Rules.ID)
 	copy.student_radio = false
 	check(manager.get_state(Rules.ID).student_radio, "Caller cannot mutate ownership by changing a returned copy")
@@ -82,7 +90,8 @@ func _run() -> void:
 	act("acquire_radio", {"radio_role": "past"})
 	act("acquire_radio", {"radio_role": "future"}, "future")
 	check(not manager.is_solved(Rules.ID), "Two radios alone do not connect")
-	check(act("tune_frequency", {"frequency": 67}).status == Status.COMPLETED, "Normal pickup then calibration order works")
+	act("tune_amplitude", {"amplitude": 70})
+	check(act("tune_frequency", {"frequency": 67}).status == Status.COMPLETED, "Either dial may be matched first")
 	check(completions == 2, "Reset permits exactly one new completion")
 	manager.begin_session()
 	check(manager.get_session_id() != session and manager.get_state(Rules.ID) == INITIAL, "New session resets all radio progress")
@@ -90,10 +99,13 @@ func _run() -> void:
 	# A target belongs to puzzle configuration, never to PuzzleManager or replicated state.
 	var alternate := Rules.new()
 	alternate.target_frequency = 81
+	alternate.target_amplitude = 45
 	manager.register_puzzle("alternate_frequency", alternate)
 	manager.submit_action("alternate_frequency", "acquire_radio", {"radio_role": "past"}, "past")
-	check(manager.submit_action("alternate_frequency", "tune_frequency", {"frequency": 67}, "past").status == Status.NO_CHANGE, "Default is not hardcoded in the manager")
-	check(manager.submit_action("alternate_frequency", "tune_frequency", {"frequency": 81}, "past").status == Status.CHANGED, "Configurable target is honored")
-	check(manager.get_state("alternate_frequency").size() == 3, "Answer and derived connection are not redundant replicated state")
+	manager.submit_action("alternate_frequency", "acquire_radio", {"radio_role": "future"}, "future")
+	manager.submit_action("alternate_frequency", "tune_amplitude", {"amplitude": 45}, "past")
+	check(manager.submit_action("alternate_frequency", "tune_frequency", {"frequency": 67}, "past").status == Status.CHANGED and not manager.is_solved("alternate_frequency"), "Default target is not hardcoded in the manager")
+	check(manager.submit_action("alternate_frequency", "tune_frequency", {"frequency": 81}, "past").status == Status.COMPLETED, "Configurable targets are honored")
+	check(manager.get_state("alternate_frequency").size() == 5, "Answer and derived connection are not redundant replicated state")
 	print("FREQUENCY RULES: %s (%d checks)" % ["PASS" if failures == 0 else "FAIL", checks])
 	quit(0 if failures == 0 else 1)

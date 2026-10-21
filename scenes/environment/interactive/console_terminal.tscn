@@ -41,9 +41,9 @@ mesh = SubResource("QuadMesh_1")
 cast_shadow = 0
 
 [node name="Readout" type="Label3D" parent="."]
-position = Vector3(0, 1.38, 0.5)
+position = Vector3(0, 1.20, 0.5)
 text = "TX READY"
-font_size = 40
+font_size = 30
 pixel_size = 0.0034
 outline_size = 6
 outline_modulate = Color(0.02, 0.04, 0.05, 0.85)
@@ -100,10 +100,11 @@ Receiver bank B  ·  recovered calibration record #01
 
 23:38  Array calibration started. Door seal engaged.
 23:41  Primary synchronization frequency: 67 MHz
-23:43  Both handheld radios must be on the carrier.
+23:42  Reference amplitude: 70%
+23:43  Collect both handhelds before turning either dial.
 23:44  CORE CONTAINMENT FAILURE.
 
-Margin, handwritten: \"The transmitter needs 67. Tell the voice on the radio.\"
+Margin, handwritten: \"Green is the incoming signal. Grey is the reference. Match both frequency and amplitude.\"
 "
 highlight_target = NodePath("Highlight")
 

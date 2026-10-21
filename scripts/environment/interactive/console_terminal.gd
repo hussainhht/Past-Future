@@ -1,10 +1,14 @@
 extends LabDevice
 ## The signal array console, dressed for both timelines around the frequency puzzle's own parts:
 ##   Past   - its FrequencyComputer opens the calibration terminal (FrequencyTerminal).
-##   Future - its FrequencyClue opens the recovered research log (FrequencyLogReader), which holds
-##            the frequency the Past player must enter. The console runs on its emergency cell.
+##   Future - its FrequencyClue opens the live receiver, comparing current and target waveforms.
 ## SignalLab binds both to the room's screens. The screen, readout, lamp and sparks follow the
 ## confirmed state of puzzle_01_frequency; nothing here submits a puzzle action.
+
+const Waveform := preload("res://scripts/gameplay/frequency/frequency_waveform.gd")
+var waveform: Control
+var _screen_material: StandardMaterial3D
+var _signal_viewport: SubViewport
 
 @onready var screen: MeshInstance3D = $Screen
 @onready var readout: Label3D = $Readout
@@ -21,6 +25,20 @@ func _ready() -> void:
 		var placeholder := part.get_node_or_null("Placeholder") as Node3D
 		if placeholder != null:
 			placeholder.visible = false
+	var viewport := SubViewport.new()
+	_signal_viewport = viewport
+	viewport.name = "LiveSignalScreen"
+	viewport.size = Vector2i(768, 552)
+	viewport.disable_3d = true
+	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	add_child(viewport)
+	waveform = Waveform.new()
+	waveform.size = Vector2(768, 552)
+	viewport.add_child(waveform)
+	_screen_material = StandardMaterial3D.new()
+	_screen_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	_screen_material.albedo_texture = viewport.get_texture()
+	_screen_material.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR
 	super()
 
 
@@ -31,7 +49,7 @@ func bind_screens(terminal: Control, reader: Control) -> void:
 
 
 func _state_changed(previous: Dictionary) -> void:
-	if previous.is_empty() or linked():
+	if previous.is_empty():
 		return
 	if state.get("frequency_calibrated", false) and not previous.get("frequency_calibrated", false):
 		sfx(&"computer_success", Vector3(0, 1.7, 0.5))
@@ -40,16 +58,18 @@ func _state_changed(previous: Dictionary) -> void:
 func _show_state(_animate: bool) -> void:
 	var calibrated: bool = state.get("frequency_calibrated", false)
 	var link := linked()
-	paint(screen, "tex_console_live" if not future or link else "tex_console_dead")
+	screen.set_surface_override_material(0, _screen_material)
+	waveform.set_signal(state, future)
+	_signal_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	paint(status_lamp, "led_go" if link or (calibrated and not future) else ("led_amber" if not future else "led_off"))
 	glow.light_color = Color("8dffb8") if link else (Color("86c9d1") if future else Color("ffd59a"))
 	glow.light_energy = 0.9 if link or not future else 0.35
-	sparks.emitting = future and not link
+	sparks.emitting = future and not Rules.radios_ready(state)
 	if link:
 		readout.text = "TEMPORAL LINK"
 		readout.modulate = Color("8dffb8")
 	elif future:
-		readout.text = "EMERGENCY CELL  ·  LOG"
+		readout.text = "LIVE RECEIVER"
 		readout.modulate = Color("9fe8f0")
 	elif calibrated:
 		readout.text = "SIGNAL LOCKED"

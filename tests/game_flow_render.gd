@@ -181,6 +181,7 @@ func _run() -> void:
 	for radio_role in ["past", "future"]:
 		puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": radio_role}, radio_role)
 	puzzles.submit_action(FREQ, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY}, "past")
+	puzzles.submit_action(FREQ, "tune_amplitude", {"amplitude": 70}, "past")
 	await tick(6)
 	for i in range(32):
 		if not lab.gameplay.director.is_dialogue_active():

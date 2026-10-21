@@ -5,6 +5,7 @@ const Rules := preload("res://scripts/puzzles/implementations/maintenance_corrid
 const Frequency := preload("res://scripts/puzzles/implementations/frequency_puzzle.gd")
 const Radio := preload("res://scripts/gameplay/radio/temporal_radio.gd")
 const WorldTextLayout := preload("res://scripts/ui/world_text_layout.gd")
+const TemporalGhost := preload("res://scripts/world/temporal_ghost.gd")
 const SEQUENCES := {
 	"arrival": "res://resources/dialogue/maintenance/arrival.tres",
 	"crossing": "res://resources/dialogue/maintenance/crossing.tres",
@@ -17,6 +18,8 @@ const FUTURE_DEVICES := ["Battery", "ReserveFuture", "BypassFuture", "Diagnostic
 const PAST_DEVICES := ["Service", "ReservePast", "BypassPast", "Apply", "Keypad", "Support_circle", "Support_triangle", "Support_square"]
 
 @export var pause_when_unfocused := true
+@export var temporal_ghost_enabled := true
+var temporal_ghost: Node3D
 var role := "past"
 var state: Dictionary = {}
 var devices: Dictionary = {}
@@ -47,6 +50,7 @@ var _signal_materials: Dictionary = {}
 var _device_labels: Dictionary = {}
 var _floating_labels: Array[Label3D] = []
 var _equipment_tween: Tween
+var settings_overlay: CanvasLayer
 
 @onready var player: CharacterBody3D = $Actors/Player
 @onready var camera: Camera3D = $CameraRig/Camera3D
@@ -64,6 +68,7 @@ func _ready() -> void:
 			PuzzleManager.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "past"}, "past")
 			PuzzleManager.submit_action(Frequency.ID, "acquire_radio", {"radio_role": "future"}, "future")
 			PuzzleManager.submit_action(Frequency.ID, "tune_frequency", {"frequency": 67}, "past")
+			PuzzleManager.submit_action(Frequency.ID, "tune_amplitude", {"amplitude": 70}, "past")
 	if not PuzzleManager.is_registered(Rules.ID):
 		PuzzleManager.register_puzzle(Rules.ID, Rules.new())
 	role = PuzzleManager.get_local_role()
@@ -91,7 +96,20 @@ func _ready() -> void:
 	GameFlowManager.input_lock_changed.connect(func(_locked: bool) -> void: _sync_controls())
 	_apply_state(false)
 	_sync_story_from_state()
+	if not NetworkManager.in_game and temporal_ghost_enabled:
+		temporal_ghost = TemporalGhost.new()
+		add_child(temporal_ghost)
+		var roots: Array[Node3D] = [$Layout]
+		temporal_ghost.configure(self, roots, _temporal_ghost_context)
 	get_tree().auto_accept_quit = false
+
+
+func _temporal_ghost_context() -> Dictionary:
+	return {"role": role, "player": player,
+		"past_position": player.global_position if role == "past" else _positions.get("past", $past_entry.global_position),
+		"future_position": player.global_position if role == "future" else _positions.get("future", $future_entry.global_position),
+		"inspecting": ui.inspector.active,
+		"blocked": _paused or _disconnected or _leaving or GameFlowManager.is_input_locked() or JournalManager.is_open() or ending_screen.visible}
 
 
 func _create_devices() -> void:
@@ -601,6 +619,7 @@ func _sync_controls() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if settings_overlay != null and settings_overlay.handle_input(event): return
 	if not _initialized or ui.is_modal_open() or GameFlowManager.is_input_locked(): return
 	if event.is_action_pressed("ui_cancel"):
 		if ending_screen.visible:
@@ -623,7 +642,12 @@ func set_paused(value: bool) -> void:
 	if _disconnected and not value: return
 	_paused = value
 	pause_screen.visible = value
+	if settings_overlay != null: settings_overlay.hide()
 	_sync_controls()
+
+
+func is_gameplay_paused() -> bool:
+	return _paused or _disconnected or GameFlowManager.is_input_locked() or ui.is_modal_open() or (ending_screen != null and ending_screen.visible)
 
 
 func _notification(what: int) -> void:
@@ -730,12 +754,6 @@ func _build_hud() -> void:
 	role_button = _button(buttons, "SWITCH ROLE / T", switch_role)
 	role_button.visible = not NetworkManager.in_game
 	pause_button = _button(buttons, "PAUSE / ESC", func() -> void: set_paused(true))
-	var footer := _hud_label("WASD / ARROWS  MOVE     SHIFT  RUN     F  INTERACT     R  RESPAWN", 16)
-	footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	footer.offset_left = 28
-	footer.offset_top = -44
-	footer.offset_bottom = -18
-	root.add_child(footer)
 	var overlays := CanvasLayer.new()
 	overlays.name = "Overlays"
 	overlays.layer = 30
@@ -746,6 +764,17 @@ func _build_hud() -> void:
 	title.name = "Title"
 	box.add_child(title)
 	_button(box, "RESUME", func() -> void: set_paused(false)).name = "Resume"
+	settings_overlay = preload("res://scripts/ui/settings_overlay.gd").new()
+	add_child(settings_overlay)
+	settings_overlay.configure(audio)
+	var settings_button := _button(box, "SETTINGS", func() -> void:
+		pause_screen.hide()
+		settings_overlay.open()
+	)
+	settings_overlay.closed.connect(func() -> void:
+		pause_screen.show()
+		settings_button.grab_focus()
+	)
 	_button(box, "RETURN TO MAIN MENU", return_to_menu)
 	if not NetworkManager.in_game:
 		_button(box, "RESTART CHAPTER FROM LABORATORY", func() -> void:

@@ -46,6 +46,7 @@ if __name__=='__main__':
         if not args.lan_only:
             single('maintenance_rules.gd','MAINTENANCE RULES: PASS',folder)
             single('maintenance_corridor.gd','MAINTENANCE SCENE: PASS',folder)
+            single('temporal_ghost.gd','TEMPORAL GHOST: PASS',folder)
             single('text_layout.gd','TEXT LAYOUT: PASS',folder)
         if not args.skip_lan:lan(folder)
     print('LEVEL 02: ALL REQUESTED CHECKS PASSED')

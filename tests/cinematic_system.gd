@@ -84,11 +84,11 @@ func _run() -> void:
 	puzzles.begin_session()
 	cinema.reduced_motion_override = false
 	check(flow.start_room("room_01"), "Room 01 starts")
-	await wait_until(func() -> bool: return cinema.is_playing(), "Entering Room 01 starts the introduction")
-	check(started.size() == 1 and started[0] == ["room_01", "past"], "One Past introduction for Room 01: %s" % [started])
 	var lab := current_scene
 	lab.pause_when_unfocused = false
 	lab._set_paused(false)
+	await wait_until(func() -> bool: return cinema.is_playing(), "Entering Room 01 starts the introduction")
+	check(started.size() == 1 and started[0] == ["room_01", "past"], "One Past introduction for Room 01: %s" % [started])
 	check(not flow.is_input_locked(), "The introduction does not lock input")
 	await create_timer(0.45).timeout
 	await shot("past_a_chapter")
@@ -116,7 +116,9 @@ func _run() -> void:
 	for radio_role in ["past", "future"]:
 		puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": radio_role}, radio_role)
 	puzzles.submit_action(FREQ, "tune_frequency", {"frequency": Rules.DEFAULT_FREQUENCY}, "past")
+	puzzles.submit_action(FREQ, "tune_amplitude", {"amplitude": Rules.DEFAULT_AMPLITUDE}, "past")
 	await tick(6)
+	lab.gameplay.director.stop_dialogue()
 	check(flow.begin_transition("room_02") == "", "The transition to Room 02 starts")
 	await wait_until(func() -> bool: return flow.get_current_room_id() == "room_02" and not flow.is_transitioning(), "Room 02 is entered", 15.0)
 	await wait_until(func() -> bool: return cinema.is_playing(), "Room 02 introduces itself after the fade")
@@ -190,6 +192,9 @@ func _run() -> void:
 	var before := started.size()
 	puzzles.offline_role = "future"
 	change_scene_to_file("res://scenes/world/spawn_area.tscn")
+	await scene_changed
+	current_scene.pause_when_unfocused = false
+	current_scene._set_paused(false)
 	await wait_until(func() -> bool: return cinema.is_playing(), "A scene entered with change_scene introduces itself")
 	check(started.size() == before + 1 and started.back() == ["room_01", "future"], "Menu-style entry plays the Future card: %s" % [started.back()])
 	await shot("menu_entry_future")
@@ -197,6 +202,10 @@ func _run() -> void:
 	check(not flow.is_input_locked(), "Input is free after the introduction")
 
 	check(past_hold.get_width() > 0 and reduced.get_width() > 0, "Frames captured")
+	current_scene.queue_free()
+	current_scene = null
+	await tick(8)
+	await create_timer(0.2).timeout
 
 	print("CINEMATIC checks=%d failures=%d" % [checks, failures])
 	if failures == 0:

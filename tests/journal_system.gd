@@ -89,6 +89,7 @@ func run() -> void:
 	puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": "past"}, "past")
 	puzzles.submit_action(FREQ, "acquire_radio", {"radio_role": "future"}, "future")
 	puzzles.submit_action(FREQ, "tune_frequency", {"frequency": 67}, "past")
+	puzzles.submit_action(FREQ, "tune_amplitude", {"amplitude": 70}, "past")
 	await tick(4)
 	check(journal.is_unlocked("future_fracture_observation"), "completing the link unlocks the Professor's fracture observation")
 	check(not journal.is_unlocked("past_temporal_anomaly", "future") and not journal.is_unlocked("past_temporal_anomaly"), "...and not the Student's anomaly note while playing the Professor")

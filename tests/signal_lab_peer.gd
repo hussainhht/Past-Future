@@ -127,10 +127,11 @@ func _host() -> void:
 	await _use(Vector3(-4.85, 0, 1.6), "PastRadio")
 	await wait_for(func() -> bool: return state().get("student_radio", false), "The host's radio pickup was never confirmed")
 	check(await _use(Vector3(0, 0, -5.6), "Computer") and room.terminal.visible, "The calibration terminal must open on the host")
-	room.terminal.frequency_input.text = "66"
-	check(room.terminal.submit_frequency().status == Status.NO_CHANGE, "A wrong frequency must not calibrate")
-	room.terminal.frequency_input.text = "67"
-	check(room.terminal.submit_frequency().status == Status.CHANGED, "67 MHz must calibrate the array")
+	if not await wait_for(func() -> bool: return Rules.radios_ready(state()), "Both radios required before live tuning"):
+		return
+	check(room.terminal.submit_frequency(66).status == Status.CHANGED, "An unmatched frequency is broadcast live")
+	check(room.terminal.submit_frequency(67).status == Status.CHANGED, "Frequency matches while amplitude still differs")
+	check(room.terminal.submit_amplitude(70).status == Status.COMPLETED, "Both settings calibrate the array")
 	room.terminal.close()
 	check(rejections.any(func(entry: Array) -> bool: return entry[1] == "tune_frequency" and entry[2] == "role_not_allowed"), "A tune request from the Future must be rejected on the host")
 
@@ -165,10 +166,7 @@ func _client() -> void:
 	check("67 MHz" in room.reader.document_label.text, "The log must show the frequency to the Future player")
 	room.reader.close()
 
-	# Wait for the Past to calibrate, then take the Professor's radio to complete the link.
-	if not await wait_for(func() -> bool: return state().get("frequency_calibrated", false), "The host never calibrated", 30.0):
-		return
-	check("SIGNAL LOCKED" in room.ui.toast_text(), "The Future player must hear that the Past calibrated the array")
+	# Both pickups precede live tuning.
 	await _use(Vector3(-8.45, 0, 4.2), "FutureRadio")
 	if not await wait_for(func() -> bool: return puzzles.is_solved(Rules.ID), "The client's radio never completed the link"):
 		return

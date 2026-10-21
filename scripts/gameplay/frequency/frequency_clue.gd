@@ -3,13 +3,13 @@ extends "res://scripts/interaction/interactable_3d.gd"
 
 @export var reader: Control
 var physical_handler: Node
-@export_multiline var research_text: String = "TEMPORAL COMMUNICATION ARRAY\nCalibration Record #01\n\nPrimary synchronization frequency: 67 MHz\n\nA stable carrier is required to maintain handheld radio communication across the temporal fracture.\n\nStatus: Calibration pending."
+@export_multiline var research_text: String = "TEMPORAL COMMUNICATION ARRAY\nCalibration Record #01\n\nReference signal: 67 MHz / 70% amplitude\n\nMatch the live green trace to the grey target using both dials in the Past.\n\nA stable carrier is required to maintain handheld radio communication across the temporal fracture.\n\nStatus: Calibration pending."
 
 
 func _ready() -> void:
 	super._ready()
 	allowed_timeline = TimelineRestriction.FUTURE
-	interaction_name = "Read Research Log"
+	interaction_name = "Watch Live Signal"
 	play_interaction_animation = false
 
 

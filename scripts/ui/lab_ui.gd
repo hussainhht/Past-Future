@@ -212,7 +212,6 @@ func _build_toast() -> void:
 	_toast_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	_toast_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var box := VBoxContainer.new()
-	box.add_child(_label("PLAYER FEEDBACK / NOT DIALOGUE", 12))
 	box.add_child(_toast_label)
 	_toast.add_child(_margin(box, 16, 12))
 	_message_stack.add_child(_toast)
@@ -226,7 +225,7 @@ func _build_guide() -> void:
 	_guide.add_theme_stylebox_override("panel", _panel_style(Color(0.025, 0.045, 0.055, 1.0), Color("627e87"), 1))
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 10)
-	box.add_child(_label("PLAYER GUIDE / OUTSIDE THE STORY", 12, Color("99b0b7")))
+	box.add_child(_label("OBJECTIVE", 12, Color("99b0b7")))
 	_guide_goal = _label("", 17)
 	_guide_goal.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(_guide_goal)

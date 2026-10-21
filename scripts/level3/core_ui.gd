@@ -55,9 +55,6 @@ func _ready() -> void:
 	bottom.add_child(objective)
 	var controls := HBoxContainer.new()
 	bottom.add_child(controls)
-	var hint := text_label("WASD / LEFT STICK  ·  F / CROSS / A: USE  ·  J: JOURNAL  ·  ESC: MENU", 18)
-	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	controls.add_child(hint)
 	journal_button = make_button("JOURNAL", func() -> void: JournalManager.toggle_journal())
 	controls.add_child(journal_button)
 	debug_button = make_button("DEV: OTHER TIMELINE", func() -> void: pass)
