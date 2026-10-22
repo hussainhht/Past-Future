@@ -11,6 +11,7 @@ var _log: FileAccess
 var _t0 := 0
 var held: Dictionary = {}
 var _nav_cache: Dictionary = {}
+var sprint_default := false
 
 
 func _ready() -> void:
@@ -206,6 +207,15 @@ func camera() -> Camera3D:
 	return get_viewport().get_camera_3d()
 
 
+## First enabled interactable whose path contains `needle` that the local role may use.
+func find_int(needle: String) -> Node:
+	var r := local_role()
+	for i in interactables():
+		if str(i.get_path()).contains(needle) and i.interaction_enabled and i.is_timeline_allowed(r) and i.is_visible_in_tree():
+			return i
+	return null
+
+
 func interactables() -> Array:
 	var out: Array = []
 	var room := scene()
@@ -268,16 +278,30 @@ func read_dialogue(max_seconds: float = 120.0, dwell: float = 1.6) -> int:
 		if line != null:
 			text = str(line.get("text"))
 		# wait for the typewriter to finish (state WAITING_FOR_INPUT)
-		var typed := await until(func() -> bool: return not d.is_dialogue_active() or d.get_state() == DialogueDirector.State.WAITING_FOR_INPUT, 20.0, "typewriter")
+		var typed := await until(func() -> bool: return not d.is_dialogue_active() or d.get_state() == DialogueDirector.State.WAITING_FOR_INPUT, 7.0, "typewriter")
 		if not d.is_dialogue_active():
 			break
 		if typed:
 			say("DIALOGUE: %s" % text.replace("\n", " ").left(140))
 			await sec(clampf(dwell + text.length() * 0.018, 1.2, 4.5))
 			lines += 1
-		await press_f()
+		await tap(KEY_SPACE)
 		await sec(0.15)
 	return lines
+
+
+## Like until(), but keeps reading any dialogue that blocks input while waiting (so neither player stalls).
+func wait_for(cond: Callable, timeout: float, label: String = "") -> bool:
+	var end := Time.get_ticks_msec() + int(timeout * 1000.0)
+	while Time.get_ticks_msec() < end:
+		if cond.call():
+			return true
+		if dialogue_active():
+			await read_dialogue(90.0)
+			end += 6000
+		await get_tree().process_frame
+	say("TIMEOUT waiting for: %s" % label)
+	return false
 
 
 # ---------------------------------------------------------------- navigation
@@ -392,6 +416,11 @@ func walk_to(target: Vector3, tolerance: float = 0.35, timeout: float = 40.0, sp
 		p = player()
 		if p == null:
 			break
+		if dialogue_active():
+			release_all()
+			await read_dialogue(60.0)
+			last_move = Time.get_ticks_msec()
+			end += 8000
 		var pos := p.global_position
 		var flat := Vector3(pos.x, 0, pos.z)
 		if flat.distance_to(Vector3(target.x, 0, target.z)) <= tolerance:
@@ -405,11 +434,36 @@ func walk_to(target: Vector3, tolerance: float = 0.35, timeout: float = 40.0, sp
 			look += 1
 		var dir := path[look] - flat
 		dir.y = 0.0
-		if dir.length() > 0.05:
+		var to_goal := Vector3(target.x, 0, target.z) - flat
+		if to_goal.length() < 0.8:
+			# final approach: axis-wise dead-zone so digital keys settle instead of orbiting the goal
+			var cam := camera()
+			var right := cam.global_basis.x
+			right.y = 0.0
+			right = right.normalized()
+			var down := cam.global_basis.z
+			down.y = 0.0
+			down = down.normalized()
+			var ka: Array = []
+			var ax := to_goal.dot(right)
+			var ay := to_goal.dot(down)
+			if ax > 0.1: ka.append(KEY_D)
+			elif ax < -0.1: ka.append(KEY_A)
+			if ay > 0.1: ka.append(KEY_S)
+			elif ay < -0.1: ka.append(KEY_W)
+			if ka.is_empty():
+				release_all()
+				return true
+			hold_keys(ka)
+		elif dir.length() > 0.05:
 			_move_dir(p, dir.normalized())
-		if sprint:
-			held[KEY_SHIFT] = true
-			key_event(KEY_SHIFT, true)
+		if (sprint or sprint_default) and to_goal.length() > 2.5:
+			if not held.get(KEY_SHIFT, false):
+				held[KEY_SHIFT] = true
+				key_event(KEY_SHIFT, true)
+		elif held.get(KEY_SHIFT, false):
+			held[KEY_SHIFT] = false
+			key_event(KEY_SHIFT, false)
 		if pos.distance_to(last_pos) > 0.05:
 			last_pos = pos
 			last_move = Time.get_ticks_msec()
@@ -427,7 +481,8 @@ func walk_to(target: Vector3, tolerance: float = 0.35, timeout: float = 40.0, sp
 	if held.get(KEY_SHIFT, false):
 		key_event(KEY_SHIFT, false)
 		held[KEY_SHIFT] = false
-	say("walk_to: timeout heading to %s" % str(target))
+	var pl := player()
+	say("walk_to: timeout heading to %s (pos %s ctrl=%s action=%s dlg=%s)" % [str(target), str(pl.global_position) if pl else "?", str(pl.controls_enabled) if pl else "?", str(pl.is_action_active()) if pl else "?", str(dialogue_active())])
 	return false
 
 
@@ -435,7 +490,9 @@ func walk_to(target: Vector3, tolerance: float = 0.35, timeout: float = 40.0, sp
 func approach(target: Node, max_seconds: float = 40.0) -> bool:
 	var p := player()
 	var anchor: Vector3 = target.get_interaction_position()
-	var reach: float = maxf(0.5, target.interaction_distance - 0.25)
+	# can_interact() uses the 3D distance from the player's feet, so account for the anchor height.
+	var dy: float = anchor.y - p.global_position.y
+	var reach: float = sqrt(maxf(0.09, pow(target.interaction_distance - 0.08, 2.0) - dy * dy))
 	# choose a reachable standing cell within reach of the target
 	var grid_half := 14.0
 	var g := _build_grid((p.global_position + anchor) * 0.5, maxf(grid_half, p.global_position.distance_to(anchor) * 0.5 + 6.0), p)
@@ -452,7 +509,7 @@ func approach(target: Node, max_seconds: float = 40.0) -> bool:
 			if d > reach:
 				continue
 			# prefer cells close to the player, then check reachability for the best few
-			var score := w.distance_to(p.global_position) + d * 0.2
+			var score := d * 1.0 + w.distance_to(p.global_position) * 0.04
 			if score < best_d:
 				if g.astar.get_id_path(start, c).size() > 0:
 					best_d = score
@@ -474,12 +531,18 @@ func current_target_of_player() -> Node:
 
 ## Walk to the interactable, wait for it to become the selected prompt target, then press F.
 func use(target: Node, settle: float = 0.5) -> bool:
+	if dialogue_active():
+		await read_dialogue(90.0)
 	if not await approach(target):
 		return false
 	var ok := await until(func() -> bool: return current_target_of_player() == target, 4.0, "target selected " + str(target.name))
 	if not ok:
-		say("use: current target is %s" % str(current_target_of_player()))
-		return false
+		say("use: current target is %s; nudging closer" % str(current_target_of_player()))
+		var a: Vector3 = target.get_interaction_position()
+		await walk_to(Vector3(a.x, 0, a.z), 0.3, 8.0)
+		ok = await until(func() -> bool: return current_target_of_player() == target, 3.0, "target selected (retry) " + str(target.name))
+		if not ok:
+			return false
 	await sec(settle)
 	say("USE '%s'" % target.interaction_name)
 	await press_f()
