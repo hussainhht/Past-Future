@@ -1,22 +1,30 @@
-# Godot 4+ specific ignores
+# Godot 4+ generated
 .godot/
 /android/
 *.translation
+
+# Python
 __pycache__/
 *.pyc
 .venv/
+
+# Blender backups
 *.blend1
 
 # OS metadata
 .DS_Store
+Thumbs.db
 
-# Export presets (optional, ignore if you want custom build keys hidden)
+# Export presets (kept local; may hold signing/credential settings)
 export_presets.cfg
 
-# Scratch scene written (and removed) by tests/game_flow_system.gd
-.game_flow_test/
-.exe
-Past-Future-ر2.exe
+# Local build outputs and release archives
+/builds/
+*.exe
+/*.zip
 
-Past-Future-ر2.console
-The_Other_Me_macOS_Universal.zip
+# Scratch output written (and removed) by tests/game_flow_system.gd
+.game_flow_test/
+
+# Logs written by the reactor visual tooling
+tools/reactor_visual/*.log

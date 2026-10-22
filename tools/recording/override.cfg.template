@@ -1,0 +1,3 @@
+[autoload]
+
+AutoPlay="*res://tools/recording/autoplay.gd"

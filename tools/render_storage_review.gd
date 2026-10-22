@@ -1,7 +1,7 @@
 extends SceneTree
 ## Run with a graphics device: godot --path . --script res://tools/render_storage_review.gd
 const Maintenance := preload("res://scripts/puzzles/implementations/maintenance_corridor_puzzle.gd")
-const OUTPUT := "res://docs/level02/screenshots"
+const OUTPUT := "res://docs/assets/screenshots/level02"
 var room
 var puzzles: Node
 func _initialize() -> void: run.call_deferred()

@@ -2,7 +2,7 @@ class_name Typography
 extends RefCounted
 ## One place that knows which font belongs to which piece of text. The font resources live in
 ## res://assets/themes/typography/ (FontVariation .tres wrapping the files in res://assets/fonts/);
-## the game-wide default lives in res://assets/themes/game_ui_theme.tres. See docs/TYPOGRAPHY_SYSTEM.md.
+## the game-wide default lives in res://assets/themes/game_ui_theme.tres. See docs/technical/TYPOGRAPHY_SYSTEM.md.
 ##
 ## Broken is bundled for the main-menu game name; Oxanium supplies general UI.
 ## To The Point handwriting remains optional, with a system handwriting fallback.

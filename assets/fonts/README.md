@@ -1,7 +1,7 @@
 # Fonts
 
 Every font the game uses lives here, as local files. Nothing is fetched at runtime, so all of it works
-offline and in exported builds. How the fonts are applied is documented in `docs/TYPOGRAPHY_SYSTEM.md`.
+offline and in exported builds. How the fonts are applied is documented in `docs/technical/TYPOGRAPHY_SYSTEM.md`.
 
 ## Installed
 
