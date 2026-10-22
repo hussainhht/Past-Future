@@ -1,27 +1,15 @@
-# Past-Future
-
-[![Godot Engine](https://img.shields.io/badge/Godot-4.7.2-478cbf?logo=godotengine&logoColor=white)](https://godotengine.org)
-[![Platform](<https://img.shields.io/badge/Platform-Windows%20PC-0078d4?logo=windows&logoColor=white>)](https://microsoft.com/windows)
-[![License: CC0](<https://img.shields.io/badge/License-CC0%20(Audio%20%26%20Animations)-green>)](assets/third_party/kaykit_character_animations/License.txt)
-[![Game Jam](<https://img.shields.io/badge/Game%20Jam-Reboot%20CHECKPOINT%202026-orange>)](https://itch.io)
-
-An asymmetric cooperative mystery and puzzle adventure developed in **Godot 4.7.2** for the **Reboot CHECKPOINT Game Jam 2026**, built around the theme **"TWO"**.
-
-Two players control different temporal versions of the exact same individual, separated by an irrevocable gap of **31 years**:
-
-- **The Student (Age 18)**: Conducting research in an intact university laboratory in the **Past**.
-- **The Professor (Age 49)**: Standing in the catastrophic, decayed ruins of the same building in the **Future**.
-
-The experimental temporal device has suffered a catastrophic fracture. But this was no accident—the Professor deliberately activated the device and overrode safety containment. Cooperate across time, reshape the environment, and discover why your future self caused the collapse.
-
----
-
-
 <h1 align="center">THE OTHER ME</h1>
 
 <p align="center">
   <strong>Your only way forward is the person you become.</strong><br>
   Two lives. One facility. Thirty-one years apart.
+</p>
+
+<p align="center">
+  <a href="https://godotengine.org"><img alt="Godot 4.7.2" src="https://img.shields.io/badge/Godot-4.7.2-478cbf?logo=godotengine&logoColor=white"></a>
+  <img alt="Platform: Windows PC" src="https://img.shields.io/badge/Platform-Windows%20PC-0078d4?logo=windows&logoColor=white">
+  <img alt="Game jam: Reboot CHECKPOINT 2026" src="https://img.shields.io/badge/Game%20Jam-Reboot%20CHECKPOINT%202026-orange">
+  <a href="#credits-and-acknowledgements"><img alt="Third-party assets: see credits" src="https://img.shields.io/badge/Third--party%20assets-see%20credits-green"></a>
 </p>
 
 <p align="center">
@@ -38,7 +26,8 @@ The experimental temporal device has suffered a catastrophic fracture. But this 
   <a href="#gameplay-screenshots">Screenshots</a> ·
   <a href="#explore-the-three-levels">The levels</a> ·
   <a href="#how-to-play">How to play</a> ·
-  <a href="#installation-and-running">Run from source</a>
+  <a href="#installation-and-running">Run from source</a> ·
+  <a href="#documentation">Documentation</a>
 </p>
 
 ## About the Game
@@ -69,7 +58,7 @@ An experimental device has fractured time. Each player sees a different side of 
 </table>
 
 <p align="center">
-  <img src="docs/interactions/screenshots/frequency_dial.png" alt="Close-up gameplay view of the laboratory transmitter's frequency and amplitude dials, waveform screen, and research notes" width="840"><br>
+  <img src="docs/assets/screenshots/interactions/frequency_dial.png" alt="Close-up gameplay view of the laboratory transmitter's frequency and amplitude dials, waveform screen, and research notes" width="840"><br>
   <em>Get close to the equipment. Your partner has information your instruments cannot provide.</em>
 </p>
 
@@ -113,7 +102,7 @@ All images on this page are existing gameplay captures or character renders from
   </tr>
   <tr>
     <td><img src="docs/assets/screenshots/past_library_corner.jpg" alt="The Student exploring bookshelves, research benches, and the temporal device in the Signal Laboratory" width="300"></td>
-    <td><img src="docs/level02/screenshots/future_bridge.png" alt="The Professor exploring the Maintenance Corridor's industrial machinery and altered crossing in the Future" width="300"></td>
+    <td><img src="docs/assets/screenshots/level02/future_bridge.png" alt="The Professor exploring the Maintenance Corridor's industrial machinery and altered crossing in the Future" width="300"></td>
     <td><img src="docs/assets/screenshots/level3/environment/future_core.png" alt="The Professor facing the ringed temporal reactor amid damaged research equipment in the Future" width="300"></td>
   </tr>
   <tr>
@@ -208,13 +197,35 @@ The public GitHub releases list contained **no published releases** when checked
 4. The guest selects **I'M READY**; the host selects **START GAME**.
 5. Allow Godot/the game through the host's firewall for **UDP port 7000**. Guest Wi-Fi or client isolation may prevent the computers from reaching one another.
 
-For developer scene launches, tests, and the experimental remote-network setup, see [Setup and Testing](PROJECT_CONTEXT/10_SETUP_AND_TESTING.md) and the [design document's multiplayer architecture](GAME_DESIGN_DOCUMENT.md#9-multiplayer-architecture). These documents contain puzzle and story spoilers; some older menu labels and controls have changed.
+For developer scene launches, tests, and the experimental remote-network setup, see [Setup and Testing](docs/development/SETUP_AND_TESTING.md) and the [design document's multiplayer architecture](docs/design/GAME_DESIGN_DOCUMENT.md#9-multiplayer-architecture). These documents contain puzzle and story spoilers; some older menu labels and controls have changed.
+
+## Repository Layout
+
+```text
+Past-Future/
+├── project.godot        Godot project (main scene: scenes/menu/main_menu.tscn)
+├── assets/              Audio, characters, environment models, fonts, themes, third-party packs
+├── scenes/              Scenes grouped by role: menu, world, rooms, level3, gameplay, ui, props, testing
+├── scripts/             GDScript grouped by responsibility; autoloads live in network/, puzzles/,
+│                        game_flow/, journal/, cinematic/ and objectives/
+├── resources/           Dialogue, journal, cinematic, level and objective .tres data
+├── shaders/             Godot shaders
+├── tests/               Headless test scripts and their Python runners
+├── tools/               Asset-generation, review-render and recording tooling (not needed to play)
+├── docs/                Design, technical and development documentation (see docs/README.md)
+└── builds/              Local export archives (git-ignored for new files)
+```
+
+## Documentation
+
+Start at the [documentation index](docs/README.md). The single Game Design Document is
+[docs/design/GAME_DESIGN_DOCUMENT.md](docs/design/GAME_DESIGN_DOCUMENT.md) (contains spoilers).
 
 ## Technology Stack
 
 **Godot Engine 4.7.2 · GDScript · Jolt 3D Physics · ENet multiplayer over UDP**
 
-Stylized 3D environments and animated characters use a fixed-angle perspective camera. Blender source files and Python asset tools are included for development; they are not required to run the game in Godot. System details live in the [architecture guide](PROJECT_CONTEXT/02_PROJECT_ARCHITECTURE.md).
+Stylized 3D environments and animated characters use a fixed-angle perspective camera. Blender source files and Python asset tools are included for development; they are not required to run the game in Godot. System details live in the [architecture guide](docs/technical/ARCHITECTURE.md).
 
 ## Development Status
 
@@ -224,15 +235,15 @@ The repository contains a **three-level playable prototype**: both timeline char
 - **Still unverified:** physical two-computer LAN play, remote Tailscale play, and cross-platform exports. Controller mappings exist, with the keyboard/mouse requirements listed above.
 - **Remaining work:** same-PC split-screen, the normal finale transition, cross-device playtesting, and a verified public release package.
 
-See [Development Progress](PROJECT_CONTEXT/08_DEVELOPMENT_PROGRESS.md) and [Known Issues](PROJECT_CONTEXT/09_BUGS_AND_TECHNICAL_DEBT.md) for engineering context. These historical reports include spoilers and may describe earlier revisions; this page follows the current menu and source.
+See [Development Progress](docs/development/DEVELOPMENT_PROGRESS.md) and [Known Issues](docs/development/KNOWN_ISSUES_AND_TECHNICAL_DEBT.md) for engineering context. These historical reports include spoilers and may describe earlier revisions; this page follows the current menu and source.
 
 ## Credits and Acknowledgements
 
 - **CHECKPOINT** — project credit in the game menu; created for **Reboot CHECKPOINT Game Jam 2026**, theme **TWO**.
 - **Hussain Ali and Bader Alafoo** — contributors recorded in the repository's Git history.
 - **Kay Lousberg** — KayKit Character Animations and Furniture Bits, **CC0**. See the [animation license](assets/third_party/kaykit_character_animations/License.txt), [Furniture Bits license](assets/third_party/kaykit_furniture_bits/LICENSE.txt), and [environment attribution](assets/environment/licenses/THIRD_PARTY_ATTRIBUTION.md).
-- **Kenney, SpliceSound, Kinoton, BenjaminNelan, thegoose09, SketchMan3, and yd** — audio and music sources recorded in the [audio credits](docs/AUDIO_ASSET_CREDITS.md).
-- **SRG774 and bart**, alongside reused Kenney and ambience assets — sources for the later levels' sound design and reactor score; see [Level 2 and Level 3 audio credits](docs/LEVEL2_LEVEL3_AUDIO.md).
+- **Kenney, SpliceSound, Kinoton, BenjaminNelan, thegoose09, SketchMan3, and yd** — audio and music sources recorded in the [audio credits](docs/technical/AUDIO_ASSET_CREDITS.md).
+- **SRG774 and bart**, alongside reused Kenney and ambience assets — sources for the later levels' sound design and reactor score; see [Level 2 and Level 3 audio credits](docs/technical/LEVEL2_LEVEL3_AUDIO.md).
 - **Font creators and open-source type projects** — bundled families and their individual terms are listed in the [font credits](assets/fonts/README.md), including the [Broken font notice](assets/fonts/licenses/Broken-NOTICE.txt).
 
 Third-party licenses apply to their respective assets. The repository currently has no project-wide license file; the CC0 asset licenses do not license the entire game.
@@ -242,7 +253,7 @@ Third-party licenses apply to their respective assets. The repository currently 
 <p align="center">
   <strong>THE OTHER ME</strong><br>
   Chapter 0 — The First Fracture<br><br>
-  <a href="PROJECT_CONTEXT/00_START_HERE.md">Developer documentation</a> ·
-  <a href="GAME_DESIGN_DOCUMENT.md">Game design document (spoilers)</a> ·
+  <a href="docs/README.md">Documentation</a> ·
+  <a href="docs/design/GAME_DESIGN_DOCUMENT.md">Game design document (spoilers)</a> ·
   <a href="https://github.com/hussainhht/Past-Future/issues">Report an issue</a>
 </p>

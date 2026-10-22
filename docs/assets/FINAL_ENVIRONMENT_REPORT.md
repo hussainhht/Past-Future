@@ -205,7 +205,7 @@ orange sparks break up the cold palette.
 ## 6. Puzzle 01: Lost Frequency
 
 **Rules.** Puzzle 01 is `main`'s frequency puzzle, unchanged: `scripts/puzzles/implementations/frequency_puzzle.gd`,
-documented in `docs/FREQUENCY_PUZZLE.md`.
+documented in `docs/design/FREQUENCY_PUZZLE.md`.
 
 - The room's `FrequencyCoordinator` registers it as `puzzle_01_frequency` on every peer, only if no room has done so.
 - The frequency is the existing definition: 67 MHz, set on the coordinator. The design documents mention 142.8 MHz,
@@ -474,7 +474,7 @@ The work is on branch `claude/great-franklin-ufe6zm`, which is not merged into `
 - **The radio HUD and the banner overlap briefly.** The puzzle's radio HUD sits under the header on the right. The
   link banner covers part of it for its 7 seconds.
 - **Radio dialogue is not wired.** Hooking the frequency puzzle's `RadioDialogueAdapter` to the dialogue system is
-  marked pending in `docs/FREQUENCY_PUZZLE.md`, and is not done here.
+  marked pending in `docs/design/FREQUENCY_PUZZLE.md`, and is not done here.
 - **Resetting with the player in the doorway.** A puzzle reset snaps the door shut. If the player is standing in the
   doorway at that moment, they overlap the leaf. Resets are a host and debug tool.
 - **The exit goes nowhere yet.** It ends at a banner, because the next room (Room B, the Maintenance Corridor) does not

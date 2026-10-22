@@ -1,0 +1,183 @@
+[   0.01 f000000 host] AutoPlay harness started role=host args={ "script": "playthrough", "quit_when_done": "1", "end_hold": "15", "linger": "2", "role": "host" }
+[   0.48 f000000 host] screenshot 01_menu_title_host.png
+[   4.65 f000240 host] screenshot 02_host_waiting_host.png
+[  12.84 f000728 host] screenshot 03_host_both_ready_host.png
+[  21.09 f000967 host] === LEVEL 1: SIGNAL LABORATORY (role past) ===
+[  21.71 f000998 host] screenshot 10_level1_start_host.png
+[  21.72 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/SecurityDoor/Inspect | 'Inspect sealed door' | at (6.20, 0.00, -7.25) | en=true tl=0 dist=1.7 | visible
+[  21.72 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/DoorKeypad/Interactable | 'Check keypad' | at (7.78, 0.00, -7.19) | en=true tl=0 dist=1.5 | visible
+[  21.72 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/JunctionBox/Inspect | 'Inspect breaker' | at (-2.60, 0.00, -7.14) | en=true tl=0 dist=1.5 | visible
+[  21.72 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/Computer | 'Use Calibration Computer' | at (0.00, 0.60, -5.75) | en=true tl=1 dist=2.2 | visible
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/RecoveredLog | 'Watch Live Signal' | at (0.00, 0.95, -5.85) | en=true tl=2 dist=2.2 | visible
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/ResearchNotebook/Interactable | 'Read research notebook' | at (6.77, 0.00, 1.49) | en=true tl=0 dist=1.5 | visible
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/LabMemo/Interactable | 'Read memo' | at (-7.12, 0.00, 1.56) | en=true tl=0 dist=1.5 | visible
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/PastRadio/Pickup | 'Acquire Handheld Radio' | at (-4.85, 1.75, 0.86) | en=true tl=1 dist=2.0 | visible
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/Interactive/FutureRadio/Pickup | 'Acquire Handheld Radio' | at (-8.45, 1.25, 5.40) | en=true tl=2 dist=2.0 | hidden
+[  21.73 f000998 host] INT SpawnArea/SignalLab/Layout/RiftArea/TemporalRift/Inspect | 'Inspect temporal rift' | at (9.20, 0.00, 2.30) | en=true tl=0 dist=2.3 | visible
+[  21.74 f000998 host] INT SpawnArea/LaboratoryGameplay/Props/ReceiverRelay | 'Activate Receiver Relay' | at (-9.90, 1.20, -3.90) | en=true tl=1 dist=2.2 | visible
+[  21.74 f000998 host] INT SpawnArea/LaboratoryGameplay/Props/RadioCheck | 'Check Radio Connection' | at (-3.00, 0.80, -4.80) | en=false tl=0 dist=2.0 | visible
+[  21.74 f000998 host] INT SpawnArea/LaboratoryGameplay/Props/LevelExit | 'Proceed to Next Area' | at (6.20, 0.00, -8.70) | en=true tl=0 dist=1.8 | visible
+[  21.74 f000998 host] PLAYER at (0.0, 0.0, 3.7) mask=1 layer=1
+[  21.80 f000998 host] approach /Layout/Interactive/LabMemo/Interactable -> stand at (-7.183516, 0.0, 1.504767)
+[  25.11 f001194 host] USE 'Read memo'
+[  27.86 f001355 host] screenshot 11_student_memo_host.png
+[  28.43 f001386 host] approach nteractive/ResearchNotebook/Interactable -> stand at (6.696622, 0.0, 1.591155)
+[  34.11 f001722 host] USE 'Read research notebook'
+[  36.86 f001882 host] screenshot 12_student_notebook_host.png
+[  37.44 f001913 host] approach lLab/Layout/Interactive/PastRadio/Pickup -> stand at (-4.716732, 0.0, 1.346939)
+[  42.33 f002203 host] USE 'Acquire Handheld Radio'
+[  43.79 f002283 host] screenshot 13_radios_acquired_host.png
+[  44.63 f002334 host] DIALOGUE: Something is wrong with the experiment.
+[  47.89 f002530 host] DIALOGUE: That signal wasn't there a moment ago.
+[  51.03 f002718 host] DIALOGUE: I need to find out what happened.
+[  53.59 f002869 host] approach out/Interactive/ConsoleTerminal/Computer -> stand at (-0.008339, 0.0, -5.79702)
+[  58.24 f003146 host] USE 'Use Calibration Computer'
+[  61.67 f003344 host] screenshot 14_student_dials_host.png
+[  64.34 f003505 host] frequency dial now 67
+[  67.08 f003667 host] amplitude dial now 70
+[  67.08 f003667 host] RADIO LINK ESTABLISHED
+[  68.16 f003727 host] screenshot 15_link_established_host.png
+[  68.96 f003776 host] DIALOGUE: Hello? Can you hear me clearly now?
+[  72.49 f003988 host] DIALOGUE: Yes. The signal is stable. Keep your radio with you.
+[  76.38 f004221 host] DIALOGUE: The computer says sixty-seven megahertz. Who are you?
+[  82.28 f004575 host] DIALOGUE: Someone who remembers this laboratory. The north door is open. We can check the receiver relay, or head into the maintenance gallery.
+[  91.15 f005104 host] at exit zone (target=LevelExit:<Area3D#216778412461>); waiting for partner / transition
+[ 101.86 f005667 host] === LEVEL 2: MAINTENANCE CORRIDOR (role past) ===
+[ 103.88 f005756 host] screenshot 20_level2_start_host.png
+[ 103.89 f005756 host] DIALOGUE: I made it out. The corridor looks clear.
+[ 109.39 f006018 host] DIALOGUE: The passage is clear, but the archive has no power. There's an emergency cabinet beside the door. Let me read its charging instructions.
+[ 113.78 f006227 host] approach root/MaintenanceCorridor/Layout/Service -> stand at (-5.775, 0.0, 7.375)
+[ 116.32 f006348 host] USE 'Use service'
+[ 119.33 f006503 host] screenshot 21_student_service_panel_host.png
+[ 119.33 f006503 host] CLICK control 'Flip SERVICE isolator' at (805.3783, 144.4585)
+[ 123.61 f006709 host] EMERGENCY CELL CHARGED
+[ 123.70 f006709 host] screenshot 22_battery_ready_host.png
+[ 123.76 f006709 host] approach idor/Layout/PreservationStorage/Case_r17 -> stand at (3.953675, 0.0, -4.816061)
+[ 130.05 f006973 host] USE 'Carry R-17 / ochre case'
+[ 131.48 f007034 host] approach r/Layout/PreservationStorage/StorageBay0 -> stand at (-4.329034, 0.0, -3.916534)
+[ 134.98 f007194 host] USE 'Load R-17 / ochre case into vault A'
+[ 136.46 f007250 host] screenshot 23_student_loaded_bay0_host.png
+[ 136.52 f007250 host] approach r/Layout/PreservationStorage/StorageBay0 -> stand at (-4.199381, 0.0, -3.714422)
+[ 136.86 f007262 host] USE 'Use underground storage computer A'
+[ 139.39 f007395 host] CLICK control 'Lower tray and store' at (859.2734, 271.5778)
+[ 143.81 f007649 host] approach idor/Layout/PreservationStorage/Case_k04 -> stand at (6.050619, 0.0, -7.614422)
+[ 148.51 f007863 host] USE 'Carry K-04 / blue case'
+[ 149.95 f007936 host] approach r/Layout/PreservationStorage/StorageBay1 -> stand at (-4.296182, 0.0, -5.867046)
+[ 154.36 f008156 host] USE 'Load K-04 / blue case into vault B'
+[ 155.82 f008221 host] screenshot 23_student_loaded_bay1_host.png
+[ 155.88 f008221 host] approach r/Layout/PreservationStorage/StorageBay1 -> stand at (-4.206757, 0.0, -5.989885)
+[ 156.22 f008236 host] USE 'Use underground storage computer B'
+[ 158.76 f008372 host] CLICK control 'Lower tray and store' at (859.2736, 271.5778)
+[ 163.17 f008622 host] approach idor/Layout/PreservationStorage/Case_m22 -> stand at (3.893242, 0.0, -7.189884)
+[ 166.73 f008787 host] USE 'Carry M-22 / red case'
+[ 168.15 f008854 host] approach r/Layout/PreservationStorage/StorageBay2 -> stand at (-4.145753, 0.0, -7.997944)
+[ 171.54 f009016 host] USE 'Load M-22 / red case into vault C'
+[ 173.00 f009082 host] screenshot 23_student_loaded_bay2_host.png
+[ 173.06 f009082 host] approach r/Layout/PreservationStorage/StorageBay2 -> stand at (-4.114004, 0.0, -7.921879)
+[ 173.42 f009098 host] USE 'Use underground storage computer C'
+[ 175.98 f009241 host] CLICK control 'Lower tray and store' at (859.2736, 271.5778)
+[ 212.61 f011120 host] ARCHIVE REPAIRED
+[ 212.71 f011120 host] screenshot 24_archive_repaired_host.png
+[ 212.76 f011120 host] approach ot/MaintenanceCorridor/Layout/BypassPast -> stand at (-5.814003, 0.0, 1.87812)
+[ 214.52 f011203 host] DIALOGUE: The archive still has my personnel record. Thirty-one years after your date.
+[ 218.70 f011398 host] DIALOGUE: The inscription inside your watch: Don't waste it.
+[ 222.20 f011565 host] DIALOGUE: How do you know what is inside my watch?
+[ 225.51 f011727 host] DIALOGUE: Because I am still wearing it. I am you.
+[ 228.61 f011874 host] DIALOGUE: Then you remember how I get out.
+[ 232.18 f012044 host] DIALOGUE: I remember the archive failing. Not repairing it this way.
+[ 237.55 f012313 host] DIALOGUE: I remember those storage bays being empty. Even after your cases appeared inside them, that memory stayed the same.
+[ 245.85 f012707 host] USE 'Use bypass past'
+[ 248.78 f012862 host] CLICK control 'Seat replacement fuse' at (837.9101, 149.28)
+[ 261.20 f013437 host] RECORDING: preserved
+[ 261.26 f013437 host] approach root/MaintenanceCorridor/Layout/Keypad -> stand at (3.379298, 0.0, -8.560881)
+[ 262.75 f013500 host] DIALOGUE: The recording arrived. Manual activation. A containment warning.
+[ 267.11 f013691 host] DIALOGUE: The complete audit is in the Core. We need to stabilize the anchor.
+[ 275.88 f014089 host] USE 'Use keypad'
+[ 278.88 f014247 host] screenshot 27_student_keypad_host.png
+[ 278.88 f014247 host] CLICK control '3' at (882.7389, 189.0384)
+[ 279.96 f014313 host] CLICK control '1' at (728.2755, 189.0384)
+[ 281.13 f014383 host] CLICK control '4' at (728.7305, 250.1854)
+[ 282.29 f014453 host] CLICK control '2' at (805.5072, 189.0384)
+[ 284.35 f014572 host] screenshot 27_student_code_entered_host.png
+[ 284.36 f014572 host] CLICK control 'Authorize service entrance' at (881.184, 370.1812)
+[ 291.14 f014911 host] CORE ENTRANCE OPEN
+[ 291.23 f014911 host] screenshot 28_core_entrance_open_host.png
+[ 291.28 f014911 host] approach root/MaintenanceCorridor/Layout/Anchor -> stand at (-1.906715, 0.0, -11.98957)
+[ 294.10 f015051 host] USE 'Use anchor'
+[ 297.05 f015218 host] CLICK control 'Latch stabilization contact' at (805.3811, 117.0817)
+[ 298.21 f015286 host] LEVEL 2 PUZZLE SOLVED
+[ 298.28 f015286 host] screenshot 29_level2_solved_host.png
+[ 305.29 f015689 host] screenshot 29b_chapter_complete_panel_host.png
+[ 307.25 f015794 host] DIALOGUE: The audit matches the recording. Your authorization. You disabled the abort.
+[ 310.55 f015969 host] DIALOGUE: Yes.
+[ 313.37 f016129 host] DIALOGUE: You knew what would happen. Why did you do it?
+[ 318.30 f016403 host] DIALOGUE: The Professor says nothing. The restored map reveals other unresolved fractures. A second signal answers.
+[ 325.36 f016787 host] screenshot 30_pause_menu_skip_to_level3_host.png
+[ 327.92 f016855 host] === LEVEL 3: THE FINAL FRACTURE (role past) ===
+[ 330.97 f017030 host] screenshot 30_level3_start_host.png
+[ 330.98 f017030 host] INT TemporalCore/Past/start | 'INSPECT / REACTOR ARMING CONSOLE / DISCOVERY' | at (0.00, 0.00, 4.50) | en=true tl=1 dist=1.6 | visible
+[ 330.98 f017030 host] INT TemporalCore/Past/coil_0 | 'INSPECT / POWER COIL 1 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, -2.00) | en=true tl=1 dist=1.6 | visible
+[ 330.98 f017030 host] INT TemporalCore/Past/coil_1 | 'INSPECT / POWER COIL 2 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, 0.00) | en=true tl=1 dist=1.6 | visible
+[ 330.99 f017030 host] INT TemporalCore/Past/coil_2 | 'INSPECT / POWER COIL 3 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, 2.00) | en=true tl=1 dist=1.6 | visible
+[ 330.99 f017030 host] INT TemporalCore/Past/origin | 'INSPECT / ORIGIN STABILIZER / STUDENT / OFFLINE' | at (-3.00, 0.00, -3.00) | en=true tl=1 dist=1.6 | visible
+[ 330.99 f017030 host] INT TemporalCore/Past/sync_past | 'INSPECT / PAST / PHASE SWITCH / OPEN' | at (-2.50, 0.00, 0.00) | en=true tl=1 dist=1.6 | visible
+[ 331.00 f017030 host] INT TemporalCore/Past/terminal_past | 'INSPECT / ORIGIN TERMINAL / AWAIT IDENTITY' | at (-3.50, 0.00, 3.00) | en=true tl=1 dist=1.6 | visible
+[ 331.00 f017030 host] INT TemporalCore/Past/evidence_past | 'AUTHORIZATION SHEET' | at (-7.00, 0.00, 4.50) | en=true tl=1 dist=1.6 | visible
+[ 331.00 f017030 host] INT TemporalCore/Past/warning | 'HANDWRITTEN WARNING' | at (-7.00, 0.00, -4.50) | en=true tl=1 dist=1.6 | visible
+[ 331.01 f017030 host] INT TemporalCore/Future/start | 'INSPECT / REACTOR ARMING CONSOLE / DISCOVERY' | at (40.00, 0.00, 4.50) | en=true tl=2 dist=1.6 | hidden
+[ 331.01 f017030 host] INT TemporalCore/Future/receiver | 'INSPECT / RECEIVER / BATTERY CONTACTS / OFFLINE' | at (46.00, 0.00, 3.00) | en=true tl=2 dist=1.6 | hidden
+[ 331.01 f017030 host] INT TemporalCore/Future/anchor | 'INSPECT / SIGNAL ANCHOR / PROFESSOR / OFFLINE' | at (46.00, 0.00, -3.00) | en=true tl=2 dist=1.6 | hidden
+[ 331.01 f017030 host] INT TemporalCore/Future/sync_future | 'INSPECT / FUTURE / PHASE SWITCH / OPEN' | at (42.50, 0.00, 0.00) | en=true tl=2 dist=1.6 | hidden
+[ 331.02 f017030 host] INT TemporalCore/Future/terminal_future | 'INSPECT / CONTINUITY TERMINAL / AWAIT IDENTITY' | at (43.50, 0.00, 3.00) | en=true tl=2 dist=1.6 | hidden
+[ 331.02 f017030 host] INT TemporalCore/Future/evidence_future | 'CONTINUITY RECORDING' | at (47.00, 0.00, 4.50) | en=true tl=2 dist=1.6 | hidden
+[ 331.02 f017030 host] INT TemporalCore/Future/routing | 'DAMAGED ROUTING DIAGRAM' | at (47.00, 0.00, 0.50) | en=true tl=2 dist=1.6 | hidden
+[ 331.03 f017030 host] PLAYER at (0.0, 0.0, 5.9) mask=1 layer=1
+[ 331.08 f017030 host] approach root/TemporalCore/Past/evidence_past -> stand at (-6.875, 0.0, 3.825)
+[ 333.89 f017197 host] USE 'AUTHORIZATION SHEET'
+[ 337.69 f017418 host] screenshot 31_student_authorization_host.png
+[ 339.10 f017503 host] CLICK ui button 'CLOSE / SAVED TO YOUR JOURNAL'
+[ 340.84 f017605 host] approach root/TemporalCore/Past/warning -> stand at (-7.037464, 0.0, -4.469231)
+[ 343.94 f017790 host] USE 'HANDWRITTEN WARNING'
+[ 347.75 f018010 host] screenshot 32_student_warning_host.png
+[ 349.15 f018095 host] CLICK ui button 'CLOSE / SAVED TO YOUR JOURNAL'
+[ 350.99 f018197 host] screenshot 33_discovery_done_host.png
+[ 351.04 f018197 host] approach root/TemporalCore/Past/start -> stand at (0.077843, 0.0, 3.915991)
+[ 355.13 f018441 host] USE 'INSPECT / REACTOR ARMING CONSOLE / DISCOVERY'
+[ 357.38 f018570 host] screenshot 34_arming_console_host.png
+[ 357.39 f018570 host] CLICK control 'ARM REACTOR...' at (805.7814, 287.3352)
+[ 358.17 f018615 host] CLICK ui button 'CONFIRM / ARM REACTOR'
+[ 359.33 f018682 host] REACTOR ARMED - 150 s challenge running
+[ 359.48 f018682 host] screenshot 35_reactor_armed_host.png
+[ 360.29 f018732 host] DIALOGUE: We have two and a half minutes. Keep the connection alive.
+[ 363.30 f018910 host] approach root/TemporalCore/Past/coil_0 -> stand at (-6.049324, 0.0, -1.197758)
+[ 365.68 f019051 host] USE 'INSPECT / POWER COIL 1 / THREE POSITION RELAY / POSITION 0'
+[ 366.06 f019073 host] CLICK control 'SET POSITION 2' at (951.4236, 313.8699)
+[ 367.46 f019153 host] approach root/TemporalCore/Past/coil_2 -> stand at (-6.871016, 0.0, 2.002842)
+[ 368.78 f019230 host] USE 'INSPECT / POWER COIL 3 / THREE POSITION RELAY / POSITION 0'
+[ 369.16 f019251 host] CLICK control 'SET POSITION 1' at (806.0342, 313.8785)
+[ 370.51 f019331 host] STAGE A COMPLETE after 11.2s
+[ 370.68 f019331 host] screenshot 36_stage_a_complete_host.png
+[ 372.41 f019432 host] approach root/TemporalCore/Past/origin -> stand at (-3.081978, 0.0, -2.394888)
+[ 374.42 f019549 host] USE 'INSPECT / ORIGIN STABILIZER / STUDENT / OFFLINE'
+[ 374.78 f019569 host] CLICK control 'STABILIZE ORIGIN CORE' at (805.7835, 287.3442)
+[ 376.18 f019650 host] approach root/TemporalCore/Past/sync_past -> stand at (-2.379759, 0.0, 0.699229)
+[ 377.58 f019731 host] USE 'INSPECT / PAST / PHASE SWITCH / OPEN'
+[ 378.26 f019770 host] CLICK control 'ENGAGE PHASE SWITCH' at (777.7135, 295.5358)
+[ 379.13 f019822 host] PHASE SWITCHES SYNCHRONIZED; stage C after 19.8s
+[ 379.26 f019822 host] screenshot 37_phase_sync_host.png
+[ 380.29 f019884 host] DIALOGUE: I didn't tell you everything. I didn't think you would help me if you knew.
+[ 383.62 f020081 host] approach root/TemporalCore/Past/terminal_past -> stand at (-3.577808, 0.0, 2.248885)
+[ 384.46 f020129 host] USE 'INSPECT / ORIGIN TERMINAL / AWAIT IDENTITY'
+[ 386.67 f020254 host] screenshot 38_identity_terminal_host.png
+[ 386.67 f020254 host] CLICK control 'GROUND THE CORE' at (736.0075, 287.3285)
+[ 387.43 f020299 host] CLICK ui button 'CONFIRM / GROUND THE CORE'
+[ 388.83 f020366 host] ENDING REACHED: trust
+[ 391.98 f020546 host] screenshot 40_ending_begins_host.png
+[ 395.93 f020779 host] screenshot 41_ending_0_host.png
+[ 399.93 f021015 host] screenshot 41_ending_1_host.png
+[ 403.95 f021252 host] screenshot 41_ending_2_host.png
+[ 407.96 f021489 host] screenshot 41_ending_3_host.png
+[ 411.98 f021725 host] screenshot 41_ending_4_host.png
+[ 416.00 f021961 host] screenshot 41_ending_5_host.png
+[ 430.89 f022856 host] FINAL SCREEN HELD; playthrough complete
+[ 432.91 f022977 host] Script finished.

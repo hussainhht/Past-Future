@@ -1,5 +1,5 @@
 extends SceneTree
-const OUTPUT := "res://docs/interactions/screenshots"
+const OUTPUT := "res://docs/assets/screenshots/interactions"
 var room
 func _initialize() -> void: run.call_deferred()
 func capture(name: String) -> void:

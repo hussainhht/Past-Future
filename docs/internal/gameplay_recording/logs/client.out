@@ -1,0 +1,168 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 Core Profile Context 25.8.1.250617 - Compatibility - Using Device: ATI Technologies Inc. - AMD Radeon(TM) Graphics
+
+[   0.01 f000000 client] AutoPlay harness started role=client args={ "script": "playthrough", "quit_when_done": "1", "end_hold": "15", "linger": "2", "role": "client" }
+[   0.54 f000000 client] screenshot 01_menu_title_client.png
+[   9.14 f000507 client] screenshot 02_client_join_address_client.png
+[  10.86 f000606 client] screenshot 03_client_ready_client.png
+[  16.90 f000702 client] === LEVEL 1: SIGNAL LABORATORY (role future) ===
+[  17.55 f000720 client] screenshot 10_level1_start_client.png
+[  17.55 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/SecurityDoor/Inspect | 'Inspect sealed door' | at (6.20, 0.00, -7.25) | en=true tl=0 dist=1.7 | visible
+[  17.55 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/DoorKeypad/Interactable | 'Check keypad' | at (7.78, 0.00, -7.19) | en=true tl=0 dist=1.5 | visible
+[  17.56 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/JunctionBox/Inspect | 'Inspect breaker' | at (-2.60, 0.00, -7.14) | en=true tl=0 dist=1.5 | visible
+[  17.56 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/Computer | 'Use Calibration Computer' | at (0.00, 0.60, -5.75) | en=true tl=1 dist=2.2 | visible
+[  17.56 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/ConsoleTerminal/RecoveredLog | 'Watch Live Signal' | at (0.00, 0.95, -5.85) | en=true tl=2 dist=2.2 | visible
+[  17.57 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/ResearchNotebook/Interactable | 'Read research notebook' | at (6.77, 0.00, 1.49) | en=true tl=0 dist=1.5 | visible
+[  17.57 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/LabMemo/Interactable | 'Read memo' | at (-7.12, 0.00, 1.56) | en=true tl=0 dist=1.5 | visible
+[  17.57 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/PastRadio/Pickup | 'Acquire Handheld Radio' | at (-4.85, 1.75, 0.86) | en=true tl=1 dist=2.0 | hidden
+[  17.57 f000720 client] INT SpawnArea/SignalLab/Layout/Interactive/FutureRadio/Pickup | 'Acquire Handheld Radio' | at (-8.45, 1.25, 5.40) | en=true tl=2 dist=2.0 | visible
+[  17.58 f000720 client] INT SpawnArea/SignalLab/Layout/RiftArea/TemporalRift/Inspect | 'Inspect temporal rift' | at (9.20, 0.00, 2.30) | en=true tl=0 dist=2.3 | visible
+[  17.58 f000720 client] INT SpawnArea/LaboratoryGameplay/Props/ReceiverRelay | 'Activate Receiver Relay' | at (-9.90, 1.20, -3.90) | en=true tl=1 dist=2.2 | visible
+[  17.58 f000720 client] INT SpawnArea/LaboratoryGameplay/Props/RadioCheck | 'Check Radio Connection' | at (-3.00, 0.80, -4.80) | en=false tl=0 dist=2.0 | visible
+[  17.59 f000720 client] INT SpawnArea/LaboratoryGameplay/Props/LevelExit | 'Proceed to Next Area' | at (6.20, 0.00, -8.70) | en=true tl=0 dist=1.8 | visible
+[  17.59 f000720 client] PLAYER at (0.0, 0.0, 3.7) mask=1 layer=1
+[  17.65 f000720 client] approach ab/Layout/Interactive/FutureRadio/Pickup -> stand at (-7.85, 0.0, 5.425)
+[  21.13 f000927 client] USE 'Acquire Handheld Radio'
+[  43.20 f002242 client] screenshot 13_radios_acquired_client.png
+[  43.28 f002242 client] approach Interactive/ConsoleTerminal/RecoveredLog -> stand at (-0.04702, 0.0, -5.815637)
+[  49.33 f002603 client] USE 'Watch Live Signal'
+[  50.67 f002674 client] screenshot 14_professor_receiver_client.png
+[  66.24 f003605 client] RADIO LINK ESTABLISHED
+[  67.32 f003663 client] screenshot 15_link_established_client.png
+[  68.38 f003728 client] DIALOGUE: The laboratory is exactly where I remember it.
+[  71.13 f003893 client] DIALOGUE: Except thirty-one years have passed.
+[  73.72 f004048 client] DIALOGUE: And this time, I know what happens next.
+[  76.38 f004208 client] DIALOGUE: Hello? Can you hear me clearly now?
+[  79.93 f004421 client] DIALOGUE: Yes. The signal is stable. Keep your radio with you.
+[  83.81 f004654 client] DIALOGUE: The computer says sixty-seven megahertz. Who are you?
+[  89.72 f005008 client] DIALOGUE: Someone who remembers this laboratory. The north door is open. We can check the receiver relay, or head into the maintenance gallery.
+[  98.55 f005536 client] at exit zone (target=Inspect:<Area3D#198877122396>); waiting for partner / transition
+[ 101.29 f005611 client] === LEVEL 2: MAINTENANCE CORRIDOR (role future) ===
+[ 103.32 f005701 client] screenshot 20_level2_start_client.png
+[ 103.32 f005701 client] DIALOGUE: I made it out. The corridor looks clear.
+[ 108.84 f005960 client] DIALOGUE: The passage is clear, but the archive has no power. There's an emergency cabinet beside the door. Let me read its charging instructions.
+[ 113.24 f006167 client] approach root/MaintenanceCorridor/Layout/Battery -> stand at (5.775, 0.0, 7.375)
+[ 115.79 f006287 client] USE 'Use battery'
+[ 118.80 f006441 client] screenshot 21_professor_battery_panel_client.png
+[ 119.46 f006471 client] approach root/MaintenanceCorridor/Layout/Battery -> stand at (5.896325, 0.0, 7.333939)
+[ 119.93 f006489 client] USE 'Use battery'
+[ 122.87 f006636 client] CLICK control 'Turn charging crank' at (805.3984, 173.0243)
+[ 124.74 f006721 client] EMERGENCY CELL CHARGED
+[ 124.84 f006721 client] screenshot 22_battery_ready_client.png
+[ 124.91 f006721 client] approach root/MaintenanceCorridor/Layout/Archive -> stand at (4.896325, 0.0, -3.116061)
+[ 129.67 f006922 client] USE 'Use archive'
+[ 132.68 f007073 client] screenshot 23_professor_archive_manifest_client.png
+[ 142.51 f007522 client] approach r/Layout/PreservationStorage/StorageBay0 -> stand at (-4.090036, 0.0, -3.811909)
+[ 146.31 f007688 client] USE 'Use underground storage computer A'
+[ 149.25 f007845 client] CLICK control 'Raise tray' at (750.0327, 271.5778)
+[ 152.92 f008065 client] CLICK control 'Unload item' at (875.259, 478.2254)
+[ 154.80 f008166 client] approach root/MaintenanceCorridor/Layout/Archive -> stand at (4.754286, 0.0, -3.034004)
+[ 158.54 f008337 client] USE 'Use archive'
+[ 161.47 f008495 client] CLICK control 'Install Optical archive reader' at (701.1425, 249.0749)
+[ 166.86 f008758 client] approach r/Layout/PreservationStorage/StorageBay1 -> stand at (-4.21254, 0.0, -5.827675)
+[ 170.89 f008942 client] USE 'Use underground storage computer B'
+[ 173.82 f009101 client] CLICK control 'Raise tray' at (750.0327, 271.5778)
+[ 177.48 f009321 client] CLICK control 'Unload item' at (875.259, 478.2254)
+[ 179.39 f009421 client] approach root/MaintenanceCorridor/Layout/Archive -> stand at (4.704902, 0.0, -3.021305)
+[ 183.39 f009597 client] USE 'Use archive'
+[ 186.33 f009754 client] CLICK control 'Install Voltage regulator' at (805.3857, 249.4157)
+[ 191.72 f010016 client] approach r/Layout/PreservationStorage/StorageBay2 -> stand at (-4.239438, 0.0, -7.873619)
+[ 196.04 f010213 client] USE 'Use underground storage computer C'
+[ 198.98 f010375 client] CLICK control 'Raise tray' at (750.0327, 271.5778)
+[ 202.65 f010595 client] CLICK control 'Unload item' at (875.259, 478.2254)
+[ 204.57 f010699 client] approach root/MaintenanceCorridor/Layout/Archive -> stand at (4.705462, 0.0, -3.051994)
+[ 208.93 f010894 client] USE 'Use archive'
+[ 211.88 f011052 client] CLICK control 'Install Shielded memory module' at (909.0096, 249.4157)
+[ 213.74 f011150 client] ARCHIVE REPAIRED
+[ 213.84 f011150 client] screenshot 24_archive_repaired_client.png
+[ 214.87 f011193 client] DIALOGUE: The archive still has my personnel record. Thirty-one years after your date.
+[ 219.07 f011382 client] DIALOGUE: The inscription inside your watch: Don't waste it.
+[ 222.53 f011537 client] DIALOGUE: How do you know what is inside my watch?
+[ 225.84 f011688 client] DIALOGUE: Because I am still wearing it. I am you.
+[ 228.94 f011825 client] DIALOGUE: Then you remember how I get out.
+[ 232.49 f011991 client] DIALOGUE: I remember the archive failing. Not repairing it this way.
+[ 237.88 f012251 client] DIALOGUE: I remember those storage bays being empty. Even after your cases appeared inside them, that memory stayed the same.
+[ 241.92 f012432 client] approach root/MaintenanceCorridor/Layout/Archive -> stand at (4.866585, 0.0, -3.068674)
+[ 242.38 f012450 client] USE 'Use archive'
+[ 245.42 f012606 client] screenshot 25_professor_archive_record_client.png
+[ 246.05 f012634 client] approach /MaintenanceCorridor/Layout/BypassFuture -> stand at (5.866585, 0.0, 1.931327)
+[ 248.84 f012757 client] USE 'Use bypass future'
+[ 251.83 f012909 client] CLICK control 'Reconnect ground lead' at (837.9101, 149.28)
+[ 253.71 f013008 client] approach root/MaintenanceCorridor/Layout/Recorder -> stand at (4.78349, 0.0, -6.09487)
+[ 257.53 f013174 client] USE 'Use recorder'
+[ 260.57 f013333 client] screenshot 26_professor_recorder_client.png
+[ 260.57 f013333 client] CLICK control 'Press recording export' at (653.0159, 86.97234)
+[ 262.31 f013428 client] RECORDING: preserved
+[ 263.17 f013468 client] DIALOGUE: The recording arrived. Manual activation. A containment warning.
+[ 267.54 f013673 client] DIALOGUE: The complete audit is in the Core. We need to stabilize the anchor.
+[ 283.90 f014444 client] approach root/MaintenanceCorridor/Layout/Release -> stand at (-2.999478, 0.0, -8.55291)
+[ 287.47 f014607 client] USE 'Use release'
+[ 290.40 f014767 client] CLICK control 'Turn manual release' at (805.2466, 161.0168)
+[ 292.22 f014867 client] CORE ENTRANCE OPEN
+[ 292.33 f014867 client] screenshot 28_core_entrance_open_client.png
+[ 292.38 f014867 client] approach root/MaintenanceCorridor/Layout/Anchor -> stand at (-2.086666, 0.0, -11.76106)
+[ 294.36 f014965 client] USE 'Use anchor'
+[ 297.28 f015133 client] CLICK control 'Latch stabilization contact' at (805.3811, 117.0817)
+[ 298.48 f015200 client] LEVEL 2 PUZZLE SOLVED
+[ 298.55 f015200 client] screenshot 29_level2_solved_client.png
+[ 305.55 f015604 client] screenshot 29b_chapter_complete_panel_client.png
+[ 307.54 f015705 client] DIALOGUE: The audit matches the recording. Your authorization. You disabled the abort.
+[ 310.81 f015887 client] DIALOGUE: Yes.
+[ 313.63 f016043 client] DIALOGUE: You knew what would happen. Why did you do it?
+[ 318.57 f016319 client] DIALOGUE: The Professor says nothing. The restored map reveals other unresolved fractures. A second signal answers.
+[ 327.25 f016733 client] === LEVEL 3: THE FINAL FRACTURE (role future) ===
+[ 330.51 f016920 client] screenshot 30_level3_start_client.png
+[ 330.51 f016920 client] INT TemporalCore/Past/start | 'INSPECT / REACTOR ARMING CONSOLE / DISCOVERY' | at (0.00, 0.00, 4.50) | en=true tl=1 dist=1.6 | hidden
+[ 330.51 f016920 client] INT TemporalCore/Past/coil_0 | 'INSPECT / POWER COIL 1 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, -2.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.52 f016920 client] INT TemporalCore/Past/coil_1 | 'INSPECT / POWER COIL 2 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, 0.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.52 f016920 client] INT TemporalCore/Past/coil_2 | 'INSPECT / POWER COIL 3 / THREE POSITION RELAY / POSITION 0' | at (-6.00, 0.00, 2.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.52 f016920 client] INT TemporalCore/Past/origin | 'INSPECT / ORIGIN STABILIZER / STUDENT / OFFLINE' | at (-3.00, 0.00, -3.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.53 f016920 client] INT TemporalCore/Past/sync_past | 'INSPECT / PAST / PHASE SWITCH / OPEN' | at (-2.50, 0.00, 0.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.53 f016920 client] INT TemporalCore/Past/terminal_past | 'INSPECT / ORIGIN TERMINAL / AWAIT IDENTITY' | at (-3.50, 0.00, 3.00) | en=true tl=1 dist=1.6 | hidden
+[ 330.53 f016920 client] INT TemporalCore/Past/evidence_past | 'AUTHORIZATION SHEET' | at (-7.00, 0.00, 4.50) | en=true tl=1 dist=1.6 | hidden
+[ 330.54 f016920 client] INT TemporalCore/Past/warning | 'HANDWRITTEN WARNING' | at (-7.00, 0.00, -4.50) | en=true tl=1 dist=1.6 | hidden
+[ 330.54 f016920 client] INT TemporalCore/Future/start | 'INSPECT / REACTOR ARMING CONSOLE / DISCOVERY' | at (40.00, 0.00, 4.50) | en=true tl=2 dist=1.6 | visible
+[ 330.54 f016920 client] INT TemporalCore/Future/receiver | 'INSPECT / RECEIVER / BATTERY CONTACTS / OFFLINE' | at (46.00, 0.00, 3.00) | en=true tl=2 dist=1.6 | visible
+[ 330.55 f016920 client] INT TemporalCore/Future/anchor | 'INSPECT / SIGNAL ANCHOR / PROFESSOR / OFFLINE' | at (46.00, 0.00, -3.00) | en=true tl=2 dist=1.6 | visible
+[ 330.55 f016920 client] INT TemporalCore/Future/sync_future | 'INSPECT / FUTURE / PHASE SWITCH / OPEN' | at (42.50, 0.00, 0.00) | en=true tl=2 dist=1.6 | visible
+[ 330.55 f016920 client] INT TemporalCore/Future/terminal_future | 'INSPECT / CONTINUITY TERMINAL / AWAIT IDENTITY' | at (43.50, 0.00, 3.00) | en=true tl=2 dist=1.6 | visible
+[ 330.56 f016920 client] INT TemporalCore/Future/evidence_future | 'CONTINUITY RECORDING' | at (47.00, 0.00, 4.50) | en=true tl=2 dist=1.6 | visible
+[ 330.56 f016920 client] INT TemporalCore/Future/routing | 'DAMAGED ROUTING DIAGRAM' | at (47.00, 0.00, 0.50) | en=true tl=2 dist=1.6 | visible
+[ 330.56 f016920 client] PLAYER at (40.0, 0.0, 5.9) mask=1 layer=1
+[ 330.61 f016920 client] approach root/TemporalCore/Future/evidence_future -> stand at (46.875, 0.0, 3.825)
+[ 333.42 f017087 client] USE 'CONTINUITY RECORDING'
+[ 337.21 f017308 client] screenshot 31_professor_continuity_client.png
+[ 338.62 f017393 client] CLICK ui button 'CLOSE / SAVED TO YOUR JOURNAL'
+[ 340.46 f017495 client] screenshot 33_discovery_done_client.png
+[ 358.27 f018564 client] REACTOR ARMED - 150 s challenge running
+[ 358.43 f018564 client] screenshot 35_reactor_armed_client.png
+[ 359.73 f018643 client] DIALOGUE: We have two and a half minutes. Keep the connection alive.
+[ 362.74 f018821 client] approach root/TemporalCore/Future/receiver -> stand at (46.53744, 0.0, 3.530769)
+[ 363.05 f018838 client] USE 'INSPECT / RECEIVER / BATTERY CONTACTS / OFFLINE'
+[ 363.44 f018860 client] CLICK control 'RECONNECT BATTERY' at (805.7838, 287.3419)
+[ 368.75 f019177 client] STAGE A COMPLETE after 10.5s
+[ 368.91 f019177 client] screenshot 36_stage_a_complete_client.png
+[ 368.95 f019177 client] approach root/TemporalCore/Future/anchor -> stand at (45.90898, 0.0, -3.597688)
+[ 371.26 f019312 client] USE 'INSPECT / SIGNAL ANCHOR / PROFESSOR / OFFLINE'
+[ 371.63 f019334 client] CLICK control 'CALIBRATE SIGNAL ANCHOR' at (805.7654, 287.3271)
+[ 374.42 f019496 client] approach root/TemporalCore/Future/sync_future -> stand at (42.59092, 0.0, -0.690309)
+[ 375.92 f019583 client] USE 'INSPECT / FUTURE / PHASE SWITCH / OPEN'
+[ 376.30 f019605 client] CLICK control 'ENGAGE PHASE SWITCH' at (834.3882, 295.5345)
+[ 377.85 f019698 client] PHASE SWITCHES SYNCHRONIZED; stage C after 19.6s
+[ 377.98 f019698 client] screenshot 37_phase_sync_client.png
+[ 379.73 f019803 client] DIALOGUE: I didn't tell you everything. I didn't think you would help me if you knew.
+[ 383.06 f020000 client] approach root/TemporalCore/Future/terminal_future -> stand at (43.39907, 0.0, 2.246349)
+[ 384.37 f020076 client] USE 'INSPECT / CONTINUITY TERMINAL / AWAIT IDENTITY'
+[ 386.57 f020201 client] screenshot 38_identity_terminal_client.png
+[ 386.58 f020201 client] CLICK control 'RELEASE THE ECHO' at (736.0369, 287.3584)
+[ 387.34 f020246 client] CLICK ui button 'CONFIRM / RELEASE THE ECHO'
+[ 388.67 f020311 client] ENDING REACHED: trust
+[ 391.86 f020492 client] screenshot 40_ending_begins_client.png
+[ 395.76 f020722 client] screenshot 41_ending_0_client.png
+[ 399.76 f020958 client] screenshot 41_ending_1_client.png
+[ 403.77 f021195 client] screenshot 41_ending_2_client.png
+[ 407.81 f021433 client] screenshot 41_ending_3_client.png
+[ 411.81 f021668 client] screenshot 41_ending_4_client.png
+[ 415.81 f021903 client] screenshot 41_ending_5_client.png
+[ 430.72 f022799 client] FINAL SCREEN HELD; playthrough complete
+[ 432.73 f022920 client] Script finished.

@@ -1,0 +1,2 @@
+-vsync is deprecated. Use -fps_mode
+[gdigrab @ 0000028aaaf16800] Stream #0: not enough frames to estimate rate; consider increasing probesize

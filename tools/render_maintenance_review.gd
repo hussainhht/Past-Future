@@ -1,7 +1,7 @@
 extends SceneTree
 ## Actual Godot gameplay and choice captures. Run with a graphics device.
 const Rules = preload("res://scripts/puzzles/implementations/maintenance_corridor_puzzle.gd")
-const OUTPUT := "res://docs/level02/screenshots"
+const OUTPUT := "res://docs/assets/screenshots/level02"
 var room
 var puzzles: Node
 func _initialize() -> void: run.call_deferred()
